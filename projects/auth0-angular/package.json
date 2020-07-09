@@ -1,0 +1,11 @@
+{
+  "name": "auth0-angular",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^10.0.2",
+    "@angular/core": "^10.0.2"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

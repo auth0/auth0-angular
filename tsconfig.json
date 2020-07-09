@@ -6,5 +6,12 @@
 */
 {
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./projects/auth0-angular/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/auth0-angular/tsconfig.spec.json"
+    }
+]
 }
