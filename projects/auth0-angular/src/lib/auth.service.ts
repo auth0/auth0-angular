@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+import { AuthConfigService, AuthConfig } from './auth.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor() {}
+  constructor(@Inject(AuthConfigService) config: AuthConfig) {}
 }
