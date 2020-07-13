@@ -4,15 +4,14 @@ orbs:
 jobs:
   build-and-test:
     executor:
-      # orb's defalt or any from https://hub.docker.com/r/cimg/node/tags
       name: node/default 
+      tag: '12-browsers'
     steps:
       - checkout
       - node/with-cache:
           steps:
             - run: npm install
-            # Move below command to "test-ci" script
-            - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+            - run: npm run test-ci
 workflows:
     build-and-test:
       jobs:
