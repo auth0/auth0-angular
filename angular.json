@@ -36,12 +36,11 @@
               "projects/auth0-angular/tsconfig.lib.json",
               "projects/auth0-angular/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "auth0-angular"
 }
