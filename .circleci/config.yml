@@ -12,6 +12,9 @@ jobs:
           steps:
             - run: npm install
             - run: npm run test-ci
+            - run:
+                name: Upload coverage
+                command: ./node_modules/.bin/codecov
 workflows:
     build-and-test:
       jobs:
