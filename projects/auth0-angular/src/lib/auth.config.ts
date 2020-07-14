@@ -1,0 +1,113 @@
+import { CacheLocation } from '@auth0/auth0-spa-js';
+import { InjectionToken } from '@angular/core';
+
+/**
+ * Configuration for the authentication service
+ */
+export interface AuthConfig {
+  /**
+   * Your Auth0 account domain such as `'example.auth0.com'`,
+   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
+   * (when using [custom domains](https://auth0.com/docs/custom-domains))
+   */
+  domain: string;
+
+  /**
+   * The issuer to be used for validation of JWTs, optionally defaults to the domain above
+   */
+  issuer?: string;
+
+  /**
+   * The Client ID found on your Application settings page
+   */
+  clientId: string;
+
+  /**
+   * The default URL where Auth0 will redirect your browser to with
+   * the authentication result. It must be whitelisted in
+   * the "Allowed Callback URLs" field in your Auth0 Application's
+   * settings. If not provided here, it should be provided in the other
+   * methods that provide authentication.
+   */
+  redirectUri?: string;
+
+  /**
+   * The value in seconds used to account for clock skew in JWT expirations.
+   * Typically, this value is no more than a minute or two at maximum.
+   * Defaults to 60s.
+   */
+  leeway?: number;
+
+  /**
+   * The location to use when storing cache data. Valid values are `memory` or `localstorage`.
+   * The default setting is `memory`.
+   */
+  cacheLocation?: CacheLocation;
+
+  /**
+   * If true, refresh tokens are used to fetch new access tokens from the Auth0 server. If false, the legacy technique of using a hidden iframe and the `authorization_code` grant with `prompt=none` is used.
+   * The default setting is `false`.
+   *
+   * **Note**: Use of refresh tokens must be enabled by an administrator on your Auth0 client application.
+   */
+  useRefreshTokens?: boolean;
+
+  /**
+   * A maximum number of seconds to wait before declaring background calls to /authorize as failed for timeout
+   * Defaults to 60s.
+   */
+  authorizeTimeoutInSeconds?: number;
+
+  /**
+   * Changes to recommended defaults, like defaultScope
+   */
+  advancedOptions?: {
+    /**
+     * The default scope to be included with all requests.
+     * If not provided, 'openid profile email' is used. This can be set to `null` in order to effectively remove the default scopes.
+     *
+     * Note: The `openid` scope is **always applied** regardless of this setting.
+     */
+    defaultScope?: string;
+  };
+
+  /**
+   * Maximum allowable elapsed time (in seconds) since authentication.
+   * If the last time the user authenticated is greater than this value,
+   * the user must be reauthenticated.
+   */
+  maxAge?: string | number;
+
+  /**
+   * The default scope to be used on authentication requests.
+   * The defaultScope defined in the Auth0Client is included
+   * along with this scope
+   */
+  scope?: string;
+
+  /**
+   * The default audience to be used for requesting API access.
+   */
+  audience?: string;
+
+  /**
+   * If you need to send custom parameters to the Authorization Server,
+   * make sure to use the original parameter name.
+   */
+  [key: string]: any;
+}
+
+/**
+ * Injection token for accessing configuration.
+ *
+ * @usageNotes
+ *
+ * Use the `Inject` decorator to access the configuration from a service or component:
+ *
+ * ```
+ * class MyService(@Inject(AuthConfigService) config: AuthConfig) {}
+ * ```
+ */
+export const AuthConfigService = new InjectionToken<AuthConfig>(
+  'auth0-angular.config'
+);
