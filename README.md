@@ -1,3 +1,6 @@
+[![CircleCI](https://img.shields.io/circleci/build/github/auth0/auth0-angular)](https://circleci.com/gh/auth0/auth0-angular)
+[![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-angular)](https://circleci.com/gh/auth0/auth0-angular)
+
 # Auth0 Angular SDK
 
 A library for integrating [Auth0](https://auth0.com) into an Angular 9+ application.

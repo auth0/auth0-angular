@@ -1,0 +1,21 @@
+version: 2.1
+orbs:
+  node: circleci/node@1.1.6
+jobs:
+  build-and-test:
+    executor:
+      name: node/default 
+      tag: '12-browsers'
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm run test-ci
+            - run:
+                name: Upload coverage
+                command: ./node_modules/.bin/codecov
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
