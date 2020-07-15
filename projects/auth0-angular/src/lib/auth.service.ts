@@ -10,7 +10,7 @@ import {
 
 import { of, from, BehaviorSubject, Subject, Observable } from 'rxjs';
 
-import { concatMap, tap, map, filter, take, takeUntil } from 'rxjs/operators';
+import { concatMap, tap, map, filter, takeUntil, take } from 'rxjs/operators';
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
 
@@ -25,7 +25,10 @@ export class AuthService implements OnDestroy {
   private ngUnsubscribe$ = new Subject();
 
   readonly user$ = this.userSubject$.asObservable();
-  readonly isLoading$ = this.isLoadingSubject$.asObservable();
+  readonly isLoading$ = this.isLoadingSubject$.pipe(
+    filter((isLoading) => isLoading),
+    take(1)
+  );
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
