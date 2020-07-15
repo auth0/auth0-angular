@@ -38,6 +38,10 @@ export class AuthService implements OnDestroy {
     take(1)
   );
 
+  readonly isAuthenticated$ = this.isLoading$.pipe(
+    concatMap(() => from(this.auth0Client.isAuthenticated()))
+  );
+
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     @Inject(WindowService) private window: Window
