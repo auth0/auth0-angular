@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
 import { Auth0Client } from '@auth0/auth0-spa-js';
+import { toArray } from 'rxjs/operators';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -18,6 +19,7 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'handleRedirectCallback').and.resolveTo({});
     spyOn(auth0Client, 'loginWithRedirect').and.resolveTo();
     spyOn(auth0Client, 'loginWithPopup').and.resolveTo();
+    spyOn(auth0Client, 'checkSession').and.resolveTo();
 
     moduleSetup = {
       providers: [
@@ -40,13 +42,24 @@ describe('AuthService', () => {
     service = TestBed.inject(AuthService);
   });
 
-  describe('constructor when not handling the redirect callback', () => {
+  describe('constructor', () => {
     it('should be created', () => {
       expect(service).toBeTruthy();
     });
 
     it('should not call handleRedirectCallback on init, when code and state are not present on the URL', () => {
       expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalled();
+    });
+
+    it('should call checkSession', () => {
+      expect(auth0Client.checkSession).toHaveBeenCalled();
+    });
+
+    it('should set isLoading$ in the correct sequence', (done) => {
+      service.isLoading$.pipe(toArray()).subscribe((values) => {
+        expect(values).toEqual([true, false]);
+        done();
+      });
     });
   });
 
