@@ -73,7 +73,7 @@ describe('AuthService', () => {
     });
 
     it('should return `true` when the client is authenticated', (done) => {
-      (<any>auth0Client.isAuthenticated).and.resolveTo(true);
+      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
 
       service.isAuthenticated$.subscribe((value) => {
         expect(value).toBeTrue();
