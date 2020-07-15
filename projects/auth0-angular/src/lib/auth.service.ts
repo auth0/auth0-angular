@@ -8,9 +8,17 @@ import {
   RedirectLoginResult,
 } from '@auth0/auth0-spa-js';
 
-import { of, from, BehaviorSubject, Subject, Observable } from 'rxjs';
+import { of, from, BehaviorSubject, Subject, Observable, iif } from 'rxjs';
 
-import { concatMap, tap, map, filter, take, takeUntil } from 'rxjs/operators';
+import {
+  concatMap,
+  tap,
+  map,
+  filter,
+  takeUntil,
+  take,
+  takeWhile,
+} from 'rxjs/operators';
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
 
@@ -25,20 +33,28 @@ export class AuthService implements OnDestroy {
   private ngUnsubscribe$ = new Subject();
 
   readonly user$ = this.userSubject$.asObservable();
-  readonly isLoading$ = this.isLoadingSubject$.asObservable();
+  readonly isLoading$ = this.isLoadingSubject$.pipe(
+    filter((isLoading) => !isLoading),
+    take(1)
+  );
+
+  readonly isAuthenticated$ = this.isLoading$.pipe(
+    concatMap(() => from(this.auth0Client.isAuthenticated()))
+  );
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     @Inject(WindowService) private window: Window
   ) {
-    // Handle callback
-    this.handleRedirectCallback()
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe();
-
-    // Handle checkSession
-    from(this.auth0Client.checkSession())
+    this.shouldHandleCallback()
       .pipe(
+        concatMap((isCallback) =>
+          iif(
+            () => isCallback,
+            this.handleRedirectCallback(),
+            from(this.auth0Client.checkSession())
+          )
+        ),
         takeUntil(this.ngUnsubscribe$),
         tap(() => {
           this.isLoadingSubject$.next(false);

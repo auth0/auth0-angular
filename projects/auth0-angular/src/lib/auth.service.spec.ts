@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { toArray } from 'rxjs/operators';
+import { skip } from 'rxjs/operators';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -20,6 +20,7 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'loginWithRedirect').and.resolveTo();
     spyOn(auth0Client, 'loginWithPopup').and.resolveTo();
     spyOn(auth0Client, 'checkSession').and.resolveTo();
+    spyOn(auth0Client, 'isAuthenticated').and.resolveTo(false);
 
     moduleSetup = {
       providers: [
@@ -56,8 +57,26 @@ describe('AuthService', () => {
     });
 
     it('should set isLoading$ in the correct sequence', (done) => {
-      service.isLoading$.pipe(toArray()).subscribe((values) => {
-        expect(values).toEqual([true, false]);
+      service.isLoading$.subscribe((isLoading) => {
+        expect(isLoading).toBeFalse();
+        done();
+      });
+    });
+  });
+
+  describe('isAuthenticated', () => {
+    it('should return `false` when the client is not authenticated', (done) => {
+      service.isAuthenticated$.subscribe((value) => {
+        expect(value).toBeFalse();
+        done();
+      });
+    });
+
+    it('should return `true` when the client is authenticated', (done) => {
+      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+
+      service.isAuthenticated$.subscribe((value) => {
+        expect(value).toBeTrue();
         done();
       });
     });
