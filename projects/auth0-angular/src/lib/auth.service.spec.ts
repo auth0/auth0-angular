@@ -1,45 +1,45 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import { Auth0Client } from '@auth0/auth0-spa-js';
 import { WindowService } from './window';
+import { Auth0Client } from '@auth0/auth0-spa-js';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let spy: any;
-
-  const auth0Client = new Auth0Client({
-    domain: 'test.domain',
-    client_id: 'test-client-id',
-  });
+  let auth0Client: Auth0Client;
+  let moduleSetup: any;
 
   beforeEach(() => {
-    spy = spyOn(auth0Client, 'handleRedirectCallback').and.resolveTo({});
-  });
+    auth0Client = new Auth0Client({
+      domain: '',
+      client_id: '',
+    });
 
-  afterEach(() => {
-    spy.calls.reset();
+    spyOn(auth0Client, 'handleRedirectCallback').and.resolveTo({});
+    spyOn(auth0Client, 'loginWithRedirect').and.resolveTo();
+
+    moduleSetup = {
+      providers: [
+        {
+          provide: Auth0ClientService,
+          useValue: auth0Client,
+        },
+        {
+          provide: WindowService,
+          useValue: {
+            location: {
+              search: '',
+            },
+          },
+        },
+      ],
+    };
+
+    TestBed.configureTestingModule(moduleSetup);
+    service = TestBed.inject(AuthService);
   });
 
   describe('constructor when not handling the redirect callback', () => {
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          { provide: Auth0ClientService, useValue: auth0Client },
-          {
-            provide: WindowService,
-            useValue: {
-              location: {
-                search: '',
-              },
-            },
-          },
-        ],
-      });
-
-      service = TestBed.inject(AuthService);
-    });
-
     it('should be created', () => {
       expect(service).toBeTruthy();
     });
@@ -51,7 +51,10 @@ describe('AuthService', () => {
 
   describe('when handling the redirect callback', () => {
     beforeEach(() => {
+      TestBed.resetTestingModule();
+
       TestBed.configureTestingModule({
+        ...moduleSetup,
         providers: [
           {
             provide: Auth0ClientService,
@@ -73,7 +76,23 @@ describe('AuthService', () => {
     });
 
     it('should handle the callback when code and state are available', () => {
-      expect(auth0Client.handleRedirectCallback).toHaveBeenCalled();
+      expect(auth0Client.handleRedirectCallback).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('should call `loginWithRedirect`', () => {
+    service.loginWithRedirect().subscribe(() => {
+      expect(auth0Client.loginWithRedirect).toHaveBeenCalled();
+    });
+  });
+
+  it('should call `loginWithRedirect` and pass options', () => {
+    const options = { redirect_uri: 'http://localhost:3001' };
+
+    service
+      .loginWithRedirect(options)
+      .subscribe(() =>
+        expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options)
+      );
   });
 });
