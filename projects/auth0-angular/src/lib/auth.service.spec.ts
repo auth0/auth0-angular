@@ -57,7 +57,7 @@ describe('AuthService', () => {
 
     it('should set isLoading$ in the correct sequence', (done) => {
       service.isLoading$.subscribe((isLoading) => {
-        expect(isLoading).toBeTrue();
+        expect(isLoading).toBeFalse();
         done();
       });
     });
