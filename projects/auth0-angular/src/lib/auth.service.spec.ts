@@ -17,6 +17,7 @@ describe('AuthService', () => {
 
     spyOn(auth0Client, 'handleRedirectCallback').and.resolveTo({});
     spyOn(auth0Client, 'loginWithRedirect').and.resolveTo();
+    spyOn(auth0Client, 'loginWithPopup').and.resolveTo();
 
     moduleSetup = {
       providers: [
@@ -80,19 +81,28 @@ describe('AuthService', () => {
     });
   });
 
-  it('should call `loginWithRedirect`', () => {
-    service.loginWithRedirect().subscribe(() => {
-      expect(auth0Client.loginWithRedirect).toHaveBeenCalled();
-    });
+  it('should call `loginWithRedirect`', async () => {
+    await service.loginWithRedirect().toPromise();
+    expect(auth0Client.loginWithRedirect).toHaveBeenCalled();
   });
 
-  it('should call `loginWithRedirect` and pass options', () => {
+  it('should call `loginWithRedirect` and pass options', async () => {
     const options = { redirect_uri: 'http://localhost:3001' };
 
-    service
-      .loginWithRedirect(options)
-      .subscribe(() =>
-        expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options)
-      );
+    await service.loginWithRedirect(options).toPromise();
+    expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
+  });
+
+  it('should call `loginWithPopup`', async () => {
+    await service.loginWithPopup();
+    expect(auth0Client.loginWithPopup).toHaveBeenCalled();
+  });
+
+  it('should call `loginWithPopup` with options', async () => {
+    const options = {};
+    const config = {};
+
+    await service.loginWithPopup(options, config).toPromise();
+    expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, config);
   });
 });
