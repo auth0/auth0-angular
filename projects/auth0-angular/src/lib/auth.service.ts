@@ -5,6 +5,7 @@ import {
   RedirectLoginOptions,
   PopupLoginOptions,
   PopupConfigOptions,
+  RedirectLoginResult,
 } from '@auth0/auth0-spa-js';
 
 import { of, from, BehaviorSubject, Subject, Observable } from 'rxjs';
@@ -53,7 +54,7 @@ export class AuthService implements OnDestroy {
    *
    * @param options The login options
    */
-  loginWithRedirect(options?: RedirectLoginOptions) {
+  loginWithRedirect(options?: RedirectLoginOptions): Observable<void> {
     return from(this.auth0Client.loginWithRedirect(options));
   }
 
@@ -74,17 +75,20 @@ export class AuthService implements OnDestroy {
    * @param options The login options
    * @param config Configuration for the popup window
    */
-  loginWithPopup(options?: PopupLoginOptions, config?: PopupConfigOptions) {
+  loginWithPopup(
+    options?: PopupLoginOptions,
+    config?: PopupConfigOptions
+  ): Observable<void> {
     return from(this.auth0Client.loginWithPopup(options, config));
   }
 
-  private shouldHandleCallback() {
+  private shouldHandleCallback(): Observable<boolean> {
     return of(this.window.location.search).pipe(
       map((search) => search.includes('code=') && search.includes('state='))
     );
   }
 
-  private handleRedirectCallback$() {
+  private handleRedirectCallback$(): Observable<RedirectLoginResult> {
     return this.shouldHandleCallback().pipe(
       filter((value) => value),
       take(1), // not sure if this is needed
