@@ -22,7 +22,7 @@ import {
 
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
-import { RouteNavigator } from './navigator';
+import { RouteNavigator } from './route-navigator';
 
 @Injectable({
   providedIn: 'root',

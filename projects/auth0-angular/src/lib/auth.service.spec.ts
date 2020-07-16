@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { RouteNavigator } from './navigator';
+import { RouteNavigator } from './route-navigator';
 
 describe('AuthService', () => {
   let service: AuthService;
