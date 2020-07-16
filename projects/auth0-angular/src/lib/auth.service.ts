@@ -130,10 +130,7 @@ export class AuthService implements OnDestroy {
   }
 
   private handleRedirectCallback(): Observable<boolean> {
-    return this.shouldHandleCallback().pipe(
-      filter((value) => value),
-      take(1), // not sure if this is needed
-      concatMap(() => this.auth0Client.handleRedirectCallback()),
+    return defer(() => this.auth0Client.handleRedirectCallback()).pipe(
       concatMap((result) => {
         const target =
           result.appState && result.appState.target
