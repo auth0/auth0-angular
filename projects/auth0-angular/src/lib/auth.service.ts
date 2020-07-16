@@ -19,8 +19,10 @@ import {
   take,
   takeWhile,
 } from 'rxjs/operators';
+
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
+import { RouteNavigator } from './navigator';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +46,8 @@ export class AuthService implements OnDestroy {
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
-    @Inject(WindowService) private window: Window
+    @Inject(WindowService) private window: Window,
+    private navigator: RouteNavigator
   ) {
     this.shouldHandleCallback()
       .pipe(
@@ -118,11 +121,12 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  private handleRedirectCallback(): Observable<RedirectLoginResult> {
+  private handleRedirectCallback(): Observable<boolean> {
     return this.shouldHandleCallback().pipe(
       filter((value) => value),
       take(1), // not sure if this is needed
-      concatMap(() => from(this.auth0Client.handleRedirectCallback()))
+      concatMap(() => from(this.auth0Client.handleRedirectCallback())),
+      concatMap(() => this.navigator.navigateByUrl('/'))
     );
   }
 }
