@@ -115,11 +115,11 @@ describe('AuthService', () => {
           },
         ],
       });
-
-      service = TestBed.inject(AuthService);
     });
 
     it('should handle the callback when code and state are available', (done) => {
+      const service = TestBed.inject(AuthService);
+
       service.isLoading$.subscribe(() => {
         expect(auth0Client.handleRedirectCallback).toHaveBeenCalledTimes(1);
         done();
@@ -127,8 +127,25 @@ describe('AuthService', () => {
     });
 
     it('should redirect to the correct route', (done) => {
+      const service = TestBed.inject(AuthService);
+
       service.isLoading$.subscribe(() => {
-        expect(navigator.navigateByUrl).toHaveBeenCalled();
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
+        done();
+      });
+    });
+
+    it('should redirect to the route specified in appState', (done) => {
+      (<any>auth0Client.handleRedirectCallback).and.resolveTo({
+        appState: {
+          target: '/test-route',
+        },
+      });
+
+      const service = TestBed.inject(AuthService);
+
+      service.isLoading$.subscribe(() => {
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/test-route');
         done();
       });
     });
