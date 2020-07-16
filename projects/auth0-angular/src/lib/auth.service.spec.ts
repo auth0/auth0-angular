@@ -89,9 +89,9 @@ describe('AuthService', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
 
-      navigator = <any>{
-        navigateByUrl() {},
-      };
+      navigator = jasmine.createSpyObj('RouteNavigator', {
+        navigateByUrl: Promise.resolve(true),
+      }) as any;
 
       TestBed.configureTestingModule({
         ...moduleSetup,
@@ -115,8 +115,6 @@ describe('AuthService', () => {
           },
         ],
       });
-
-      spyOn(navigator, 'navigateByUrl').and.resolveTo(true);
 
       service = TestBed.inject(AuthService);
     });
