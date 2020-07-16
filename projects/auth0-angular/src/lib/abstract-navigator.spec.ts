@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
-import { RouteNavigator } from './route-navigator';
+import { AbstractNavigator } from './abstract-navigator';
 import { WindowService } from './window';
 import { Component } from '@angular/core';
 
 describe('RouteNavigator', () => {
-  let navigator: RouteNavigator;
+  let navigator: AbstractNavigator;
   let windowStub: Window;
 
   // Stub component for the sake of getting the router to accept routes
@@ -30,7 +30,7 @@ describe('RouteNavigator', () => {
         ],
       });
 
-      navigator = TestBed.inject(RouteNavigator);
+      navigator = TestBed.inject(AbstractNavigator);
     });
 
     it('should be created', () => {
@@ -67,7 +67,7 @@ describe('RouteNavigator', () => {
         ],
       });
 
-      navigator = TestBed.inject(RouteNavigator);
+      navigator = TestBed.inject(AbstractNavigator);
     });
 
     it('should use the router if available', async () => {

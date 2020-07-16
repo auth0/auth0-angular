@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { RouteNavigator } from './route-navigator';
+import { AbstractNavigator } from './abstract-navigator';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -24,7 +24,7 @@ describe('AuthService', () => {
 
     moduleSetup = {
       providers: [
-        RouteNavigator,
+        AbstractNavigator,
         {
           provide: Auth0ClientService,
           useValue: auth0Client,
@@ -84,7 +84,7 @@ describe('AuthService', () => {
   });
 
   describe('when handling the redirect callback', () => {
-    let navigator: RouteNavigator;
+    let navigator: AbstractNavigator;
 
     beforeEach(() => {
       TestBed.resetTestingModule();
@@ -97,7 +97,7 @@ describe('AuthService', () => {
         ...moduleSetup,
         providers: [
           {
-            provide: RouteNavigator,
+            provide: AbstractNavigator,
             useValue: navigator,
           },
           {

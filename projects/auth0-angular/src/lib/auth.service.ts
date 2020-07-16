@@ -22,7 +22,7 @@ import {
 
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
-import { RouteNavigator } from './route-navigator';
+import { AbstractNavigator } from './abstract-navigator';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +47,7 @@ export class AuthService implements OnDestroy {
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     @Inject(WindowService) private window: Window,
-    private navigator: RouteNavigator
+    private navigator: AbstractNavigator
   ) {
     this.shouldHandleCallback()
       .pipe(

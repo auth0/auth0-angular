@@ -5,7 +5,7 @@ import { WindowService } from './window';
 @Injectable({
   providedIn: 'root',
 })
-export class RouteNavigator {
+export class AbstractNavigator {
   private readonly router: Router;
 
   constructor(
