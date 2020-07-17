@@ -5,7 +5,6 @@ import {
   RedirectLoginOptions,
   PopupLoginOptions,
   PopupConfigOptions,
-  RedirectLoginResult,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -18,15 +17,7 @@ import {
   defer,
 } from 'rxjs';
 
-import {
-  concatMap,
-  tap,
-  map,
-  filter,
-  takeUntil,
-  take,
-  takeWhile,
-} from 'rxjs/operators';
+import { concatMap, tap, map, filter, takeUntil, take } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
@@ -36,13 +27,11 @@ import { AbstractNavigator } from './abstract-navigator';
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private userSubject$ = new BehaviorSubject<any>(null);
   private isLoadingSubject$ = new BehaviorSubject(true);
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject();
 
-  readonly user$ = this.userSubject$.asObservable();
   readonly isLoading$ = this.isLoadingSubject$.pipe(
     filter((isLoading) => !isLoading),
     take(1)
@@ -50,6 +39,10 @@ export class AuthService implements OnDestroy {
 
   readonly isAuthenticated$ = this.isLoading$.pipe(
     concatMap(() => from(this.auth0Client.isAuthenticated()))
+  );
+
+  readonly user$ = this.isAuthenticated$.pipe(
+    concatMap(() => from(this.auth0Client.getUser()))
   );
 
   constructor(
