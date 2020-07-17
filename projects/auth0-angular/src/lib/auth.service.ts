@@ -132,10 +132,7 @@ export class AuthService implements OnDestroy {
   private handleRedirectCallback(): Observable<boolean> {
     return defer(() => this.auth0Client.handleRedirectCallback()).pipe(
       concatMap((result) => {
-        const target =
-          result.appState && result.appState.target
-            ? result.appState.target
-            : '/';
+        const target = result?.appState?.target ?? '/';
         return this.navigator.navigateByUrl(target);
       })
     );
