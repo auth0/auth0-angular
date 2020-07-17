@@ -1,0 +1,42 @@
+<!-- Next Steps -->
+<h1>{{ title | uppercase }}</h1>
+<p>SDK initialized = {{ !(isLoading() | async) }}</p>
+<h2>Authentication</h2>
+
+<div class="actions">
+  <button (click)="loginWithRedirect()" [disabled]="isAuthenticated() | async">
+    Log in (redirect)
+  </button>
+  <button (click)="loginWithPopup()" [disabled]="isAuthenticated() | async">
+    Log in (popup)
+  </button>
+  <button (click)="logout()" [disabled]="!(isAuthenticated() | async)">
+    Log out
+  </button>
+</div>
+
+<h2>Artifacts</h2>
+<div class="artifacts">
+  <ul>
+    <li>
+      <div>
+        <p>Access Token</p>
+        <textarea cols="30" rows="5" disabled="true">TODO</textarea>
+      </div>
+    </li>
+    <li>
+      <div>
+        <p>Id Token</p>
+        <textarea cols="30" rows="5" disabled="true">TODO</textarea>
+      </div>
+    </li>
+    <li>
+      <div>
+        <p>Decoded ID token claims</p>
+        <textarea cols="30" rows="5" disabled="true">{{
+          getIdTokenClaims() | async | json
+        }}</textarea>
+      </div>
+    </li>
+  </ul>
+</div>
