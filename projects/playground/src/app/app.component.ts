@@ -9,6 +9,10 @@ import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
 export class AppComponent {
   title = 'Auth0 Angular Playground';
 
+  isAuthenticated$ = this.auth.isAuthenticated$;
+  isLoading$ = this.auth.isLoading$;
+  user$ = this.auth.user$;
+
   constructor(public auth: AuthService) {}
 
   loginWithRedirect() {
@@ -19,20 +23,11 @@ export class AppComponent {
     this.auth.loginWithPopup();
   }
 
-  logout() {
-    //delegate to auth.logout()
-    console.log('NOT IMPLEMENTED');
-  }
-
-  isAuthenticated() {
-    return this.auth.isAuthenticated$;
-  }
-
-  isLoading() {
-    return this.auth.isLoading$;
-  }
-
-  getIdTokenClaims() {
-    return this.auth.user$;
+  logout(federated: boolean = false) {
+    const options = {
+      localOnly: true,
+      federated,
+    };
+    this.auth.logout(options);
   }
 }

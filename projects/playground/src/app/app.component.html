@@ -1,17 +1,36 @@
 <!-- Next Steps -->
 <h1>{{ title | uppercase }}</h1>
-<p>SDK initialized = {{ !(isLoading() | async) }}</p>
+<p>SDK initialized = {{ !(isLoading$ | async) }}</p>
 <h2>Authentication</h2>
 
 <div class="actions">
-  <button (click)="loginWithRedirect()" [disabled]="isAuthenticated() | async">
+  <button
+    id="login-redirect"
+    (click)="loginWithRedirect()"
+    [disabled]="isAuthenticated$ | async"
+  >
     Log in (redirect)
   </button>
-  <button (click)="loginWithPopup()" [disabled]="isAuthenticated() | async">
+  <button
+    id="login-popup"
+    (click)="loginWithPopup()"
+    [disabled]="isAuthenticated$ | async"
+  >
     Log in (popup)
   </button>
-  <button (click)="logout()" [disabled]="!(isAuthenticated() | async)">
+  <button
+    id="logout"
+    (click)="logout()"
+    [disabled]="!(isAuthenticated$ | async)"
+  >
     Log out
+  </button>
+  <button
+    id="logout-federated"
+    (click)="logout(true)"
+    [disabled]="!(isAuthenticated$ | async)"
+  >
+    Log out (federated)
   </button>
 </div>
 
@@ -34,7 +53,7 @@
       <div>
         <p>Decoded ID token claims</p>
         <textarea cols="30" rows="5" disabled="true">{{
-          getIdTokenClaims() | async | json
+          user$ | async | json
         }}</textarea>
       </div>
     </li>
