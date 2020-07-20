@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { skip } from 'rxjs/operators';
+import { AbstractNavigator } from './abstract-navigator';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -24,6 +24,7 @@ describe('AuthService', () => {
 
     moduleSetup = {
       providers: [
+        AbstractNavigator,
         {
           provide: Auth0ClientService,
           useValue: auth0Client,
@@ -83,12 +84,22 @@ describe('AuthService', () => {
   });
 
   describe('when handling the redirect callback', () => {
+    let navigator: AbstractNavigator;
+
     beforeEach(() => {
       TestBed.resetTestingModule();
+
+      navigator = jasmine.createSpyObj('RouteNavigator', {
+        navigateByUrl: Promise.resolve(true),
+      }) as any;
 
       TestBed.configureTestingModule({
         ...moduleSetup,
         providers: [
+          {
+            provide: AbstractNavigator,
+            useValue: navigator,
+          },
           {
             provide: Auth0ClientService,
             useValue: auth0Client,
@@ -104,12 +115,39 @@ describe('AuthService', () => {
           },
         ],
       });
-
-      service = TestBed.inject(AuthService);
     });
 
-    it('should handle the callback when code and state are available', () => {
-      expect(auth0Client.handleRedirectCallback).toHaveBeenCalledTimes(1);
+    it('should handle the callback when code and state are available', (done) => {
+      const service = TestBed.inject(AuthService);
+
+      service.isLoading$.subscribe(() => {
+        expect(auth0Client.handleRedirectCallback).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+    it('should redirect to the correct route', (done) => {
+      const service = TestBed.inject(AuthService);
+
+      service.isLoading$.subscribe(() => {
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
+        done();
+      });
+    });
+
+    it('should redirect to the route specified in appState', (done) => {
+      (<any>auth0Client.handleRedirectCallback).and.resolveTo({
+        appState: {
+          target: '/test-route',
+        },
+      });
+
+      const service = TestBed.inject(AuthService);
+
+      service.isLoading$.subscribe(() => {
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/test-route');
+        done();
+      });
     });
   });
 

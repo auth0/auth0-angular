@@ -8,7 +8,15 @@ import {
   RedirectLoginResult,
 } from '@auth0/auth0-spa-js';
 
-import { of, from, BehaviorSubject, Subject, Observable, iif } from 'rxjs';
+import {
+  of,
+  from,
+  BehaviorSubject,
+  Subject,
+  Observable,
+  iif,
+  defer,
+} from 'rxjs';
 
 import {
   concatMap,
@@ -19,8 +27,10 @@ import {
   take,
   takeWhile,
 } from 'rxjs/operators';
+
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
+import { AbstractNavigator } from './abstract-navigator';
 
 @Injectable({
   providedIn: 'root',
@@ -44,15 +54,16 @@ export class AuthService implements OnDestroy {
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
-    @Inject(WindowService) private window: Window
+    @Inject(WindowService) private window: Window,
+    private navigator: AbstractNavigator
   ) {
     this.shouldHandleCallback()
       .pipe(
         concatMap((isCallback) =>
           iif(
             () => isCallback,
-            this.handleRedirectCallback(),
-            from(this.auth0Client.checkSession())
+            defer(() => this.handleRedirectCallback()),
+            defer(() => this.auth0Client.checkSession())
           )
         ),
         takeUntil(this.ngUnsubscribe$),
@@ -118,11 +129,12 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  private handleRedirectCallback(): Observable<RedirectLoginResult> {
-    return this.shouldHandleCallback().pipe(
-      filter((value) => value),
-      take(1), // not sure if this is needed
-      concatMap(() => from(this.auth0Client.handleRedirectCallback()))
+  private handleRedirectCallback(): Observable<boolean> {
+    return defer(() => this.auth0Client.handleRedirectCallback()).pipe(
+      concatMap((result) => {
+        const target = result?.appState?.target ?? '/';
+        return this.navigator.navigateByUrl(target);
+      })
     );
   }
 }
