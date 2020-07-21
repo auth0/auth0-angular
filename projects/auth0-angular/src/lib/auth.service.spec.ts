@@ -21,7 +21,9 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'loginWithPopup').and.resolveTo();
     spyOn(auth0Client, 'checkSession').and.resolveTo();
     spyOn(auth0Client, 'isAuthenticated').and.resolveTo(false);
+    spyOn(auth0Client, 'getUser').and.resolveTo(null);
     spyOn(auth0Client, 'logout');
+
 
     moduleSetup = {
       providers: [
@@ -66,7 +68,7 @@ describe('AuthService', () => {
     });
   });
 
-  describe('isAuthenticated', () => {
+  describe('The `isAuthenticated` observable', () => {
     it('should return `false` when the client is not authenticated', (done) => {
       service.isAuthenticated$.subscribe((value) => {
         expect(value).toBeFalse();
@@ -79,6 +81,31 @@ describe('AuthService', () => {
 
       service.isAuthenticated$.subscribe((value) => {
         expect(value).toBeTrue();
+        done();
+      });
+    });
+  });
+
+  describe('The `user` observable', () => {
+    it('should get the user if authenticated', (done) => {
+      const user = {
+        name: 'Test User',
+      };
+
+      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+      (<jasmine.Spy>auth0Client.getUser).and.resolveTo(user);
+
+      service.user$.subscribe((value) => {
+        expect(value).toBe(user);
+        done();
+      });
+    });
+
+    it('should get the user if not authenticated', (done) => {
+      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+
+      service.user$.subscribe((value) => {
+        expect(value).toBeFalsy();
         done();
       });
     });
