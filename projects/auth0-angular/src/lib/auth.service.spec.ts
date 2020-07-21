@@ -22,6 +22,8 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'checkSession').and.resolveTo();
     spyOn(auth0Client, 'isAuthenticated').and.resolveTo(false);
     spyOn(auth0Client, 'getUser').and.resolveTo(null);
+    spyOn(auth0Client, 'logout');
+
 
     moduleSetup = {
       providers: [
@@ -200,5 +202,27 @@ describe('AuthService', () => {
 
     await service.loginWithPopup(options, config).toPromise();
     expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, config);
+  });
+
+  it('should call `logout`', () => {
+    service.logout();
+    expect(auth0Client.logout).toHaveBeenCalled();
+  });
+
+  it('should call `logout` with options', () => {
+    const options = { returnTo: 'http://localhost' };
+    service.logout(options);
+    expect(auth0Client.logout).toHaveBeenCalledWith(options);
+  });
+
+  it('should reset the authentication state when passing `localOnly` to logout', (done) => {
+    const options = { localOnly: true };
+
+    service.isAuthenticated$.subscribe((authenticated) => {
+      expect(authenticated).toBeFalse();
+      done();
+    });
+
+    service.logout(options);
   });
 });
