@@ -84,7 +84,7 @@ describe('AuthService', () => {
     });
   });
 
-  describe('The user observable', () => {
+  describe('The `user` observable', () => {
     it('should get the user if authenticated', (done) => {
       const user = {
         name: 'Test User',
