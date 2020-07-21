@@ -66,7 +66,7 @@ describe('AuthService', () => {
     });
   });
 
-  describe('The isAuthenticated observable', () => {
+  describe('The `isAuthenticated` observable', () => {
     it('should return `false` when the client is not authenticated', (done) => {
       service.isAuthenticated$.subscribe((value) => {
         expect(value).toBeFalse();
