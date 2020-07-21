@@ -6,6 +6,7 @@ import {
   PopupLoginOptions,
   PopupConfigOptions,
   RedirectLoginResult,
+  LogoutOptions,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -38,18 +39,20 @@ import { AbstractNavigator } from './abstract-navigator';
 export class AuthService implements OnDestroy {
   private userSubject$ = new BehaviorSubject<any>(null);
   private isLoadingSubject$ = new BehaviorSubject(true);
+  private isAuthenticatedSubject$ = new BehaviorSubject(false);
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject();
 
   readonly user$ = this.userSubject$.asObservable();
+
   readonly isLoading$ = this.isLoadingSubject$.pipe(
     filter((isLoading) => !isLoading),
     take(1)
   );
 
   readonly isAuthenticated$ = this.isLoading$.pipe(
-    concatMap(() => from(this.auth0Client.isAuthenticated()))
+    concatMap(() => this.isAuthenticatedSubject$)
   );
 
   constructor(
@@ -67,7 +70,9 @@ export class AuthService implements OnDestroy {
           )
         ),
         takeUntil(this.ngUnsubscribe$),
-        tap(() => {
+        concatMap(() => this.auth0Client.isAuthenticated()),
+        tap((authenticated) => {
+          this.isAuthenticatedSubject$.next(authenticated);
           this.isLoadingSubject$.next(false);
           this.isLoadingSubject$.complete();
         })
@@ -121,6 +126,29 @@ export class AuthService implements OnDestroy {
     config?: PopupConfigOptions
   ): Observable<void> {
     return from(this.auth0Client.loginWithPopup(options, config));
+  }
+
+  /**
+   * ```js
+   * logout();
+   * ```
+   *
+   * Clears the application session and performs a redirect to `/v2/logout`, using
+   * the parameters provided as arguments, to clear the Auth0 session.
+   * If the `federated` option is specified it also clears the Identity Provider session.
+   * If the `localOnly` option is specified, it only clears the application session.
+   * It is invalid to set both the `federated` and `localOnly` options to `true`,
+   * and an error will be thrown if you do.
+   * [Read more about how Logout works at Auth0](https://auth0.com/docs/logout).
+   *
+   * @param options
+   */
+  logout(options?: LogoutOptions): void {
+    this.auth0Client.logout(options);
+
+    if (options?.localOnly) {
+      this.isAuthenticatedSubject$.next(false);
+    }
   }
 
   private shouldHandleCallback(): Observable<boolean> {
