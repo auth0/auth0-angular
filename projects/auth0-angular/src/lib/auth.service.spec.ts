@@ -208,6 +208,8 @@ describe('AuthService', () => {
   });
 
   it('should call `loginWithPopup` with options', async (done) => {
+    // These objects are empty, as we just want to check that the
+    // same object reference was passed through than any specific options.
     const options = {};
     const config = {};
 
