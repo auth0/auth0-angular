@@ -5,8 +5,7 @@ import {
   RedirectLoginOptions,
   PopupLoginOptions,
   PopupConfigOptions,
-  RedirectLoginResult,
-  LogoutOptions
+  LogoutOptions,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -34,7 +33,7 @@ export class AuthService implements OnDestroy {
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject();
-  
+
   readonly isLoading$ = this.isLoadingSubject$.pipe(
     filter((isLoading) => !isLoading),
     take(1)
@@ -118,7 +117,13 @@ export class AuthService implements OnDestroy {
     options?: PopupLoginOptions,
     config?: PopupConfigOptions
   ): Observable<void> {
-    return from(this.auth0Client.loginWithPopup(options, config));
+    return from(
+      this.auth0Client.loginWithPopup(options, config).then(async () => {
+        this.isAuthenticatedSubject$.next(
+          await this.auth0Client.isAuthenticated()
+        );
+      })
+    );
   }
 
   /**

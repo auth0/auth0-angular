@@ -24,7 +24,6 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'getUser').and.resolveTo(null);
     spyOn(auth0Client, 'logout');
 
-
     moduleSetup = {
       providers: [
         AbstractNavigator,
@@ -191,17 +190,45 @@ describe('AuthService', () => {
     expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
   });
 
-  it('should call `loginWithPopup`', async () => {
-    await service.loginWithPopup();
-    expect(auth0Client.loginWithPopup).toHaveBeenCalled();
+  it('should call `loginWithPopup`', (done) => {
+    service.isLoading$.subscribe(async () => {
+      (<jasmine.Spy>auth0Client.isAuthenticated).calls.reset();
+      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+
+      service.loginWithPopup();
+
+      service.isAuthenticated$.subscribe((authenticated) => {
+        if (authenticated) {
+          expect(auth0Client.loginWithPopup).toHaveBeenCalled();
+          expect(auth0Client.isAuthenticated).toHaveBeenCalled();
+          done();
+        }
+      });
+    });
   });
 
-  it('should call `loginWithPopup` with options', async () => {
+  it('should call `loginWithPopup` with options', async (done) => {
+    // These objects are empty, as we just want to check that the
+    // same object reference was passed through than any specific options.
     const options = {};
     const config = {};
 
-    await service.loginWithPopup(options, config).toPromise();
-    expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, config);
+    service.isLoading$.subscribe(() => {
+      (<jasmine.Spy>auth0Client.isAuthenticated).calls.reset();
+      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+
+      service.loginWithPopup(options, config);
+
+      service.isAuthenticated$.subscribe((authenticated) => {
+        if (authenticated) {
+          expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(
+            options,
+            config
+          );
+          done();
+        }
+      });
+    });
   });
 
   it('should call `logout`', () => {
