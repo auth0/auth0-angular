@@ -1,0 +1,49 @@
+<!-- Next Steps -->
+<h1>{{ title | uppercase }}</h1>
+<p>SDK initialized = {{ !(isLoading$ | async) }}</p>
+<h2>Authentication</h2>
+
+<div class="actions">
+  <button
+    id="login-redirect"
+    (click)="loginWithRedirect()"
+    [disabled]="isAuthenticated$ | async"
+  >
+    Log in (redirect)
+  </button>
+  <button
+    id="login-popup"
+    (click)="loginWithPopup()"
+    [disabled]="isAuthenticated$ | async"
+  >
+    Log in (popup)
+  </button>
+  <button
+    id="logout"
+    (click)="logout()"
+    [disabled]="!(isAuthenticated$ | async)"
+  >
+    Log out
+  </button>
+  <button
+    id="logout-federated"
+    (click)="logout(true)"
+    [disabled]="!(isAuthenticated$ | async)"
+  >
+    Log out (federated)
+  </button>
+</div>
+
+<h2>Artifacts</h2>
+<div class="artifacts">
+  <ul>
+    <li>
+      <div>
+        <p>User Profile - Decoded ID token claims</p>
+        <textarea cols="30" rows="8" disabled="true">{{
+          user$ | async | json
+        }}</textarea>
+      </div>
+    </li>
+  </ul>
+</div>
