@@ -4,6 +4,16 @@ import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
+import { toArray, filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
+/**
+ * Wraps service.isLoading$ so that assertions can be made
+ * only when the SDK has finished loading.
+ * @param service The service instance under test
+ */
+const loaded = (service: AuthService) =>
+  service.isLoading$.pipe(filter((loading) => !loading));
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -60,8 +70,8 @@ describe('AuthService', () => {
     });
 
     it('should set isLoading$ in the correct sequence', (done) => {
-      service.isLoading$.subscribe((isLoading) => {
-        expect(isLoading).toBeFalse();
+      service.isLoading$.pipe(toArray()).subscribe((loadingStates) => {
+        expect(loadingStates).toEqual([true, false]);
         done();
       });
     });
@@ -147,7 +157,7 @@ describe('AuthService', () => {
     it('should handle the callback when code and state are available', (done) => {
       const service = TestBed.inject(AuthService);
 
-      service.isLoading$.subscribe(() => {
+      loaded(service).subscribe(() => {
         expect(auth0Client.handleRedirectCallback).toHaveBeenCalledTimes(1);
         done();
       });
@@ -156,7 +166,7 @@ describe('AuthService', () => {
     it('should redirect to the correct route', (done) => {
       const service = TestBed.inject(AuthService);
 
-      service.isLoading$.subscribe(() => {
+      loaded(service).subscribe(() => {
         expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
         done();
       });
@@ -171,7 +181,7 @@ describe('AuthService', () => {
 
       const service = TestBed.inject(AuthService);
 
-      service.isLoading$.subscribe(() => {
+      loaded(service).subscribe(() => {
         expect(navigator.navigateByUrl).toHaveBeenCalledWith('/test-route');
         done();
       });
@@ -191,7 +201,7 @@ describe('AuthService', () => {
   });
 
   it('should call `loginWithPopup`', (done) => {
-    service.isLoading$.subscribe(async () => {
+    loaded(service).subscribe(async () => {
       (<jasmine.Spy>auth0Client.isAuthenticated).calls.reset();
       (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
 
@@ -213,7 +223,7 @@ describe('AuthService', () => {
     const options = {};
     const config = {};
 
-    service.isLoading$.subscribe(() => {
+    loaded(service).subscribe(() => {
       (<jasmine.Spy>auth0Client.isAuthenticated).calls.reset();
       (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
 

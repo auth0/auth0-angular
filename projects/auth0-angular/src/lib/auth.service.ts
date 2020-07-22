@@ -18,7 +18,15 @@ import {
   defer,
 } from 'rxjs';
 
-import { concatMap, tap, map, filter, takeUntil, take } from 'rxjs/operators';
+import {
+  concatMap,
+  tap,
+  map,
+  filter,
+  takeUntil,
+  take,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
 import { WindowService } from './window';
@@ -34,17 +42,18 @@ export class AuthService implements OnDestroy {
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject();
 
-  readonly isLoading$ = this.isLoadingSubject$.pipe(
-    filter((isLoading) => !isLoading),
-    take(1)
-  );
+  readonly isLoading$ = this.isLoadingSubject$.pipe();
 
   readonly isAuthenticated$ = this.isLoading$.pipe(
+    filter((loading) => !loading),
+    distinctUntilChanged(),
     concatMap(() => this.isAuthenticatedSubject$)
   );
 
-  readonly user$ = this.isAuthenticated$.pipe(
-    concatMap(() => from(this.auth0Client.getUser()))
+  user$ = this.isAuthenticated$.pipe(
+    filter((authenticated) => authenticated),
+    distinctUntilChanged(),
+    concatMap(() => this.auth0Client.getUser())
   );
 
   constructor(
@@ -66,7 +75,6 @@ export class AuthService implements OnDestroy {
         tap((authenticated) => {
           this.isAuthenticatedSubject$.next(authenticated);
           this.isLoadingSubject$.next(false);
-          this.isLoadingSubject$.complete();
         })
       )
       .subscribe();
