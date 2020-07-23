@@ -18,6 +18,7 @@ const loaded = (service: AuthService) =>
 describe('AuthService', () => {
   let auth0Client: Auth0Client;
   let moduleSetup: any;
+  let service: AuthService;
 
   const createService = () => {
     return TestBed.inject(AuthService);
@@ -56,21 +57,19 @@ describe('AuthService', () => {
     };
 
     TestBed.configureTestingModule(moduleSetup);
+    service = createService();
   });
 
   describe('constructor', () => {
     it('should be created', () => {
-      const service = createService();
       expect(service).toBeTruthy();
     });
 
     it('should not call handleRedirectCallback on init, when code and state are not present on the URL', () => {
-      createService();
       expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalled();
     });
 
     it('should call checkSession', () => {
-      createService();
       expect(auth0Client.checkSession).toHaveBeenCalled();
     });
 
@@ -91,8 +90,6 @@ describe('AuthService', () => {
 
   describe('The `isAuthenticated` observable', () => {
     it('should return `false` when the client is not authenticated', (done) => {
-      const service = createService();
-
       service.isAuthenticated$.subscribe((value) => {
         expect(value).toBeFalse();
         done();
@@ -100,8 +97,6 @@ describe('AuthService', () => {
     });
 
     it('should return `true` when the client is authenticated', (done) => {
-      const service = createService();
-
       (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
 
       loaded(service).subscribe(() => {
@@ -115,8 +110,6 @@ describe('AuthService', () => {
 
   describe('The `user` observable', () => {
     it('should get the user if authenticated', (done) => {
-      const service = createService();
-
       const user = {
         name: 'Test User',
       };
@@ -131,8 +124,6 @@ describe('AuthService', () => {
     });
 
     it('should get the user if not authenticated', (done) => {
-      const service = createService();
-
       (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
 
       service.user$.subscribe((value) => {
@@ -211,15 +202,11 @@ describe('AuthService', () => {
   });
 
   it('should call `loginWithRedirect`', async () => {
-    const service = createService();
-
     await service.loginWithRedirect().toPromise();
     expect(auth0Client.loginWithRedirect).toHaveBeenCalled();
   });
 
   it('should call `loginWithRedirect` and pass options', async () => {
-    const service = createService();
-
     const options = { redirect_uri: 'http://localhost:3001' };
 
     await service.loginWithRedirect(options).toPromise();
@@ -227,8 +214,6 @@ describe('AuthService', () => {
   });
 
   it('should call `loginWithPopup`', (done) => {
-    const service = createService();
-
     loaded(service).subscribe(async () => {
       (<jasmine.Spy>auth0Client.isAuthenticated).calls.reset();
       (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
@@ -246,8 +231,6 @@ describe('AuthService', () => {
   });
 
   it('should call `loginWithPopup` with options', async (done) => {
-    const service = createService();
-
     // These objects are empty, as we just want to check that the
     // same object reference was passed through than any specific options.
     const options = {};
@@ -272,23 +255,17 @@ describe('AuthService', () => {
   });
 
   it('should call `logout`', () => {
-    const service = createService();
-
     service.logout();
     expect(auth0Client.logout).toHaveBeenCalled();
   });
 
   it('should call `logout` with options', () => {
-    const service = createService();
-
     const options = { returnTo: 'http://localhost' };
     service.logout(options);
     expect(auth0Client.logout).toHaveBeenCalledWith(options);
   });
 
   it('should reset the authentication state when passing `localOnly` to logout', (done) => {
-    const service = createService();
-
     const options = { localOnly: true };
 
     service.isAuthenticated$.subscribe((authenticated) => {
