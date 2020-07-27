@@ -37,6 +37,7 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'isAuthenticated').and.resolveTo(false);
     spyOn(auth0Client, 'getUser').and.resolveTo(null);
     spyOn(auth0Client, 'logout');
+    spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
 
     moduleSetup = {
       providers: [
@@ -274,5 +275,24 @@ describe('AuthService', () => {
     });
 
     service.logout(options);
+  });
+
+  describe('getAccessTokenSilently', () => {
+    it('should call the underlying SDK', (done) => {
+      service.getAccessTokenSilently().subscribe((token) => {
+        expect(auth0Client.getTokenSilently).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should call the underlying SDK and pass along the options', (done) => {
+      // Empty object here just to test the object reference
+      const options = {};
+
+      service.getAccessTokenSilently(options).subscribe((token) => {
+        expect(auth0Client.getTokenSilently).toHaveBeenCalledWith(options);
+        done();
+      });
+    });
   });
 });

@@ -6,6 +6,7 @@ import {
   PopupLoginOptions,
   PopupConfigOptions,
   LogoutOptions,
+  GetTokenSilentlyOptions,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -24,7 +25,6 @@ import {
   map,
   filter,
   takeUntil,
-  take,
   distinctUntilChanged,
 } from 'rxjs/operators';
 
@@ -155,6 +155,40 @@ export class AuthService implements OnDestroy {
     if (options?.localOnly) {
       this.isAuthenticatedSubject$.next(false);
     }
+  }
+
+  /**
+   * ```js
+   * getAccessTokenSilently(options);
+   * ```
+   *
+   * If there's a valid token stored, return it. Otherwise, opens an
+   * iframe with the `/authorize` URL using the parameters provided
+   * as arguments. Random and secure `state` and `nonce` parameters
+   * will be auto-generated. If the response is successful, results
+   * will be valid according to their expiration times.
+   *
+   * If refresh tokens are used, the token endpoint is called directly with the
+   * 'refresh_token' grant. If no refresh token is available to make this call,
+   * the SDK falls back to using an iframe to the '/authorize' URL.
+   *
+   * This method may use a web worker to perform the token call if the in-memory
+   * cache is used.
+   *
+   * If an `audience` value is given to this function, the SDK always falls
+   * back to using an iframe to make the token exchange.
+   *
+   * Note that in all cases, falling back to an iframe requires access to
+   * the `auth0` cookie.
+   *
+   * @param options
+   */
+  getAccessTokenSilently(
+    options?: GetTokenSilentlyOptions
+  ): Observable<string> {
+    return of(this.auth0Client).pipe(
+      concatMap((client) => client.getTokenSilently(options))
+    );
   }
 
   private shouldHandleCallback(): Observable<boolean> {
