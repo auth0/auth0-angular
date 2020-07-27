@@ -1,6 +1,14 @@
 import { CacheLocation } from '@auth0/auth0-spa-js';
 import { InjectionToken } from '@angular/core';
 
+export interface HttpInterceptorConfig {
+  allowedList: HttpInterceptorRouteConfig[];
+}
+
+export interface HttpInterceptorRouteConfig {
+  test: string | RegExp;
+}
+
 /**
  * Configuration for the authentication service
  */
@@ -90,6 +98,12 @@ export interface AuthConfig {
    * The default audience to be used for requesting API access.
    */
   audience?: string;
+
+  /**
+   * Configuration for the built-in Http Interceptor, used for
+   * automatically attaching access tokens.
+   */
+  httpInterceptor?: HttpInterceptorConfig;
 
   /**
    * If you need to send custom parameters to the Authorization Server,
