@@ -1,4 +1,9 @@
-import { Injectable, Inject, OnDestroy } from '@angular/core';
+import {
+  Injectable,
+  Inject,
+  OnDestroy,
+  ɵCodegenComponentFactoryResolver,
+} from '@angular/core';
 
 import {
   Auth0Client,
@@ -7,6 +12,7 @@ import {
   PopupConfigOptions,
   LogoutOptions,
   GetTokenSilentlyOptions,
+  GetTokenWithPopupOptions,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -17,6 +23,7 @@ import {
   Observable,
   iif,
   defer,
+  concat,
 } from 'rxjs';
 
 import {
@@ -159,7 +166,7 @@ export class AuthService implements OnDestroy {
 
   /**
    * ```js
-   * getAccessTokenSilently(options);
+   * getAccessTokenSilently(options).subscribe(token => ...)
    * ```
    *
    * If there's a valid token stored, return it. Otherwise, opens an
@@ -188,6 +195,26 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options))
+    );
+  }
+
+  /**
+   * ```js
+   * getTokenWithPopup(options).subscribe(token => ...)
+   * ```
+   *
+   * Get an access token interactively.
+   *
+   * Opens a popup with the `/authorize` URL using the parameters
+   * provided as arguments. Random and secure `state` and `nonce`
+   * parameters will be auto-generated. If the response is successful,
+   * results will be valid according to their expiration times.
+   */
+  getAccessTokenWithPopup(
+    options?: GetTokenWithPopupOptions
+  ): Observable<string> {
+    return of(this.auth0Client).pipe(
+      concatMap((client) => client.getTokenWithPopup(options))
     );
   }
 

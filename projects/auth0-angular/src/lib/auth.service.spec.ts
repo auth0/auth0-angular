@@ -39,6 +39,10 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'logout');
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
 
+    spyOn(auth0Client, 'getTokenWithPopup').and.resolveTo(
+      '__access_token_from_popup__'
+    );
+
     moduleSetup = {
       providers: [
         AbstractNavigator,
@@ -291,6 +295,25 @@ describe('AuthService', () => {
 
       service.getAccessTokenSilently(options).subscribe((token) => {
         expect(auth0Client.getTokenSilently).toHaveBeenCalledWith(options);
+        done();
+      });
+    });
+  });
+
+  describe('getAccessTokenWithPopup', () => {
+    it('should call the underlying SDK', (done) => {
+      service.getAccessTokenWithPopup().subscribe((token) => {
+        expect(auth0Client.getTokenWithPopup).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should call the underlying SDK and pass along the options', (done) => {
+      // Empty object just to test reference
+      const options = {};
+
+      service.getAccessTokenWithPopup(options).subscribe((token) => {
+        expect(auth0Client.getTokenWithPopup).toHaveBeenCalledWith(options);
         done();
       });
     });
