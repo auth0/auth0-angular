@@ -4,6 +4,7 @@ import { AuthConfig, AuthConfigService } from './auth.config';
 import { Auth0ClientService, Auth0ClientFactory } from './auth.client';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { WindowService, windowProvider } from './window';
+import { AuthGuard } from './auth.guard';
 
 @NgModule()
 export class AuthModule {
@@ -12,6 +13,7 @@ export class AuthModule {
       ngModule: AuthModule,
       providers: [
         AuthService,
+        AuthGuard,
         { provide: AuthConfigService, useValue: config },
         {
           provide: Auth0ClientService,
