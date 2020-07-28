@@ -186,9 +186,10 @@ export class AuthService implements OnDestroy {
    * back to using an iframe to make the token exchange.
    *
    * Note that in all cases, falling back to an iframe requires access to
-   * the `auth0` cookie.
+   * the `auth0` cookie, and thus will not work in browsers that block third-party
+   * cookies by default (Safari, Brave, etc).
    *
-   * @param options
+   * @param options The options for configuring the token fetch.
    */
   getAccessTokenSilently(
     options?: GetTokenSilentlyOptions
