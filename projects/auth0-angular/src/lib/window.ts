@@ -8,6 +8,6 @@ export const WindowService = new InjectionToken('Browser window');
 /**
  * Default window provider. Provides the actual `window` object.
  */
-export function windowProvider() {
+export function windowProvider(): Window {
   return window;
 }
