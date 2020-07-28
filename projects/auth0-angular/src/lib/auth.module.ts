@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders, InjectionToken } from '@angular/core';
 import { AuthService } from './auth.service';
 import { AuthConfig, AuthConfigService } from './auth.config';
 import { Auth0ClientService, Auth0ClientFactory } from './auth.client';
-import { Auth0Client } from '@auth0/auth0-spa-js';
 import { WindowService, windowProvider } from './window';
 import { AuthGuard } from './auth.guard';
 

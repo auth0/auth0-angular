@@ -25,7 +25,7 @@ describe('AuthGuard', () => {
     guard = new AuthGuard(authServiceMock);
     guard.canActivate(routeMock, routeStateMock).subscribe();
     expect(authServiceMock.loginWithRedirect).toHaveBeenCalledWith({
-      state: '/',
+      appState: { target: '/' },
     });
   });
 });
