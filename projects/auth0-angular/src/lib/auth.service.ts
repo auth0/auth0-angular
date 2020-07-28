@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Inject,
-  OnDestroy,
-  ɵCodegenComponentFactoryResolver,
-} from '@angular/core';
+import { Injectable, Inject, OnDestroy } from '@angular/core';
 
 import {
   Auth0Client,
