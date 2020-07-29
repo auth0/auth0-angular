@@ -13,7 +13,7 @@ import {
 } from './auth.config';
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { concatMap, tap, map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -22,24 +22,35 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     @Inject(Auth0ClientService) private auth0Client: Auth0Client
   ) {}
 
+  /**
+   * Tries to match a route from the SDK configuration to the HTTP request.
+   * If a match is found, the route configuration is returned.
+   * @param request The Http request
+   */
+  private matchRequest(request: HttpRequest<any>): HttpInterceptorRouteConfig {
+    let routeMatch: HttpInterceptorRouteConfig;
+
+    for (const match of this.config.httpInterceptor.allowedList) {
+      if (match.test instanceof RegExp) {
+        if (match.test.test(request.url)) {
+          routeMatch = match;
+          break;
+        }
+      } else if (match.test === request.url) {
+        routeMatch = match;
+        break;
+      }
+    }
+
+    return routeMatch;
+  }
+
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (this.config.httpInterceptor?.allowedList) {
-      let routeMatch: HttpInterceptorRouteConfig;
-
-      for (const match of this.config.httpInterceptor.allowedList) {
-        if (match.test instanceof RegExp) {
-          if (match.test.test(req.url)) {
-            routeMatch = match;
-            break;
-          }
-        } else if (match.test === req.url) {
-          routeMatch = match;
-          break;
-        }
-      }
+      const routeMatch = this.matchRequest(req);
 
       if (routeMatch) {
         return from(this.auth0Client.getTokenSilently()).pipe(
