@@ -85,7 +85,7 @@ export class AuthService implements OnDestroy {
   /**
    * Called when the service is destroyed
    */
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     // https://stackoverflow.com/a/41177163
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
@@ -149,7 +149,7 @@ export class AuthService implements OnDestroy {
    * and an error will be thrown if you do.
    * [Read more about how Logout works at Auth0](https://auth0.com/docs/logout).
    *
-   * @param options
+   * @param options The logout options
    */
   logout(options?: LogoutOptions): void {
     this.auth0Client.logout(options);
