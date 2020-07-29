@@ -1,11 +1,21 @@
-import { CacheLocation } from '@auth0/auth0-spa-js';
+import { CacheLocation, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { InjectionToken } from '@angular/core';
 
 export interface HttpInterceptorConfig {
   allowedList: HttpInterceptorRouteConfig[];
 }
 
-export interface HttpInterceptorRouteConfig {
+/**
+ * Configuration for a single interceptor route
+ */
+export interface HttpInterceptorRouteConfig extends GetTokenSilentlyOptions {
+  /**
+   * The URL to test, either by using a regex or by supplying the whole URL to match.
+   * If `test` is a match for the current request URL from the HTTP client, then
+   * an access token is attached to the request in the "Authorization" header.
+   *
+   * If the test does not pass, the request proceeds without the token attached.
+   */
   test: string | RegExp;
 }
 

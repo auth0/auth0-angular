@@ -4,16 +4,19 @@ import {
   HttpHandler,
   HttpEvent,
 } from '@angular/common/http';
-import { Observable, from, of, combineLatest, iif } from 'rxjs';
+
+import { Observable, from, of, iif } from 'rxjs';
 import { Injectable, Inject } from '@angular/core';
+
 import {
   AuthConfig,
   AuthConfigService,
   HttpInterceptorRouteConfig,
 } from './auth.config';
+
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { switchMap, map, first, concatMap } from 'rxjs/operators';
+import { switchMap, first, concatMap, map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -34,7 +37,12 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       concatMap((route) =>
         iif(
           () => route !== false,
-          from(this.auth0Client.getTokenSilently()).pipe(
+          of(route).pipe(
+            map((r: HttpInterceptorRouteConfig) => {
+              const { test, ...options } = r;
+              return options;
+            }),
+            concatMap((options) => this.auth0Client.getTokenSilently(options)),
             switchMap((token: string) => {
               const clone = req.clone({
                 headers: req.headers.set('Authorization', `Bearer ${token}`),
