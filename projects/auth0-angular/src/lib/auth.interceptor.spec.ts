@@ -20,7 +20,11 @@ describe('The Auth HTTP Interceptor', () => {
 
     const config: Partial<AuthConfig> = {
       httpInterceptor: {
-        allowedList: [{ test: '/api' }, { test: /^\/regex-api/ }],
+        allowedList: [
+          { test: '/api' },
+          { test: /^\/regex-api/ },
+          { test: '/api-with-options', audience: 'audience', scope: 'scope' },
+        ],
       },
     };
 
@@ -91,6 +95,27 @@ describe('The Auth HTTP Interceptor', () => {
     expect(req.request.headers.get('Authorization')).toBe(
       'Bearer access-token'
     );
+
+    req.flush(testData);
+  }));
+
+  it('passes through the route options to getTokenSilently, without additional properties', fakeAsync((
+    done
+  ) => {
+    const testData: Data = { message: 'Hello, world' };
+    httpClient.get('/api-with-options').subscribe(done);
+    flush();
+
+    const req = httpTestingController.expectOne('/api-with-options');
+
+    expect(req.request.headers.get('Authorization')).toBe(
+      'Bearer access-token'
+    );
+
+    expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
+      audience: 'audience',
+      scope: 'scope',
+    });
 
     req.flush(testData);
   }));
