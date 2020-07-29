@@ -12,11 +12,12 @@ import {
   AuthConfig,
   AuthConfigService,
   HttpInterceptorRouteConfig,
+  ApiRouteDefinition,
 } from './auth.config';
 
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { switchMap, first, concatMap, map } from 'rxjs/operators';
+import { switchMap, first, concatMap, map, pluck } from 'rxjs/operators';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -36,12 +37,9 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     return this.findMatchingRoute(req).pipe(
       concatMap((route) =>
         iif(
-          () => route !== false,
+          () => route !== null,
           of(route).pipe(
-            map((r: HttpInterceptorRouteConfig) => {
-              const { test, ...options } = r;
-              return options;
-            }),
+            map(({ uri, ...options }) => options),
             concatMap((options) => this.auth0Client.getTokenSilently(options)),
             switchMap((token: string) => {
               const clone = req.clone({
@@ -64,16 +62,25 @@ export class AuthHttpInterceptor implements HttpInterceptor {
    * @param request The HTTP request
    */
   private canAttachToken(
-    route: HttpInterceptorRouteConfig,
+    route: ApiRouteDefinition,
     request: HttpRequest<any>
   ): boolean {
-    if (route.test instanceof RegExp) {
-      if (route.test.test(request.url)) {
+    const testPrimitive = (value: string | RegExp) => {
+      if (value instanceof RegExp) {
+        if (value.test(request.url)) {
+          return true;
+        }
+      } else if (value === request.url) {
         return true;
       }
-    } else if (route.test === request.url) {
-      return true;
+    };
+
+    if ((route as HttpInterceptorRouteConfig).uri) {
+      const r = route as HttpInterceptorRouteConfig;
+      return testPrimitive(r.uri);
     }
+
+    return testPrimitive(route as string | RegExp);
   }
 
   /**
@@ -83,9 +90,9 @@ export class AuthHttpInterceptor implements HttpInterceptor {
    */
   private findMatchingRoute(
     request: HttpRequest<any>
-  ): Observable<HttpInterceptorRouteConfig | boolean> {
+  ): Observable<HttpInterceptorRouteConfig> {
     return from(this.config.httpInterceptor.allowedList).pipe(
-      first((route) => this.canAttachToken(route, request), false)
+      first((route) => this.canAttachToken(route, request), null)
     );
   }
 }

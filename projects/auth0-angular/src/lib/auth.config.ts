@@ -1,8 +1,10 @@
 import { CacheLocation, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { InjectionToken } from '@angular/core';
 
+export type ApiRouteDefinition = HttpInterceptorRouteConfig | string | RegExp;
+
 export interface HttpInterceptorConfig {
-  allowedList: HttpInterceptorRouteConfig[];
+  allowedList: ApiRouteDefinition[];
 }
 
 /**
@@ -16,7 +18,7 @@ export interface HttpInterceptorRouteConfig extends GetTokenSilentlyOptions {
    *
    * If the test does not pass, the request proceeds without the token attached.
    */
-  test: string | RegExp;
+  uri: string | RegExp;
 }
 
 /**

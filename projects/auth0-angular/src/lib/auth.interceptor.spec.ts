@@ -21,9 +21,15 @@ describe('The Auth HTTP Interceptor', () => {
     const config: Partial<AuthConfig> = {
       httpInterceptor: {
         allowedList: [
-          { test: '/api' },
-          { test: /^\/regex-api/ },
-          { test: '/api-with-options', audience: 'audience', scope: 'scope' },
+          '/basic-api',
+          /^\/basic-api-regex/,
+          { uri: '/api' },
+          { uri: /^\/regex-api/ },
+          {
+            uri: '/api-with-options',
+            audience: 'audience',
+            scope: 'scope',
+          },
         ],
       },
     };
@@ -82,7 +88,41 @@ describe('The Auth HTTP Interceptor', () => {
     req.flush(testData);
   }));
 
-  it('attaches the access token to the outgoing request destined for an API using a regex', fakeAsync((
+  it('attaches the access token to an API configured using a string', fakeAsync((
+    done
+  ) => {
+    const testData: Data = { message: 'Hello, world' };
+
+    httpClient.get('/basic-api').subscribe(done);
+    flush();
+
+    const req = httpTestingController.expectOne('/basic-api');
+
+    expect(req.request.headers.get('Authorization')).toBe(
+      'Bearer access-token'
+    );
+
+    req.flush(testData);
+  }));
+
+  it('attaches the access token to an API configured using a regex', fakeAsync((
+    done
+  ) => {
+    const testData: Data = { message: 'Hello, world' };
+
+    httpClient.get('/basic-api-regex?value=123').subscribe(done);
+    flush();
+
+    const req = httpTestingController.expectOne('/basic-api-regex?value=123');
+
+    expect(req.request.headers.get('Authorization')).toBe(
+      'Bearer access-token'
+    );
+
+    req.flush(testData);
+  }));
+
+  it('attaches the access token to the outgoing request destined for an API using an object with regex', fakeAsync((
     done
   ) => {
     const testData: Data = { message: 'Hello, world' };
