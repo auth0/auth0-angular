@@ -80,7 +80,6 @@ describe('AuthService', () => {
 
     it('should set isLoading$ in the correct sequence', (done) => {
       const values = [];
-      const service = createService();
 
       service.isLoading$.subscribe((loading) => {
         values.push(loading);
@@ -102,7 +101,7 @@ describe('AuthService', () => {
     });
 
     it('should return `true` when the client is authenticated', (done) => {
-      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
 
       loaded(service).subscribe(() => {
         service.isAuthenticated$.subscribe((value) => {
@@ -119,8 +118,8 @@ describe('AuthService', () => {
         name: 'Test User',
       };
 
-      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
-      (<jasmine.Spy>auth0Client.getUser).and.resolveTo(user);
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
 
       service.user$.subscribe((value) => {
         expect(value).toBe(user);
@@ -129,7 +128,7 @@ describe('AuthService', () => {
     });
 
     it('should get the user if not authenticated', (done) => {
-      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
 
       service.user$.subscribe((value) => {
         expect(value).toBeFalsy();
@@ -173,33 +172,33 @@ describe('AuthService', () => {
     });
 
     it('should handle the callback when code and state are available', (done) => {
-      const service = createService();
+      const localService = createService();
 
-      loaded(service).subscribe(() => {
+      loaded(localService).subscribe(() => {
         expect(auth0Client.handleRedirectCallback).toHaveBeenCalledTimes(1);
         done();
       });
     });
 
     it('should redirect to the correct route', (done) => {
-      const service = createService();
+      const localService = createService();
 
-      loaded(service).subscribe(() => {
+      loaded(localService).subscribe(() => {
         expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
         done();
       });
     });
 
     it('should redirect to the route specified in appState', (done) => {
-      (<any>auth0Client.handleRedirectCallback).and.resolveTo({
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({
         appState: {
           target: '/test-route',
         },
       });
 
-      const service = createService();
+      const localService = createService();
 
-      loaded(service).subscribe(() => {
+      loaded(localService).subscribe(() => {
         expect(navigator.navigateByUrl).toHaveBeenCalledWith('/test-route');
         done();
       });
@@ -220,8 +219,8 @@ describe('AuthService', () => {
 
   it('should call `loginWithPopup`', (done) => {
     loaded(service).subscribe(async () => {
-      (<jasmine.Spy>auth0Client.isAuthenticated).calls.reset();
-      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+      (auth0Client.isAuthenticated as jasmine.Spy).calls.reset();
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
 
       service.loginWithPopup();
 
@@ -242,8 +241,8 @@ describe('AuthService', () => {
     const config = {};
 
     loaded(service).subscribe(() => {
-      (<jasmine.Spy>auth0Client.isAuthenticated).calls.reset();
-      (<jasmine.Spy>auth0Client.isAuthenticated).and.resolveTo(true);
+      (auth0Client.isAuthenticated as jasmine.Spy).calls.reset();
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
 
       service.loginWithPopup(options, config);
 

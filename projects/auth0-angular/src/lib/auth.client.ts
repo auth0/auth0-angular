@@ -3,7 +3,7 @@ import { Auth0Client } from '@auth0/auth0-spa-js';
 import { AuthConfig } from './auth.config';
 
 export class Auth0ClientFactory {
-  static createClient(config: AuthConfig) {
+  static createClient(config: AuthConfig): Auth0Client {
     const { redirectUri, clientId, maxAge, ...rest } = config;
 
     return new Auth0Client({
