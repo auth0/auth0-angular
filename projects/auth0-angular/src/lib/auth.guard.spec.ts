@@ -10,10 +10,12 @@ describe('AuthGuard', () => {
   it('should return true for a logged in user', () => {
     authServiceMock = {
       isAuthenticated$: of(true),
+      loginWithRedirect: jasmine.createSpy('loginWithRedirect'),
     };
     guard = new AuthGuard(authServiceMock);
     const listener = jasmine.createSpy();
     guard.canActivate(routeMock, routeStateMock).subscribe(listener);
+    expect(authServiceMock.loginWithRedirect).not.toHaveBeenCalled();
     expect(listener).toHaveBeenCalledWith(true);
   });
 
