@@ -58,105 +58,111 @@ describe('The Auth HTTP Interceptor', () => {
     httpTestingController.verify();
   });
 
-  it('passes through for a request that does not need an access token', () => {
-    const testData: Data = { message: 'Hello, world' };
+  describe('Requests that do not require authentication', () => {
+    it('pass through and do not have access tokens attached', () => {
+      const testData: Data = { message: 'Hello, world' };
 
-    httpClient.get<Data>('/non-api').subscribe((result) => {
-      expect(result).toEqual(testData);
-      expect(req.request.headers.get('Authorization')).toBeFalsy();
+      httpClient.get<Data>('/non-api').subscribe((result) => {
+        expect(result).toEqual(testData);
+        expect(req.request.headers.get('Authorization')).toBeFalsy();
+      });
+
+      const req = httpTestingController.expectOne('/non-api');
+      req.flush(testData);
     });
-
-    const req = httpTestingController.expectOne('/non-api');
-    req.flush(testData);
   });
 
-  it('attaches the access token to the outgoing request destined for an API', fakeAsync((
-    done
-  ) => {
-    // Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
-    const testData: Data = { message: 'Hello, world' };
+  describe('Requests that are configured using a primitive', () => {
+    it('attach the access token when the configuration uri is a string', fakeAsync((
+      done
+    ) => {
+      const testData: Data = { message: 'Hello, world' };
 
-    httpClient.get('/api').subscribe(done);
-    flush();
+      httpClient.get('/basic-api').subscribe(done);
+      flush();
 
-    const req = httpTestingController.expectOne('/api');
+      const req = httpTestingController.expectOne('/basic-api');
 
-    expect(req.request.headers.get('Authorization')).toBe(
-      'Bearer access-token'
-    );
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer access-token'
+      );
 
-    req.flush(testData);
-  }));
+      req.flush(testData);
+    }));
 
-  it('attaches the access token to an API configured using a string', fakeAsync((
-    done
-  ) => {
-    const testData: Data = { message: 'Hello, world' };
+    it('attach the access token when the configuration uri is a regex', fakeAsync((
+      done
+    ) => {
+      const testData: Data = { message: 'Hello, world' };
 
-    httpClient.get('/basic-api').subscribe(done);
-    flush();
+      httpClient.get('/basic-api-regex?value=123').subscribe(done);
+      flush();
 
-    const req = httpTestingController.expectOne('/basic-api');
+      const req = httpTestingController.expectOne('/basic-api-regex?value=123');
 
-    expect(req.request.headers.get('Authorization')).toBe(
-      'Bearer access-token'
-    );
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer access-token'
+      );
 
-    req.flush(testData);
-  }));
+      req.flush(testData);
+    }));
+  });
 
-  it('attaches the access token to an API configured using a regex', fakeAsync((
-    done
-  ) => {
-    const testData: Data = { message: 'Hello, world' };
+  describe('Requests that are configured using a complex object', () => {
+    it('attach the access token when the uri is configured using a string', fakeAsync((
+      done
+    ) => {
+      // Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
+      const testData: Data = { message: 'Hello, world' };
 
-    httpClient.get('/basic-api-regex?value=123').subscribe(done);
-    flush();
+      httpClient.get('/api').subscribe(done);
+      flush();
 
-    const req = httpTestingController.expectOne('/basic-api-regex?value=123');
+      const req = httpTestingController.expectOne('/api');
 
-    expect(req.request.headers.get('Authorization')).toBe(
-      'Bearer access-token'
-    );
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer access-token'
+      );
 
-    req.flush(testData);
-  }));
+      req.flush(testData);
+    }));
 
-  it('attaches the access token to the outgoing request destined for an API using an object with regex', fakeAsync((
-    done
-  ) => {
-    const testData: Data = { message: 'Hello, world' };
+    it('attach the access token when the uri is configured using a regex', fakeAsync((
+      done
+    ) => {
+      const testData: Data = { message: 'Hello, world' };
 
-    httpClient.get('/regex-api?my-param=42').subscribe(done);
-    flush();
+      httpClient.get('/regex-api?my-param=42').subscribe(done);
+      flush();
 
-    const req = httpTestingController.expectOne('/regex-api?my-param=42');
+      const req = httpTestingController.expectOne('/regex-api?my-param=42');
 
-    expect(req.request.headers.get('Authorization')).toBe(
-      'Bearer access-token'
-    );
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer access-token'
+      );
 
-    req.flush(testData);
-  }));
+      req.flush(testData);
+    }));
 
-  it('passes through the route options to getTokenSilently, without additional properties', fakeAsync((
-    done
-  ) => {
-    const testData: Data = { message: 'Hello, world' };
-    httpClient.get('/api-with-options').subscribe(done);
-    flush();
+    it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
+      done
+    ) => {
+      const testData: Data = { message: 'Hello, world' };
+      httpClient.get('/api-with-options').subscribe(done);
+      flush();
 
-    const req = httpTestingController.expectOne('/api-with-options');
+      const req = httpTestingController.expectOne('/api-with-options');
 
-    expect(req.request.headers.get('Authorization')).toBe(
-      'Bearer access-token'
-    );
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer access-token'
+      );
 
-    expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
-      audience: 'audience',
-      scope: 'scope',
-    });
+      expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
+        audience: 'audience',
+        scope: 'scope',
+      });
 
-    req.flush(testData);
-  }));
+      req.flush(testData);
+    }));
+  });
 });
