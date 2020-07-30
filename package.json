@@ -10,8 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "pretty-quick": "pretty-quick",
-    "update-useragent": "node projects/auth0-angular/scripts/update-useragent.js",
-    "prestart": "npm run update-useragent"
+    "update-useragent": "node projects/auth0-angular/scripts/update-useragent.js"
   },
   "private": true,
   "dependencies": {
