@@ -4,12 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run update-useragent && ng build",
     "test": "ng test",
     "test-ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --codeCoverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "pretty-quick": "pretty-quick"
+    "pretty-quick": "pretty-quick",
+    "update-useragent": "node projects/auth0-angular/scripts/update-useragent.js"
   },
   "private": true,
   "dependencies": {
