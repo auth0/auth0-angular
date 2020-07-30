@@ -14,7 +14,8 @@ export interface HttpInterceptorRouteConfig extends GetTokenSilentlyOptions {
   /**
    * The URL to test, either by using a regex or by supplying the whole URL to match.
    * If `test` is a match for the current request URL from the HTTP client, then
-   * an access token is attached to the request in the "Authorization" header.
+   * an access token is attached to the request in the
+   *  ["Authorization" header](https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1).
    *
    * If the test does not pass, the request proceeds without the access token attached.
    */
