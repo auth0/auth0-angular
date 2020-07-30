@@ -13,6 +13,7 @@ import {
   AuthConfigService,
   HttpInterceptorRouteConfig,
   ApiRouteDefinition,
+  isHttpInterceptorRouteConfig,
 } from './auth.config';
 
 import { Auth0ClientService } from './auth.client';
@@ -81,9 +82,8 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       }
     };
 
-    if ((route as HttpInterceptorRouteConfig).uri) {
-      const r = route as HttpInterceptorRouteConfig;
-      return testPrimitive(r.uri);
+    if (isHttpInterceptorRouteConfig(route)) {
+      return testPrimitive(route.uri);
     }
 
     return testPrimitive(route as string | RegExp);
