@@ -37,11 +37,15 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     return this.findMatchingRoute(req).pipe(
       concatMap((route) =>
         iif(
+          // Check if a route was matched
           () => route !== null,
+          // If we have a matching route, call getTokenSilently and attach the token to the
+          // outgoing request
           of(route).pipe(
-            map(({ uri, ...options }) => options),
+            map(({ uri, ...options }) => options), // Extract the options that we don't want to send through to the token endpoint
             concatMap((options) => this.auth0Client.getTokenSilently(options)),
             switchMap((token: string) => {
+              // Clone the request and attach the bearer token
               const clone = req.clone({
                 headers: req.headers.set('Authorization', `Bearer ${token}`),
               });
@@ -49,6 +53,8 @@ export class AuthHttpInterceptor implements HttpInterceptor {
               return next.handle(clone);
             })
           ),
+          // If the URI being called was not found in our httpInterceptor config, simply
+          // pass the request through without attaching a token
           next.handle(req)
         )
       )
