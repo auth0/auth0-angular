@@ -34,8 +34,10 @@ describe('The Auth HTTP Interceptor', () => {
           { uri: /^\/regex-api/ },
           {
             uri: '/api-with-options',
-            audience: 'audience',
-            scope: 'scope',
+            tokenOptions: {
+              audience: 'audience',
+              scope: 'scope',
+            },
           },
         ],
       },

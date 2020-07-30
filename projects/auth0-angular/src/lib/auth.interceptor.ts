@@ -43,7 +43,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           // If we have a matching route, call getTokenSilently and attach the token to the
           // outgoing request
           of(route).pipe(
-            map(({ uri, ...options }) => options), // Extract the options that we don't want to send through to the token endpoint
+            pluck('tokenOptions'),
             concatMap((options) => this.auth0Client.getTokenSilently(options)),
             switchMap((token: string) => {
               // Clone the request and attach the bearer token

@@ -30,7 +30,7 @@ export interface HttpInterceptorConfig {
 /**
  * Configuration for a single interceptor route
  */
-export interface HttpInterceptorRouteConfig extends GetTokenSilentlyOptions {
+export interface HttpInterceptorRouteConfig {
   /**
    * The URL to test, either by using a regex or by supplying the whole URL to match.
    * If `test` is a match for the current request URL from the HTTP client, then
@@ -40,6 +40,12 @@ export interface HttpInterceptorRouteConfig extends GetTokenSilentlyOptions {
    * If the test does not pass, the request proceeds without the access token attached.
    */
   uri: string | RegExp;
+
+  /**
+   * The options that are passed to the SDK when retrieving the
+   * access token to attach to the outgoing request.
+   */
+  tokenOptions?: GetTokenSilentlyOptions;
 }
 
 /**
