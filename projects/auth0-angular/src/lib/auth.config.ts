@@ -1,5 +1,52 @@
-import { CacheLocation } from '@auth0/auth0-spa-js';
+import { CacheLocation, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { InjectionToken } from '@angular/core';
+
+/**
+ * Defines the type for a route config entry. Can either be:
+ *
+ * - an object of type HttpInterceptorConfig
+ * - a string
+ * - a regular expression
+ */
+export type ApiRouteDefinition = HttpInterceptorRouteConfig | string | RegExp;
+
+/**
+ * A custom type guard to help identify route definitions that are actually HttpInterceptorRouteConfig types.
+ * @param def The route definition type
+ */
+export function isHttpInterceptorRouteConfig(
+  def: ApiRouteDefinition
+): def is HttpInterceptorRouteConfig {
+  return (def as HttpInterceptorRouteConfig).uri !== undefined;
+}
+
+/**
+ * Configuration for the HttpInterceptor
+ */
+export interface HttpInterceptorConfig {
+  allowedList: ApiRouteDefinition[];
+}
+
+/**
+ * Configuration for a single interceptor route
+ */
+export interface HttpInterceptorRouteConfig {
+  /**
+   * The URL to test, either by using a regex or by supplying the whole URL to match.
+   * If `test` is a match for the current request URL from the HTTP client, then
+   * an access token is attached to the request in the
+   *  ["Authorization" header](https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1).
+   *
+   * If the test does not pass, the request proceeds without the access token attached.
+   */
+  uri: string | RegExp;
+
+  /**
+   * The options that are passed to the SDK when retrieving the
+   * access token to attach to the outgoing request.
+   */
+  tokenOptions?: GetTokenSilentlyOptions;
+}
 
 /**
  * Configuration for the authentication service
@@ -90,6 +137,12 @@ export interface AuthConfig {
    * The default audience to be used for requesting API access.
    */
   audience?: string;
+
+  /**
+   * Configuration for the built-in Http Interceptor, used for
+   * automatically attaching access tokens.
+   */
+  httpInterceptor?: HttpInterceptorConfig;
 
   /**
    * If you need to send custom parameters to the Authorization Server,
