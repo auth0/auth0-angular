@@ -1,5 +1,5 @@
 {
-  "name": "auth0-angular",
+  "name": "@auth0/auth0-angular",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^10.0.2",
