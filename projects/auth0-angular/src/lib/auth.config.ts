@@ -16,7 +16,7 @@ export interface HttpInterceptorRouteConfig extends GetTokenSilentlyOptions {
    * If `test` is a match for the current request URL from the HTTP client, then
    * an access token is attached to the request in the "Authorization" header.
    *
-   * If the test does not pass, the request proceeds without the token attached.
+   * If the test does not pass, the request proceeds without the access token attached.
    */
   uri: string | RegExp;
 }
