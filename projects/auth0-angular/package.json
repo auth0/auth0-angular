@@ -1,5 +1,5 @@
 {
-  "name": "auth0-angular",
+  "name": "@auth0/auth0-angular",
   "version": "0.0.1",
   "private": true,
   "peerDependencies": {
@@ -7,6 +7,7 @@
     "@angular/core": "^10.0.2"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "@auth0/auth0-spa-js": "^1.11.0"
   }
 }

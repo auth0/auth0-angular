@@ -3,5 +3,6 @@
   "dest": "../../dist/auth0-angular",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": ["tslib", "@auth0/auth0-spa-js"]
 }
