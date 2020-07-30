@@ -44,7 +44,7 @@ export class AuthService implements OnDestroy {
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject();
 
-  readonly isLoading$ = this.isLoadingSubject$.pipe();
+  readonly isLoading$ = this.isLoadingSubject$.asObservable();
 
   readonly isAuthenticated$ = this.isLoading$.pipe(
     filter((loading) => !loading),
@@ -52,7 +52,7 @@ export class AuthService implements OnDestroy {
     concatMap(() => this.isAuthenticatedSubject$)
   );
 
-  user$ = this.isAuthenticated$.pipe(
+  readonly user$ = this.isAuthenticated$.pipe(
     filter((authenticated) => authenticated),
     distinctUntilChanged(),
     concatMap(() => this.auth0Client.getUser())
