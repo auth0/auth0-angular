@@ -67,14 +67,16 @@ describe('The Auth HTTP Interceptor', () => {
   });
 
   describe('Requests that do not require authentication', () => {
-    it('pass through and do not have access tokens attached', () => {
+    it('pass through and do not have access tokens attached', fakeAsync(() => {
       httpClient.get<Data>('/non-api').subscribe((result) => {
         expect(result).toEqual(testData);
         expect(req.request.headers.get('Authorization')).toBeFalsy();
       });
 
+      flush();
+
       req = httpTestingController.expectOne('/non-api');
-    });
+    }));
   });
 
   describe('Requests that are configured using a primitive', () => {
