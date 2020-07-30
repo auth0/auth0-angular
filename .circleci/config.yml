@@ -12,6 +12,7 @@ jobs:
           steps:
             - run: npm install
             - run: npm run lint -- auth0-angular
+            - run: npm run build
             - run: npm run test-ci
             - run:
                 name: Upload coverage
