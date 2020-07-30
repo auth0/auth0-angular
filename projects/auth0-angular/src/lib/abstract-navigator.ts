@@ -22,12 +22,15 @@ export class AbstractNavigator {
    * to `window.history.replaceState`.
    * @param url The url to navigate to
    */
-  navigateByUrl(url: string): Promise<boolean> {
+  navigateByUrl(url: string): void {
     if (this.router) {
-      return this.router.navigateByUrl(url);
+      setTimeout(() => {
+        this.router.navigateByUrl(url);
+      }, 0);
+
+      return;
     }
 
     this.window.history.replaceState({}, null, url);
-    return Promise.resolve(true);
   }
 }

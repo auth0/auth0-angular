@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
 import { AbstractNavigator } from './abstract-navigator';
@@ -70,11 +70,12 @@ describe('RouteNavigator', () => {
       navigator = TestBed.inject(AbstractNavigator);
     });
 
-    it('should use the router if available', async () => {
+    it('should use the router if available', fakeAsync(() => {
       const location = TestBed.inject(Location);
-      await navigator.navigateByUrl('/test-route');
+      navigator.navigateByUrl('/test-route');
+      tick();
       expect(location.path()).toBe('/test-route');
-    });
+    }));
 
     it('should not use the window object to navigate', async () => {
       expect(windowStub.history.replaceState).not.toHaveBeenCalled();

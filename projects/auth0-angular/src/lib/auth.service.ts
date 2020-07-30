@@ -8,6 +8,7 @@ import {
   LogoutOptions,
   GetTokenSilentlyOptions,
   GetTokenWithPopupOptions,
+  RedirectLoginResult,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -18,7 +19,6 @@ import {
   Observable,
   iif,
   defer,
-  concat,
 } from 'rxjs';
 
 import {
@@ -220,11 +220,11 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  private handleRedirectCallback(): Observable<boolean> {
+  private handleRedirectCallback(): Observable<RedirectLoginResult> {
     return defer(() => this.auth0Client.handleRedirectCallback()).pipe(
-      concatMap((result) => {
+      tap((result) => {
         const target = result?.appState?.target ?? '/';
-        return this.navigator.navigateByUrl(target);
+        this.navigator.navigateByUrl(target);
       })
     );
   }
