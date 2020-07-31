@@ -12,6 +12,7 @@
     "pretty-quick": "pretty-quick",
     "update-useragent": "node projects/auth0-angular/scripts/update-useragent.js"
   },
+  "private": true,
   "dependencies": {
     "@angular/animations": "^10.0.5",
     "@angular/common": "^10.0.5",
