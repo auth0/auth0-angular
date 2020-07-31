@@ -60,9 +60,11 @@ export class AuthService implements OnDestroy {
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
-    @Inject(WindowService) private window: Window,
+    @Inject(WindowService) private window: any,
     private navigator: AbstractNavigator
   ) {
+    // https://github.com/angular/angular/issues/12631
+    this.window = window as Window;
     this.shouldHandleCallback()
       .pipe(
         concatMap((isCallback) =>
