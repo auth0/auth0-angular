@@ -8,10 +8,9 @@ import { WindowService } from './window';
 export class AbstractNavigator {
   private readonly router: Router;
 
-  constructor(
-    @Inject(WindowService) private window: Window,
-    injector: Injector
-  ) {
+  constructor(@Inject(WindowService) private window: any, injector: Injector) {
+    // https://github.com/angular/angular/issues/12631
+    this.window = window as Window;
     try {
       this.router = injector.get(Router);
     } catch {}
