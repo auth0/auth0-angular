@@ -1,6 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { AuthConfig } from './auth.config';
+import useragent from '../useragent';
 
 export class Auth0ClientFactory {
   static createClient(config: AuthConfig): Auth0Client {
@@ -11,6 +12,10 @@ export class Auth0ClientFactory {
       client_id: clientId,
       max_age: maxAge,
       ...rest,
+      auth0Client: {
+        name: useragent.name,
+        version: useragent.version,
+      },
     });
   }
 }
