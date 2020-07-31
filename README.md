@@ -227,6 +227,15 @@ AuthModule.forRoot({
           audience: 'http://my-api/',
           scope: 'read:accounts'
         }
+      },
+      
+      // Using an absolute URI
+      {
+        uri: 'https://your-domain.auth0.com/api/v2/users',
+        tokenOptions: {
+          audience: 'https://your-domain.com/api/v2/',
+          scope: 'read:users'
+        }
       }
     ]
   }
