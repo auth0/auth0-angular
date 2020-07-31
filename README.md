@@ -1,3 +1,4 @@
+![Stage: Early Access](https://img.shields.io/badge/stage-early%20access-red)
 [![CircleCI](https://img.shields.io/circleci/build/github/auth0/auth0-angular)](https://circleci.com/gh/auth0/auth0-angular)
 [![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-angular)](https://circleci.com/gh/auth0/auth0-angular)
 
@@ -5,7 +6,7 @@
 
 A library for integrating [Auth0](https://auth0.com) into an Angular 9+ application.
 
-**Note:** This is an **early access** package and thus **should not be used in production**. There are likely to be further breaking changes as the SDK matures to the more stable release stages.
+**Note:** This is an **EARLY ACCESS** package and thus **SHOULD NOT BE USED IN PRODUCTION**. There are likely to be further breaking changes as the SDK matures to the more stable release stages.
 
 ## Table of Contents
 
@@ -37,7 +38,7 @@ npm install @auth0/auth0-angular
 
 ### Register the authentication module
 
-Install the SDK into your application by importing `AuthModule` and configuring with your Auth0 credentials:
+Install the SDK into your application by importing `AuthModule` and configuring with your Auth0 domain and client ID:
 
 ```js
 import { BrowserModule } from '@angular/platform-browser';
@@ -67,7 +68,7 @@ export class AppModule {}
 
 ### Add login to your application
 
-Next, inject the `AuthService` service into a component where you intend to provide the functionality to log in, by adding the `AuthService` type to your constructor. Then, provide a `login()` method and call `this.auth.loginWithRedirect()` to log the user into the application.
+Next, inject the `AuthService` service into a component where you intend to provide the functionality to log in, by adding the `AuthService` type to your constructor. Then, provide a `loginWithRedirect()` method and call `this.auth.loginWithRedirect()` to log the user into the application.
 
 ```js
 import { Component } from '@angular/core';
@@ -89,11 +90,6 @@ export class AppComponent {
   loginWithRedirect() {
     // Call this to redirect the user to the login page
     this.auth.loginWithRedirect();
-  }
-
-  logout() {
-    // Call this to log the user out of the application
-    this.auth.logout({ returnTo: window.location.origin });
   }
 }
 ```
@@ -196,7 +192,13 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 })
 ```
 
-Next, tell the SDK which requests to attach access tokens to in the SDK configuration. These are matched on the URL by using a string, a regex, or more complex object that also allows you to specify the configuration for fetching tokens by setting the `tokenOptions` property. Here are some examples:
+Next, tell the SDK which requests to attach access tokens to in the SDK configuration. These are matched on the URL by using a string, a regex, or more complex object that also allows you to specify the configuration for fetching tokens by setting the `tokenOptions` property.
+
+If an HTTP call is made using `HttpClient` and there is no match in this configuration for that URL, then the interceptor will simply be bypassed and the call will be executed without a token attached in the `Authorization` header.
+
+**Note:** We do this to help prevent tokens being unintentionally attached to requests to the wrong recipient, which is a serious security issue. Those recipients could then use that token to call the API as if it were your application.
+
+Here are some examples:
 
 ```js
 // Modify your existing SDK configuration to include the httpInterceptor config
