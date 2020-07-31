@@ -1,5 +1,5 @@
 ![Stage: Early Access](https://img.shields.io/badge/stage-early%20access-red)
-[![CircleCI](https://img.shields.io/circleci/build/github/auth0/auth0-angular)](https://circleci.com/gh/auth0/auth0-angular)
+[![CircleCI](https://img.shields.io/circleci/build/github/auth0/auth0-angular)](https://codecov.io/gh/auth0/auth0-angular)
 [![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-angular)](https://circleci.com/gh/auth0/auth0-angular)
 
 # Auth0 Angular SDK - Early Access
@@ -205,6 +205,7 @@ Here are some examples:
 AuthModule.forRoot({
   domain: 'YOUR_AUTH0_DOMAIN',
   clientId: 'YOUR_AUTH0_CLIENT_ID',
+  redirectUri: window.location.origin,
   
   // The HttpInterceptor configuration
   httpInterceptor: {
