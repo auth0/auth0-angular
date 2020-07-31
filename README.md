@@ -21,11 +21,15 @@ A library for integrating [Auth0](https://auth0.com) into an Angular 9+ applicat
 
 ## Installation
 
-Using `npm`:
+The package is still not available on the NPM public registry.
+
+In order to install it, visit the [RELEASES](https://github.com/auth0/auth0-angular/releases) section, download the `.tgz` file, and run the following `npm` command:
 
 ```
-npm install @auth0/auth0-angular
+npm install /path/to/auth0-auth0-angular-x.y.z.tgz
 ```
+
+Make sure the path and filename matches the file you've downloaded.
 
 ## Getting Started
 
@@ -52,15 +56,15 @@ import { AuthModule } from '@auth0/auth0-angular';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    
+
     // Import the module into the application, with configuration
     AuthModule.forRoot({
       domain: 'YOUR_AUTH0_DOMAIN',
       clientId: 'YOUR_AUTH0_CLIENT_ID',
-      redirectUri: window.location.origin
-    })
+      redirectUri: window.location.origin,
+    }),
   ],
-  
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}
@@ -97,7 +101,12 @@ export class AppComponent {
 On your template, provide a button that will allow the user to log in to the application. Use the `isAuthenticated$` observable to check that the user is not already authenticated:
 
 ```html
-<button *ngIf="(auth.isAuthenticated$ | async) === false" (click)="loginWithRedirect()">Log in</button>
+<button
+  *ngIf="(auth.isAuthenticated$ | async) === false"
+  (click)="loginWithRedirect()"
+>
+  Log in
+</button>
 ```
 
 ### Add logout to your application
@@ -114,7 +123,9 @@ logout() {
 Then on your component's template, add a button that will log the user out of the application. Use the `isAuthenticated$` observable to check that the user has already been authenticated:
 
 ```html
-<button *ngIf="auth.isAuthenticated$ | async" (click)="logout()">Log out</button>
+<button *ngIf="auth.isAuthenticated$ | async" (click)="logout()">
+  Log out
+</button>
 ```
 
 ### Display the user profile
@@ -147,20 +158,20 @@ const routes: Routes = [
   {
     path: 'protected',
     component: ProtectedComponent,
-    
+
     // Protect a route by registering the auth guard in the `canActivate` hook
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: '',
     component: HomeComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
 ```
@@ -206,41 +217,41 @@ AuthModule.forRoot({
   domain: 'YOUR_AUTH0_DOMAIN',
   clientId: 'YOUR_AUTH0_CLIENT_ID',
   redirectUri: window.location.origin,
-  
+
   // The HttpInterceptor configuration
   httpInterceptor: {
     allowedList: [
       // Use a string to match the URL exactly
       '/api',
-      
+
       // Use a regex to match anything starting with /api
       /^\/api/,
-      
+
       // The same as above, but with an object
       {
-        uri: /^\/api/     // can be a string or regex
+        uri: /^\/api/, // can be a string or regex
       },
-      
+
       // The same as above but also specifying the audience and scope the token must have
       {
         uri: /^\/api/,
         tokenOptions: {
           audience: 'http://my-api/',
-          scope: 'read:accounts'
-        }
+          scope: 'read:accounts',
+        },
       },
-      
+
       // Using an absolute URI
       {
         uri: 'https://your-domain.auth0.com/api/v2/users',
         tokenOptions: {
           audience: 'https://your-domain.com/api/v2/',
-          scope: 'read:users'
-        }
-      }
-    ]
-  }
-})
+          scope: 'read:users',
+        },
+      },
+    ],
+  },
+});
 ```
 
 > Under the hood, `tokenOptions` is passed as-is to [the `getTokenSilently` method](https://auth0.github.io/auth0-spa-js/classes/auth0client.html#gettokensilently) on the underlying SDK, so all the same options apply here.
@@ -250,7 +261,7 @@ Finally, make your API call using the `HttpClient`. Access tokens are then attac
 ```js
 export class MyComponent {
   constructor(private http: HttpClient) {}
-  
+
   callApi() {
     this.http.get('/api').subscribe(result => console.log(result));
   }
