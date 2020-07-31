@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-angular",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "peerDependencies": {
     "@angular/common": "^10.0.2",
