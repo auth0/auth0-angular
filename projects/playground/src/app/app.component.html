@@ -1,6 +1,6 @@
 <!-- Next Steps -->
 <h1>{{ 'Auth0 Angular Playground' | uppercase }}</h1>
-<p>SDK initialized = {{ !(isLoading$ | async) }}</p>
+<p class="status-indicator">SDK initialized = {{ !(isLoading$ | async) }}</p>
 
 <div class="actions" *ngIf="!(isLoading$ | async)">
   <h2>Authentication</h2>
@@ -41,16 +41,16 @@
   <div class="artifacts-wrapper" *ngIf="isAuthenticated$ | async">
     <h2>Artifacts</h2>
     <ul class="artifacts-list">
-      <li class="artifact-item">
-        <p>User Profile (Subset of the ID token claims)</p>
+      <li class="artifact">
+        <p>User Profile: Subset of the ID token claims</p>
         <textarea cols="50" rows="15" disabled="true">{{
           user$ | async | json
         }}</textarea>
       </li>
-      <li class="artifact-item">
-        <p>Access Token</p>
+      <li class="artifact">
         <p>
-          Select a mode and click the button to retrieve the access token.
+          Access Token: Select a mode and click the button to retrieve the
+          token.
         </p>
         <form [formGroup]="accessTokenOptionsForm">
           <label>
