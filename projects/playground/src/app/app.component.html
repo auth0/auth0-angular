@@ -1,54 +1,83 @@
 <!-- Next Steps -->
-<h1>{{ title | uppercase }}</h1>
+<h1>{{ 'Auth0 Angular Playground' | uppercase }}</h1>
 <p>SDK initialized = {{ !(isLoading$ | async) }}</p>
-<h2>Authentication</h2>
 
-<div class="actions">
-  <button
-    id="login-redirect"
-    (click)="loginWithRedirect()"
-    [disabled]="isAuthenticated$ | async"
-  >
-    Log in (redirect)
-  </button>
-  <button
-    id="login-popup"
-    (click)="loginWithPopup()"
-    [disabled]="isAuthenticated$ | async"
-  >
-    Log in (popup)
-  </button>
-  <button
-    id="logout"
-    (click)="logout()"
-    [disabled]="!(isAuthenticated$ | async)"
-  >
-    Log out
-  </button>
-  <button
-    id="logout-federated"
-    (click)="logout(true)"
-    [disabled]="!(isAuthenticated$ | async)"
-  >
-    Log out (federated)
-  </button>
-</div>
+<div class="actions" *ngIf="!(isLoading$ | async)">
+  <h2>Authentication</h2>
+  <div class="login-wrapper" *ngIf="!(isAuthenticated$ | async)">
+    <form [formGroup]="loginOptionsForm">
+      <label>
+        Use Redirect
+        <input type="radio" [value]="false" formControlName="usePopup" />
+      </label>
 
-<h2>Artifacts</h2>
-<div class="artifacts">
-  <ul>
-    <li>
-      <div>
-        <p>User Profile - Decoded ID token claims</p>
-        <textarea cols="30" rows="8" disabled="true">{{
+      <label>
+        Use Popup
+        <input type="radio" [value]="true" formControlName="usePopup" />
+      </label>
+      <button id="login" (click)="launchLogin()">
+        Log in
+      </button>
+    </form>
+  </div>
+
+  <div class="logout-wrapper" *ngIf="isAuthenticated$ | async">
+    <form [formGroup]="logoutOptionsForm">
+      <label>
+        Local Only
+        <input type="checkbox" formControlName="localOnly" />
+      </label>
+
+      <label>
+        Federated
+        <input type="checkbox" formControlName="federated" />
+      </label>
+      <button id="logout" (click)="launchLogout()">
+        Log out
+      </button>
+    </form>
+  </div>
+
+  <div class="artifacts-wrapper" *ngIf="isAuthenticated$ | async">
+    <h2>Artifacts</h2>
+    <ul class="artifacts-list">
+      <li class="artifact-item">
+        <p>User Profile (Subset of the ID token claims)</p>
+        <textarea cols="50" rows="15" disabled="true">{{
           user$ | async | json
         }}</textarea>
-      </div>
-    </li>
-  </ul>
-</div>
+      </li>
+      <li class="artifact-item">
+        <p>Access Token</p>
+        <p>
+          Select a mode and click the button to retrieve the access token.
+        </p>
+        <form [formGroup]="accessTokenOptionsForm">
+          <label>
+            Silently
+            <input type="radio" [value]="false" formControlName="usePopup" />
+          </label>
 
-<h2>Test Auth Guard</h2>
-<a routerLink="/protected">Protected Route</a> |
-<a routerLink="/">Unprotected Route</a>
-<router-outlet></router-outlet>
+          <label>
+            With Popup
+            <input type="radio" [value]="true" formControlName="usePopup" />
+          </label>
+          <button id="accessToken" (click)="updateAccessToken()">
+            Refresh
+          </button>
+        </form>
+        <br />
+        <textarea cols="50" rows="2" disabled="true">{{
+          accessToken$ | async
+        }}</textarea>
+      </li>
+    </ul>
+  </div>
+
+  <div class="guard-wrapper">
+    <h2>Test Auth Guard</h2>
+    <a routerLink="/protected">Protected Route</a> |
+    <a routerLink="/">Unprotected Route</a>
+    <router-outlet></router-outlet>
+  </div>
+</div>

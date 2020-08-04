@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AuthModule } from 'projects/auth0-angular/src/lib/auth.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +16,12 @@ const AUTH0_CONFIG = {
 
 @NgModule({
   declarations: [AppComponent, ProtectedComponent, UnprotectedComponent],
-  imports: [BrowserModule, AppRoutingModule, AuthModule.forRoot(AUTH0_CONFIG)],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    AuthModule.forRoot(AUTH0_CONFIG),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
