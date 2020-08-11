@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
-import { Observable, iif, BehaviorSubject, of } from 'rxjs';
-import { tap, first } from 'rxjs/operators';
+import { WindowService } from 'projects/auth0-angular/src/lib/window';
+import { iif, BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { LogoutOptions } from '@auth0/auth0-spa-js';
 
 @Component({
@@ -30,7 +31,13 @@ export class AppComponent {
     ignoreCache: new FormControl(false),
   });
 
-  constructor(public auth: AuthService) {}
+  constructor(
+    public auth: AuthService,
+    @Inject(WindowService) private window: any
+  ) {
+    // https://github.com/angular/angular/issues/12631
+    this.window = window as Window;
+  }
 
   launchLogin(): void {
     const usePopup = this.loginOptionsForm.value.usePopup === true;
@@ -46,7 +53,7 @@ export class AppComponent {
     const options: LogoutOptions = {
       localOnly: formOptions.localOnly === true,
       federated: formOptions.federated === true,
-      returnTo: 'http://localhost:4200',
+      returnTo: this.window.location.origin,
     };
     this.auth.logout(options);
   }

@@ -2,6 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
+import { WindowService } from 'projects/auth0-angular/src/lib/window';
 import { BehaviorSubject, of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -35,6 +36,14 @@ describe('AppComponent', () => {
         {
           provide: AuthService,
           useValue: authMock,
+        },
+        {
+          provide: WindowService,
+          useValue: {
+            location: {
+              origin: 'http://localhost:4200',
+            },
+          },
         },
       ],
     }).compileComponents();
