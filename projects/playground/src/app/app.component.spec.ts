@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 
 describe('AppComponent', () => {
@@ -106,34 +106,52 @@ describe('AppComponent', () => {
       expect(btnLogout).toBeTruthy();
     });
 
-    xit('should logout with default options', () => {
-      //TODO: uncheck all checkboxes
+    it('should logout with default options', () => {
+      const form = component.logoutOptionsForm.controls;
+      form.localOnly.setValue(false);
+      form.federated.setValue(false);
 
       const btnLogout = ne.querySelector('#logout');
       btnLogout.click();
       fixture.detectChanges();
 
-      //TODO: assert logout() was called without options
+      expect(authMock.logout).toHaveBeenCalledWith({
+        localOnly: false,
+        federated: false,
+        returnTo: 'http://localhost:4200',
+      });
     });
 
-    xit('should logout with federated', () => {
-      //TODO: check federated
+    it('should logout with federated', () => {
+      const form = component.logoutOptionsForm.controls;
+      form.localOnly.setValue(false);
+      form.federated.setValue(true);
 
       const btnLogout = ne.querySelector('#logout');
       btnLogout.click();
       fixture.detectChanges();
 
-      //TODO: assert logout() was called with federated=true
+      expect(authMock.logout).toHaveBeenCalledWith({
+        localOnly: false,
+        federated: true,
+        returnTo: 'http://localhost:4200',
+      });
     });
 
-    xit('should logout with localOnly', () => {
-      //TODO: check localOnly
+    it('should logout with localOnly', () => {
+      const form = component.logoutOptionsForm.controls;
+      form.localOnly.setValue(true);
+      form.federated.setValue(false);
 
       const btnLogout = ne.querySelector('#logout');
       btnLogout.click();
       fixture.detectChanges();
 
-      //TODO: assert logout() was called with localOnly=true
+      expect(authMock.logout).toHaveBeenCalledWith({
+        localOnly: true,
+        federated: false,
+        returnTo: 'http://localhost:4200',
+      });
     });
 
     it('should show user profile', () => {
@@ -147,7 +165,7 @@ describe('AppComponent', () => {
       expect(userValue).toEqual({ name: 'John', lastname: 'Doe' });
     });
 
-    it('should show empty access token', () => {
+    it('should show empty access token by default', () => {
       const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
       expect(divToken.querySelector('p').textContent).toContain(
         'Access Token: Select a mode and click the button to retrieve the token.'
@@ -156,38 +174,39 @@ describe('AppComponent', () => {
       expect(tokenContent).toEqual('');
     });
 
-    xit('should get access token silently', () => {
+    it('should get access token silently', () => {
       const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
       expect(divToken.querySelector('p').textContent).toContain('Access Token');
-
+      const form = component.accessTokenOptionsForm.controls;
+      form.usePopup.setValue(false);
       (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
-        'access token silently'
+        of('access token silently')
       );
-      //TODO: select "silently" radio button
 
       const btnRefresh = divToken.querySelector('button');
       btnRefresh.click();
       fixture.detectChanges();
-      //TODO: assert updateAccessToken() was called?
 
+      expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith();
+      console.log(divToken.querySelector('textarea'));
       const tokenContent = divToken.querySelector('textarea').textContent;
       expect(tokenContent).toEqual('access token silently');
     });
 
-    xit('should get access token with popup', () => {
+    it('should get access token with popup', () => {
       const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
       expect(divToken.querySelector('p').textContent).toContain('Access Token');
-
+      const form = component.accessTokenOptionsForm.controls;
+      form.usePopup.setValue(true);
       (authMock.getAccessTokenWithPopup as jasmine.Spy).and.returnValue(
-        'access token popup'
+        of('access token popup')
       );
-      //TODO: select "popup" radio button
 
       const btnRefresh = divToken.querySelector('button');
       btnRefresh.click();
       fixture.detectChanges();
-      //TODO: assert updateAccessToken() was called?
 
+      expect(authMock.getAccessTokenWithPopup).toHaveBeenCalledWith();
       const tokenContent = divToken.querySelector('textarea').textContent;
       expect(tokenContent).toEqual('access token popup');
     });
@@ -218,26 +237,28 @@ describe('AppComponent', () => {
       expect(btnLogin).toBeTruthy();
     });
 
-    xit('should login with redirect', () => {
+    it('should login with redirect', () => {
       const wrapLogin = ne.querySelector('.login-wrapper');
-
-      //TODO: select "redirect" radio button
+      const form = component.loginOptionsForm.controls;
+      form.usePopup.setValue(false);
 
       const btnRefresh = wrapLogin.querySelector('button');
       btnRefresh.click();
       fixture.detectChanges();
-      //TODO: assert loginWithRedirect() was called?
+
+      expect(authMock.loginWithRedirect).toHaveBeenCalledWith();
     });
 
-    xit('should login with popup', () => {
+    it('should login with popup', () => {
       const wrapLogin = ne.querySelector('.login-wrapper');
-
-      //TODO: select "popup" radio button
+      const form = component.loginOptionsForm.controls;
+      form.usePopup.setValue(true);
 
       const btnRefresh = wrapLogin.querySelector('button');
       btnRefresh.click();
       fixture.detectChanges();
-      //TODO: assert loginWithPopup() was called?
+
+      expect(authMock.loginWithPopup).toHaveBeenCalledWith();
     });
   });
 });
