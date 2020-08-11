@@ -1,10 +1,12 @@
 <!-- Next Steps -->
 <h1>{{ 'Auth0 Angular Playground' | uppercase }}</h1>
-<p class="status-indicator">SDK initialized = {{ !(isLoading$ | async) }}</p>
+<p class="status-indicator">
+  SDK initialized = {{ (isLoading$ | async) === false }}
+</p>
 
-<div class="actions" *ngIf="!(isLoading$ | async)">
+<div class="actions" *ngIf="(isLoading$ | async) === false">
   <h2>Authentication</h2>
-  <div class="login-wrapper" *ngIf="!(isAuthenticated$ | async)">
+  <div class="login-wrapper" *ngIf="(isAuthenticated$ | async) === false">
     <form [formGroup]="loginOptionsForm">
       <label>
         Use Redirect
