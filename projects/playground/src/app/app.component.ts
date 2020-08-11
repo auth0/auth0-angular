@@ -27,6 +27,7 @@ export class AppComponent {
 
   accessTokenOptionsForm = new FormGroup({
     usePopup: new FormControl(false),
+    ignoreCache: new FormControl(false),
   });
 
   constructor(public auth: AuthService) {}
@@ -52,10 +53,11 @@ export class AppComponent {
 
   updateAccessToken(): void {
     const usePopup = this.accessTokenOptionsForm.value.usePopup === true;
+    const ignoreCache = this.accessTokenOptionsForm.value.ignoreCache === true;
     iif(
       () => usePopup,
       this.auth.getAccessTokenWithPopup(),
-      this.auth.getAccessTokenSilently()
+      this.auth.getAccessTokenSilently({ ignoreCache })
     )
       .pipe(first())
       .subscribe((token) => {

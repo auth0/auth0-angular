@@ -53,7 +53,15 @@
           token.
         </p>
         <form [formGroup]="accessTokenOptionsForm">
-          <!-- add checkbox to Ignore cache -->
+          <label>
+            Ignore cache
+            <input
+              type="checkbox"
+              [value]="false"
+              formControlName="ignoreCache"
+            />
+          </label>
+
           <label>
             Silently
             <input type="radio" [value]="false" formControlName="usePopup" />

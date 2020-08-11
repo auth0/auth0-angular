@@ -187,7 +187,53 @@ describe('AppComponent', () => {
       btnRefresh.click();
       fixture.detectChanges();
 
-      expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith();
+      expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
+        ignoreCache: false,
+      });
+      console.log(divToken.querySelector('textarea'));
+      const tokenContent = divToken.querySelector('textarea').textContent;
+      expect(tokenContent).toEqual('access token silently');
+    });
+
+    it('should get access token silently', () => {
+      const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
+      expect(divToken.querySelector('p').textContent).toContain('Access Token');
+      const form = component.accessTokenOptionsForm.controls;
+      form.usePopup.setValue(false);
+      form.ignoreCache.setValue(false);
+      (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+        of('access token silently')
+      );
+
+      const btnRefresh = divToken.querySelector('button');
+      btnRefresh.click();
+      fixture.detectChanges();
+
+      expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
+        ignoreCache: false,
+      });
+      console.log(divToken.querySelector('textarea'));
+      const tokenContent = divToken.querySelector('textarea').textContent;
+      expect(tokenContent).toEqual('access token silently');
+    });
+
+    it('should get access token silently ignoring cache', () => {
+      const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
+      expect(divToken.querySelector('p').textContent).toContain('Access Token');
+      const form = component.accessTokenOptionsForm.controls;
+      form.usePopup.setValue(false);
+      form.ignoreCache.setValue(true);
+      (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+        of('access token silently')
+      );
+
+      const btnRefresh = divToken.querySelector('button');
+      btnRefresh.click();
+      fixture.detectChanges();
+
+      expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
+        ignoreCache: true,
+      });
       console.log(divToken.querySelector('textarea'));
       const tokenContent = divToken.querySelector('textarea').textContent;
       expect(tokenContent).toEqual('access token silently');
