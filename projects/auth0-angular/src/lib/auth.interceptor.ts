@@ -77,6 +77,15 @@ export class AuthHttpInterceptor implements HttpInterceptor {
         return true;
       }
 
+      // If the URL ends with an asterisk, match using startsWith.
+      if (
+        typeof value === 'string' &&
+        value.indexOf('*') === value.length - 1 &&
+        request.url.startsWith(value.substr(0, value.length - 1))
+      ) {
+        return true;
+      }
+
       if (value instanceof RegExp && value.test(request.url)) {
         return true;
       }

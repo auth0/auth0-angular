@@ -29,6 +29,7 @@ describe('The Auth HTTP Interceptor', () => {
       httpInterceptor: {
         allowedList: [
           '/basic-api',
+          '/basic-api/startsWith*',
           /^\/basic-api-regex/,
           { uri: '/api' },
           { uri: /^\/regex-api/ },
@@ -38,6 +39,9 @@ describe('The Auth HTTP Interceptor', () => {
               audience: 'audience',
               scope: 'scope',
             },
+          },
+          {
+            uri: '/api/startsWith*',
           },
         ],
       },
@@ -107,6 +111,21 @@ describe('The Auth HTTP Interceptor', () => {
         'Bearer access-token'
       );
     }));
+
+    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
+      done
+    ) => {
+      httpClient.get('/basic-api/startsWith?hello=world').subscribe(done);
+      flush();
+
+      req = httpTestingController.expectOne(
+        '/basic-api/startsWith?hello=world'
+      );
+
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer access-token'
+      );
+    }));
   });
 
   describe('Requests that are configured using a complex object', () => {
@@ -118,6 +137,19 @@ describe('The Auth HTTP Interceptor', () => {
       flush();
 
       req = httpTestingController.expectOne('/api');
+
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer access-token'
+      );
+    }));
+
+    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
+      done
+    ) => {
+      httpClient.get('/api/startsWith?hello=world').subscribe(done);
+      flush();
+
+      req = httpTestingController.expectOne('/api/startsWith?hello=world');
 
       expect(req.request.headers.get('Authorization')).toBe(
         'Bearer access-token'
