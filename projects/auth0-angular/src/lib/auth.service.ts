@@ -70,7 +70,7 @@ export class AuthService implements OnDestroy {
         concatMap((isCallback) =>
           iif(
             () => isCallback,
-            defer(() => this.handleRedirectCallback()),
+            this.handleRedirectCallback(),
             defer(() => this.auth0Client.checkSession())
           )
         ),
