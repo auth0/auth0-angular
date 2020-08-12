@@ -15,7 +15,7 @@ export class AppComponent {
   isAuthenticated$ = this.auth.isAuthenticated$;
   isLoading$ = this.auth.isLoading$;
   user$ = this.auth.user$;
-  accessToken: string = '';
+  accessToken = '';
 
   loginOptionsForm = new FormGroup({
     usePopup: new FormControl(false),
