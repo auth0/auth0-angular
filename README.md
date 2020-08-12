@@ -227,6 +227,9 @@ AuthModule.forRoot({
       // Use a string to match the URL exactly
       '/api',
 
+      // Use a wildcard to match URLs that start with this value
+      '/api/*',
+
       // Use a regex to match anything starting with /api
       /^\/api/,
 
