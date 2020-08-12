@@ -15,7 +15,7 @@ export class AppComponent {
   isAuthenticated$ = this.auth.isAuthenticated$;
   isLoading$ = this.auth.isLoading$;
   user$ = this.auth.user$;
-  accessToken$ = new BehaviorSubject(null);
+  accessToken: string = '';
 
   loginOptionsForm = new FormGroup({
     usePopup: new FormControl(false),
@@ -68,7 +68,7 @@ export class AppComponent {
     )
       .pipe(first())
       .subscribe((token) => {
-        this.accessToken$.next(token);
+        this.accessToken = token;
       });
   }
 }
