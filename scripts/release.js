@@ -20,14 +20,14 @@ if (!newVersion) {
 var lastVersionFile = path.resolve(tmp, 'current-version');
 fs.writeFileSync(lastVersionFile, libPkg.version);
 
-const branch = process.argv[3];
+const branch = process.argv[3] || 'master';
 
 (async () => {
   if (branch) {
     await exec(`git checkout ${branch}`);
   }
 
-  await exec('git pull');
+  await exec('git pull origin master');
   await exec(`git checkout -b prepare/${newVersion}`);
 
   const newReadme = fs
@@ -64,7 +64,7 @@ const branch = process.argv[3];
   await exec(`git tag v${newVersion}`);
 
   console.log('Done! Pushing the tag to Github...');
-  await exec(`git push --tags`);
+  await exec(`git push origin HEAD --tags`);
 
   await exec('npm run release:clean');
 })();
