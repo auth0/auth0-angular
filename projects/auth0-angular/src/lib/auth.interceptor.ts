@@ -63,6 +63,22 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   }
 
   /**
+   * Strips the query and fragment from the given uri
+   * @param uri The uri to remove the query and fragment from
+   */
+  private stripQueryFrom(uri: string): string {
+    if (uri.indexOf('?') > -1) {
+      uri = uri.substr(0, uri.indexOf('?'));
+    }
+
+    if (uri.indexOf('#') > -1) {
+      uri = uri.substr(0, uri.indexOf('#'));
+    }
+
+    return uri;
+  }
+
+  /**
    * Determines whether the specified route can have an access token attached to it, based on matching the HTTP request against
    * the interceptor route configuration.
    * @param route The route to test
@@ -72,25 +88,22 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     route: ApiRouteDefinition,
     request: HttpRequest<any>
   ): boolean {
-    const testPrimitive = (value: string | RegExp) => {
+    const testPrimitive = (value: string) => {
       if (!value) {
         return false;
       }
 
-      if (value === request.url) {
+      const requestPath = this.stripQueryFrom(request.url);
+
+      if (value === requestPath) {
         return true;
       }
 
       // If the URL ends with an asterisk, match using startsWith.
       if (
-        typeof value === 'string' &&
         value.indexOf('*') === value.length - 1 &&
         request.url.startsWith(value.substr(0, value.length - 1))
       ) {
-        return true;
-      }
-
-      if (value instanceof RegExp && value.test(request.url)) {
         return true;
       }
     };
@@ -99,7 +112,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       return testPrimitive(route.uri);
     }
 
-    return testPrimitive(route as string | RegExp);
+    return testPrimitive(route);
   }
 
   /**

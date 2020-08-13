@@ -44,9 +44,8 @@ describe('The Auth HTTP Interceptor', () => {
           '',
           '/api/photos',
           '/api/people*',
-          /^\/basic-api-regex/,
+          'https://my-api.com/orders',
           { uri: '/api/orders' },
-          { uri: /^\/regex-api/ },
           {
             uri: '/api/addresses',
             tokenOptions: {
@@ -107,17 +106,16 @@ describe('The Auth HTTP Interceptor', () => {
       assertAuthorizedApiCallTo('/api/photos', done);
     }));
 
-    it('attach the access token when the configuration uri is a regex', fakeAsync((
-      done
-    ) => {
-      assertAuthorizedApiCallTo('/basic-api-regex?value=123', done);
-    }));
-
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
       done
     ) => {
       // Testing /api/people* (wildcard match)
       assertAuthorizedApiCallTo('/api/people/profile', done);
+    }));
+
+    it('matches a full url to an API', fakeAsync((done) => {
+      // Testing 'https://my-api.com/orders' (exact)
+      assertAuthorizedApiCallTo('https://my-api.com/orders', done);
     }));
   });
 
@@ -125,21 +123,8 @@ describe('The Auth HTTP Interceptor', () => {
     it('attach the access token when the uri is configured using a string', fakeAsync((
       done
     ) => {
-      // Testing { uri: /api/addresses } (exact match)
-      assertAuthorizedApiCallTo('/api/addresses', done);
-    }));
-
-    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
-      done
-    ) => {
-      // Testing { uri: /api/calendar* } (wildcard match)
-      assertAuthorizedApiCallTo('/api/calendar/events', done);
-    }));
-
-    it('attach the access token when the uri is configured using a regex', fakeAsync((
-      done
-    ) => {
-      assertAuthorizedApiCallTo('/regex-api?my-param=42', done);
+      // Testing { uri: /api/orders } (exact match)
+      assertAuthorizedApiCallTo('/api/orders', done);
     }));
 
     it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
@@ -152,6 +137,20 @@ describe('The Auth HTTP Interceptor', () => {
         audience: 'audience',
         scope: 'scope',
       });
+    }));
+
+    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
+      done
+    ) => {
+      // Testing { uri: /api/addresses } (exact match)
+      assertAuthorizedApiCallTo('/api/addresses', done);
+    }));
+
+    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
+      done
+    ) => {
+      // Testing { uri: /api/calendar* } (wildcard match)
+      assertAuthorizedApiCallTo('/api/calendar/events', done);
     }));
   });
 });
