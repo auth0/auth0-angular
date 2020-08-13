@@ -27,15 +27,11 @@ A library for integrating [Auth0](https://auth0.com) into an Angular 9+ applicat
 
 ## Installation
 
-The package is still not available on the NPM public registry.
+Using npm:
 
-In order to install it, visit the [RELEASES](https://github.com/auth0/auth0-angular/releases) section, download the `.tgz` file, and run the following `npm` command:
-
+```sh
+npm install @auth0/auth0-angular
 ```
-npm install /path/to/auth0-auth0-angular-x.y.z.tgz
-```
-
-Make sure the path and filename matches the file you've downloaded.
 
 ## Getting Started
 
