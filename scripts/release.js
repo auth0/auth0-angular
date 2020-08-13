@@ -38,15 +38,33 @@ const branch = process.argv[3];
   fs.writeFileSync('./README.md', newReadme);
 
   fs.writeFileSync(
-    './package.json',
+    './projects/auth0-angular/package.json',
     JSON.stringify({ ...libPkg, version: newVersion }, null, 2)
   );
 
-  // fs.writeFileSync('./src/version.ts', `export default '${newVersion}';`);
+  /*
+  This will take care of:
+    1. Updating the user agent version
+    2. Build the app and ensure there are no errors.
+    3. Generating the docs
+  */
+  console.log('Building the library...');
+  await exec('npm run build');
 
-  // await exec('npm run docs');
-
+  console.log('Fetching the next version changelog...');
   await writeChangelog(newVersion);
+
+  console.log('Committing files and creating the tag...');
+  await exec('git add ./projects/auth0-angular/package.json');
+  await exec('git add ./projects/auth0-angular/src/useragent.ts');
+  await exec('git add ./README.md');
+  await exec('git add ./CHANGELOG.md');
+  await exec('git add ./docs/');
+  await exec(`git commit -am 'Release v${newVersion}'`);
+  await exec(`git tag v${newVersion}`);
+
+  console.log('Done! Pushing the tag to Github...');
+  await exec(`git push --tags`);
 
   await exec('npm run release:clean');
 })();

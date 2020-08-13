@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "prebuid": "npm run update-useragent",
+    "prebuild": "npm run update-useragent",
     "build": "ng build",
     "postbuild": "npm run docs",
     "test": "ng test",

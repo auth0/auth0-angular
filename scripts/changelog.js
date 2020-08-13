@@ -19,7 +19,6 @@ module.exports = function (newVersion) {
 
     const repo = 'auth0-angular';
     const changelogPath = path.resolve(tmp, 'CHANGELOG.md');
-    console.log('changelog path: ', changelogPath);
     const stream = fs.createWriteStream(changelogPath);
     const webtask = `https://webtask.it.auth0.com/api/run/wt-hernan-auth0_com-0/oss-changelog.js?webtask_no_cache=1&repo=${repo}&milestone=v${newVersion}`;
     const command = `curl -f -s -H "Accept: text/markdown" "${webtask}"`;
@@ -57,8 +56,6 @@ module.exports = function (newVersion) {
       execSync(`mv ${changelogPath} CHANGELOG.md`, {
         stdio: 'inherit',
       });
-      console.log('Here it would be called GIT ADD CHANGELOG.MD');
-      // execSync('git add CHANGELOG.md', { stdio: 'inherit' });
       resolve();
     });
   });
