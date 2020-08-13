@@ -10,6 +10,7 @@ A library for integrating [Auth0](https://auth0.com) into an Angular 9+ applicat
 
 ## Table of Contents
 
+- [Documentation](#documentation)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Development](#development)
@@ -18,6 +19,11 @@ A library for integrating [Auth0](https://auth0.com) into an Angular 9+ applicat
 - [Vulnerability Reporting](#vulnerability-reporting)
 - [What is Auth0](#what-is-auth0)
 - [License](#license)
+
+## Documentation
+
+- [API Reference](https://auth0.github.io/auth0-angular/)
+- [Quickstart Guide](https://auth0.com/docs/quickstart/spa/angular-next)
 
 ## Installation
 

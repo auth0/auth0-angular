@@ -4,10 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm run update-useragent && ng build",
+    "prebuid": "npm run update-useragent",
+    "build": "ng build",
+    "postbuild": "npm run docs",
     "test": "ng test",
     "test-ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --codeCoverage=true",
     "lint": "ng lint",
+    "docs": "typedoc",
     "e2e": "ng e2e",
     "pretty-quick": "pretty-quick",
     "update-useragent": "node projects/auth0-angular/scripts/update-useragent.js"
@@ -52,6 +55,7 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
+    "typedoc": "^0.18.0",
     "typescript": "^3.9.7"
   },
   "prettier": {
