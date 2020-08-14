@@ -63,8 +63,12 @@ const branch = process.argv[3] || 'master';
   await exec(`git commit -am 'Release v${newVersion}'`);
   await exec(`git tag v${newVersion}`);
 
-  console.log('Done! Pushing the tag to Github...');
-  await exec(`git push origin HEAD --tags`);
+  var unpublishedFile = path.resolve(tmp, 'unpublished');
+  fs.closeSync(fs.openSync(unpublishedFile, 'w'));
 
-  await exec('npm run release:clean');
+  console.log(
+    'Done! If the diff looks OK, push the changes along with the new tag using "git push origin master --tags". Once the PR is merged, come back and run "npm run release:publish".'
+  );
+
+  // await exec('npm run release:clean');
 })();

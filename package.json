@@ -6,6 +6,7 @@
     "start": "ng serve",
     "prebuild": "npm run update-useragent",
     "build": "ng build",
+    "prepublishOnly": "node scripts/prepublish-stopper.js",
     "postbuild": "npm run docs",
     "test": "ng test",
     "test-ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --codeCoverage=true",
@@ -14,6 +15,7 @@
     "e2e": "ng e2e",
     "pretty-quick": "pretty-quick",
     "release": "node scripts/release.js",
+    "release:publish": "node scripts/publish.js",
     "release:clean": "node scripts/cleanup.js",
     "update-useragent": "node projects/auth0-angular/scripts/update-useragent.js"
   },
