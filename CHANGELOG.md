@@ -1,6 +1,6 @@
 # Change Log
 
-## [v0.1.0](https://github.com/auth0/auth0-spa-js/tree/v0.1.0) (2020-07-31)
+## [v0.1.0](https://github.com/auth0/auth0-angular/tree/v0.1.0) (2020-07-31)
 
 **Early Access Release**
 Do not use it in a Production environment.
