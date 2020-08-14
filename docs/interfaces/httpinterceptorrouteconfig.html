@@ -3179,8 +3179,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/lib/auth.config.ts#L48"
-                    >projects/auth0-angular/src/lib/auth.config.ts:48</a
+                    href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/lib/auth.config.ts#L54"
+                    >projects/auth0-angular/src/lib/auth.config.ts:54</a
                   >
                 </li>
               </ul>
@@ -3201,17 +3201,15 @@
             <h3>uri</h3>
             <div class="tsd-signature tsd-kind-icon">
               uri<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">string</span
-              ><span class="tsd-signature-symbol"> | </span
-              ><span class="tsd-signature-type">RegExp</span>
+              <span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/lib/auth.config.ts#L42"
-                    >projects/auth0-angular/src/lib/auth.config.ts:42</a
+                    href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/lib/auth.config.ts#L48"
+                    >projects/auth0-angular/src/lib/auth.config.ts:48</a
                   >
                 </li>
               </ul>
@@ -3219,10 +3217,10 @@
             <div class="tsd-comment tsd-typography">
               <div class="lead">
                 <p>
-                  The URL to test, either by using a regex or by supplying the
-                  whole URL to match. If <code>test</code> is a match for the
-                  current request URL from the HTTP client, then an access token
-                  is attached to the request in the
+                  The URL to test, by supplying the URL to match. If
+                  <code>test</code> is a match for the current request path from
+                  the HTTP client, then an access token is attached to the
+                  request in the
                   <a
                     href="https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1"
                     >&quot;Authorization&quot; header</a
@@ -3233,6 +3231,19 @@
                 If the test does not pass, the request proceeds without the
                 access token attached.
               </p>
+              <p>
+                A wildcard character can be used to match only the start of the
+                URL.
+              </p>
+              <dl class="tsd-comment-tags">
+                <dt>usagenotes</dt>
+                <dd>
+                  <p>
+                    &#39;/api&#39; - exactly match the route /api
+                    &#39;/api/*&#39; - match any route that starts with /api/
+                  </p>
+                </dd>
+              </dl>
             </div>
           </section>
         </section>
