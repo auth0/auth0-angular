@@ -1,5 +1,14 @@
 # Change Log
 
+## [v0.2.1](https://github.com/auth0/auth0-angular/tree/v0.2.1) (2020-08-14)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v0.2.0...v0.2.1)
+
+**Changed**
+
+- Make the "publish" script copy the README file [\#36](https://github.com/auth0/auth0-angular/pull/36) ([lbalmaceda](https://github.com/lbalmaceda))
+- Add metadata to package [\#35](https://github.com/auth0/auth0-angular/pull/35) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
 ## [v0.2.0](https://github.com/auth0/auth0-angular/tree/v0.2.0) (2020-08-14)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v0.1.0...v0.2.0)
