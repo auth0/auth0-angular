@@ -89,6 +89,10 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     request: HttpRequest<any>
   ): boolean {
     const testPrimitive = (value: string) => {
+      if (value) {
+        value.trim();
+      }
+
       if (!value) {
         return false;
       }
