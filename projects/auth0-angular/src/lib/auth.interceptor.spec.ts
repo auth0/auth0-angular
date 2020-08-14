@@ -150,13 +150,6 @@ describe('The Auth HTTP Interceptor', () => {
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
       done
     ) => {
-      // Testing { uri: /api/addresses } (exact match)
-      assertAuthorizedApiCallTo('/api/addresses', done);
-    }));
-
-    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
-      done
-    ) => {
       // Testing { uri: /api/calendar* } (wildcard match)
       assertAuthorizedApiCallTo('/api/calendar/events', done);
     }));
