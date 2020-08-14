@@ -1,5 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# release pipeline tmp files
+.release*/
+.release
+
 # compiled output
 /dist
 /tmp
