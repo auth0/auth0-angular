@@ -11,7 +11,6 @@ import { UnprotectedComponent } from './unprotected/unprotected.component';
 const AUTH0_CONFIG = {
   clientId: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
   domain: 'brucke.auth0.com',
-  redirectUri: window.location.origin,
 };
 
 @NgModule({

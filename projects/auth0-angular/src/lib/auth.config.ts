@@ -6,9 +6,8 @@ import { InjectionToken } from '@angular/core';
  *
  * - an object of type HttpInterceptorConfig
  * - a string
- * - a regular expression
  */
-export type ApiRouteDefinition = HttpInterceptorRouteConfig | string | RegExp;
+export type ApiRouteDefinition = HttpInterceptorRouteConfig | string;
 
 /**
  * A custom type guard to help identify route definitions that are actually HttpInterceptorRouteConfig types.
@@ -32,14 +31,21 @@ export interface HttpInterceptorConfig {
  */
 export interface HttpInterceptorRouteConfig {
   /**
-   * The URL to test, either by using a regex or by supplying the whole URL to match.
-   * If `test` is a match for the current request URL from the HTTP client, then
+   * The URL to test, by supplying the URL to match.
+   * If `test` is a match for the current request path from the HTTP client, then
    * an access token is attached to the request in the
    *  ["Authorization" header](https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1).
    *
    * If the test does not pass, the request proceeds without the access token attached.
+   *
+   * A wildcard character can be used to match only the start of the URL.
+   *
+   * @usagenotes
+   *
+   * '/api' - exactly match the route /api
+   * '/api/*' - match any route that starts with /api/
    */
-  uri: string | RegExp;
+  uri: string;
 
   /**
    * The options that are passed to the SDK when retrieving the
@@ -71,8 +77,8 @@ export interface AuthConfig {
 
   /**
    * The default URL where Auth0 will redirect your browser to with
-   * the authentication result. It must be whitelisted in
-   * the "Allowed Callback URLs" field in your Auth0 Application's
+   * the authentication result. It must be added to the
+   * "Allowed Callback URLs" field in your Auth0 Application's
    * settings. If not provided here, it should be provided in the other
    * methods that provide authentication.
    */

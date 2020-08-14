@@ -1,12 +1,12 @@
-![Stage: Early Access](https://img.shields.io/badge/stage-early%20access-red)
+![Stage: Beta](https://img.shields.io/badge/stage-beta-orange)
 [![CircleCI](https://img.shields.io/circleci/build/github/auth0/auth0-angular)](https://circleci.com/gh/auth0/auth0-angular)
 [![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-angular)](https://codecov.io/gh/auth0/auth0-angular)
 
-# Auth0 Angular SDK - Early Access
+# Auth0 Angular SDK - Beta
 
 A library for integrating [Auth0](https://auth0.com) into an Angular 9+ application.
 
-**Note:** This is an **EARLY ACCESS** package and thus **SHOULD NOT BE USED IN PRODUCTION**. There are likely to be further breaking changes as the SDK matures to the more stable release stages.
+**Note:** This is a **BETA** package and thus **SHOULD NOT BE USED IN PRODUCTION**. There are likely to be further breaking changes as the SDK matures to the more stable release stages.
 
 ## Table of Contents
 
@@ -63,7 +63,6 @@ import { AuthModule } from '@auth0/auth0-angular';
     AuthModule.forRoot({
       domain: 'YOUR_AUTH0_DOMAIN',
       clientId: 'YOUR_AUTH0_CLIENT_ID',
-      redirectUri: window.location.origin,
     }),
   ],
 
@@ -99,6 +98,8 @@ export class AppComponent {
   }
 }
 ```
+
+By default the application will ask Auth0 will redirect back to the root URL of your application after authentication, but this can be configured by setting the [`redirectUri` option](https://auth0.github.io/auth0-angular/interfaces/authconfig.html#redirecturi).
 
 On your template, provide a button that will allow the user to log in to the application. Use the `isAuthenticated$` observable to check that the user is not already authenticated:
 
@@ -226,6 +227,9 @@ AuthModule.forRoot({
       // Use a string to match the URL exactly
       '/api',
 
+      // Use a wildcard to match URLs that start with this value
+      '/api/*',
+
       // Use a regex to match anything starting with /api
       /^\/api/,
 
@@ -305,7 +309,7 @@ For support or to provide feedback, please [raise an issue on our issue tracker]
 
 ## Vulnerability Reporting
 
-Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
+Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/responsible-disclosure-policy) details the procedure for disclosing security issues.
 
 ## What is Auth0?
 
