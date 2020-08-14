@@ -36,3 +36,29 @@ In order to install this package on your application, download the `auth0-auth0-
 ```bash
 npm install /path/to/auth0-auth0-angular-0.1.0.tgz
 ```
+
+**Added**
+
+- [SDK-1860] SDK Useragent [\#19](https://github.com/auth0/auth0-angular/pull/19) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1847, SDK-1848] Add HttpInterceptor to attach access tokens to requests [\#18](https://github.com/auth0/auth0-angular/pull/18) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1778] Add AuthGuard to protect unauthenticated users from accessing certain routes [\#16](https://github.com/auth0/auth0-angular/pull/16) ([samjulien](https://github.com/samjulien))
+- [SDK-1846] Add ability to get new access tokens [\#15](https://github.com/auth0/auth0-angular/pull/15) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- Add playground app [\#14](https://github.com/auth0/auth0-angular/pull/14) ([lbalmaceda](https://github.com/lbalmaceda))
+- Enable access to isLoading `true` state [\#13](https://github.com/auth0/auth0-angular/pull/13) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- Add husky pre-commit hook to run prettier [\#12](https://github.com/auth0/auth0-angular/pull/12) ([lbalmaceda](https://github.com/lbalmaceda))
+- Install and configure karma-junit-reporter [\#11](https://github.com/auth0/auth0-angular/pull/11) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1776] Add logout [\#9](https://github.com/auth0/auth0-angular/pull/9) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1780] Add user\$ observable [\#8](https://github.com/auth0/auth0-angular/pull/8) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- Add navigator to handle routing after login [\#7](https://github.com/auth0/auth0-angular/pull/7) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1781] Add isAuthenticated observable [\#6](https://github.com/auth0/auth0-angular/pull/6) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1815] Add silent authentication [\#5](https://github.com/auth0/auth0-angular/pull/5) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1779] AuthService creation and login methods [\#4](https://github.com/auth0/auth0-angular/pull/4) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- Setup CI and Coverage [\#3](https://github.com/auth0/auth0-angular/pull/3) ([lbalmaceda](https://github.com/lbalmaceda))
+- [SDK-1783] Add ability to configure the SDK [\#2](https://github.com/auth0/auth0-angular/pull/2) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
+**Fixed**
+
+- Fix type of the injected window service [\#23](https://github.com/auth0/auth0-angular/pull/23) ([lbalmaceda](https://github.com/lbalmaceda))
+- General fixes and tweaks to prep for EA release [\#21](https://github.com/auth0/auth0-angular/pull/21) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [Housekeeping] Fix TSLint issues and upgrade dependencies [\#17](https://github.com/auth0/auth0-angular/pull/17) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- Fix popup auth to correctly set authenticated state after login [\#10](https://github.com/auth0/auth0-angular/pull/10) ([stevehobbsdev](https://github.com/stevehobbsdev))
