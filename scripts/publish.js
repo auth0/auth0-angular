@@ -35,6 +35,7 @@ const currentVersion = fs.readFileSync(versionFilePath, 'utf-8');
     should already be updated as part of the last tagged commit.
   */
   await exec('npm run build:prod');
+  await exec('cp README.md ./dist/auth0-angular/');
 
   console.log('Uploading to npm, you might be prompted for the OTP...');
 
