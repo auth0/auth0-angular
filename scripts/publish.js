@@ -2,7 +2,6 @@ const fs = require('fs');
 const exec = require('./exec');
 const execSync = require('child_process').execSync;
 const path = require('path');
-const { syncBuiltinESMExports } = require('module');
 
 if (!fs.existsSync('.release')) {
   console.error(`There's no release pending publication.`);
@@ -10,24 +9,23 @@ if (!fs.existsSync('.release')) {
 }
 
 const tmp = fs.readFileSync('.release', 'utf-8');
-const versionFilePath = path.resolve(tmp, 'current-version');
-const unpublishedFilePath = path.resolve(tmp, 'unpublished');
+const unpublishedFilePath = path.resolve(tmp, 'unpublished-version');
 
-if (!fs.existsSync(unpublishedFilePath) || !fs.existsSync(versionFilePath)) {
+if (!fs.existsSync(unpublishedFilePath)) {
   console.error(
     `The last release preparation did not complete successfully. Run 'npm run release:clean' and then 'npm run release' to start all over again.`
   );
-  console.info(
+  console.log(
     `If the Release PR was already merged into the base branch and only the npm publication is pending, manually run 'npm run build:prod' and then 'ALLOWED=true npm publish ./dist/auth0-angular'.`
   );
   process.exit(1);
 }
 
-const currentVersion = fs.readFileSync(versionFilePath, 'utf-8');
+const unpublishedVersion = fs.readFileSync(unpublishedFilePath, 'utf-8');
 
 (async () => {
   console.log('Preparing the package for publication...');
-  await exec(`git checkout v${currentVersion}`);
+  await exec(`git checkout v${unpublishedVersion}`);
 
   /*
     The command below ensures the ./dist folder has prod-ready content.
