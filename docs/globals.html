@@ -3150,6 +3150,7 @@
             <h2>Table of Contents</h2>
           </a>
           <ul>
+            <li><a href="#documentation">Documentation</a></li>
             <li><a href="#installation">Installation</a></li>
             <li><a href="#getting-started">Getting Started</a></li>
             <li><a href="#development">Development</a></li>
@@ -3162,26 +3163,31 @@
             <li><a href="#license">License</a></li>
           </ul>
           <a
+            href="#documentation"
+            id="documentation"
+            style="color: inherit; text-decoration: none;"
+          >
+            <h2>Documentation</h2>
+          </a>
+          <ul>
+            <li>
+              <a href="https://auth0.github.io/auth0-angular/">API Reference</a>
+            </li>
+            <li>
+              <a href="https://auth0.com/docs/quickstart/spa/angular-next"
+                >Quickstart Guide</a
+              >
+            </li>
+          </ul>
+          <a
             href="#installation"
             id="installation"
             style="color: inherit; text-decoration: none;"
           >
             <h2>Installation</h2>
           </a>
-          <p>The package is still not available on the NPM public registry.</p>
-          <p>
-            In order to install it, visit the
-            <a href="https://github.com/auth0/auth0-angular/releases"
-              >RELEASES</a
-            >
-            section, download the <code>.tgz</code> file, and run the following
-            <code>npm</code> command:
-          </p>
-          <pre><code>npm <span class="hljs-keyword">install</span> /<span class="hljs-keyword">path</span>/<span class="hljs-keyword">to</span>/auth0-auth0-angular-x.y.z.tgz</code></pre>
-          <p>
-            Make sure the path and filename matches the file you&#39;ve
-            downloaded.
-          </p>
+          <p>Using npm:</p>
+          <pre><code class="language-sh">npm install @auth0/auth0-angular</code></pre>
           <a
             href="#getting-started"
             id="getting-started"
@@ -3239,7 +3245,6 @@
     AuthModule.forRoot({
       <span class="hljs-attr">domain</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_DOMAIN&#x27;</span>,
       <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_CLIENT_ID&#x27;</span>,
-      <span class="hljs-attr">redirectUri</span>: <span class="hljs-built_in">window</span>.location.origin,
     }),
   ],
 
@@ -3282,6 +3287,15 @@
     <span class="hljs-built_in">this</span>.auth.loginWithRedirect();
   }
 }</code></pre>
+          <p>
+            By default the application will ask Auth0 will redirect back to the
+            root URL of your application after authentication, but this can be
+            configured by setting the
+            <a
+              href="https://auth0.github.io/auth0-angular/interfaces/authconfig.html#redirecturi"
+              ><code>redirectUri</code> option</a
+            >.
+          </p>
           <p>
             On your template, provide a button that will allow the user to log
             in to the application. Use the
@@ -3447,6 +3461,9 @@ AuthModule.forRoot({
     <span class="hljs-attr">allowedList</span>: [
       <span class="hljs-comment">// Use a string to match the URL exactly</span>
       <span class="hljs-string">&#x27;/api&#x27;</span>,
+
+      <span class="hljs-comment">// Use a wildcard to match URLs that start with this value</span>
+      <span class="hljs-string">&#x27;/api/*&#x27;</span>,
 
       <span class="hljs-comment">// Use a regex to match anything starting with /api</span>
       <span class="hljs-regexp">/^\/api/</span>,
@@ -3615,7 +3632,7 @@ AuthModule.forRoot({
           <p>
             Please do not report security vulnerabilities on the public GitHub
             issue tracker. The
-            <a href="https://auth0.com/whitehat"
+            <a href="https://auth0.com/responsible-disclosure-policy"
               >Responsible Disclosure Program</a
             >
             details the procedure for disclosing security issues.
@@ -3818,17 +3835,15 @@ AuthModule.forRoot({
                 class="tsd-signature-type"
                 >HttpInterceptorRouteConfig</a
               ><span class="tsd-signature-symbol"> | </span
-              ><span class="tsd-signature-type">string</span
-              ><span class="tsd-signature-symbol"> | </span
-              ><span class="tsd-signature-type">RegExp</span>
+              ><span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/lib/auth.config.ts#L11"
-                    >projects/auth0-angular/src/lib/auth.config.ts:11</a
+                    href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/lib/auth.config.ts#L10"
+                    >projects/auth0-angular/src/lib/auth.config.ts:10</a
                   >
                 </li>
               </ul>
@@ -3840,7 +3855,6 @@ AuthModule.forRoot({
               <ul>
                 <li>an object of type HttpInterceptorConfig</li>
                 <li>a string</li>
-                <li>a regular expression</li>
               </ul>
             </div>
           </section>
@@ -3871,7 +3885,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/lib/auth.client.ts#L23"
+                    href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/lib/auth.client.ts#L23"
                     >projects/auth0-angular/src/lib/auth.client.ts:23</a
                   >
                 </li>
@@ -3903,8 +3917,8 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/lib/auth.config.ts#L165"
-                    >projects/auth0-angular/src/lib/auth.config.ts:165</a
+                    href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/lib/auth.config.ts#L171"
+                    >projects/auth0-angular/src/lib/auth.config.ts:171</a
                   >
                 </li>
               </ul>
@@ -3946,7 +3960,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/lib/window.ts#L6"
+                    href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/lib/window.ts#L6"
                     >projects/auth0-angular/src/lib/window.ts:6</a
                   >
                 </li>
@@ -3980,7 +3994,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4046,7 +4060,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4078,7 +4092,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4119,7 +4133,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4225,7 +4239,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4278,8 +4292,8 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/lib/auth.config.ts#L17"
-                        >projects/auth0-angular/src/lib/auth.config.ts:17</a
+                        href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/lib/auth.config.ts#L16"
+                        >projects/auth0-angular/src/lib/auth.config.ts:16</a
                       >
                     </li>
                   </ul>
@@ -4336,7 +4350,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/c7c7c3b/projects/auth0-angular/src/lib/window.ts#L11"
+                        href="https://github.com/auth0/auth0-angular/blob/0b86bc4/projects/auth0-angular/src/lib/window.ts#L11"
                         >projects/auth0-angular/src/lib/window.ts:11</a
                       >
                     </li>
