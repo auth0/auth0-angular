@@ -8,7 +8,7 @@ import { AuthGuard } from './auth.guard';
 @NgModule()
 export class AuthModule {
   static forRoot(config: AuthConfig): ModuleWithProviders<AuthModule> {
-    const defaultedConfig: AuthConfig = {
+    const defaultConfig: AuthConfig = {
       redirectUri: window.location.origin,
       ...config,
     };
@@ -18,10 +18,10 @@ export class AuthModule {
       providers: [
         AuthService,
         AuthGuard,
-        { provide: AuthConfigService, useValue: defaultedConfig },
+        { provide: AuthConfigService, useValue: defaultConfig },
         {
           provide: Auth0ClientService,
-          useValue: Auth0ClientFactory.createClient(defaultedConfig),
+          useValue: Auth0ClientFactory.createClient(defaultConfig),
         },
         { provide: WindowService, useFactory: windowProvider },
       ],
