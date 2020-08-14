@@ -117,6 +117,14 @@ describe('The Auth HTTP Interceptor', () => {
       // Testing 'https://my-api.com/orders' (exact)
       assertAuthorizedApiCallTo('https://my-api.com/orders', done);
     }));
+
+    it('matches a URL that contains a query string', fakeAsync((done) => {
+      assertAuthorizedApiCallTo('/api/people?name=test', done);
+    }));
+
+    it('matches a URL that contains a hash fragment', fakeAsync((done) => {
+      assertAuthorizedApiCallTo('/api/people#hash-fragment', done);
+    }));
   });
 
   describe('Requests that are configured using a complex object', () => {
