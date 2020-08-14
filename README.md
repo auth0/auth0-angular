@@ -99,7 +99,7 @@ export class AppComponent {
 }
 ```
 
-By default the application will ask Auth0 will redirect back to the root URL of your application after authentication, but this can be configured by setting the [`redirectUri` option](link to docs).
+By default the application will ask Auth0 will redirect back to the root URL of your application after authentication, but this can be configured by setting the [`redirectUri` option](https://auth0.github.io/auth0-angular/interfaces/authconfig.html#redirecturi).
 
 On your template, provide a button that will allow the user to log in to the application. Use the `isAuthenticated$` observable to check that the user is not already authenticated:
 
