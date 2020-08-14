@@ -69,6 +69,4 @@ const branch = process.argv[3] || 'master';
   console.log(
     'Done! If the diff looks OK, push the changes along with the new tag using "git push origin master --tags". Once the PR is merged, come back and run "npm run release:publish".'
   );
-
-  // await exec('npm run release:clean');
 })();

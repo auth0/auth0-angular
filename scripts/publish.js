@@ -1,7 +1,8 @@
 const fs = require('fs');
 const exec = require('./exec');
+const execSync = require('child_process').execSync;
 const path = require('path');
-const { stderr } = require('process');
+const { syncBuiltinESMExports } = require('module');
 
 if (!fs.existsSync('.release')) {
   console.error(`There's no release pending publication.`);
@@ -14,7 +15,10 @@ const unpublishedFilePath = path.resolve(tmp, 'unpublished');
 
 if (!fs.existsSync(unpublishedFilePath) || !fs.existsSync(versionFilePath)) {
   console.error(
-    `The last release preparation did not complete successfully. Run 'npm run release:clean' and then 'npm run release' again.`
+    `The last release preparation did not complete successfully. Run 'npm run release:clean' and then 'npm run release' to start all over again.`
+  );
+  console.info(
+    `If the Release PR was already merged into the base branch and only the npm publication is pending, manually run 'npm run build:prod' and then 'ALLOWED=true npm publish ./dist/auth0-angular'.`
   );
   process.exit(1);
 }
@@ -22,15 +26,22 @@ if (!fs.existsSync(unpublishedFilePath) || !fs.existsSync(versionFilePath)) {
 const currentVersion = fs.readFileSync(versionFilePath, 'utf-8');
 
 (async () => {
-  //checkout the last tag
   console.log('Preparing the package for publication...');
-  // await exec(`git checkout v${currentVersion}`);
-  await exec('npm run build --prod');
+  await exec(`git checkout v${currentVersion}`);
+
+  /*
+    The command below ensures the ./dist folder has prod-ready content.
+    It will NOT regenerate the docs nor the useragent file, which
+    should already be updated as part of the last tagged commit.
+  */
+  await exec('npm run build:prod');
 
   console.log('Uploading to npm, you might be prompted for the OTP...');
-  await exec('ALLOWED=true npm run publish ./dist/auth0-angular --dry-run');
 
-  console.log('Done! CLEAN THE FILES');
+  execSync(`ALLOWED=true npm publish ./dist/auth0-angular`, {
+    stdio: 'inherit',
+  });
 
-  // await exec('npm run release:clean');
+  console.log('Done!');
+  await exec('npm run release:clean');
 })();
