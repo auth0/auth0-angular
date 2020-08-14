@@ -145,6 +145,7 @@ describe('The Auth HTTP Interceptor', () => {
     it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
       done
     ) => {
+      // Testing { uri: /api/addresses } (exact match)
       assertAuthorizedApiCallTo('/api/addresses', done);
 
       expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
