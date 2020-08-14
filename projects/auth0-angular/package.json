@@ -1,6 +1,25 @@
 {
   "name": "@auth0/auth0-angular",
   "version": "0.2.0",
+  "description": "Auth0 SDK for Angular Single Page Applications (SPA)",
+  "keywords": [
+    "auth0",
+    "login",
+    "Authorization Code Grant Flow",
+    "PKCE",
+    "Single Page Application authentication",
+    "SPA authentication",
+    "angular"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auth0/auth0-angular.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/auth0/auth0-angular/issues"
+  },
+  "homepage": "https://github.com/auth0/auth0-angular#readme",
   "peerDependencies": {
     "@angular/common": "^10.0.2",
     "@angular/core": "^10.0.2"
