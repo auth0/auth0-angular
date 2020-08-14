@@ -71,8 +71,8 @@ export interface AuthConfig {
 
   /**
    * The default URL where Auth0 will redirect your browser to with
-   * the authentication result. It must be whitelisted in
-   * the "Allowed Callback URLs" field in your Auth0 Application's
+   * the authentication result. It must be added to the
+   * "Allowed Callback URLs" field in your Auth0 Application's
    * settings. If not provided here, it should be provided in the other
    * methods that provide authentication.
    */
