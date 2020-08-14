@@ -73,7 +73,20 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     request: HttpRequest<any>
   ): boolean {
     const testPrimitive = (value: string | RegExp) => {
+      if (!value) {
+        return false;
+      }
+
       if (value === request.url) {
+        return true;
+      }
+
+      // If the URL ends with an asterisk, match using startsWith.
+      if (
+        typeof value === 'string' &&
+        value.indexOf('*') === value.length - 1 &&
+        request.url.startsWith(value.substr(0, value.length - 1))
+      ) {
         return true;
       }
 

@@ -63,7 +63,6 @@ import { AuthModule } from '@auth0/auth0-angular';
     AuthModule.forRoot({
       domain: 'YOUR_AUTH0_DOMAIN',
       clientId: 'YOUR_AUTH0_CLIENT_ID',
-      redirectUri: window.location.origin,
     }),
   ],
 
@@ -99,6 +98,8 @@ export class AppComponent {
   }
 }
 ```
+
+By default the application will ask Auth0 will redirect back to the root URL of your application after authentication, but this can be configured by setting the [`redirectUri` option](https://auth0.github.io/auth0-angular/interfaces/authconfig.html#redirecturi).
 
 On your template, provide a button that will allow the user to log in to the application. Use the `isAuthenticated$` observable to check that the user is not already authenticated:
 
@@ -225,6 +226,9 @@ AuthModule.forRoot({
     allowedList: [
       // Use a string to match the URL exactly
       '/api',
+
+      // Use a wildcard to match URLs that start with this value
+      '/api/*',
 
       // Use a regex to match anything starting with /api
       /^\/api/,
