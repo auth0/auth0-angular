@@ -14,12 +14,25 @@ import { Data } from '@angular/router';
 import { Auth0ClientService } from './auth.client';
 import { AuthConfigService, AuthConfig } from './auth.config';
 
+// NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
+
 describe('The Auth HTTP Interceptor', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   let auth0Client: any;
   let req: TestRequest;
   const testData: Data = { message: 'Hello, world' };
+
+  const assertAuthorizedApiCallTo = (url: string, done: any) => {
+    httpClient.get(url).subscribe(done);
+    flush();
+
+    req = httpTestingController.expectOne(url);
+
+    expect(req.request.headers.get('Authorization')).toBe(
+      'Bearer access-token'
+    );
+  };
 
   beforeEach(() => {
     auth0Client = jasmine.createSpyObj('Auth0Client', ['getTokenSilently']);
@@ -28,20 +41,21 @@ describe('The Auth HTTP Interceptor', () => {
     const config: Partial<AuthConfig> = {
       httpInterceptor: {
         allowedList: [
-          '/basic-api',
-          '/basic-api/startsWith*',
+          '',
+          '/api/photos',
+          '/api/people*',
           /^\/basic-api-regex/,
-          { uri: '/api' },
+          { uri: '/api/orders' },
           { uri: /^\/regex-api/ },
           {
-            uri: '/api-with-options',
+            uri: '/api/addresses',
             tokenOptions: {
               audience: 'audience',
               scope: 'scope',
             },
           },
           {
-            uri: '/api/startsWith*',
+            uri: '/api/calendar*',
           },
         ],
       },
@@ -74,14 +88,14 @@ describe('The Auth HTTP Interceptor', () => {
 
   describe('Requests that do not require authentication', () => {
     it('pass through and do not have access tokens attached', fakeAsync(() => {
-      httpClient.get<Data>('/non-api').subscribe((result) => {
+      httpClient.get<Data>('/api/public').subscribe((result) => {
         expect(result).toEqual(testData);
         expect(req.request.headers.get('Authorization')).toBeFalsy();
       });
 
       flush();
 
-      req = httpTestingController.expectOne('/non-api');
+      req = httpTestingController.expectOne('/api/public');
     }));
   });
 
@@ -89,42 +103,21 @@ describe('The Auth HTTP Interceptor', () => {
     it('attach the access token when the configuration uri is a string', fakeAsync((
       done
     ) => {
-      httpClient.get('/basic-api').subscribe(done);
-      flush();
-
-      req = httpTestingController.expectOne('/basic-api');
-
-      expect(req.request.headers.get('Authorization')).toBe(
-        'Bearer access-token'
-      );
+      // Testing /api/photos (exact match)
+      assertAuthorizedApiCallTo('/api/photos', done);
     }));
 
     it('attach the access token when the configuration uri is a regex', fakeAsync((
       done
     ) => {
-      httpClient.get('/basic-api-regex?value=123').subscribe(done);
-      flush();
-
-      req = httpTestingController.expectOne('/basic-api-regex?value=123');
-
-      expect(req.request.headers.get('Authorization')).toBe(
-        'Bearer access-token'
-      );
+      assertAuthorizedApiCallTo('/basic-api-regex?value=123', done);
     }));
 
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
       done
     ) => {
-      httpClient.get('/basic-api/startsWith?hello=world').subscribe(done);
-      flush();
-
-      req = httpTestingController.expectOne(
-        '/basic-api/startsWith?hello=world'
-      );
-
-      expect(req.request.headers.get('Authorization')).toBe(
-        'Bearer access-token'
-      );
+      // Testing /api/people* (wildcard match)
+      assertAuthorizedApiCallTo('/api/people/profile', done);
     }));
   });
 
@@ -132,54 +125,27 @@ describe('The Auth HTTP Interceptor', () => {
     it('attach the access token when the uri is configured using a string', fakeAsync((
       done
     ) => {
-      // Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
-      httpClient.get('/api').subscribe(done);
-      flush();
-
-      req = httpTestingController.expectOne('/api');
-
-      expect(req.request.headers.get('Authorization')).toBe(
-        'Bearer access-token'
-      );
+      // Testing { uri: /api/addresses } (exact match)
+      assertAuthorizedApiCallTo('/api/addresses', done);
     }));
 
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
       done
     ) => {
-      httpClient.get('/api/startsWith?hello=world').subscribe(done);
-      flush();
-
-      req = httpTestingController.expectOne('/api/startsWith?hello=world');
-
-      expect(req.request.headers.get('Authorization')).toBe(
-        'Bearer access-token'
-      );
+      // Testing { uri: /api/calendar* } (wildcard match)
+      assertAuthorizedApiCallTo('/api/calendar/events', done);
     }));
 
     it('attach the access token when the uri is configured using a regex', fakeAsync((
       done
     ) => {
-      httpClient.get('/regex-api?my-param=42').subscribe(done);
-      flush();
-
-      req = httpTestingController.expectOne('/regex-api?my-param=42');
-
-      expect(req.request.headers.get('Authorization')).toBe(
-        'Bearer access-token'
-      );
+      assertAuthorizedApiCallTo('/regex-api?my-param=42', done);
     }));
 
     it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
       done
     ) => {
-      httpClient.get('/api-with-options').subscribe(done);
-      flush();
-
-      req = httpTestingController.expectOne('/api-with-options');
-
-      expect(req.request.headers.get('Authorization')).toBe(
-        'Bearer access-token'
-      );
+      assertAuthorizedApiCallTo('/api/addresses', done);
 
       expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
         audience: 'audience',
