@@ -14,7 +14,8 @@ if (!fs.existsSync('.release')) {
 
 const newVersion = process.argv[2];
 if (!newVersion) {
-  throw new Error('usage: `release new_version [branch]`');
+  console.error('Usage: `release new_version [branch]`');
+  process.exit(1);
 }
 
 var lastVersionFile = path.resolve(tmp, 'current-version');
@@ -63,8 +64,8 @@ const branch = process.argv[3] || 'master';
   await exec(`git commit -am 'Release v${newVersion}'`);
   await exec(`git tag v${newVersion}`);
 
-  var unpublishedFile = path.resolve(tmp, 'unpublished');
-  fs.closeSync(fs.openSync(unpublishedFile, 'w'));
+  var unpublishedFile = path.resolve(tmp, 'unpublished-version');
+  fs.writeFileSync(unpublishedFile, newVersion);
 
   console.log(
     'Done! If the diff looks OK, push the changes along with the new tag using "git push origin master --tags". Once the PR is merged, come back and run "npm run release:publish".'
