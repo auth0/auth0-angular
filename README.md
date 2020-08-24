@@ -226,23 +226,16 @@ AuthModule.forRoot({
   // The HttpInterceptor configuration
   httpInterceptor: {
     allowedList: [
-      // Use a string to match the URL exactly
+      // Attach access tokens to any calls to '/api' (exact match)
       '/api',
 
-      // Use a wildcard to match URLs that start with this value
+      // Attach access tokens to any calls that start with '/api/'
       '/api/*',
 
-      // Use a regex to match anything starting with /api
-      /^\/api/,
-
-      // The same as above, but with an object
+      // Match anything starting with /api/, but also specify the audience and scope the attached
+      // access token must have
       {
-        uri: /^\/api/, // can be a string or regex
-      },
-
-      // The same as above but also specifying the audience and scope the token must have
-      {
-        uri: /^\/api/,
+        uri: '/api/*',
         tokenOptions: {
           audience: 'http://my-api/',
           scope: 'read:accounts',
