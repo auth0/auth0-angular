@@ -10,12 +10,22 @@
     <form [formGroup]="loginOptionsForm">
       <label>
         Use Redirect
-        <input type="radio" [value]="false" formControlName="usePopup" />
+        <input
+          type="radio"
+          [value]="false"
+          formControlName="usePopup"
+          data-cy="login-redirect"
+        />
       </label>
 
       <label>
         Use Popup
-        <input type="radio" [value]="true" formControlName="usePopup" />
+        <input
+          type="radio"
+          [value]="true"
+          formControlName="usePopup"
+          data-cy="login-popup"
+        />
       </label>
       <button id="login" (click)="launchLogin()">
         Log in
@@ -27,12 +37,20 @@
     <form [formGroup]="logoutOptionsForm">
       <label>
         Local Only
-        <input type="checkbox" formControlName="localOnly" />
+        <input
+          type="checkbox"
+          formControlName="localOnly"
+          data-cy="logout-localOnly"
+        />
       </label>
 
       <label>
         Federated
-        <input type="checkbox" formControlName="federated" />
+        <input
+          type="checkbox"
+          formControlName="federated"
+          data-cy="logout-federated"
+        />
       </label>
       <button id="logout" (click)="launchLogout()">
         Log out
@@ -45,7 +63,7 @@
     <ul class="artifacts-list">
       <li class="artifact">
         <p>User Profile: Subset of the ID token claims</p>
-        <textarea cols="50" rows="15" disabled="true">{{
+        <textarea data-cy="userProfile" cols="50" rows="15" disabled="true">{{
           user$ | async | json
         }}</textarea>
       </li>
@@ -61,24 +79,35 @@
               type="checkbox"
               [value]="false"
               formControlName="ignoreCache"
+              data-cy="accessToken-ignoreCache"
             />
           </label>
 
           <label>
             Silently
-            <input type="radio" [value]="false" formControlName="usePopup" />
+            <input
+              type="radio"
+              [value]="false"
+              formControlName="usePopup"
+              data-cy="accessToken-silently"
+            />
           </label>
 
           <label>
             With Popup
-            <input type="radio" [value]="true" formControlName="usePopup" />
+            <input
+              type="radio"
+              [value]="true"
+              formControlName="usePopup"
+              data-cy="accessToken-popup"
+            />
           </label>
           <button id="accessToken" (click)="updateAccessToken()">
             Refresh
           </button>
         </form>
         <br />
-        <textarea cols="50" rows="2" disabled="true">{{
+        <textarea data-cy="accessToken" cols="50" rows="2" disabled="true">{{
           accessToken
         }}</textarea>
       </li>
