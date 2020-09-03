@@ -8,8 +8,11 @@
   "supportFile": false,
   "reporter": "junit",
   "reporterOptions": {
-    "mochaFile": "test-results/cypress/junit-[hash].xml"
+    "mochaFile": "projects/playground/test-results/e2e/junit-[hash].xml"
   },
   "fileServerFolder": "projects/playground",
-  "integrationFolder": "projects/playground/cypress/integration"
+  "integrationFolder": "projects/playground/e2e/integration",
+  "pluginFolder": "projects/playground/e2e/plugins",
+  "screenshotsFolder": "projects/playground/e2e/screenshots",
+  "videosFolder": "projects/playground/e2e/videos"
 }

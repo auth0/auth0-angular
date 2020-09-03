@@ -13,10 +13,19 @@ jobs:
             - run: npm install
             - run: npm run lint
             - run: npm run build
-            - run: npm run test-ci
+            - run: npm run test:ci
+            - run: npm run e2e:ci
             - run:
                 name: Upload coverage
                 command: ./node_modules/.bin/codecov
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: projects/playground/e2e/videos
+      - store_artifacts:
+          path: projects/playground/e2e/screenshots
+      - store_test_results:
+          path: projects/playground/test-results
       - store_test_results:
           path: projects/auth0-angular/test-results
 workflows:

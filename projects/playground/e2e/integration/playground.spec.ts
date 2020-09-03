@@ -127,12 +127,11 @@ describe('Smoke tests', () => {
     cy.get('[data-cy=logout-federated]').check();
 
     cy.get('#logout').click();
-    cy.url().should('include', 'https://brucke.auth0.com/logout');
-    cy.location('search').should('include', 'federated=true');
 
     cy.get('#login').should('be.visible');
     cy.get('#login').click();
 
+    cy.url().should('include', 'https://brucke.auth0.com/login');
     cy.get('.auth0-lock-last-login-pane').should('not.exist');
     loginToAuth0();
 
