@@ -54,6 +54,7 @@ describe('Smoke tests', () => {
     cy.get('[data-cy=accessToken]')
       .invoke('text')
       .then((token) => {
+        // tslint:disable-next-line: no-unused-expression
         expect(token).not.to.be.empty;
         cy.get('#accessToken').click();
         cy.get('[data-cy=accessToken]').should('have.text', token);
@@ -81,6 +82,7 @@ describe('Smoke tests', () => {
     cy.get('[data-cy=accessToken]')
       .invoke('text')
       .then((token) => {
+        // tslint:disable-next-line: no-unused-expression
         expect(token).not.to.be.empty;
         cy.get('#accessToken').click();
         cy.get('[data-cy=accessToken]').should('not.be.empty');
