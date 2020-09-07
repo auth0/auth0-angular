@@ -94,7 +94,7 @@ export class AppComponent {
   // Inject the authentication service into your component through the constructor
   constructor(public auth: AuthService) {}
 
-  loginWithRedirect() {
+  loginWithRedirect(): void {
     // Call this to redirect the user to the login page
     this.auth.loginWithRedirect();
   }
@@ -119,7 +119,7 @@ On your template, provide a button that will allow the user to log in to the app
 Add a `logout` method to your component and call the SDK's `logout` method:
 
 ```js
-logout() {
+logout(): void {
   // Call this to log the user out of the application
   this.auth.logout({ returnTo: window.location.origin });
 }
@@ -271,7 +271,7 @@ Finally, make your API call using the `HttpClient`. Access tokens are then attac
 export class MyComponent {
   constructor(private http: HttpClient) {}
 
-  callApi() {
+  callApi(): void {
     this.http.get('/api').subscribe(result => console.log(result));
   }
 }
