@@ -116,14 +116,13 @@ describe('Smoke tests', () => {
     cy.get('#login').should('be.visible');
   });
 
-  it('do federated logout (auth0 session is cleared)', () => {
+  it('do regular logout (auth0 session is cleared)', () => {
     cy.visit('/');
     cy.get('#login').should('be.visible').click();
 
     cy.url().should('include', 'https://brucke.auth0.com/login');
     loginToAuth0();
 
-    cy.get('[data-cy=logout-federated]').check();
     cy.get('#logout').click();
 
     cy.get('#login').should('be.visible').click();
