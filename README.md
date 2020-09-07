@@ -183,16 +183,20 @@ export class AppRoutingModule {}
 
 ### Call an API
 
-The SDK provides an `HttpInjector` that automatically attaches access tokens to outgoing requests when using the built-in `HttpClient`. However, you must provide configuration that tells the injector which requests to attach access tokens to.
+The SDK provides an `HttpInterceptor` that automatically attaches access tokens to outgoing requests when using the built-in `HttpClient`. However, you must provide configuration that tells the interceptor which requests to attach access tokens to.
 
-First, register the injector with your application module, along with the `HttpClientModule`:
+#### Register AuthHttpInterceptor
+
+First, register the interceptor with your application module, along with the `HttpClientModule`.
+
+**Note:** We do not do this automatically for you as we want you to be explicit about including this interceptor. Also, you may want to chain this interceptor with others, making it hard for us to place it accurately.
 
 ```js
-// Import the injector module and the Angular types you'll need
+// Import the interceptor module and the Angular types you'll need
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 
-// Register the injector with your app module in the `providers` array
+// Register the interceptor with your app module in the `providers` array
 @NgModule({
   declarations: [],
   imports: [
@@ -207,6 +211,8 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
   bootstrap: [AppComponent],
 })
 ```
+
+#### Configure AuthHttpInterceptor to attach access tokens
 
 Next, tell the SDK which requests to attach access tokens to in the SDK configuration. These are matched on the URL by using a string, a regex, or more complex object that also allows you to specify the configuration for fetching tokens by setting the `tokenOptions` property.
 
@@ -223,7 +229,7 @@ AuthModule.forRoot({
   clientId: 'YOUR_AUTH0_CLIENT_ID',
   redirectUri: window.location.origin,
 
-  // The HttpInterceptor configuration
+  // The AuthHttpInterceptor configuration
   httpInterceptor: {
     allowedList: [
       // Attach access tokens to any calls to '/api' (exact match)
@@ -256,6 +262,8 @@ AuthModule.forRoot({
 ```
 
 > Under the hood, `tokenOptions` is passed as-is to [the `getTokenSilently` method](https://auth0.github.io/auth0-spa-js/classes/auth0client.html#gettokensilently) on the underlying SDK, so all the same options apply here.
+
+#### Use HttpClient to make an API call
 
 Finally, make your API call using the `HttpClient`. Access tokens are then attached automatically in the `Authorization` header:
 
