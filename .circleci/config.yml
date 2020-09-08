@@ -1,25 +1,30 @@
 version: 2.1
-orbs:
-  node: circleci/node@1.1.6
 jobs:
-  build-and-test:
-    executor:
-      name: node/default
-      tag: '12-browsers'
+  build:
+    docker:
+      - image: circleci/node:12-browsers
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm run lint
-            - run: npm run build
-            - run: npm run test-ci
-            - run:
-                name: Upload coverage
-                command: ./node_modules/.bin/codecov
+      - restore_cache:
+          key: dependencies-{{ checksum "package-lock.json" }}
+      - run: npm ci
+      - save_cache:
+          key: dependencies-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+            - ~/.cache
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test:ci
+      - run: npm run e2e:ci
+      - run:
+          name: Upload coverage
+          command: ./node_modules/.bin/codecov
+      - store_artifacts:
+          path: projects/playground/e2e/videos
+      - store_artifacts:
+          path: projects/playground/e2e/screenshots
+      - store_test_results:
+          path: projects/playground/test-results
       - store_test_results:
           path: projects/auth0-angular/test-results
-workflows:
-  build-and-test:
-    jobs:
-      - build-and-test

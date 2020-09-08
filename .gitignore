@@ -1,5 +1,10 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# cypress
+projects/playground/e2e/videos
+projects/playground/e2e/screenshots
+cypress.env.json
+
 # release pipeline tmp files
 .release*/
 .release
