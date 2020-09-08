@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-child-route',
   template: `
-    <p>
+    <p data-cy="nested-child-route">
       Nested child-route works!
     </p>
   `,

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-child-route',
   template: `
-    <p>
+    <p data-cy="child-route">
       child-route works!
     </p>
 

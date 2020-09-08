@@ -154,4 +154,38 @@ describe('Smoke tests', () => {
     cy.get('[data-cy=unprotected]').should('be.visible');
     cy.get('[data-cy=protected]').should('not.be.visible');
   });
+
+  it('should see child route content without logging in', () => {
+    cy.visit('/child');
+    cy.get('#login').should('be.visible');
+
+    cy.get('[data-cy=child-route]').should('be.visible');
+  });
+
+  it('should protect the nested child route and return to the right place after login', () => {
+    cy.visit('/');
+    cy.get('[data-cy=nested-child-route]').should('not.be.visible');
+    cy.visit('/child/nested');
+
+    cy.url().should('include', 'https://brucke.auth0.com/login');
+    loginToAuth0();
+
+    cy.url().should('include', '/child/nested');
+    cy.get('[data-cy=nested-child-route]').should('be.visible');
+    cy.get('#logout').click();
+  });
+
+  it('should not navigate to the lazy loaded module when not authenticated', () => {
+    cy.visit('/lazy');
+    cy.get('[data-cy=lazy-module]').should('not.be.visible');
+  });
+
+  it('should show lazy module content when authenticated', () => {
+    cy.visit('/');
+    cy.get('#login').should('be.visible').click();
+    loginToAuth0();
+    cy.get('#logout').should('be.visible');
+    cy.visit('/lazy');
+    cy.get('[data-cy=lazy-module]').should('be.visible');
+  });
 });
