@@ -15,6 +15,14 @@ const routes: Routes = [
     component: UnprotectedComponent,
     pathMatch: 'full',
   },
+  {
+    path: 'lazy',
+    canLoad: [AuthGuard],
+    loadChildren: () =>
+      import('./lazy-module/lazy-module.module').then(
+        (m) => m.LazyModuleModule
+      ),
+  },
 ];
 
 @NgModule({
