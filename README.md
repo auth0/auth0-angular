@@ -15,6 +15,7 @@ A library for integrating [Auth0](https://auth0.com) into an Angular 9+ applicat
 - [Documentation](#documentation)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
+- [Angular Universal](#angular-universal)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Support + Feedback](#support--feedback)
@@ -276,6 +277,12 @@ export class MyComponent {
   }
 }
 ```
+
+## Angular Universal
+
+This library makes use of the `window` object in a couple of places during initialization, as well as `sessionStorage` in the underlying Auth0 SPA SDK, and thus [will have problems](https://github.com/angular/universal/blob/master/docs/gotchas.md#window-is-not-defined) when being used in an Angular Universal project. The recommendation currently is to only import this library into a module that is to be used in the browser, and omit it from any module that is to participate in a server-side environment.
+
+See [Guards, and creating separate modules](https://github.com/angular/universal/blob/master/docs/gotchas.md#strategy-2-guards) in the Angular Universal "Gotchas" document.
 
 ## Development
 
