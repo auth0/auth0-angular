@@ -6,6 +6,7 @@ import {
   CanLoad,
   Route,
   UrlSegment,
+  CanActivateChild,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { tap, take } from 'rxjs/operators';
@@ -14,7 +15,7 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate, CanLoad {
+export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
   constructor(private auth: AuthService) {}
 
   canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
@@ -23,6 +24,19 @@ export class AuthGuard implements CanActivate, CanLoad {
 
   canActivate(
     next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.redirectIfUnauthenticated(state);
+  }
+
+  canActivateChild(
+    childRoute: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.redirectIfUnauthenticated(state);
+  }
+
+  private redirectIfUnauthenticated(
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.auth.isAuthenticated$.pipe(
