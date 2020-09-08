@@ -7,6 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProtectedComponent } from './protected/protected.component';
 import { UnprotectedComponent } from './unprotected/unprotected.component';
+import { ChildRouteComponent } from './child-route/child-route.component';
+import { NestedChildRouteComponent } from './child-route/nested-child-route.component';
 
 const AUTH0_CONFIG = {
   clientId: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
@@ -14,7 +16,13 @@ const AUTH0_CONFIG = {
 };
 
 @NgModule({
-  declarations: [AppComponent, ProtectedComponent, UnprotectedComponent],
+  declarations: [
+    AppComponent,
+    ProtectedComponent,
+    UnprotectedComponent,
+    ChildRouteComponent,
+    NestedChildRouteComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
