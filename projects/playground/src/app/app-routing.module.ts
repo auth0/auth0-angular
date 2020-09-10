@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProtectedComponent } from './protected/protected.component';
+import { ProtectedComponent } from './components/protected.component';
 import { AuthGuard } from 'projects/auth0-angular/src/lib/auth.guard';
-import { UnprotectedComponent } from './unprotected/unprotected.component';
-import { ChildRouteComponent } from './child-route/child-route.component';
-import { NestedChildRouteComponent } from './child-route/nested-child-route.component';
+import { UnprotectedComponent } from './components/unprotected.component';
+import { ChildRouteComponent } from './components/child-route.component';
+import { NestedChildRouteComponent } from './components/nested-child-route.component';
 
 const routes: Routes = [
   {
@@ -27,9 +27,7 @@ const routes: Routes = [
     path: 'lazy',
     canLoad: [AuthGuard],
     loadChildren: () =>
-      import('./lazy-module/lazy-module.module').then(
-        (m) => m.LazyModuleModule
-      ),
+      import('./lazy-module.module').then((m) => m.LazyModuleModule),
   },
 ];
 

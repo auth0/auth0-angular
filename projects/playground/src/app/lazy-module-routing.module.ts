@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LazyModuleComponent } from './lazy-module.component';
+import { LazyModuleComponent } from './components/lazy-module.component';
 
 const routes: Routes = [{ path: '', component: LazyModuleComponent }];
 
