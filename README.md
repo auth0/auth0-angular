@@ -36,6 +36,12 @@ Using npm:
 npm install @auth0/auth0-angular
 ```
 
+We also have `ng-add` support, so the library can also be installed using the Angular CLI:
+
+```sh
+ng add @auth0/auth0-angular
+```
+
 ## Getting Started
 
 - [Register the authentication module](#register-the-authentication-module)
