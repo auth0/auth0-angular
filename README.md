@@ -245,13 +245,23 @@ AuthModule.forRoot({
       // Attach access tokens to any calls that start with '/api/'
       '/api/*',
 
-      // Match anything starting with /api/, but also specify the audience and scope the attached
+      // Match anything starting with /api/accounts, but also specify the audience and scope the attached
       // access token must have
       {
-        uri: '/api/*',
+        uri: '/api/accounts/*',
         tokenOptions: {
           audience: 'http://my-api/',
           scope: 'read:accounts',
+        },
+      },
+
+      // Matching on HTTP method
+      {
+        uri: '/api/orders',
+        httpMethod: 'post',
+        tokenOptions: {
+          audience: 'http://my-api/',
+          scope: 'write:orders',
         },
       },
 
