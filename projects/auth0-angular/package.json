@@ -11,6 +11,11 @@
     "SPA authentication",
     "angular"
   ],
+  "scripts": {
+    "build": "../../node_modules/.bin/tsc -p tsconfig.schematics.json",
+    "copy:collection": "cp schematics/collection.json ../../dist/auth0-angular/schematics/collection.json",
+    "postbuild": "npm run copy:collection"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/auth0/auth0-angular.git"
@@ -27,5 +32,6 @@
   "dependencies": {
     "tslib": "^2.0.0",
     "@auth0/auth0-spa-js": "^1.11.0"
-  }
+  },
+  "schematics": "./schematics/collection.json"
 }
