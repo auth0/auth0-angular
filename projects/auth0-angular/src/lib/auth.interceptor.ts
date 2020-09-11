@@ -113,6 +113,13 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     };
 
     if (isHttpInterceptorRouteConfig(route)) {
+      if (
+        route.httpMethod &&
+        route.httpMethod.toLowerCase() !== request.method.toLowerCase()
+      ) {
+        return false;
+      }
+
       return testPrimitive(route.uri);
     }
 

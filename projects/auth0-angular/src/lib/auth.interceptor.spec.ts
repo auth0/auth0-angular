@@ -23,8 +23,12 @@ describe('The Auth HTTP Interceptor', () => {
   let req: TestRequest;
   const testData: Data = { message: 'Hello, world' };
 
-  const assertAuthorizedApiCallTo = (url: string, done: any) => {
-    httpClient.get(url).subscribe(done);
+  const assertAuthorizedApiCallTo = (
+    url: string,
+    done: any,
+    method = 'get'
+  ) => {
+    httpClient[method](url).subscribe(done);
     flush();
 
     req = httpTestingController.expectOne(url);
@@ -32,6 +36,18 @@ describe('The Auth HTTP Interceptor', () => {
     expect(req.request.headers.get('Authorization')).toBe(
       'Bearer access-token'
     );
+  };
+
+  const assertPassThruApiCallTo = (url: string, done: any) => {
+    httpClient.get<Data>(url).subscribe((result) => {
+      expect(result).toEqual(testData);
+      expect(req.request.headers.get('Authorization')).toBeFalsy();
+      done();
+    });
+
+    flush();
+
+    req = httpTestingController.expectOne(url);
   };
 
   beforeEach(() => {
@@ -55,6 +71,10 @@ describe('The Auth HTTP Interceptor', () => {
           },
           {
             uri: '/api/calendar*',
+          },
+          {
+            uri: '/api/register',
+            httpMethod: 'post',
           },
         ],
       },
@@ -86,15 +106,10 @@ describe('The Auth HTTP Interceptor', () => {
   });
 
   describe('Requests that do not require authentication', () => {
-    it('pass through and do not have access tokens attached', fakeAsync(() => {
-      httpClient.get<Data>('/api/public').subscribe((result) => {
-        expect(result).toEqual(testData);
-        expect(req.request.headers.get('Authorization')).toBeFalsy();
-      });
-
-      flush();
-
-      req = httpTestingController.expectOne('/api/public');
+    it('pass through and do not have access tokens attached', fakeAsync((
+      done
+    ) => {
+      assertPassThruApiCallTo('/api/public', done);
     }));
   });
 
@@ -152,6 +167,19 @@ describe('The Auth HTTP Interceptor', () => {
     ) => {
       // Testing { uri: /api/calendar* } (wildcard match)
       assertAuthorizedApiCallTo('/api/calendar/events', done);
+    }));
+
+    it('attaches the access token when the HTTP method matches', fakeAsync((
+      done
+    ) => {
+      // Testing { uri: /api/register } (wildcard match)
+      assertAuthorizedApiCallTo('/api/register', done, 'post');
+    }));
+
+    it('does not attach the access token if the HTTP method does not match', fakeAsync((
+      done
+    ) => {
+      assertPassThruApiCallTo('/api/public', done);
     }));
   });
 });

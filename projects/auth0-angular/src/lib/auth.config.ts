@@ -52,6 +52,13 @@ export interface HttpInterceptorRouteConfig {
    * access token to attach to the outgoing request.
    */
   tokenOptions?: GetTokenSilentlyOptions;
+
+  /**
+   * The HTTP method to match on. If specified, the HTTP method of
+   * the outgoing request will be checked against this. If there is no match, the
+   * Authorization header is not attached.
+   */
+  httpMethod?: string;
 }
 
 /**
