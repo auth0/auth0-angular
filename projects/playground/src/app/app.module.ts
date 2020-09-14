@@ -5,8 +5,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProtectedComponent } from './protected/protected.component';
-import { UnprotectedComponent } from './unprotected/unprotected.component';
+import { ProtectedComponent } from './components/protected.component';
+import { UnprotectedComponent } from './components/unprotected.component';
+import { ChildRouteComponent } from './components/child-route.component';
+import { NestedChildRouteComponent } from './components/nested-child-route.component';
 
 const AUTH0_CONFIG = {
   clientId: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
@@ -14,7 +16,13 @@ const AUTH0_CONFIG = {
 };
 
 @NgModule({
-  declarations: [AppComponent, ProtectedComponent, UnprotectedComponent],
+  declarations: [
+    AppComponent,
+    ProtectedComponent,
+    UnprotectedComponent,
+    ChildRouteComponent,
+    NestedChildRouteComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
