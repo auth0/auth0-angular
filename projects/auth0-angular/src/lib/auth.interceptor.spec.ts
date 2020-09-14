@@ -25,12 +25,11 @@ describe('The Auth HTTP Interceptor', () => {
 
   const assertAuthorizedApiCallTo = (
     url: string,
-    done: any,
+    done: () => void,
     method = 'get'
   ) => {
     httpClient[method](url).subscribe(done);
     flush();
-
     req = httpTestingController.expectOne(url);
 
     expect(req.request.headers.get('Authorization')).toBe(
@@ -38,16 +37,11 @@ describe('The Auth HTTP Interceptor', () => {
     );
   };
 
-  const assertPassThruApiCallTo = (url: string, done: any) => {
-    httpClient.get<Data>(url).subscribe((result) => {
-      expect(result).toEqual(testData);
-      expect(req.request.headers.get('Authorization')).toBeFalsy();
-      done();
-    });
-
+  const assertPassThruApiCallTo = (url: string, done: () => void) => {
+    httpClient.get<Data>(url).subscribe(done);
     flush();
-
     req = httpTestingController.expectOne(url);
+    expect(req.request.headers.get('Authorization')).toBeFalsy();
   };
 
   beforeEach(() => {
