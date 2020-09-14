@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-protected',
-  templateUrl: './protected.component.html',
-  styleUrls: ['./protected.component.css'],
+  template: '<p data-cy="protected">This route is protected!</p>',
+  styles: [],
 })
 export class ProtectedComponent implements OnInit {
   constructor() {}
