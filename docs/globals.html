@@ -3113,6 +3113,10 @@
               src="https://img.shields.io/badge/stage-beta-orange"
               alt="Stage: Beta"
             />
+            <img
+              src="https://img.shields.io/github/v/release/auth0/auth0-angular"
+              alt="Release"
+            />
             <a href="https://circleci.com/gh/auth0/auth0-angular"
               ><img
                 src="https://img.shields.io/circleci/build/github/auth0/auth0-angular"
@@ -3123,7 +3127,12 @@
                 src="https://img.shields.io/codecov/c/github/auth0/auth0-angular"
                 alt="Codecov"
             /></a>
+            <img
+              src="https://img.shields.io/npm/dw/@auth0/auth0-angular"
+              alt="Downloads"
+            />
           </p>
+
           <a
             href="#auth0-angular-sdk---beta"
             id="auth0-angular-sdk---beta"
@@ -3137,9 +3146,9 @@
           </p>
           <p>
             <strong>Note:</strong> This is a <strong>BETA</strong> package and
-            thus <strong>SHOULD NOT BE USED IN PRODUCTION</strong>. There are
-            likely to be further breaking changes as the SDK matures to the more
-            stable release stages.
+            thus <strong>SHOULD NOT BE USED IN PRODUCTION</strong>. While we try
+            hard to contain breaking changes at this stage, it may be necessary
+            to make such breaking changes in order to improve the SDK.
           </p>
           <a
             href="#table-of-contents"
@@ -3152,6 +3161,7 @@
             <li><a href="#documentation">Documentation</a></li>
             <li><a href="#installation">Installation</a></li>
             <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#angular-universal">Angular Universal</a></li>
             <li><a href="#development">Development</a></li>
             <li><a href="#contributing">Contributing</a></li>
             <li><a href="#support--feedback">Support + Feedback</a></li>
@@ -3187,6 +3197,11 @@
           </a>
           <p>Using npm:</p>
           <pre><code class="language-sh">npm install @auth0/auth0-angular</code></pre>
+          <p>
+            We also have <code>ng-add</code> support, so the library can also be
+            installed using the Angular CLI:
+          </p>
+          <pre><code class="language-sh">ng add @auth0/auth0-angular</code></pre>
           <a
             href="#getting-started"
             id="getting-started"
@@ -3281,7 +3296,7 @@
   <span class="hljs-comment">// Inject the authentication service into your component through the constructor</span>
   <span class="hljs-keyword">constructor</span>(public auth: AuthService) {}
 
-  loginWithRedirect() {
+  loginWithRedirect(): <span class="hljs-keyword">void</span> {
     <span class="hljs-comment">// Call this to redirect the user to the login page</span>
     <span class="hljs-built_in">this</span>.auth.loginWithRedirect();
   }
@@ -3318,7 +3333,7 @@
             Add a <code>logout</code> method to your component and call the
             SDK&#39;s <code>logout</code> method:
           </p>
-          <pre><code class="language-js">logout() {
+          <pre><code class="language-js">logout(): <span class="hljs-keyword">void</span> {
   <span class="hljs-comment">// Call this to log the user out of the application</span>
   <span class="hljs-built_in">this</span>.auth.logout({ <span class="hljs-attr">returnTo</span>: <span class="hljs-built_in">window</span>.location.origin });
 }</code></pre>
@@ -3402,20 +3417,34 @@
             <h3>Call an API</h3>
           </a>
           <p>
-            The SDK provides an <code>HttpInjector</code> that automatically
+            The SDK provides an <code>HttpInterceptor</code> that automatically
             attaches access tokens to outgoing requests when using the built-in
             <code>HttpClient</code>. However, you must provide configuration
-            that tells the injector which requests to attach access tokens to.
+            that tells the interceptor which requests to attach access tokens
+            to.
+          </p>
+          <a
+            href="#register-authhttpinterceptor"
+            id="register-authhttpinterceptor"
+            style="color: inherit; text-decoration: none;"
+          >
+            <h4>Register AuthHttpInterceptor</h4>
+          </a>
+          <p>
+            First, register the interceptor with your application module, along
+            with the <code>HttpClientModule</code>.
           </p>
           <p>
-            First, register the injector with your application module, along
-            with the <code>HttpClientModule</code>:
+            <strong>Note:</strong> We do not do this automatically for you as we
+            want you to be explicit about including this interceptor. Also, you
+            may want to chain this interceptor with others, making it hard for
+            us to place it accurately.
           </p>
-          <pre><code class="language-js"><span class="hljs-comment">// Import the injector module and the Angular types you&#x27;ll need</span>
+          <pre><code class="language-js"><span class="hljs-comment">// Import the interceptor module and the Angular types you&#x27;ll need</span>
 <span class="hljs-keyword">import</span> { HttpClientModule, HTTP_INTERCEPTORS } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/common/http&#x27;</span>;
 <span class="hljs-keyword">import</span> { AuthHttpInterceptor } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
 
-<span class="hljs-comment">// Register the injector with your app module in the `providers` array</span>
+<span class="hljs-comment">// Register the interceptor with your app module in the `providers` array</span>
 @NgModule({
   <span class="hljs-attr">declarations</span>: [],
   <span class="hljs-attr">imports</span>: [
@@ -3429,6 +3458,13 @@
   ],
   <span class="hljs-attr">bootstrap</span>: [AppComponent],
 })</code></pre>
+          <a
+            href="#configure-authhttpinterceptor-to-attach-access-tokens"
+            id="configure-authhttpinterceptor-to-attach-access-tokens"
+            style="color: inherit; text-decoration: none;"
+          >
+            <h4>Configure AuthHttpInterceptor to attach access tokens</h4>
+          </a>
           <p>
             Next, tell the SDK which requests to attach access tokens to in the
             SDK configuration. These are matched on the URL by using a string, a
@@ -3455,27 +3491,20 @@ AuthModule.forRoot({
   <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_CLIENT_ID&#x27;</span>,
   <span class="hljs-attr">redirectUri</span>: <span class="hljs-built_in">window</span>.location.origin,
 
-  <span class="hljs-comment">// The HttpInterceptor configuration</span>
+  <span class="hljs-comment">// The AuthHttpInterceptor configuration</span>
   <span class="hljs-attr">httpInterceptor</span>: {
     <span class="hljs-attr">allowedList</span>: [
-      <span class="hljs-comment">// Use a string to match the URL exactly</span>
+      <span class="hljs-comment">// Attach access tokens to any calls to &#x27;/api&#x27; (exact match)</span>
       <span class="hljs-string">&#x27;/api&#x27;</span>,
 
-      <span class="hljs-comment">// Use a wildcard to match URLs that start with this value</span>
+      <span class="hljs-comment">// Attach access tokens to any calls that start with &#x27;/api/&#x27;</span>
       <span class="hljs-string">&#x27;/api/*&#x27;</span>,
 
-      <span class="hljs-comment">// Use a regex to match anything starting with /api</span>
-      <span class="hljs-regexp">/^\/api/</span>,
-
-      <span class="hljs-comment">// The same as above, but with an object</span>
+      <span class="hljs-comment">// Match anything starting with /api/, but also specify the audience and scope the attached</span>
+      <span class="hljs-comment">// access token must have</span>
       {
-        <span class="hljs-attr">uri</span>: <span class="hljs-regexp">/^\/api/</span>, <span class="hljs-comment">// can be a string or regex</span>
-      },
-
-      <span class="hljs-comment">// The same as above but also specifying the audience and scope the token must have</span>
-      {
-        <span class="hljs-attr">uri</span>: <span class="hljs-regexp">/^\/api/</span>,
-        tokenOptions: {
+        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/api/*&#x27;</span>,
+        <span class="hljs-attr">tokenOptions</span>: {
           <span class="hljs-attr">audience</span>: <span class="hljs-string">&#x27;http://my-api/&#x27;</span>,
           <span class="hljs-attr">scope</span>: <span class="hljs-string">&#x27;read:accounts&#x27;</span>,
         },
@@ -3502,6 +3531,13 @@ AuthModule.forRoot({
               on the underlying SDK, so all the same options apply here.
             </p>
           </blockquote>
+          <a
+            href="#use-httpclient-to-make-an-api-call"
+            id="use-httpclient-to-make-an-api-call"
+            style="color: inherit; text-decoration: none;"
+          >
+            <h4>Use HttpClient to make an API call</h4>
+          </a>
           <p>
             Finally, make your API call using the <code>HttpClient</code>.
             Access tokens are then attached automatically in the
@@ -3510,10 +3546,39 @@ AuthModule.forRoot({
           <pre><code class="language-js"><span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> </span>{
   <span class="hljs-keyword">constructor</span>(private http: HttpClient) {}
 
-  callApi() {
+  callApi(): <span class="hljs-keyword">void</span> {
     <span class="hljs-built_in">this</span>.http.get(<span class="hljs-string">&#x27;/api&#x27;</span>).subscribe(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(result));
   }
 }</code></pre>
+          <a
+            href="#angular-universal"
+            id="angular-universal"
+            style="color: inherit; text-decoration: none;"
+          >
+            <h2>Angular Universal</h2>
+          </a>
+          <p>
+            This library makes use of the <code>window</code> object in a couple
+            of places during initialization, as well as
+            <code>sessionStorage</code> in the underlying Auth0 SPA SDK, and
+            thus
+            <a
+              href="https://github.com/angular/universal/blob/master/docs/gotchas.md#window-is-not-defined"
+              >will have problems</a
+            >
+            when being used in an Angular Universal project. The recommendation
+            currently is to only import this library into a module that is to be
+            used in the browser, and omit it from any module that is to
+            participate in a server-side environment.
+          </p>
+          <p>
+            See
+            <a
+              href="https://github.com/angular/universal/blob/master/docs/gotchas.md#strategy-2-guards"
+              >Guards, and creating separate modules</a
+            >
+            in the Angular Universal &quot;Gotchas&quot; document.
+          </p>
           <a
             href="#development"
             id="development"
@@ -3841,7 +3906,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/lib/auth.config.ts#L10"
+                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/auth.config.ts#L10"
                     >projects/auth0-angular/src/lib/auth.config.ts:10</a
                   >
                 </li>
@@ -3884,7 +3949,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/lib/auth.client.ts#L23"
+                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/auth.client.ts#L23"
                     >projects/auth0-angular/src/lib/auth.client.ts:23</a
                   >
                 </li>
@@ -3916,7 +3981,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/lib/auth.config.ts#L171"
+                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/auth.config.ts#L171"
                     >projects/auth0-angular/src/lib/auth.config.ts:171</a
                   >
                 </li>
@@ -3959,7 +4024,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/lib/window.ts#L6"
+                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/window.ts#L6"
                     >projects/auth0-angular/src/lib/window.ts:6</a
                   >
                 </li>
@@ -3993,7 +4058,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4059,7 +4124,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4091,7 +4156,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4132,7 +4197,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4238,7 +4303,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4291,7 +4356,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/lib/auth.config.ts#L16"
+                        href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/auth.config.ts#L16"
                         >projects/auth0-angular/src/lib/auth.config.ts:16</a
                       >
                     </li>
@@ -4349,7 +4414,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/70ed545/projects/auth0-angular/src/lib/window.ts#L11"
+                        href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/window.ts#L11"
                         >projects/auth0-angular/src/lib/window.ts:11</a
                       >
                     </li>
