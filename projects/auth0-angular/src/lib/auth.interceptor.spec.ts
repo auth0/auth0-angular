@@ -1,10 +1,6 @@
 import { AuthHttpInterceptor } from './auth.interceptor';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
-import {
-  HttpClient,
-  HTTP_INTERCEPTORS,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -12,7 +8,7 @@ import {
 } from '@angular/common/http/testing';
 import { Data } from '@angular/router';
 import { Auth0ClientService } from './auth.client';
-import { AuthConfigService, AuthConfig } from './auth.config';
+import { AuthConfigService, AuthConfig, HttpMethod } from './auth.config';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -68,7 +64,7 @@ describe('The Auth HTTP Interceptor', () => {
           },
           {
             uri: '/api/register',
-            httpMethod: 'post',
+            httpMethod: HttpMethod.Post,
           },
         ],
       },

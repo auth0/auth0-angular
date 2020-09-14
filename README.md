@@ -230,6 +230,8 @@ If an HTTP call is made using `HttpClient` and there is no match in this configu
 Here are some examples:
 
 ```js
+import { HttpMethod } from '@auth0/auth0-angular';
+
 // Modify your existing SDK configuration to include the httpInterceptor config
 AuthModule.forRoot({
   domain: 'YOUR_AUTH0_DOMAIN',
@@ -258,7 +260,7 @@ AuthModule.forRoot({
       // Matching on HTTP method
       {
         uri: '/api/orders',
-        httpMethod: 'post',
+        httpMethod: HttpMethod.Post,
         tokenOptions: {
           audience: 'http://my-api/',
           scope: 'write:orders',

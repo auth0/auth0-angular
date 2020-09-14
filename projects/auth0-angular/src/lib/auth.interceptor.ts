@@ -18,7 +18,7 @@ import {
 
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { switchMap, first, concatMap, map, pluck } from 'rxjs/operators';
+import { switchMap, first, concatMap, pluck } from 'rxjs/operators';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -113,10 +113,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     };
 
     if (isHttpInterceptorRouteConfig(route)) {
-      if (
-        route.httpMethod &&
-        route.httpMethod.toLowerCase() !== request.method.toLowerCase()
-      ) {
+      if (route.httpMethod && route.httpMethod !== request.method) {
         return false;
       }
 
