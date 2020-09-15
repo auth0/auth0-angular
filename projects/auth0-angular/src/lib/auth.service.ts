@@ -19,6 +19,7 @@ import {
   Observable,
   iif,
   defer,
+  ReplaySubject,
 } from 'rxjs';
 
 import {
@@ -28,6 +29,8 @@ import {
   filter,
   takeUntil,
   distinctUntilChanged,
+  catchError,
+  switchMap,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -40,44 +43,69 @@ import { Location } from '@angular/common';
 export class AuthService implements OnDestroy {
   private isLoadingSubject$ = new BehaviorSubject(true);
   private isAuthenticatedSubject$ = new BehaviorSubject(false);
+  private errorSubject$ = new ReplaySubject<Error>(1);
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject();
 
+  /**
+   * Emits boolean values indicating the loading state of the SDK
+   */
   readonly isLoading$ = this.isLoadingSubject$.asObservable();
 
+  /**
+   * Emits boolean values indicating the authentication state of the user. If `true`, it means a user has authenticated.
+   * This depends on the value of `isLoading$`, so there is no need to manually check the loading state of the SDK.
+   */
   readonly isAuthenticated$ = this.isLoading$.pipe(
     filter((loading) => !loading),
     distinctUntilChanged(),
     concatMap(() => this.isAuthenticatedSubject$)
   );
 
+  /**
+   * Emits details about the authenticated user when `isAuthenticated$` is `true`.
+   */
   readonly user$ = this.isAuthenticated$.pipe(
     filter((authenticated) => authenticated),
     distinctUntilChanged(),
     concatMap(() => this.auth0Client.getUser())
   );
 
+  /**
+   * Emits errors that occur during login, or when checking for an active session on startup.
+   */
+  readonly error$ = this.errorSubject$.asObservable();
+
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     private location: Location,
     private navigator: AbstractNavigator
   ) {
+    const checkSessionOrCallback$ = (isCallback: boolean) =>
+      iif(
+        () => isCallback,
+        this.handleRedirectCallback(),
+        defer(() => this.auth0Client.checkSession())
+      );
+
     this.shouldHandleCallback()
       .pipe(
-        concatMap((isCallback) =>
-          iif(
-            () => isCallback,
-            this.handleRedirectCallback(),
-            defer(() => this.auth0Client.checkSession())
+        switchMap((isCallback) =>
+          checkSessionOrCallback$(isCallback).pipe(
+            catchError((error) => {
+              this.errorSubject$.next(error);
+              this.navigator.navigateByUrl('/');
+              return of(undefined);
+            })
           )
         ),
-        takeUntil(this.ngUnsubscribe$),
         concatMap(() => this.auth0Client.isAuthenticated()),
         tap((authenticated) => {
           this.isAuthenticatedSubject$.next(authenticated);
           this.isLoadingSubject$.next(false);
-        })
+        }),
+        takeUntil(this.ngUnsubscribe$)
       )
       .subscribe();
   }
@@ -216,7 +244,11 @@ export class AuthService implements OnDestroy {
 
   private shouldHandleCallback(): Observable<boolean> {
     return of(this.location.path()).pipe(
-      map((path) => path.includes('code=') && path.includes('state='))
+      map(
+        (search) =>
+          (search.includes('code=') || search.includes('error=')) &&
+          search.includes('state=')
+      )
     );
   }
 

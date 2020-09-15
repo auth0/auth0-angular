@@ -58,6 +58,11 @@
     </form>
   </div>
 
+  <div class="error-wrapper" *ngIf="error$ | async as err">
+    <h2>Last error</h2>
+    {{ err.message }}
+  </div>
+
   <div class="artifacts-wrapper" *ngIf="isAuthenticated$ | async">
     <h2>Artifacts</h2>
     <ul class="artifacts-list">

@@ -199,6 +199,22 @@ describe('AuthService', () => {
         done();
       });
     });
+
+    it('should record errors in the error$ observable', (done) => {
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.throwError(
+        new Error('An error occurred')
+      );
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        localService.error$.subscribe((error: Error) => {
+          expect(error.message).toBe('An error occurred');
+          expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
+          done();
+        });
+      });
+    });
   });
 
   it('should call `loginWithRedirect`', async () => {
