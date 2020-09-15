@@ -201,15 +201,17 @@ describe('AuthService', () => {
     });
 
     it('should record errors in the error$ observable', (done) => {
+      const errorObj = new Error('An error has occured');
+
       (auth0Client.handleRedirectCallback as jasmine.Spy).and.throwError(
-        new Error('An error occurred')
+        errorObj
       );
 
       const localService = createService();
 
       loaded(localService).subscribe(() => {
-        localService.error$.subscribe((error: Error) => {
-          expect(error.message).toBe('An error occurred');
+        localService.error$.subscribe((err: Error) => {
+          expect(err).toBe(errorObj);
           expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
           done();
         });
