@@ -31,8 +31,8 @@ import {
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
-import { WindowService } from './window';
 import { AbstractNavigator } from './abstract-navigator';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -60,11 +60,9 @@ export class AuthService implements OnDestroy {
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
-    @Inject(WindowService) private window: any,
+    private location: Location,
     private navigator: AbstractNavigator
   ) {
-    // https://github.com/angular/angular/issues/12631
-    this.window = window as Window;
     this.shouldHandleCallback()
       .pipe(
         concatMap((isCallback) =>
@@ -217,8 +215,8 @@ export class AuthService implements OnDestroy {
   }
 
   private shouldHandleCallback(): Observable<boolean> {
-    return of(this.window.location.search).pipe(
-      map((search) => search.includes('code=') && search.includes('state='))
+    return of(this.location.path()).pipe(
+      map((path) => path.includes('code=') && path.includes('state='))
     );
   }
 

@@ -1,6 +1,6 @@
 import { Injectable, Inject, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { WindowService } from './window';
+import { DOCUMENT, Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -8,9 +8,11 @@ import { WindowService } from './window';
 export class AbstractNavigator {
   private readonly router: Router;
 
-  constructor(@Inject(WindowService) private window: any, injector: Injector) {
-    // https://github.com/angular/angular/issues/12631
-    this.window = window as Window;
+  constructor(
+    @Inject(DOCUMENT) private doc: Document,
+    private location: Location,
+    injector: Injector
+  ) {
     try {
       this.router = injector.get(Router);
     } catch {}
@@ -30,6 +32,6 @@ export class AbstractNavigator {
       return;
     }
 
-    this.window.history.replaceState({}, null, url);
+    this.location.replaceState(url);
   }
 }

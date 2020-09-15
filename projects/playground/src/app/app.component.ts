@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
-import { WindowService } from 'projects/auth0-angular/src/lib/window';
-import { iif, BehaviorSubject } from 'rxjs';
+import { iif } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { LogoutOptions } from '@auth0/auth0-spa-js';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -33,11 +33,8 @@ export class AppComponent {
 
   constructor(
     public auth: AuthService,
-    @Inject(WindowService) private window: any
-  ) {
-    // https://github.com/angular/angular/issues/12631
-    this.window = window as Window;
-  }
+    @Inject(DOCUMENT) private doc: Document
+  ) {}
 
   launchLogin(): void {
     const usePopup = this.loginOptionsForm.value.usePopup === true;
@@ -53,8 +50,9 @@ export class AppComponent {
     const options: LogoutOptions = {
       localOnly: formOptions.localOnly === true,
       federated: formOptions.federated === true,
-      returnTo: this.window.location.origin,
+      returnTo: this.doc.location.origin,
     };
+
     this.auth.logout(options);
   }
 

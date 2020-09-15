@@ -1,10 +1,6 @@
 import { AuthHttpInterceptor } from './auth.interceptor';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
-import {
-  HttpClient,
-  HTTP_INTERCEPTORS,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -12,7 +8,7 @@ import {
 } from '@angular/common/http/testing';
 import { Data } from '@angular/router';
 import { Auth0ClientService } from './auth.client';
-import { AuthConfigService, AuthConfig } from './auth.config';
+import { AuthConfigService, AuthConfig, HttpMethod } from './auth.config';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -23,15 +19,25 @@ describe('The Auth HTTP Interceptor', () => {
   let req: TestRequest;
   const testData: Data = { message: 'Hello, world' };
 
-  const assertAuthorizedApiCallTo = (url: string, done: any) => {
-    httpClient.get(url).subscribe(done);
+  const assertAuthorizedApiCallTo = (
+    url: string,
+    done: () => void,
+    method = 'get'
+  ) => {
+    httpClient[method](url).subscribe(done);
     flush();
-
     req = httpTestingController.expectOne(url);
 
     expect(req.request.headers.get('Authorization')).toBe(
       'Bearer access-token'
     );
+  };
+
+  const assertPassThruApiCallTo = (url: string, done: () => void) => {
+    httpClient.get<Data>(url).subscribe(done);
+    flush();
+    req = httpTestingController.expectOne(url);
+    expect(req.request.headers.get('Authorization')).toBeFalsy();
   };
 
   beforeEach(() => {
@@ -55,6 +61,10 @@ describe('The Auth HTTP Interceptor', () => {
           },
           {
             uri: '/api/calendar*',
+          },
+          {
+            uri: '/api/register',
+            httpMethod: HttpMethod.Post,
           },
         ],
       },
@@ -86,15 +96,10 @@ describe('The Auth HTTP Interceptor', () => {
   });
 
   describe('Requests that do not require authentication', () => {
-    it('pass through and do not have access tokens attached', fakeAsync(() => {
-      httpClient.get<Data>('/api/public').subscribe((result) => {
-        expect(result).toEqual(testData);
-        expect(req.request.headers.get('Authorization')).toBeFalsy();
-      });
-
-      flush();
-
-      req = httpTestingController.expectOne('/api/public');
+    it('pass through and do not have access tokens attached', fakeAsync((
+      done
+    ) => {
+      assertPassThruApiCallTo('/api/public', done);
     }));
   });
 
@@ -152,6 +157,19 @@ describe('The Auth HTTP Interceptor', () => {
     ) => {
       // Testing { uri: /api/calendar* } (wildcard match)
       assertAuthorizedApiCallTo('/api/calendar/events', done);
+    }));
+
+    it('attaches the access token when the HTTP method matches', fakeAsync((
+      done
+    ) => {
+      // Testing { uri: /api/register } (wildcard match)
+      assertAuthorizedApiCallTo('/api/register', done, 'post');
+    }));
+
+    it('does not attach the access token if the HTTP method does not match', fakeAsync((
+      done
+    ) => {
+      assertPassThruApiCallTo('/api/public', done);
     }));
   });
 });

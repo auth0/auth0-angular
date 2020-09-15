@@ -2,6 +2,18 @@ import { CacheLocation, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { InjectionToken } from '@angular/core';
 
 /**
+ * Defines a common set of HTTP methods.
+ */
+export const enum HttpMethod {
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Patch = 'PATCH',
+  Delete = 'DELETE',
+  Head = 'HEAD',
+}
+
+/**
  * Defines the type for a route config entry. Can either be:
  *
  * - an object of type HttpInterceptorConfig
@@ -52,6 +64,15 @@ export interface HttpInterceptorRouteConfig {
    * access token to attach to the outgoing request.
    */
   tokenOptions?: GetTokenSilentlyOptions;
+
+  /**
+   * The HTTP method to match on. If specified, the HTTP method of
+   * the outgoing request will be checked against this. If there is no match, the
+   * Authorization header is not attached.
+   *
+   * The HTTP method name is case-sensitive.
+   */
+  httpMethod?: HttpMethod | string;
 }
 
 /**

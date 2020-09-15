@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import { WindowService } from './window';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
-import { toArray, filter } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 /**
  * Wraps service.isLoading$ so that assertions can be made
@@ -19,6 +18,7 @@ describe('AuthService', () => {
   let auth0Client: Auth0Client;
   let moduleSetup: any;
   let service: AuthService;
+  let locationSpy: jasmine.SpyObj<Location>;
 
   const createService = () => {
     return TestBed.inject(AuthService);
@@ -43,6 +43,9 @@ describe('AuthService', () => {
       '__access_token_from_popup__'
     );
 
+    locationSpy = jasmine.createSpyObj('Location', ['path']);
+    locationSpy.path.and.returnValue('');
+
     moduleSetup = {
       providers: [
         AbstractNavigator,
@@ -51,12 +54,8 @@ describe('AuthService', () => {
           useValue: auth0Client,
         },
         {
-          provide: WindowService,
-          useValue: {
-            location: {
-              search: '',
-            },
-          },
+          provide: Location,
+          useValue: locationSpy,
         },
       ],
     };
@@ -159,16 +158,13 @@ describe('AuthService', () => {
             useValue: auth0Client,
           },
           {
-            provide: WindowService,
-            useValue: {
-              location: {
-                href: 'http://localhost?code=123&state=456',
-                search: 'code=123&state=456',
-              },
-            },
+            provide: Location,
+            useValue: locationSpy,
           },
         ],
       });
+
+      locationSpy.path.and.returnValue('?code=123&state=456');
     });
 
     it('should handle the callback when code and state are available', (done) => {
