@@ -49,7 +49,7 @@ export class AuthService implements OnDestroy {
   private ngUnsubscribe$ = new Subject();
 
   /**
-   * Emits boolean values indicating the loading state of the SDK
+   * Emits boolean values indicating the loading state of the SDK.
    */
   readonly isLoading$ = this.isLoadingSubject$.asObservable();
 
