@@ -1,5 +1,31 @@
 # Change Log
 
+## [v1.0.0](https://github.com/auth0/auth0-angular/tree/v1.0.0) (2020-09-16)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v0.2.1...v1.0.0)
+
+**Added**
+
+- Add error handling capability [\#51](https://github.com/auth0/auth0-angular/pull/51) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1921] ng-add support [\#49](https://github.com/auth0/auth0-angular/pull/49) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1931] Add information regarding use inside Angular Universal projects [\#46](https://github.com/auth0/auth0-angular/pull/46) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1931] Add support for canActivateChild and canLoad in AuthGuard [\#45](https://github.com/auth0/auth0-angular/pull/45) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
+**Changed**
+
+- [SDK-1895] Add options to match HTTP requests based on HTTP method [\#48](https://github.com/auth0/auth0-angular/pull/48) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- Update Readme with more badges and rewording of expectations [\#40](https://github.com/auth0/auth0-angular/pull/40) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
+**Removed**
+
+- Remove use of regex in API example snippets [\#41](https://github.com/auth0/auth0-angular/pull/41) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
+**Fixed**
+
+- docs: add return type to the example in the README [\#44](https://github.com/auth0/auth0-angular/pull/44) ([ahasall](https://github.com/ahasall))
+- [SDK-1923] Improve readability of Calling an API section in the readme [\#42](https://github.com/auth0/auth0-angular/pull/42) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- Fix publish script using the new release version [\#39](https://github.com/auth0/auth0-angular/pull/39) ([lbalmaceda](https://github.com/lbalmaceda))
+
 ## [v0.2.1](https://github.com/auth0/auth0-angular/tree/v0.2.1) (2020-08-14)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v0.2.0...v0.2.1)

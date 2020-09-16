@@ -1,6 +1,6 @@
 import { Injectable, Inject, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { DOCUMENT, Location } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -8,11 +8,7 @@ import { DOCUMENT, Location } from '@angular/common';
 export class AbstractNavigator {
   private readonly router: Router;
 
-  constructor(
-    @Inject(DOCUMENT) private doc: Document,
-    private location: Location,
-    injector: Injector
-  ) {
+  constructor(private location: Location, injector: Injector) {
     try {
       this.router = injector.get(Router);
     } catch {}
