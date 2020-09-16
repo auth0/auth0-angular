@@ -1,5 +1,7 @@
 {
   "kinds": {
+    "4": "Enumeration",
+    "16": "Enumeration member",
     "32": "Variable",
     "64": "Function",
     "128": "Class",
@@ -13,27 +15,13 @@
   "rows": [
     {
       "id": 0,
-      "kind": 32,
-      "name": "WindowService",
-      "url": "globals.html#windowservice",
-      "classes": "tsd-kind-variable"
-    },
-    {
-      "id": 1,
-      "kind": 64,
-      "name": "windowProvider",
-      "url": "globals.html#windowprovider",
-      "classes": "tsd-kind-function"
-    },
-    {
-      "id": 2,
       "kind": 128,
       "name": "AbstractNavigator",
       "url": "classes/abstractnavigator.html",
       "classes": "tsd-kind-class"
     },
     {
-      "id": 3,
+      "id": 1,
       "kind": 512,
       "name": "constructor",
       "url": "classes/abstractnavigator.html#constructor",
@@ -41,7 +29,7 @@
       "parent": "AbstractNavigator"
     },
     {
-      "id": 4,
+      "id": 2,
       "kind": 2048,
       "name": "navigateByUrl",
       "url": "classes/abstractnavigator.html#navigatebyurl",
@@ -49,14 +37,69 @@
       "parent": "AbstractNavigator"
     },
     {
+      "id": 3,
+      "kind": 4,
+      "name": "HttpMethod",
+      "url": "enums/httpmethod.html",
+      "classes": "tsd-kind-enum"
+    },
+    {
+      "id": 4,
+      "kind": 16,
+      "name": "Get",
+      "url": "enums/httpmethod.html#get",
+      "classes": "tsd-kind-enum-member tsd-parent-kind-enum",
+      "parent": "HttpMethod"
+    },
+    {
       "id": 5,
+      "kind": 16,
+      "name": "Post",
+      "url": "enums/httpmethod.html#post",
+      "classes": "tsd-kind-enum-member tsd-parent-kind-enum",
+      "parent": "HttpMethod"
+    },
+    {
+      "id": 6,
+      "kind": 16,
+      "name": "Put",
+      "url": "enums/httpmethod.html#put",
+      "classes": "tsd-kind-enum-member tsd-parent-kind-enum",
+      "parent": "HttpMethod"
+    },
+    {
+      "id": 7,
+      "kind": 16,
+      "name": "Patch",
+      "url": "enums/httpmethod.html#patch",
+      "classes": "tsd-kind-enum-member tsd-parent-kind-enum",
+      "parent": "HttpMethod"
+    },
+    {
+      "id": 8,
+      "kind": 16,
+      "name": "Delete",
+      "url": "enums/httpmethod.html#delete",
+      "classes": "tsd-kind-enum-member tsd-parent-kind-enum",
+      "parent": "HttpMethod"
+    },
+    {
+      "id": 9,
+      "kind": 16,
+      "name": "Head",
+      "url": "enums/httpmethod.html#head",
+      "classes": "tsd-kind-enum-member tsd-parent-kind-enum",
+      "parent": "HttpMethod"
+    },
+    {
+      "id": 10,
       "kind": 256,
       "name": "HttpInterceptorConfig",
       "url": "interfaces/httpinterceptorconfig.html",
       "classes": "tsd-kind-interface"
     },
     {
-      "id": 6,
+      "id": 11,
       "kind": 1024,
       "name": "allowedList",
       "url": "interfaces/httpinterceptorconfig.html#allowedlist",
@@ -64,14 +107,14 @@
       "parent": "HttpInterceptorConfig"
     },
     {
-      "id": 7,
+      "id": 12,
       "kind": 256,
       "name": "HttpInterceptorRouteConfig",
       "url": "interfaces/httpinterceptorrouteconfig.html",
       "classes": "tsd-kind-interface"
     },
     {
-      "id": 8,
+      "id": 13,
       "kind": 1024,
       "name": "uri",
       "url": "interfaces/httpinterceptorrouteconfig.html#uri",
@@ -79,7 +122,7 @@
       "parent": "HttpInterceptorRouteConfig"
     },
     {
-      "id": 9,
+      "id": 14,
       "kind": 1024,
       "name": "tokenOptions",
       "url": "interfaces/httpinterceptorrouteconfig.html#tokenoptions",
@@ -87,14 +130,22 @@
       "parent": "HttpInterceptorRouteConfig"
     },
     {
-      "id": 10,
+      "id": 15,
+      "kind": 1024,
+      "name": "httpMethod",
+      "url": "interfaces/httpinterceptorrouteconfig.html#httpmethod",
+      "classes": "tsd-kind-property tsd-parent-kind-interface",
+      "parent": "HttpInterceptorRouteConfig"
+    },
+    {
+      "id": 16,
       "kind": 256,
       "name": "AuthConfig",
       "url": "interfaces/authconfig.html",
       "classes": "tsd-kind-interface"
     },
     {
-      "id": 11,
+      "id": 17,
       "kind": 1024,
       "name": "domain",
       "url": "interfaces/authconfig.html#domain",
@@ -102,7 +153,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 12,
+      "id": 18,
       "kind": 1024,
       "name": "issuer",
       "url": "interfaces/authconfig.html#issuer",
@@ -110,7 +161,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 13,
+      "id": 19,
       "kind": 1024,
       "name": "clientId",
       "url": "interfaces/authconfig.html#clientid",
@@ -118,7 +169,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 14,
+      "id": 20,
       "kind": 1024,
       "name": "redirectUri",
       "url": "interfaces/authconfig.html#redirecturi",
@@ -126,7 +177,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 15,
+      "id": 21,
       "kind": 1024,
       "name": "leeway",
       "url": "interfaces/authconfig.html#leeway",
@@ -134,7 +185,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 16,
+      "id": 22,
       "kind": 1024,
       "name": "cacheLocation",
       "url": "interfaces/authconfig.html#cachelocation",
@@ -142,7 +193,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 17,
+      "id": 23,
       "kind": 1024,
       "name": "useRefreshTokens",
       "url": "interfaces/authconfig.html#userefreshtokens",
@@ -150,7 +201,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 18,
+      "id": 24,
       "kind": 1024,
       "name": "authorizeTimeoutInSeconds",
       "url": "interfaces/authconfig.html#authorizetimeoutinseconds",
@@ -158,7 +209,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 19,
+      "id": 25,
       "kind": 1024,
       "name": "advancedOptions",
       "url": "interfaces/authconfig.html#advancedoptions",
@@ -166,7 +217,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 20,
+      "id": 26,
       "kind": 65536,
       "name": "__type",
       "url": "interfaces/authconfig.html#advancedoptions.__type",
@@ -174,7 +225,7 @@
       "parent": "AuthConfig.advancedOptions"
     },
     {
-      "id": 21,
+      "id": 27,
       "kind": 32,
       "name": "defaultScope",
       "url": "interfaces/authconfig.html#advancedoptions.__type.defaultscope",
@@ -182,7 +233,7 @@
       "parent": "AuthConfig.advancedOptions.__type"
     },
     {
-      "id": 22,
+      "id": 28,
       "kind": 1024,
       "name": "maxAge",
       "url": "interfaces/authconfig.html#maxage",
@@ -190,7 +241,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 23,
+      "id": 29,
       "kind": 1024,
       "name": "scope",
       "url": "interfaces/authconfig.html#scope",
@@ -198,7 +249,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 24,
+      "id": 30,
       "kind": 1024,
       "name": "audience",
       "url": "interfaces/authconfig.html#audience",
@@ -206,7 +257,7 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 25,
+      "id": 31,
       "kind": 1024,
       "name": "httpInterceptor",
       "url": "interfaces/authconfig.html#httpinterceptor",
@@ -214,35 +265,35 @@
       "parent": "AuthConfig"
     },
     {
-      "id": 26,
+      "id": 32,
       "kind": 4194304,
       "name": "ApiRouteDefinition",
       "url": "globals.html#apiroutedefinition",
       "classes": "tsd-kind-type-alias"
     },
     {
-      "id": 27,
+      "id": 33,
       "kind": 64,
       "name": "isHttpInterceptorRouteConfig",
       "url": "globals.html#ishttpinterceptorrouteconfig",
       "classes": "tsd-kind-function"
     },
     {
-      "id": 28,
+      "id": 34,
       "kind": 32,
       "name": "AuthConfigService",
       "url": "globals.html#authconfigservice",
       "classes": "tsd-kind-variable"
     },
     {
-      "id": 29,
+      "id": 35,
       "kind": 128,
       "name": "Auth0ClientFactory",
       "url": "classes/auth0clientfactory.html",
       "classes": "tsd-kind-class"
     },
     {
-      "id": 30,
+      "id": 36,
       "kind": 2048,
       "name": "createClient",
       "url": "classes/auth0clientfactory.html#createclient",
@@ -250,21 +301,21 @@
       "parent": "Auth0ClientFactory"
     },
     {
-      "id": 31,
+      "id": 37,
       "kind": 32,
       "name": "Auth0ClientService",
       "url": "globals.html#auth0clientservice",
       "classes": "tsd-kind-variable"
     },
     {
-      "id": 32,
+      "id": 38,
       "kind": 128,
       "name": "AuthService",
       "url": "classes/authservice.html",
       "classes": "tsd-kind-class"
     },
     {
-      "id": 33,
+      "id": 39,
       "kind": 1024,
       "name": "isLoading$",
       "url": "classes/authservice.html#isloading_",
@@ -272,7 +323,7 @@
       "parent": "AuthService"
     },
     {
-      "id": 34,
+      "id": 40,
       "kind": 1024,
       "name": "isAuthenticated$",
       "url": "classes/authservice.html#isauthenticated_",
@@ -280,7 +331,7 @@
       "parent": "AuthService"
     },
     {
-      "id": 35,
+      "id": 41,
       "kind": 1024,
       "name": "user$",
       "url": "classes/authservice.html#user_",
@@ -288,7 +339,15 @@
       "parent": "AuthService"
     },
     {
-      "id": 36,
+      "id": 42,
+      "kind": 1024,
+      "name": "error$",
+      "url": "classes/authservice.html#error_",
+      "classes": "tsd-kind-property tsd-parent-kind-class",
+      "parent": "AuthService"
+    },
+    {
+      "id": 43,
       "kind": 512,
       "name": "constructor",
       "url": "classes/authservice.html#constructor",
@@ -296,7 +355,7 @@
       "parent": "AuthService"
     },
     {
-      "id": 37,
+      "id": 44,
       "kind": 2048,
       "name": "ngOnDestroy",
       "url": "classes/authservice.html#ngondestroy",
@@ -304,7 +363,7 @@
       "parent": "AuthService"
     },
     {
-      "id": 38,
+      "id": 45,
       "kind": 2048,
       "name": "loginWithRedirect",
       "url": "classes/authservice.html#loginwithredirect",
@@ -312,7 +371,7 @@
       "parent": "AuthService"
     },
     {
-      "id": 39,
+      "id": 46,
       "kind": 2048,
       "name": "loginWithPopup",
       "url": "classes/authservice.html#loginwithpopup",
@@ -320,7 +379,7 @@
       "parent": "AuthService"
     },
     {
-      "id": 40,
+      "id": 47,
       "kind": 2048,
       "name": "logout",
       "url": "classes/authservice.html#logout",
@@ -328,7 +387,7 @@
       "parent": "AuthService"
     },
     {
-      "id": 41,
+      "id": 48,
       "kind": 2048,
       "name": "getAccessTokenSilently",
       "url": "classes/authservice.html#getaccesstokensilently",
@@ -336,7 +395,7 @@
       "parent": "AuthService"
     },
     {
-      "id": 42,
+      "id": 49,
       "kind": 2048,
       "name": "getAccessTokenWithPopup",
       "url": "classes/authservice.html#getaccesstokenwithpopup",
@@ -344,14 +403,14 @@
       "parent": "AuthService"
     },
     {
-      "id": 43,
+      "id": 50,
       "kind": 128,
       "name": "AuthGuard",
       "url": "classes/authguard.html",
       "classes": "tsd-kind-class"
     },
     {
-      "id": 44,
+      "id": 51,
       "kind": 512,
       "name": "constructor",
       "url": "classes/authguard.html#constructor",
@@ -359,7 +418,15 @@
       "parent": "AuthGuard"
     },
     {
-      "id": 45,
+      "id": 52,
+      "kind": 2048,
+      "name": "canLoad",
+      "url": "classes/authguard.html#canload",
+      "classes": "tsd-kind-method tsd-parent-kind-class",
+      "parent": "AuthGuard"
+    },
+    {
+      "id": 53,
       "kind": 2048,
       "name": "canActivate",
       "url": "classes/authguard.html#canactivate",
@@ -367,14 +434,22 @@
       "parent": "AuthGuard"
     },
     {
-      "id": 46,
+      "id": 54,
+      "kind": 2048,
+      "name": "canActivateChild",
+      "url": "classes/authguard.html#canactivatechild",
+      "classes": "tsd-kind-method tsd-parent-kind-class",
+      "parent": "AuthGuard"
+    },
+    {
+      "id": 55,
       "kind": 128,
       "name": "AuthHttpInterceptor",
       "url": "classes/authhttpinterceptor.html",
       "classes": "tsd-kind-class"
     },
     {
-      "id": 47,
+      "id": 56,
       "kind": 512,
       "name": "constructor",
       "url": "classes/authhttpinterceptor.html#constructor",
@@ -382,7 +457,7 @@
       "parent": "AuthHttpInterceptor"
     },
     {
-      "id": 48,
+      "id": 57,
       "kind": 2048,
       "name": "intercept",
       "url": "classes/authhttpinterceptor.html#intercept",
@@ -390,14 +465,14 @@
       "parent": "AuthHttpInterceptor"
     },
     {
-      "id": 49,
+      "id": 58,
       "kind": 128,
       "name": "AuthModule",
       "url": "classes/authmodule.html",
       "classes": "tsd-kind-class"
     },
     {
-      "id": 50,
+      "id": 59,
       "kind": 2048,
       "name": "forRoot",
       "url": "classes/authmodule.html#forroot",
@@ -405,14 +480,14 @@
       "parent": "AuthModule"
     },
     {
-      "id": 51,
+      "id": 60,
       "kind": 32,
       "name": "require",
       "url": "globals.html#require",
       "classes": "tsd-kind-variable"
     },
     {
-      "id": 52,
+      "id": 61,
       "kind": 65536,
       "name": "__type",
       "url": "globals.html#require.__type",
@@ -420,7 +495,7 @@
       "parent": "require"
     },
     {
-      "id": 53,
+      "id": 62,
       "kind": 64,
       "name": "context",
       "url": "globals.html#require.__type.context",
@@ -428,14 +503,14 @@
       "parent": "require.__type"
     },
     {
-      "id": 54,
+      "id": 63,
       "kind": 32,
       "name": "context",
       "url": "globals.html#context",
       "classes": "tsd-kind-variable"
     },
     {
-      "id": 55,
+      "id": 64,
       "kind": 65536,
       "name": "__type",
       "url": "globals.html#context.__type",
@@ -443,7 +518,7 @@
       "parent": "context"
     },
     {
-      "id": 56,
+      "id": 65,
       "kind": 64,
       "name": "keys",
       "url": "globals.html#context.__type.keys",
@@ -455,286 +530,328 @@
     "version": "2.3.8",
     "fields": ["name", "parent"],
     "fieldVectors": [
-      ["name/0", [0, 36.55]],
+      ["name/0", [0, 29.519]],
       ["parent/0", []],
-      ["name/1", [1, 36.55]],
-      ["parent/1", []],
-      ["name/2", [2, 28.077]],
-      ["parent/2", []],
-      ["name/3", [3, 25.564]],
-      ["parent/3", [2, 2.392]],
-      ["name/4", [4, 36.55]],
-      ["parent/4", [2, 2.392]],
-      ["name/5", [5, 31.442]],
-      ["parent/5", []],
-      ["name/6", [6, 36.55]],
-      ["parent/6", [5, 2.678]],
-      ["name/7", [7, 28.077]],
-      ["parent/7", []],
-      ["name/8", [8, 36.55]],
-      ["parent/8", [7, 2.392]],
-      ["name/9", [9, 36.55]],
-      ["parent/9", [7, 2.392]],
-      ["name/10", [10, 13.863]],
+      ["name/1", [1, 27.006]],
+      ["parent/1", [0, 2.61]],
+      ["name/2", [2, 37.992]],
+      ["parent/2", [0, 2.61]],
+      ["name/3", [3, 20.646]],
+      ["parent/3", []],
+      ["name/4", [4, 37.992]],
+      ["parent/4", [3, 1.826]],
+      ["name/5", [5, 37.992]],
+      ["parent/5", [3, 1.826]],
+      ["name/6", [6, 37.992]],
+      ["parent/6", [3, 1.826]],
+      ["name/7", [7, 37.992]],
+      ["parent/7", [3, 1.826]],
+      ["name/8", [8, 37.992]],
+      ["parent/8", [3, 1.826]],
+      ["name/9", [9, 37.992]],
+      ["parent/9", [3, 1.826]],
+      ["name/10", [10, 32.884]],
       ["parent/10", []],
-      ["name/11", [11, 36.55]],
-      ["parent/11", [10, 1.181]],
-      ["name/12", [12, 36.55]],
-      ["parent/12", [10, 1.181]],
-      ["name/13", [13, 36.55]],
-      ["parent/13", [10, 1.181]],
-      ["name/14", [14, 36.55]],
-      ["parent/14", [10, 1.181]],
-      ["name/15", [15, 36.55]],
-      ["parent/15", [10, 1.181]],
-      ["name/16", [16, 36.55]],
-      ["parent/16", [10, 1.181]],
-      ["name/17", [17, 36.55]],
-      ["parent/17", [10, 1.181]],
-      ["name/18", [18, 36.55]],
-      ["parent/18", [10, 1.181]],
-      ["name/19", [19, 36.55]],
-      ["parent/19", [10, 1.181]],
-      ["name/20", [20, 28.077]],
-      ["parent/20", [21, 3.114]],
-      ["name/21", [22, 36.55]],
-      ["parent/21", [23, 3.114]],
-      ["name/22", [24, 36.55]],
-      ["parent/22", [10, 1.181]],
-      ["name/23", [25, 36.55]],
-      ["parent/23", [10, 1.181]],
-      ["name/24", [26, 36.55]],
-      ["parent/24", [10, 1.181]],
-      ["name/25", [27, 36.55]],
-      ["parent/25", [10, 1.181]],
-      ["name/26", [28, 36.55]],
-      ["parent/26", []],
-      ["name/27", [29, 36.55]],
-      ["parent/27", []],
-      ["name/28", [30, 36.55]],
-      ["parent/28", []],
-      ["name/29", [31, 31.442]],
-      ["parent/29", []],
-      ["name/30", [32, 36.55]],
-      ["parent/30", [31, 2.678]],
-      ["name/31", [33, 36.55]],
-      ["parent/31", []],
-      ["name/32", [34, 16.181]],
+      ["name/11", [11, 37.992]],
+      ["parent/11", [10, 2.908]],
+      ["name/12", [12, 27.006]],
+      ["parent/12", []],
+      ["name/13", [13, 37.992]],
+      ["parent/13", [12, 2.388]],
+      ["name/14", [14, 37.992]],
+      ["parent/14", [12, 2.388]],
+      ["name/15", [3, 20.646]],
+      ["parent/15", [12, 2.388]],
+      ["name/16", [15, 15.305]],
+      ["parent/16", []],
+      ["name/17", [16, 37.992]],
+      ["parent/17", [15, 1.353]],
+      ["name/18", [17, 37.992]],
+      ["parent/18", [15, 1.353]],
+      ["name/19", [18, 37.992]],
+      ["parent/19", [15, 1.353]],
+      ["name/20", [19, 37.992]],
+      ["parent/20", [15, 1.353]],
+      ["name/21", [20, 37.992]],
+      ["parent/21", [15, 1.353]],
+      ["name/22", [21, 37.992]],
+      ["parent/22", [15, 1.353]],
+      ["name/23", [22, 37.992]],
+      ["parent/23", [15, 1.353]],
+      ["name/24", [23, 37.992]],
+      ["parent/24", [15, 1.353]],
+      ["name/25", [24, 37.992]],
+      ["parent/25", [15, 1.353]],
+      ["name/26", [25, 29.519]],
+      ["parent/26", [26, 3.359]],
+      ["name/27", [27, 37.992]],
+      ["parent/27", [28, 3.359]],
+      ["name/28", [29, 37.992]],
+      ["parent/28", [15, 1.353]],
+      ["name/29", [30, 37.992]],
+      ["parent/29", [15, 1.353]],
+      ["name/30", [31, 37.992]],
+      ["parent/30", [15, 1.353]],
+      ["name/31", [32, 37.992]],
+      ["parent/31", [15, 1.353]],
+      ["name/32", [33, 37.992]],
       ["parent/32", []],
-      ["name/33", [35, 36.55]],
-      ["parent/33", [34, 1.378]],
-      ["name/34", [36, 36.55]],
-      ["parent/34", [34, 1.378]],
-      ["name/35", [37, 36.55]],
-      ["parent/35", [34, 1.378]],
-      ["name/36", [3, 25.564]],
-      ["parent/36", [34, 1.378]],
-      ["name/37", [38, 36.55]],
-      ["parent/37", [34, 1.378]],
-      ["name/38", [39, 36.55]],
-      ["parent/38", [34, 1.378]],
-      ["name/39", [40, 36.55]],
-      ["parent/39", [34, 1.378]],
-      ["name/40", [41, 36.55]],
-      ["parent/40", [34, 1.378]],
-      ["name/41", [42, 36.55]],
-      ["parent/41", [34, 1.378]],
-      ["name/42", [43, 36.55]],
-      ["parent/42", [34, 1.378]],
-      ["name/43", [44, 28.077]],
-      ["parent/43", []],
-      ["name/44", [3, 25.564]],
-      ["parent/44", [44, 2.392]],
-      ["name/45", [45, 36.55]],
-      ["parent/45", [44, 2.392]],
-      ["name/46", [46, 28.077]],
-      ["parent/46", []],
-      ["name/47", [3, 25.564]],
-      ["parent/47", [46, 2.392]],
-      ["name/48", [47, 36.55]],
-      ["parent/48", [46, 2.392]],
-      ["name/49", [48, 31.442]],
-      ["parent/49", []],
-      ["name/50", [49, 36.55]],
-      ["parent/50", [48, 2.678]],
-      ["name/51", [50, 31.442]],
-      ["parent/51", []],
-      ["name/52", [20, 28.077]],
-      ["parent/52", [50, 2.678]],
-      ["name/53", [51, 28.077]],
-      ["parent/53", [52, 3.114]],
-      ["name/54", [51, 28.077]],
-      ["parent/54", []],
-      ["name/55", [20, 28.077]],
-      ["parent/55", [51, 2.392]],
-      ["name/56", [53, 36.55]],
-      ["parent/56", [54, 3.114]]
+      ["name/33", [34, 37.992]],
+      ["parent/33", []],
+      ["name/34", [35, 37.992]],
+      ["parent/34", []],
+      ["name/35", [36, 32.884]],
+      ["parent/35", []],
+      ["name/36", [37, 37.992]],
+      ["parent/36", [36, 2.908]],
+      ["name/37", [38, 37.992]],
+      ["parent/37", []],
+      ["name/38", [39, 16.79]],
+      ["parent/38", []],
+      ["name/39", [40, 37.992]],
+      ["parent/39", [39, 1.485]],
+      ["name/40", [41, 37.992]],
+      ["parent/40", [39, 1.485]],
+      ["name/41", [42, 37.992]],
+      ["parent/41", [39, 1.485]],
+      ["name/42", [43, 37.992]],
+      ["parent/42", [39, 1.485]],
+      ["name/43", [1, 27.006]],
+      ["parent/43", [39, 1.485]],
+      ["name/44", [44, 37.992]],
+      ["parent/44", [39, 1.485]],
+      ["name/45", [45, 37.992]],
+      ["parent/45", [39, 1.485]],
+      ["name/46", [46, 37.992]],
+      ["parent/46", [39, 1.485]],
+      ["name/47", [47, 37.992]],
+      ["parent/47", [39, 1.485]],
+      ["name/48", [48, 37.992]],
+      ["parent/48", [39, 1.485]],
+      ["name/49", [49, 37.992]],
+      ["parent/49", [39, 1.485]],
+      ["name/50", [50, 24.999]],
+      ["parent/50", []],
+      ["name/51", [1, 27.006]],
+      ["parent/51", [50, 2.211]],
+      ["name/52", [51, 37.992]],
+      ["parent/52", [50, 2.211]],
+      ["name/53", [52, 37.992]],
+      ["parent/53", [50, 2.211]],
+      ["name/54", [53, 37.992]],
+      ["parent/54", [50, 2.211]],
+      ["name/55", [54, 29.519]],
+      ["parent/55", []],
+      ["name/56", [1, 27.006]],
+      ["parent/56", [54, 2.61]],
+      ["name/57", [55, 37.992]],
+      ["parent/57", [54, 2.61]],
+      ["name/58", [56, 32.884]],
+      ["parent/58", []],
+      ["name/59", [57, 37.992]],
+      ["parent/59", [56, 2.908]],
+      ["name/60", [58, 32.884]],
+      ["parent/60", []],
+      ["name/61", [25, 29.519]],
+      ["parent/61", [58, 2.908]],
+      ["name/62", [59, 29.519]],
+      ["parent/62", [60, 3.359]],
+      ["name/63", [59, 29.519]],
+      ["parent/63", []],
+      ["name/64", [25, 29.519]],
+      ["parent/64", [59, 2.61]],
+      ["name/65", [61, 37.992]],
+      ["parent/65", [62, 3.359]]
     ],
     "invertedIndex": [
       [
         "__type",
-        { "_index": 20, "name": { "20": {}, "52": {}, "55": {} }, "parent": {} }
+        { "_index": 25, "name": { "26": {}, "61": {}, "64": {} }, "parent": {} }
       ],
       [
         "abstractnavigator",
-        { "_index": 2, "name": { "2": {} }, "parent": { "3": {}, "4": {} } }
+        { "_index": 0, "name": { "0": {} }, "parent": { "1": {}, "2": {} } }
       ],
-      ["advancedoptions", { "_index": 19, "name": { "19": {} }, "parent": {} }],
-      ["allowedlist", { "_index": 6, "name": { "6": {} }, "parent": {} }],
+      ["advancedoptions", { "_index": 24, "name": { "25": {} }, "parent": {} }],
+      ["allowedlist", { "_index": 11, "name": { "11": {} }, "parent": {} }],
       [
         "apiroutedefinition",
-        { "_index": 28, "name": { "26": {} }, "parent": {} }
+        { "_index": 33, "name": { "32": {} }, "parent": {} }
       ],
-      ["audience", { "_index": 26, "name": { "24": {} }, "parent": {} }],
+      ["audience", { "_index": 31, "name": { "30": {} }, "parent": {} }],
       [
         "auth0clientfactory",
-        { "_index": 31, "name": { "29": {} }, "parent": { "30": {} } }
+        { "_index": 36, "name": { "35": {} }, "parent": { "36": {} } }
       ],
       [
         "auth0clientservice",
-        { "_index": 33, "name": { "31": {} }, "parent": {} }
+        { "_index": 38, "name": { "37": {} }, "parent": {} }
       ],
       [
         "authconfig",
         {
-          "_index": 10,
-          "name": { "10": {} },
+          "_index": 15,
+          "name": { "16": {} },
           "parent": {
-            "11": {},
-            "12": {},
-            "13": {},
-            "14": {},
-            "15": {},
-            "16": {},
             "17": {},
             "18": {},
             "19": {},
+            "20": {},
+            "21": {},
             "22": {},
             "23": {},
             "24": {},
-            "25": {}
+            "25": {},
+            "28": {},
+            "29": {},
+            "30": {},
+            "31": {}
           }
         }
       ],
       [
         "authconfig.advancedoptions",
-        { "_index": 21, "name": {}, "parent": { "20": {} } }
+        { "_index": 26, "name": {}, "parent": { "26": {} } }
       ],
       [
         "authconfig.advancedoptions.__type",
-        { "_index": 23, "name": {}, "parent": { "21": {} } }
+        { "_index": 28, "name": {}, "parent": { "27": {} } }
       ],
       [
         "authconfigservice",
-        { "_index": 30, "name": { "28": {} }, "parent": {} }
+        { "_index": 35, "name": { "34": {} }, "parent": {} }
       ],
       [
         "authguard",
-        { "_index": 44, "name": { "43": {} }, "parent": { "44": {}, "45": {} } }
+        {
+          "_index": 50,
+          "name": { "50": {} },
+          "parent": { "51": {}, "52": {}, "53": {}, "54": {} }
+        }
       ],
       [
         "authhttpinterceptor",
-        { "_index": 46, "name": { "46": {} }, "parent": { "47": {}, "48": {} } }
+        { "_index": 54, "name": { "55": {} }, "parent": { "56": {}, "57": {} } }
       ],
       [
         "authmodule",
-        { "_index": 48, "name": { "49": {} }, "parent": { "50": {} } }
+        { "_index": 56, "name": { "58": {} }, "parent": { "59": {} } }
       ],
       [
         "authorizetimeoutinseconds",
-        { "_index": 18, "name": { "18": {} }, "parent": {} }
+        { "_index": 23, "name": { "24": {} }, "parent": {} }
       ],
       [
         "authservice",
         {
-          "_index": 34,
-          "name": { "32": {} },
+          "_index": 39,
+          "name": { "38": {} },
           "parent": {
-            "33": {},
-            "34": {},
-            "35": {},
-            "36": {},
-            "37": {},
-            "38": {},
             "39": {},
             "40": {},
             "41": {},
-            "42": {}
+            "42": {},
+            "43": {},
+            "44": {},
+            "45": {},
+            "46": {},
+            "47": {},
+            "48": {},
+            "49": {}
           }
         }
       ],
-      ["cachelocation", { "_index": 16, "name": { "16": {} }, "parent": {} }],
-      ["canactivate", { "_index": 45, "name": { "45": {} }, "parent": {} }],
-      ["clientid", { "_index": 13, "name": { "13": {} }, "parent": {} }],
+      ["cachelocation", { "_index": 21, "name": { "22": {} }, "parent": {} }],
+      ["canactivate", { "_index": 52, "name": { "53": {} }, "parent": {} }],
+      [
+        "canactivatechild",
+        { "_index": 53, "name": { "54": {} }, "parent": {} }
+      ],
+      ["canload", { "_index": 51, "name": { "52": {} }, "parent": {} }],
+      ["clientid", { "_index": 18, "name": { "19": {} }, "parent": {} }],
       [
         "constructor",
         {
-          "_index": 3,
-          "name": { "3": {}, "36": {}, "44": {}, "47": {} },
+          "_index": 1,
+          "name": { "1": {}, "43": {}, "51": {}, "56": {} },
           "parent": {}
         }
       ],
       [
         "context",
-        { "_index": 51, "name": { "53": {}, "54": {} }, "parent": { "55": {} } }
+        { "_index": 59, "name": { "62": {}, "63": {} }, "parent": { "64": {} } }
       ],
-      ["context.__type", { "_index": 54, "name": {}, "parent": { "56": {} } }],
-      ["createclient", { "_index": 32, "name": { "30": {} }, "parent": {} }],
-      ["defaultscope", { "_index": 22, "name": { "21": {} }, "parent": {} }],
-      ["domain", { "_index": 11, "name": { "11": {} }, "parent": {} }],
-      ["forroot", { "_index": 49, "name": { "50": {} }, "parent": {} }],
+      ["context.__type", { "_index": 62, "name": {}, "parent": { "65": {} } }],
+      ["createclient", { "_index": 37, "name": { "36": {} }, "parent": {} }],
+      ["defaultscope", { "_index": 27, "name": { "27": {} }, "parent": {} }],
+      ["delete", { "_index": 8, "name": { "8": {} }, "parent": {} }],
+      ["domain", { "_index": 16, "name": { "17": {} }, "parent": {} }],
+      ["error", { "_index": 43, "name": { "42": {} }, "parent": {} }],
+      ["forroot", { "_index": 57, "name": { "59": {} }, "parent": {} }],
+      ["get", { "_index": 4, "name": { "4": {} }, "parent": {} }],
       [
         "getaccesstokensilently",
-        { "_index": 42, "name": { "41": {} }, "parent": {} }
+        { "_index": 48, "name": { "48": {} }, "parent": {} }
       ],
       [
         "getaccesstokenwithpopup",
-        { "_index": 43, "name": { "42": {} }, "parent": {} }
+        { "_index": 49, "name": { "49": {} }, "parent": {} }
       ],
-      ["httpinterceptor", { "_index": 27, "name": { "25": {} }, "parent": {} }],
+      ["head", { "_index": 9, "name": { "9": {} }, "parent": {} }],
+      ["httpinterceptor", { "_index": 32, "name": { "31": {} }, "parent": {} }],
       [
         "httpinterceptorconfig",
-        { "_index": 5, "name": { "5": {} }, "parent": { "6": {} } }
+        { "_index": 10, "name": { "10": {} }, "parent": { "11": {} } }
       ],
       [
         "httpinterceptorrouteconfig",
-        { "_index": 7, "name": { "7": {} }, "parent": { "8": {}, "9": {} } }
+        {
+          "_index": 12,
+          "name": { "12": {} },
+          "parent": { "13": {}, "14": {}, "15": {} }
+        }
       ],
-      ["intercept", { "_index": 47, "name": { "48": {} }, "parent": {} }],
-      ["isauthenticated", { "_index": 36, "name": { "34": {} }, "parent": {} }],
+      [
+        "httpmethod",
+        {
+          "_index": 3,
+          "name": { "3": {}, "15": {} },
+          "parent": { "4": {}, "5": {}, "6": {}, "7": {}, "8": {}, "9": {} }
+        }
+      ],
+      ["intercept", { "_index": 55, "name": { "57": {} }, "parent": {} }],
+      ["isauthenticated", { "_index": 41, "name": { "40": {} }, "parent": {} }],
       [
         "ishttpinterceptorrouteconfig",
-        { "_index": 29, "name": { "27": {} }, "parent": {} }
+        { "_index": 34, "name": { "33": {} }, "parent": {} }
       ],
-      ["isloading", { "_index": 35, "name": { "33": {} }, "parent": {} }],
-      ["issuer", { "_index": 12, "name": { "12": {} }, "parent": {} }],
-      ["keys", { "_index": 53, "name": { "56": {} }, "parent": {} }],
-      ["leeway", { "_index": 15, "name": { "15": {} }, "parent": {} }],
-      ["loginwithpopup", { "_index": 40, "name": { "39": {} }, "parent": {} }],
+      ["isloading", { "_index": 40, "name": { "39": {} }, "parent": {} }],
+      ["issuer", { "_index": 17, "name": { "18": {} }, "parent": {} }],
+      ["keys", { "_index": 61, "name": { "65": {} }, "parent": {} }],
+      ["leeway", { "_index": 20, "name": { "21": {} }, "parent": {} }],
+      ["loginwithpopup", { "_index": 46, "name": { "46": {} }, "parent": {} }],
       [
         "loginwithredirect",
-        { "_index": 39, "name": { "38": {} }, "parent": {} }
+        { "_index": 45, "name": { "45": {} }, "parent": {} }
       ],
-      ["logout", { "_index": 41, "name": { "40": {} }, "parent": {} }],
-      ["maxage", { "_index": 24, "name": { "22": {} }, "parent": {} }],
-      ["navigatebyurl", { "_index": 4, "name": { "4": {} }, "parent": {} }],
-      ["ngondestroy", { "_index": 38, "name": { "37": {} }, "parent": {} }],
-      ["redirecturi", { "_index": 14, "name": { "14": {} }, "parent": {} }],
+      ["logout", { "_index": 47, "name": { "47": {} }, "parent": {} }],
+      ["maxage", { "_index": 29, "name": { "28": {} }, "parent": {} }],
+      ["navigatebyurl", { "_index": 2, "name": { "2": {} }, "parent": {} }],
+      ["ngondestroy", { "_index": 44, "name": { "44": {} }, "parent": {} }],
+      ["patch", { "_index": 7, "name": { "7": {} }, "parent": {} }],
+      ["post", { "_index": 5, "name": { "5": {} }, "parent": {} }],
+      ["put", { "_index": 6, "name": { "6": {} }, "parent": {} }],
+      ["redirecturi", { "_index": 19, "name": { "20": {} }, "parent": {} }],
       [
         "require",
-        { "_index": 50, "name": { "51": {} }, "parent": { "52": {} } }
+        { "_index": 58, "name": { "60": {} }, "parent": { "61": {} } }
       ],
-      ["require.__type", { "_index": 52, "name": {}, "parent": { "53": {} } }],
-      ["scope", { "_index": 25, "name": { "23": {} }, "parent": {} }],
-      ["tokenoptions", { "_index": 9, "name": { "9": {} }, "parent": {} }],
-      ["uri", { "_index": 8, "name": { "8": {} }, "parent": {} }],
-      ["user", { "_index": 37, "name": { "35": {} }, "parent": {} }],
-      [
-        "userefreshtokens",
-        { "_index": 17, "name": { "17": {} }, "parent": {} }
-      ],
-      ["windowprovider", { "_index": 1, "name": { "1": {} }, "parent": {} }],
-      ["windowservice", { "_index": 0, "name": { "0": {} }, "parent": {} }]
+      ["require.__type", { "_index": 60, "name": {}, "parent": { "62": {} } }],
+      ["scope", { "_index": 30, "name": { "29": {} }, "parent": {} }],
+      ["tokenoptions", { "_index": 14, "name": { "14": {} }, "parent": {} }],
+      ["uri", { "_index": 13, "name": { "13": {} }, "parent": {} }],
+      ["user", { "_index": 42, "name": { "41": {} }, "parent": {} }],
+      ["userefreshtokens", { "_index": 22, "name": { "23": {} }, "parent": {} }]
     ],
     "pipeline": []
   }

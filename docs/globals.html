@@ -3365,6 +3365,18 @@
   <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>{{ user.email }}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
           <a
+            href="#handle-errors"
+            id="handle-errors"
+            style="color: inherit; text-decoration: none;"
+          >
+            <h3>Handle errors</h3>
+          </a>
+          <p>
+            Errors in the login flow can be captured by subscribing to the
+            <code>error$</code> observable:
+          </p>
+          <pre><code class="language-js">authService.error$.subscribe(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(error));</code></pre>
+          <a
             href="#protect-a-route"
             id="protect-a-route"
             style="color: inherit; text-decoration: none;"
@@ -3485,7 +3497,9 @@
             token to call the API as if it were your application.
           </p>
           <p>Here are some examples:</p>
-          <pre><code class="language-js"><span class="hljs-comment">// Modify your existing SDK configuration to include the httpInterceptor config</span>
+          <pre><code class="language-js"><span class="hljs-keyword">import</span> { HttpMethod } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
+
+<span class="hljs-comment">// Modify your existing SDK configuration to include the httpInterceptor config</span>
 AuthModule.forRoot({
   <span class="hljs-attr">domain</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_DOMAIN&#x27;</span>,
   <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_CLIENT_ID&#x27;</span>,
@@ -3500,13 +3514,23 @@ AuthModule.forRoot({
       <span class="hljs-comment">// Attach access tokens to any calls that start with &#x27;/api/&#x27;</span>
       <span class="hljs-string">&#x27;/api/*&#x27;</span>,
 
-      <span class="hljs-comment">// Match anything starting with /api/, but also specify the audience and scope the attached</span>
+      <span class="hljs-comment">// Match anything starting with /api/accounts, but also specify the audience and scope the attached</span>
       <span class="hljs-comment">// access token must have</span>
       {
-        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/api/*&#x27;</span>,
+        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/api/accounts/*&#x27;</span>,
         <span class="hljs-attr">tokenOptions</span>: {
           <span class="hljs-attr">audience</span>: <span class="hljs-string">&#x27;http://my-api/&#x27;</span>,
           <span class="hljs-attr">scope</span>: <span class="hljs-string">&#x27;read:accounts&#x27;</span>,
+        },
+      },
+
+      <span class="hljs-comment">// Matching on HTTP method</span>
+      {
+        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/api/orders&#x27;</span>,
+        <span class="hljs-attr">httpMethod</span>: HttpMethod.Post,
+        <span class="hljs-attr">tokenOptions</span>: {
+          <span class="hljs-attr">audience</span>: <span class="hljs-string">&#x27;http://my-api/&#x27;</span>,
+          <span class="hljs-attr">scope</span>: <span class="hljs-string">&#x27;write:orders&#x27;</span>,
         },
       },
 
@@ -3755,6 +3779,16 @@ AuthModule.forRoot({
           <section class="tsd-panel tsd-index-panel">
             <div class="tsd-index-content">
               <section class="tsd-index-section">
+                <h3>Enumerations</h3>
+                <ul class="tsd-index-list">
+                  <li class="tsd-kind-enum">
+                    <a href="enums/httpmethod.html" class="tsd-kind-icon"
+                      >Http<wbr />Method</a
+                    >
+                  </li>
+                </ul>
+              </section>
+              <section class="tsd-index-section">
                 <h3>Classes</h3>
                 <ul class="tsd-index-list">
                   <li class="tsd-kind-class">
@@ -3849,11 +3883,6 @@ AuthModule.forRoot({
                     >
                   </li>
                   <li class="tsd-kind-variable">
-                    <a href="globals.html#windowservice" class="tsd-kind-icon"
-                      >Window<wbr />Service</a
-                    >
-                  </li>
-                  <li class="tsd-kind-variable">
                     <a href="globals.html#context" class="tsd-kind-icon"
                       >context</a
                     >
@@ -3873,11 +3902,6 @@ AuthModule.forRoot({
                       href="globals.html#ishttpinterceptorrouteconfig"
                       class="tsd-kind-icon"
                       >is<wbr />Http<wbr />Interceptor<wbr />Route<wbr />Config</a
-                    >
-                  </li>
-                  <li class="tsd-kind-function">
-                    <a href="globals.html#windowprovider" class="tsd-kind-icon"
-                      >window<wbr />Provider</a
                     >
                   </li>
                 </ul>
@@ -3906,8 +3930,8 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/auth.config.ts#L10"
-                    >projects/auth0-angular/src/lib/auth.config.ts:10</a
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L22"
+                    >projects/auth0-angular/src/lib/auth.config.ts:22</a
                   >
                 </li>
               </ul>
@@ -3949,7 +3973,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/auth.client.ts#L23"
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.client.ts#L23"
                     >projects/auth0-angular/src/lib/auth.client.ts:23</a
                   >
                 </li>
@@ -3981,8 +4005,8 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/auth.config.ts#L171"
-                    >projects/auth0-angular/src/lib/auth.config.ts:171</a
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L192"
+                    >projects/auth0-angular/src/lib/auth.config.ts:192</a
                   >
                 </li>
               </ul>
@@ -4004,42 +4028,6 @@ AuthModule.forRoot({
             </div>
           </section>
           <section class="tsd-panel tsd-member tsd-kind-variable">
-            <a name="windowservice" class="tsd-anchor"></a>
-            <h3>
-              <span class="tsd-flag ts-flagConst">Const</span>
-              Window<wbr />Service
-            </h3>
-            <div class="tsd-signature tsd-kind-icon">
-              Window<wbr />Service<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">InjectionToken</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">unknown</span
-              ><span class="tsd-signature-symbol">&gt;</span
-              ><span class="tsd-signature-symbol">
-                = new InjectionToken(&#x27;Browser window&#x27;)</span
-              >
-            </div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/window.ts#L6"
-                    >projects/auth0-angular/src/lib/window.ts:6</a
-                  >
-                </li>
-              </ul>
-            </aside>
-            <div class="tsd-comment tsd-typography">
-              <div class="lead">
-                <p>
-                  Injection token for providing an instance of
-                  <code>window</code>
-                </p>
-              </div>
-            </div>
-          </section>
-          <section class="tsd-panel tsd-member tsd-kind-variable">
             <a name="context" class="tsd-anchor"></a>
             <h3><span class="tsd-flag ts-flagConst">Const</span> context</h3>
             <div class="tsd-signature tsd-kind-icon">
@@ -4058,7 +4046,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4124,7 +4112,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4156,7 +4144,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4197,7 +4185,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4303,7 +4291,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4356,8 +4344,8 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/auth.config.ts#L16"
-                        >projects/auth0-angular/src/lib/auth.config.ts:16</a
+                        href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L28"
+                        >projects/auth0-angular/src/lib/auth.config.ts:28</a
                       >
                     </li>
                   </ul>
@@ -4392,44 +4380,6 @@ AuthModule.forRoot({
                   ><span class="tsd-signature-type"
                     >HttpInterceptorRouteConfig</span
                   >
-                </h4>
-              </li>
-            </ul>
-          </section>
-          <section class="tsd-panel tsd-member tsd-kind-function">
-            <a name="windowprovider" class="tsd-anchor"></a>
-            <h3>window<wbr />Provider</h3>
-            <ul class="tsd-signatures tsd-kind-function">
-              <li class="tsd-signature tsd-kind-icon">
-                window<wbr />Provider<span class="tsd-signature-symbol">(</span
-                ><span class="tsd-signature-symbol">)</span
-                ><span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">Window</span>
-              </li>
-            </ul>
-            <ul class="tsd-descriptions">
-              <li class="tsd-description">
-                <aside class="tsd-sources">
-                  <ul>
-                    <li>
-                      Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/04d9536/projects/auth0-angular/src/lib/window.ts#L11"
-                        >projects/auth0-angular/src/lib/window.ts:11</a
-                      >
-                    </li>
-                  </ul>
-                </aside>
-                <div class="tsd-comment tsd-typography">
-                  <div class="lead">
-                    <p>
-                      Default window provider. Provides the actual
-                      <code>window</code> object.
-                    </p>
-                  </div>
-                </div>
-                <h4 class="tsd-returns-title">
-                  Returns <span class="tsd-signature-type">Window</span>
                 </h4>
               </li>
             </ul>

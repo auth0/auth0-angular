@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>AuthHttpInterceptor | @auth0/auth0-angular</title>
+    <title>HttpMethod | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type="text/css">
@@ -3057,32 +3057,22 @@
     <nav class="tsd-navigation secondary">
       <ul>
         <li class="tsd-kind-class">
-          <a href="authguard.html" class="tsd-kind-icon">Auth<wbr />Guard</a>
+          <a href="../classes/authguard.html" class="tsd-kind-icon"
+            >Auth<wbr />Guard</a
+          >
         </li>
-        <li class="current tsd-kind-class">
-          <a href="authhttpinterceptor.html" class="tsd-kind-icon"
+        <li class="tsd-kind-class">
+          <a href="../classes/authhttpinterceptor.html" class="tsd-kind-icon"
             >Auth<wbr />Http<wbr />Interceptor</a
           >
-          <ul>
-            <li class="tsd-kind-constructor tsd-parent-kind-class">
-              <a
-                href="authhttpinterceptor.html#constructor"
-                class="tsd-kind-icon"
-                >constructor</a
-              >
-            </li>
-            <li class="tsd-kind-method tsd-parent-kind-class">
-              <a href="authhttpinterceptor.html#intercept" class="tsd-kind-icon"
-                >intercept</a
-              >
-            </li>
-          </ul>
         </li>
         <li class="tsd-kind-class">
-          <a href="authmodule.html" class="tsd-kind-icon">Auth<wbr />Module</a>
+          <a href="../classes/authmodule.html" class="tsd-kind-icon"
+            >Auth<wbr />Module</a
+          >
         </li>
         <li class="tsd-kind-class">
-          <a href="authservice.html" class="tsd-kind-icon"
+          <a href="../classes/authservice.html" class="tsd-kind-icon"
             >Auth<wbr />Service</a
           >
         </li>
@@ -3119,45 +3109,45 @@
     </nav>
     <div class="container container-main">
       <div class="content-wrap">
-        <section class="tsd-panel tsd-hierarchy">
-          <h3>Hierarchy</h3>
-          <ul class="tsd-hierarchy">
-            <li>
-              <span class="target">AuthHttpInterceptor</span>
-            </li>
-          </ul>
-        </section>
-        <section class="tsd-panel">
-          <h3>Implements</h3>
-          <ul class="tsd-hierarchy">
-            <li><span class="tsd-signature-type">HttpInterceptor</span></li>
-          </ul>
+        <section class="tsd-panel tsd-comment">
+          <div class="tsd-comment tsd-typography">
+            <div class="lead">
+              <p>Defines a common set of HTTP methods.</p>
+            </div>
+          </div>
         </section>
         <section class="tsd-panel-group tsd-index-group">
           <h2>Index</h2>
           <section class="tsd-panel tsd-index-panel">
             <div class="tsd-index-content">
               <section class="tsd-index-section">
-                <h3>Constructors</h3>
+                <h3>Enumeration members</h3>
                 <ul class="tsd-index-list">
-                  <li class="tsd-kind-constructor tsd-parent-kind-class">
-                    <a
-                      href="authhttpinterceptor.html#constructor"
-                      class="tsd-kind-icon"
-                      >constructor</a
+                  <li class="tsd-kind-enum-member tsd-parent-kind-enum">
+                    <a href="httpmethod.html#delete" class="tsd-kind-icon"
+                      >Delete</a
                     >
                   </li>
-                </ul>
-              </section>
-              <section class="tsd-index-section">
-                <h3>Methods</h3>
-                <ul class="tsd-index-list">
-                  <li class="tsd-kind-method tsd-parent-kind-class">
-                    <a
-                      href="authhttpinterceptor.html#intercept"
-                      class="tsd-kind-icon"
-                      >intercept</a
+                  <li class="tsd-kind-enum-member tsd-parent-kind-enum">
+                    <a href="httpmethod.html#get" class="tsd-kind-icon">Get</a>
+                  </li>
+                  <li class="tsd-kind-enum-member tsd-parent-kind-enum">
+                    <a href="httpmethod.html#head" class="tsd-kind-icon"
+                      >Head</a
                     >
+                  </li>
+                  <li class="tsd-kind-enum-member tsd-parent-kind-enum">
+                    <a href="httpmethod.html#patch" class="tsd-kind-icon"
+                      >Patch</a
+                    >
+                  </li>
+                  <li class="tsd-kind-enum-member tsd-parent-kind-enum">
+                    <a href="httpmethod.html#post" class="tsd-kind-icon"
+                      >Post</a
+                    >
+                  </li>
+                  <li class="tsd-kind-enum-member tsd-parent-kind-enum">
+                    <a href="httpmethod.html#put" class="tsd-kind-icon">Put</a>
                   </li>
                 </ul>
               </section>
@@ -3165,145 +3155,132 @@
           </section>
         </section>
         <section class="tsd-panel-group tsd-member-group">
-          <h2>Constructors</h2>
+          <h2>Enumeration members</h2>
           <section
-            class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum"
           >
-            <a name="constructor" class="tsd-anchor"></a>
-            <h3>constructor</h3>
-            <ul
-              class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class"
-            >
-              <li class="tsd-signature tsd-kind-icon">
-                new <wbr />Auth<wbr />Http<wbr />Interceptor<span
-                  class="tsd-signature-symbol"
-                  >(</span
-                >config<span class="tsd-signature-symbol">: </span
-                ><a
-                  href="../interfaces/authconfig.html"
-                  class="tsd-signature-type"
-                  >AuthConfig</a
-                >, auth0Client<span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">Auth0Client</span
-                ><span class="tsd-signature-symbol">)</span
-                ><span class="tsd-signature-symbol">: </span
-                ><a href="authhttpinterceptor.html" class="tsd-signature-type"
-                  >AuthHttpInterceptor</a
-                >
-              </li>
-            </ul>
-            <ul class="tsd-descriptions">
-              <li class="tsd-description">
-                <aside class="tsd-sources">
-                  <ul>
-                    <li>
-                      Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.interceptor.ts#L24"
-                        >projects/auth0-angular/src/lib/auth.interceptor.ts:24</a
-                      >
-                    </li>
-                  </ul>
-                </aside>
-                <h4 class="tsd-parameters-title">Parameters</h4>
-                <ul class="tsd-parameters">
-                  <li>
-                    <h5>
-                      config:
-                      <a
-                        href="../interfaces/authconfig.html"
-                        class="tsd-signature-type"
-                        >AuthConfig</a
-                      >
-                    </h5>
-                  </li>
-                  <li>
-                    <h5>
-                      auth0Client:
-                      <span class="tsd-signature-type">Auth0Client</span>
-                    </h5>
-                  </li>
-                </ul>
-                <h4 class="tsd-returns-title">
-                  Returns
-                  <a href="authhttpinterceptor.html" class="tsd-signature-type"
-                    >AuthHttpInterceptor</a
+            <a name="delete" class="tsd-anchor"></a>
+            <h3>Delete</h3>
+            <div class="tsd-signature tsd-kind-icon">
+              Delete<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-symbol"> = &quot;DELETE&quot;</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L12"
+                    >projects/auth0-angular/src/lib/auth.config.ts:12</a
                   >
-                </h4>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </aside>
           </section>
-        </section>
-        <section class="tsd-panel-group tsd-member-group">
-          <h2>Methods</h2>
           <section
-            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum"
           >
-            <a name="intercept" class="tsd-anchor"></a>
-            <h3>intercept</h3>
-            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-              <li class="tsd-signature tsd-kind-icon">
-                intercept<span class="tsd-signature-symbol">(</span>req<span
-                  class="tsd-signature-symbol"
-                  >: </span
-                ><span class="tsd-signature-type">HttpRequest</span
-                ><span class="tsd-signature-symbol">&lt;</span
-                ><span class="tsd-signature-type">any</span
-                ><span class="tsd-signature-symbol">&gt;</span>, next<span
-                  class="tsd-signature-symbol"
-                  >: </span
-                ><span class="tsd-signature-type">HttpHandler</span
-                ><span class="tsd-signature-symbol">)</span
-                ><span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">Observable</span
-                ><span class="tsd-signature-symbol">&lt;</span
-                ><span class="tsd-signature-type">HttpEvent</span
-                ><span class="tsd-signature-symbol">&lt;</span
-                ><span class="tsd-signature-type">any</span
-                ><span class="tsd-signature-symbol">&gt;</span
-                ><span class="tsd-signature-symbol">&gt;</span>
-              </li>
-            </ul>
-            <ul class="tsd-descriptions">
-              <li class="tsd-description">
-                <aside class="tsd-sources">
-                  <ul>
-                    <li>
-                      Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.interceptor.ts#L30"
-                        >projects/auth0-angular/src/lib/auth.interceptor.ts:30</a
-                      >
-                    </li>
-                  </ul>
-                </aside>
-                <h4 class="tsd-parameters-title">Parameters</h4>
-                <ul class="tsd-parameters">
-                  <li>
-                    <h5>
-                      req: <span class="tsd-signature-type">HttpRequest</span
-                      ><span class="tsd-signature-symbol">&lt;</span
-                      ><span class="tsd-signature-type">any</span
-                      ><span class="tsd-signature-symbol">&gt;</span>
-                    </h5>
-                  </li>
-                  <li>
-                    <h5>
-                      next: <span class="tsd-signature-type">HttpHandler</span>
-                    </h5>
-                  </li>
-                </ul>
-                <h4 class="tsd-returns-title">
-                  Returns <span class="tsd-signature-type">Observable</span
-                  ><span class="tsd-signature-symbol">&lt;</span
-                  ><span class="tsd-signature-type">HttpEvent</span
-                  ><span class="tsd-signature-symbol">&lt;</span
-                  ><span class="tsd-signature-type">any</span
-                  ><span class="tsd-signature-symbol">&gt;</span
-                  ><span class="tsd-signature-symbol">&gt;</span>
-                </h4>
-              </li>
-            </ul>
+            <a name="get" class="tsd-anchor"></a>
+            <h3>Get</h3>
+            <div class="tsd-signature tsd-kind-icon">
+              Get<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-symbol"> = &quot;GET&quot;</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L8"
+                    >projects/auth0-angular/src/lib/auth.config.ts:8</a
+                  >
+                </li>
+              </ul>
+            </aside>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum"
+          >
+            <a name="head" class="tsd-anchor"></a>
+            <h3>Head</h3>
+            <div class="tsd-signature tsd-kind-icon">
+              Head<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-symbol"> = &quot;HEAD&quot;</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L13"
+                    >projects/auth0-angular/src/lib/auth.config.ts:13</a
+                  >
+                </li>
+              </ul>
+            </aside>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum"
+          >
+            <a name="patch" class="tsd-anchor"></a>
+            <h3>Patch</h3>
+            <div class="tsd-signature tsd-kind-icon">
+              Patch<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-symbol"> = &quot;PATCH&quot;</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L11"
+                    >projects/auth0-angular/src/lib/auth.config.ts:11</a
+                  >
+                </li>
+              </ul>
+            </aside>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum"
+          >
+            <a name="post" class="tsd-anchor"></a>
+            <h3>Post</h3>
+            <div class="tsd-signature tsd-kind-icon">
+              Post<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-symbol"> = &quot;POST&quot;</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L9"
+                    >projects/auth0-angular/src/lib/auth.config.ts:9</a
+                  >
+                </li>
+              </ul>
+            </aside>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum"
+          >
+            <a name="put" class="tsd-anchor"></a>
+            <h3>Put</h3>
+            <div class="tsd-signature tsd-kind-icon">
+              Put<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-symbol"> = &quot;PUT&quot;</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/78dc223/projects/auth0-angular/src/lib/auth.config.ts#L10"
+                    >projects/auth0-angular/src/lib/auth.config.ts:10</a
+                  >
+                </li>
+              </ul>
+            </aside>
           </section>
         </section>
         <footer>
