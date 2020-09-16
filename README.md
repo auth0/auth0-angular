@@ -151,6 +151,14 @@ Access the `user$` observable on the `AuthService` instance to retrieve the user
 </ul>
 ```
 
+### Handle errors
+
+Errors in the login flow can be captured by subscribing to the `error$` observable:
+
+```js
+authService.error$.subscribe((error) => console.log(error));
+```
+
 ### Protect a route
 
 To ensure that a route can only be visited by authenticated users, add the built-in `AuthGuard` type to the `canActivate` property on the route you wish to protect.
