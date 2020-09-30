@@ -9,6 +9,7 @@ import { ProtectedComponent } from './components/protected.component';
 import { UnprotectedComponent } from './components/unprotected.component';
 import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
+import { AuthConfigService } from 'projects/auth0-angular/src/lib/auth.config';
 
 const AUTH0_CONFIG = {
   clientId: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
@@ -27,9 +28,14 @@ const AUTH0_CONFIG = {
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    AuthModule.forRoot(AUTH0_CONFIG),
+    AuthModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: AuthConfigService,
+      useFactory: () => AUTH0_CONFIG,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

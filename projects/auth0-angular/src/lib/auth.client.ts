@@ -1,10 +1,12 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Inject } from '@angular/core';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { AuthConfig } from './auth.config';
+import { AuthConfig, AuthConfigService } from './auth.config';
 import useragent from '../useragent';
 
 export class Auth0ClientFactory {
-  static createClient(config: AuthConfig): Auth0Client {
+  static createClient(
+    @Inject(AuthConfigService) config: AuthConfig
+  ): Auth0Client {
     const { redirectUri, clientId, maxAge, ...rest } = config;
 
     return new Auth0Client({
