@@ -1,16 +1,22 @@
-import { InjectionToken, Inject } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { AuthConfig, AuthConfigService } from './auth.config';
+import { AuthClientConfig } from './auth.config';
 import useragent from '../useragent';
 
 export class Auth0ClientFactory {
-  static createClient(
-    @Inject(AuthConfigService) config: AuthConfig
-  ): Auth0Client {
+  static createClient(configFactory: AuthClientConfig): Auth0Client {
+    const config = configFactory.get();
+
+    if (!config) {
+      throw new Error(
+        'No configuration was specified, either through AuthModule.forRoot or through AuthClientConfig.set'
+      );
+    }
+
     const { redirectUri, clientId, maxAge, ...rest } = config;
 
     return new Auth0Client({
-      redirect_uri: redirectUri,
+      redirect_uri: redirectUri || window.location.origin,
       client_id: clientId,
       max_age: maxAge,
       ...rest,

@@ -1,5 +1,5 @@
 import { CacheLocation, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Injectable, Optional, Inject } from '@angular/core';
 
 /**
  * Defines a common set of HTTP methods.
@@ -176,6 +176,30 @@ export interface AuthConfig {
    * make sure to use the original parameter name.
    */
   [key: string]: any;
+}
+
+/**
+ * Gets and sets configuration for the internal Auth0 client. This can be
+ * used to provide configuration outside of using AuthModule.forRoot, i.e. from
+ * a factory provided by APP_INITIALIZER.
+ */
+@Injectable({ providedIn: 'root' })
+export class AuthClientConfig {
+  private config: AuthConfig;
+
+  constructor(@Optional() @Inject(AuthConfigService) config: AuthConfig) {
+    if (config) {
+      this.set(config);
+    }
+  }
+
+  set(config: AuthConfig): void {
+    this.config = config;
+  }
+
+  get(): AuthConfig {
+    return this.config;
+  }
 }
 
 /**
