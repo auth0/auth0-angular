@@ -48,7 +48,7 @@ ng add @auth0/auth0-angular
 - [Display the user profile](#display-the-user-profile)
 - [Protect a route](#protect-a-route)
 - [Call an API](#call-an-api)
-- [Specifying Configuration using APP_INITIALIZER](#specifying-configuration-using-app-initializer)
+- [Specifying Configuration using APP_INITIALIZER](#specifying-configuration-using-app_initializer)
 
 ### Register the authentication module
 
