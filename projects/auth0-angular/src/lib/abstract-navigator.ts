@@ -1,4 +1,4 @@
-import { Injectable, Inject, Injector } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
