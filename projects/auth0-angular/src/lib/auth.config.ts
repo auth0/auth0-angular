@@ -187,7 +187,7 @@ export interface AuthConfig {
 export class AuthClientConfig {
   private config: AuthConfig;
 
-  constructor(@Optional() @Inject(AuthConfigService) config: AuthConfig) {
+  constructor(@Optional() @Inject(AuthConfigService) config?: AuthConfig) {
     if (config) {
       this.set(config);
     }
