@@ -9,7 +9,7 @@ export class Auth0ClientFactory {
 
     if (!config) {
       throw new Error(
-        'No configuration was specified, either through AuthModule.forRoot or through AuthClientConfig.set'
+        'Configuration must be specified either through AuthModule.forRoot or through AuthClientConfig.set'
       );
     }
 
