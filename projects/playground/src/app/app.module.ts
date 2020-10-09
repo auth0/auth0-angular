@@ -1,20 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { AuthModule } from 'projects/auth0-angular/src/lib/auth.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProtectedComponent } from './components/protected.component';
 import { UnprotectedComponent } from './components/unprotected.component';
 import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
-import { AuthConfigService } from 'projects/auth0-angular/src/lib/auth.config';
+import {
+  AuthClientConfig,
+  AuthConfig,
+} from 'projects/auth0-angular/src/lib/auth.config';
 
-const AUTH0_CONFIG = {
+const authConfig: AuthConfig = {
   clientId: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
   domain: 'brucke.auth0.com',
 };
+
+/**
+ * Provides configuration to the application
+ * @param config The AuthConfigClient service
+ */
+function configInitializer(config: AuthClientConfig): () => Promise<any> {
+  return () => {
+    config.set(authConfig);
+    return Promise.resolve();
+  };
+}
 
 @NgModule({
   declarations: [
@@ -28,12 +41,14 @@ const AUTH0_CONFIG = {
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    AuthModule.forRoot(),
+    AuthModule.forRoot(/* authConfig */), // Uncomment this to specify config directly
   ],
   providers: [
     {
-      provide: AuthConfigService,
-      useFactory: () => AUTH0_CONFIG,
+      provide: APP_INITIALIZER,
+      useFactory: configInitializer,
+      deps: [AuthClientConfig],
+      multi: true,
     },
   ],
   bootstrap: [AppComponent],
