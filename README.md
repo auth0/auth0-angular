@@ -48,7 +48,7 @@ ng add @auth0/auth0-angular
 - [Display the user profile](#display-the-user-profile)
 - [Protect a route](#protect-a-route)
 - [Call an API](#call-an-api)
-- [Specifying Configuration using APP_INITIALIZER](#specifying-configuration-using-app_initializer)
+- [Dynamic configuration](#dynamic-configuration)
 
 ### Register the authentication module
 
@@ -303,9 +303,9 @@ export class MyComponent {
 }
 ```
 
-## Specifying Configuration using APP_INITIALIZER
+## Dynamic Configuration
 
-Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from a source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`:
+Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`:
 
 ```js
 // app.module.ts

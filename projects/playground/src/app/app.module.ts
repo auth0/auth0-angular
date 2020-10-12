@@ -8,6 +8,7 @@ import { ProtectedComponent } from './components/protected.component';
 import { UnprotectedComponent } from './components/unprotected.component';
 import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
+
 import {
   AuthClientConfig,
   AuthConfig,
@@ -41,7 +42,11 @@ function configInitializer(config: AuthClientConfig): () => Promise<any> {
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    AuthModule.forRoot(/* authConfig */), // Uncomment this to specify config directly
+
+    // This playground has been configured by default to use dynamic configuration.
+    // If you wish to specify configuration to `forRoot` directly, uncomment `authConfig`
+    // here, and comment out the APP_INITIALIZER config in the providers array below.
+    AuthModule.forRoot(/* authConfig */),
   ],
   providers: [
     {
