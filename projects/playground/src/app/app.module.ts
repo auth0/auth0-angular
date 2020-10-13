@@ -8,6 +8,7 @@ import { ProtectedComponent } from './components/protected.component';
 import { UnprotectedComponent } from './components/unprotected.component';
 import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import {
   AuthClientConfig,
@@ -23,12 +24,11 @@ const authConfig: AuthConfig = {
  * Provides configuration to the application
  * @param config The AuthConfigClient service
  */
-function configInitializer(config: AuthClientConfig): () => Promise<any> {
-  return () => {
-    config.set(authConfig);
-    return Promise.resolve();
-  };
-}
+const configInitializer = (config: AuthClientConfig, http: HttpClient) => () =>
+  http
+    .get('http://localhost:3000/config')
+    .toPromise()
+    .then((c: AuthConfig) => config.set(c));
 
 @NgModule({
   declarations: [
@@ -42,6 +42,7 @@ function configInitializer(config: AuthClientConfig): () => Promise<any> {
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    HttpClientModule,
 
     // This playground has been configured by default to use dynamic configuration.
     // If you wish to specify configuration to `forRoot` directly, uncomment `authConfig`
@@ -52,7 +53,7 @@ function configInitializer(config: AuthClientConfig): () => Promise<any> {
     {
       provide: APP_INITIALIZER,
       useFactory: configInitializer,
-      deps: [AuthClientConfig],
+      deps: [AuthClientConfig, HttpClient],
       multi: true,
     },
   ],
