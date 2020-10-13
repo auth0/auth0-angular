@@ -310,6 +310,7 @@ Instead of using `AuthModule.forRoot` to specify auth configuration, you can pro
 ```js
 // app.module.ts
 // ---------------------------
+import { AuthModule, AuthClientConfig } from '@auth0/auth0-angular';
 
 // Provide an initializer function that returns a Promise
 function configInitializer(
