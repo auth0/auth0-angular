@@ -17,6 +17,7 @@
     "AuthModule",
     "AuthService",
     "AuthConfig",
+    "AuthClientConfig",
     "HttpInterceptorConfig",
     "HttpInterceptorRouteConfig",
     "ApiRouteDefinition",
