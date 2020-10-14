@@ -14,7 +14,7 @@ jobs:
             - ~/.npm
             - ~/.cache
       - run: npm run lint
-      - run: npm run build
+      - run: npm run build:prod
       - run: npm run test:ci
       - run: npm run e2e:ci
       - run:
