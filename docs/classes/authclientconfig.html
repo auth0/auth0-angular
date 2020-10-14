@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Auth0ClientFactory | @auth0/auth0-angular</title>
+    <title>AuthClientConfig | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type="text/css">
@@ -3056,10 +3056,23 @@
     </header>
     <nav class="tsd-navigation secondary">
       <ul>
-        <li class="tsd-kind-class">
+        <li class="current tsd-kind-class">
           <a href="authclientconfig.html" class="tsd-kind-icon"
             >Auth<wbr />Client<wbr />Config</a
           >
+          <ul>
+            <li class="tsd-kind-constructor tsd-parent-kind-class">
+              <a href="authclientconfig.html#constructor" class="tsd-kind-icon"
+                >constructor</a
+              >
+            </li>
+            <li class="tsd-kind-method tsd-parent-kind-class">
+              <a href="authclientconfig.html#get" class="tsd-kind-icon">get</a>
+            </li>
+            <li class="tsd-kind-method tsd-parent-kind-class">
+              <a href="authclientconfig.html#set" class="tsd-kind-icon">set</a>
+            </li>
+          </ul>
         </li>
         <li class="tsd-kind-class">
           <a href="authguard.html" class="tsd-kind-icon">Auth<wbr />Guard</a>
@@ -3110,11 +3123,59 @@
     </nav>
     <div class="container container-main">
       <div class="content-wrap">
+        <section class="tsd-panel tsd-comment">
+          <div class="tsd-comment tsd-typography">
+            <div class="lead">
+              <p>
+                Gets and sets configuration for the internal Auth0 client. This
+                can be used to provide configuration outside of using
+                AuthModule.forRoot, i.e. from a factory provided by
+                APP_INITIALIZER.
+              </p>
+            </div>
+            <dl class="tsd-comment-tags">
+              <dt>usage</dt>
+              <dd>
+                <pre><code class="language-js"><span class="hljs-comment">// app.module.ts</span>
+<span class="hljs-comment">// ---------------------------</span>
+<span class="hljs-keyword">import</span> { AuthModule, AuthClientConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
+
+<span class="hljs-comment">// Provide an initializer function that returns a Promise</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">configInitializer</span>(<span class="hljs-params">
+  http: HttpClient,
+  config: AuthClientConfig
+</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span>
+    http
+      .get(<span class="hljs-string">&#x27;/config&#x27;</span>)
+      .toPromise()
+      .then(<span class="hljs-function">(<span class="hljs-params">loadedConfig: any</span>) =&gt;</span> config.set(loadedConfig));   <span class="hljs-comment">// Set the config that was loaded asynchronously here</span>
+}
+
+<span class="hljs-comment">// Provide APP_INITIALIZER with this function. Note that there is no config passed to AuthModule.forRoot</span>
+<span class="hljs-attr">imports</span>: [
+  <span class="hljs-comment">// other imports..</span>
+
+  HttpClientModule,
+  AuthModule.forRoot(),   <span class="hljs-comment">//&lt;- don&#x27;t pass any config here</span>
+],
+<span class="hljs-attr">providers</span>: [
+  {
+    <span class="hljs-attr">provide</span>: APP_INITIALIZER,
+    <span class="hljs-attr">useFactory</span>: configInitializer,    <span class="hljs-comment">// &lt;- pass your initializer function here</span>
+    <span class="hljs-attr">deps</span>: [HttpClient, AuthClientConfig],
+    <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span>,
+  },
+],</code></pre>
+              </dd>
+            </dl>
+          </div>
+        </section>
         <section class="tsd-panel tsd-hierarchy">
           <h3>Hierarchy</h3>
           <ul class="tsd-hierarchy">
             <li>
-              <span class="target">Auth0ClientFactory</span>
+              <span class="target">AuthClientConfig</span>
             </li>
           </ul>
         </section>
@@ -3123,15 +3184,28 @@
           <section class="tsd-panel tsd-index-panel">
             <div class="tsd-index-content">
               <section class="tsd-index-section">
+                <h3>Constructors</h3>
+                <ul class="tsd-index-list">
+                  <li class="tsd-kind-constructor tsd-parent-kind-class">
+                    <a
+                      href="authclientconfig.html#constructor"
+                      class="tsd-kind-icon"
+                      >constructor</a
+                    >
+                  </li>
+                </ul>
+              </section>
+              <section class="tsd-index-section">
                 <h3>Methods</h3>
                 <ul class="tsd-index-list">
-                  <li
-                    class="tsd-kind-method tsd-parent-kind-class tsd-is-static"
-                  >
-                    <a
-                      href="auth0clientfactory.html#createclient"
-                      class="tsd-kind-icon"
-                      >create<wbr />Client</a
+                  <li class="tsd-kind-method tsd-parent-kind-class">
+                    <a href="authclientconfig.html#get" class="tsd-kind-icon"
+                      >get</a
+                    >
+                  </li>
+                  <li class="tsd-kind-method tsd-parent-kind-class">
+                    <a href="authclientconfig.html#set" class="tsd-kind-icon"
+                      >set</a
                     >
                   </li>
                 </ul>
@@ -3140,26 +3214,29 @@
           </section>
         </section>
         <section class="tsd-panel-group tsd-member-group">
-          <h2>Methods</h2>
+          <h2>Constructors</h2>
           <section
-            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static"
+            class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"
           >
-            <a name="createclient" class="tsd-anchor"></a>
-            <h3>
-              <span class="tsd-flag ts-flagStatic">Static</span>
-              create<wbr />Client
-            </h3>
+            <a name="constructor" class="tsd-anchor"></a>
+            <h3>constructor</h3>
             <ul
-              class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static"
+              class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class"
             >
               <li class="tsd-signature tsd-kind-icon">
-                create<wbr />Client<span class="tsd-signature-symbol">(</span
-                >configFactory<span class="tsd-signature-symbol">: </span
-                ><a href="authclientconfig.html" class="tsd-signature-type"
-                  >AuthClientConfig</a
+                new <wbr />Auth<wbr />Client<wbr />Config<span
+                  class="tsd-signature-symbol"
+                  >(</span
+                >config<span class="tsd-signature-symbol">?: </span
+                ><a
+                  href="../interfaces/authconfig.html"
+                  class="tsd-signature-type"
+                  >AuthConfig</a
                 ><span class="tsd-signature-symbol">)</span
                 ><span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">Auth0Client</span>
+                ><a href="authclientconfig.html" class="tsd-signature-type"
+                  >AuthClientConfig</a
+                >
               </li>
             </ul>
             <ul class="tsd-descriptions">
@@ -3169,8 +3246,8 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.client.ts#L7"
-                        >projects/auth0-angular/src/lib/auth.client.ts:7</a
+                        href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L225"
+                        >projects/auth0-angular/src/lib/auth.config.ts:225</a
                       >
                     </li>
                   </ul>
@@ -3179,15 +3256,135 @@
                 <ul class="tsd-parameters">
                   <li>
                     <h5>
-                      configFactory:
-                      <a href="authclientconfig.html" class="tsd-signature-type"
-                        >AuthClientConfig</a
+                      <span class="tsd-flag ts-flagOptional">Optional</span>
+                      config:
+                      <a
+                        href="../interfaces/authconfig.html"
+                        class="tsd-signature-type"
+                        >AuthConfig</a
                       >
                     </h5>
                   </li>
                 </ul>
                 <h4 class="tsd-returns-title">
-                  Returns <span class="tsd-signature-type">Auth0Client</span>
+                  Returns
+                  <a href="authclientconfig.html" class="tsd-signature-type"
+                    >AuthClientConfig</a
+                  >
+                </h4>
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section class="tsd-panel-group tsd-member-group">
+          <h2>Methods</h2>
+          <section
+            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
+          >
+            <a name="get" class="tsd-anchor"></a>
+            <h3>get</h3>
+            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+              <li class="tsd-signature tsd-kind-icon">
+                get<span class="tsd-signature-symbol">(</span
+                ><span class="tsd-signature-symbol">)</span
+                ><span class="tsd-signature-symbol">: </span
+                ><a
+                  href="../interfaces/authconfig.html"
+                  class="tsd-signature-type"
+                  >AuthConfig</a
+                >
+              </li>
+            </ul>
+            <ul class="tsd-descriptions">
+              <li class="tsd-description">
+                <aside class="tsd-sources">
+                  <ul>
+                    <li>
+                      Defined in
+                      <a
+                        href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L244"
+                        >projects/auth0-angular/src/lib/auth.config.ts:244</a
+                      >
+                    </li>
+                  </ul>
+                </aside>
+                <div class="tsd-comment tsd-typography">
+                  <div class="lead">
+                    <p>
+                      Gets the config that has been set by other consumers of
+                      the service
+                    </p>
+                  </div>
+                </div>
+                <h4 class="tsd-returns-title">
+                  Returns
+                  <a
+                    href="../interfaces/authconfig.html"
+                    class="tsd-signature-type"
+                    >AuthConfig</a
+                  >
+                </h4>
+              </li>
+            </ul>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
+          >
+            <a name="set" class="tsd-anchor"></a>
+            <h3>set</h3>
+            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+              <li class="tsd-signature tsd-kind-icon">
+                set<span class="tsd-signature-symbol">(</span>config<span
+                  class="tsd-signature-symbol"
+                  >: </span
+                ><a
+                  href="../interfaces/authconfig.html"
+                  class="tsd-signature-type"
+                  >AuthConfig</a
+                ><span class="tsd-signature-symbol">)</span
+                ><span class="tsd-signature-symbol">: </span
+                ><span class="tsd-signature-type">void</span>
+              </li>
+            </ul>
+            <ul class="tsd-descriptions">
+              <li class="tsd-description">
+                <aside class="tsd-sources">
+                  <ul>
+                    <li>
+                      Defined in
+                      <a
+                        href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L237"
+                        >projects/auth0-angular/src/lib/auth.config.ts:237</a
+                      >
+                    </li>
+                  </ul>
+                </aside>
+                <div class="tsd-comment tsd-typography">
+                  <div class="lead">
+                    <p>
+                      Sets configuration to be read by other consumers of the
+                      service (see usage notes)
+                    </p>
+                  </div>
+                </div>
+                <h4 class="tsd-parameters-title">Parameters</h4>
+                <ul class="tsd-parameters">
+                  <li>
+                    <h5>
+                      config:
+                      <a
+                        href="../interfaces/authconfig.html"
+                        class="tsd-signature-type"
+                        >AuthConfig</a
+                      >
+                    </h5>
+                    <div class="tsd-comment tsd-typography">
+                      <p>The configuration to set</p>
+                    </div>
+                  </li>
+                </ul>
+                <h4 class="tsd-returns-title">
+                  Returns <span class="tsd-signature-type">void</span>
                 </h4>
               </li>
             </ul>

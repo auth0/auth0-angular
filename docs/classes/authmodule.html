@@ -3057,6 +3057,11 @@
     <nav class="tsd-navigation secondary">
       <ul>
         <li class="tsd-kind-class">
+          <a href="authclientconfig.html" class="tsd-kind-icon"
+            >Auth<wbr />Client<wbr />Config</a
+          >
+        </li>
+        <li class="tsd-kind-class">
           <a href="authguard.html" class="tsd-kind-icon">Auth<wbr />Guard</a>
         </li>
         <li class="tsd-kind-class">
@@ -3153,7 +3158,7 @@
             >
               <li class="tsd-signature tsd-kind-icon">
                 for<wbr />Root<span class="tsd-signature-symbol">(</span
-                >config<span class="tsd-signature-symbol">: </span
+                >config<span class="tsd-signature-symbol">?: </span
                 ><a
                   href="../interfaces/authconfig.html"
                   class="tsd-signature-type"
@@ -3174,16 +3179,27 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/lib/auth.module.ts#L9"
-                        >projects/auth0-angular/src/lib/auth.module.ts:9</a
+                        href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.module.ts#L14"
+                        >projects/auth0-angular/src/lib/auth.module.ts:14</a
                       >
                     </li>
                   </ul>
                 </aside>
+                <div class="tsd-comment tsd-typography">
+                  <div class="lead">
+                    <p>
+                      Initialize the authentication module system. Configuration
+                      can either be specified here, or by calling
+                      AuthClientConfig.set (perhaps from an APP_INITIALIZER
+                      factory function).
+                    </p>
+                  </div>
+                </div>
                 <h4 class="tsd-parameters-title">Parameters</h4>
                 <ul class="tsd-parameters">
                   <li>
                     <h5>
+                      <span class="tsd-flag ts-flagOptional">Optional</span>
                       config:
                       <a
                         href="../interfaces/authconfig.html"
@@ -3191,6 +3207,9 @@
                         >AuthConfig</a
                       >
                     </h5>
+                    <div class="tsd-comment tsd-typography">
+                      <p>The optional configuration for the SDK.</p>
+                    </div>
                   </li>
                 </ul>
                 <h4 class="tsd-returns-title">

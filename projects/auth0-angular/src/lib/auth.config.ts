@@ -182,6 +182,43 @@ export interface AuthConfig {
  * Gets and sets configuration for the internal Auth0 client. This can be
  * used to provide configuration outside of using AuthModule.forRoot, i.e. from
  * a factory provided by APP_INITIALIZER.
+ *
+ * @usage
+ *
+ * ```js
+ * // app.module.ts
+ * // ---------------------------
+ * import { AuthModule, AuthClientConfig } from '@auth0/auth0-angular';
+ *
+ * // Provide an initializer function that returns a Promise
+ * function configInitializer(
+ *   http: HttpClient,
+ *   config: AuthClientConfig
+ * ) {
+ *   return () =>
+ *     http
+ *       .get('/config')
+ *       .toPromise()
+ *       .then((loadedConfig: any) => config.set(loadedConfig));   // Set the config that was loaded asynchronously here
+ * }
+ *
+ * // Provide APP_INITIALIZER with this function. Note that there is no config passed to AuthModule.forRoot
+ * imports: [
+ *   // other imports..
+ *
+ *   HttpClientModule,
+ *   AuthModule.forRoot(),   //<- don't pass any config here
+ * ],
+ * providers: [
+ *   {
+ *     provide: APP_INITIALIZER,
+ *     useFactory: configInitializer,    // <- pass your initializer function here
+ *     deps: [HttpClient, AuthClientConfig],
+ *     multi: true,
+ *   },
+ * ],
+ * ```
+ *
  */
 @Injectable({ providedIn: 'root' })
 export class AuthClientConfig {
@@ -193,10 +230,17 @@ export class AuthClientConfig {
     }
   }
 
+  /**
+   * Sets configuration to be read by other consumers of the service (see usage notes)
+   * @param config The configuration to set
+   */
   set(config: AuthConfig): void {
     this.config = config;
   }
 
+  /**
+   * Gets the config that has been set by other consumers of the service
+   */
   get(): AuthConfig {
     return this.config;
   }

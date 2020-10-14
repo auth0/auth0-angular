@@ -3057,6 +3057,11 @@
     <nav class="tsd-navigation secondary">
       <ul>
         <li class="tsd-kind-class">
+          <a href="classes/authclientconfig.html" class="tsd-kind-icon"
+            >Auth<wbr />Client<wbr />Config</a
+          >
+        </li>
+        <li class="tsd-kind-class">
           <a href="classes/authguard.html" class="tsd-kind-icon"
             >Auth<wbr />Guard</a
           >
@@ -3224,6 +3229,7 @@
             </li>
             <li><a href="#protect-a-route">Protect a route</a></li>
             <li><a href="#call-an-api">Call an API</a></li>
+            <li><a href="#dynamic-configuration">Dynamic configuration</a></li>
           </ul>
           <a
             href="#register-the-authentication-module"
@@ -3569,6 +3575,51 @@ AuthModule.forRoot({
   }
 }</code></pre>
           <a
+            href="#dynamic-configuration"
+            id="dynamic-configuration"
+            style="color: inherit; text-decoration: none;"
+          >
+            <h2>Dynamic Configuration</h2>
+          </a>
+          <p>
+            Instead of using <code>AuthModule.forRoot</code> to specify auth
+            configuration, you can provide a factory function using
+            <code>APP_INITIALIZER</code> to load your config from an external
+            source before the auth module is loaded, and provide your
+            configuration using <code>AuthClientConfig.set</code>:
+          </p>
+          <pre><code class="language-js"><span class="hljs-comment">// app.module.ts</span>
+<span class="hljs-comment">// ---------------------------</span>
+<span class="hljs-keyword">import</span> { AuthModule, AuthClientConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
+
+<span class="hljs-comment">// Provide an initializer function that returns a Promise</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">configInitializer</span>(<span class="hljs-params">
+  http: HttpClient,
+  config: AuthClientConfig
+</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span>
+    http
+      .get(<span class="hljs-string">&#x27;/config&#x27;</span>)
+      .toPromise()
+      .then(<span class="hljs-function">(<span class="hljs-params">loadedConfig: any</span>) =&gt;</span> config.set(loadedConfig));   <span class="hljs-comment">// Set the config that was loaded asynchronously here</span>
+}
+
+<span class="hljs-comment">// Provide APP_INITIALIZER with this function. Note that there is no config passed to AuthModule.forRoot</span>
+<span class="hljs-attr">imports</span>: [
+  <span class="hljs-comment">// other imports..</span>
+
+  HttpClientModule,
+  AuthModule.forRoot(),   <span class="hljs-comment">//&lt;- don&#x27;t pass any config here</span>
+],
+<span class="hljs-attr">providers</span>: [
+  {
+    <span class="hljs-attr">provide</span>: APP_INITIALIZER,
+    <span class="hljs-attr">useFactory</span>: configInitializer,    <span class="hljs-comment">// &lt;- pass your initializer function here</span>
+    <span class="hljs-attr">deps</span>: [HttpClient, AuthClientConfig],
+    <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span>,
+  },
+],</code></pre>
+          <a
             href="#angular-universal"
             id="angular-universal"
             style="color: inherit; text-decoration: none;"
@@ -3762,7 +3813,7 @@ AuthModule.forRoot({
           </a>
           <p>
             This project is licensed under the MIT license. See the
-            <a href="https://github.com/auth0/auth0-react/blob/master/LICENSE"
+            <a href="https://github.com/auth0/auth0-angular/blob/master/LICENSE"
               >LICENSE</a
             >
             file for more info.
@@ -3797,6 +3848,13 @@ AuthModule.forRoot({
                       href="classes/auth0clientfactory.html"
                       class="tsd-kind-icon"
                       >Auth0<wbr />Client<wbr />Factory</a
+                    >
+                  </li>
+                  <li class="tsd-kind-class">
+                    <a
+                      href="classes/authclientconfig.html"
+                      class="tsd-kind-icon"
+                      >Auth<wbr />Client<wbr />Config</a
                     >
                   </li>
                   <li class="tsd-kind-class">
@@ -3924,7 +3982,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/lib/auth.config.ts#L22"
+                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L22"
                     >projects/auth0-angular/src/lib/auth.config.ts:22</a
                   >
                 </li>
@@ -3967,8 +4025,8 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/lib/auth.client.ts#L23"
-                    >projects/auth0-angular/src/lib/auth.client.ts:23</a
+                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.client.ts#L31"
+                    >projects/auth0-angular/src/lib/auth.client.ts:31</a
                   >
                 </li>
               </ul>
@@ -3999,8 +4057,8 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/lib/auth.config.ts#L192"
-                    >projects/auth0-angular/src/lib/auth.config.ts:192</a
+                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L260"
+                    >projects/auth0-angular/src/lib/auth.config.ts:260</a
                   >
                 </li>
               </ul>
@@ -4040,7 +4098,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4106,7 +4164,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4138,7 +4196,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4179,7 +4237,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4285,7 +4343,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4338,7 +4396,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/864c0e2/projects/auth0-angular/src/lib/auth.config.ts#L28"
+                        href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L28"
                         >projects/auth0-angular/src/lib/auth.config.ts:28</a
                       >
                     </li>

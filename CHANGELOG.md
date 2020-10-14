@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.1.0](https://github.com/auth0/auth0-angular/tree/v1.1.0) (2020-10-14)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.0.0...v1.1.0)
+
+**Added**
+
+- [SDK-1976] Dynamic configuration (alternative to AuthModule.forRoot) [\#62](https://github.com/auth0/auth0-angular/pull/62) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
 ## [v1.0.0](https://github.com/auth0/auth0-angular/tree/v1.0.0) (2020-09-16)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v0.2.1...v1.0.0)
