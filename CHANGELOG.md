@@ -6,7 +6,7 @@
 
 **Added**
 
-- [SDK-1976] Async alternative for AuthModule.forRoot [\#62](https://github.com/auth0/auth0-angular/pull/62) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- [SDK-1976] Dynamic configuration (alternative to AuthModule.forRoot) [\#62](https://github.com/auth0/auth0-angular/pull/62) ([stevehobbsdev](https://github.com/stevehobbsdev))
 
 ## [v1.0.0](https://github.com/auth0/auth0-angular/tree/v1.0.0) (2020-09-16)
 
