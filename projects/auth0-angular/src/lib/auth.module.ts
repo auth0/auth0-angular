@@ -17,7 +17,12 @@ export class AuthModule {
       providers: [
         AuthService,
         AuthGuard,
-        { provide: AuthConfigService, useFactory: () => config },
+        {
+          provide: AuthConfigService,
+          useFactory(): AuthConfig {
+            return config;
+          },
+        },
         {
           provide: Auth0ClientService,
           useFactory: Auth0ClientFactory.createClient,
