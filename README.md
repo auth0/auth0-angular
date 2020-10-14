@@ -48,6 +48,7 @@ ng add @auth0/auth0-angular
 - [Display the user profile](#display-the-user-profile)
 - [Protect a route](#protect-a-route)
 - [Call an API](#call-an-api)
+- [Dynamic configuration](#dynamic-configuration)
 
 ### Register the authentication module
 
@@ -300,6 +301,44 @@ export class MyComponent {
     this.http.get('/api').subscribe(result => console.log(result));
   }
 }
+```
+
+## Dynamic Configuration
+
+Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`:
+
+```js
+// app.module.ts
+// ---------------------------
+import { AuthModule, AuthClientConfig } from '@auth0/auth0-angular';
+
+// Provide an initializer function that returns a Promise
+function configInitializer(
+  http: HttpClient,
+  config: AuthClientConfig
+) {
+  return () =>
+    http
+      .get('/config')
+      .toPromise()
+      .then((loadedConfig: any) => config.set(loadedConfig));   // Set the config that was loaded asynchronously here
+}
+
+// Provide APP_INITIALIZER with this function. Note that there is no config passed to AuthModule.forRoot
+imports: [
+  // other imports..
+
+  HttpClientModule,
+  AuthModule.forRoot(),   //<- don't pass any config here
+],
+providers: [
+  {
+    provide: APP_INITIALIZER,
+    useFactory: configInitializer,    // <- pass your initializer function here
+    deps: [HttpClient, AuthClientConfig],
+    multi: true,
+  },
+],
 ```
 
 ## Angular Universal
