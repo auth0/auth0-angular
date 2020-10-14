@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>@auth0/auth0-angular | @auth0/auth0-angular</title>
+    <title>AuthClientConfig | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type="text/css">
@@ -3017,7 +3017,7 @@
         <div class="container">
           <div class="table-wrap">
             <div class="table-cell">
-              <strong><a href="index.html">@auth0/auth0-angular</a></strong>
+              <strong><a href="../index.html">@auth0/auth0-angular</a></strong>
             </div>
             <div class="table-cell" id="tsd-widgets">
               <div id="tsd-filter">
@@ -3057,49 +3057,47 @@
     <nav class="tsd-navigation secondary">
       <ul>
         <li class="tsd-kind-class">
-          <a href="classes/authguard.html" class="tsd-kind-icon"
-            >Auth<wbr />Guard</a
-          >
+          <a href="authguard.html" class="tsd-kind-icon">Auth<wbr />Guard</a>
         </li>
         <li class="tsd-kind-class">
-          <a href="classes/authhttpinterceptor.html" class="tsd-kind-icon"
+          <a href="authhttpinterceptor.html" class="tsd-kind-icon"
             >Auth<wbr />Http<wbr />Interceptor</a
           >
         </li>
         <li class="tsd-kind-class">
-          <a href="classes/authmodule.html" class="tsd-kind-icon"
-            >Auth<wbr />Module</a
-          >
+          <a href="authmodule.html" class="tsd-kind-icon">Auth<wbr />Module</a>
         </li>
         <li class="tsd-kind-class">
-          <a href="classes/authservice.html" class="tsd-kind-icon"
+          <a href="authservice.html" class="tsd-kind-icon"
             >Auth<wbr />Service</a
           >
         </li>
         <li class="tsd-kind-interface">
-          <a href="interfaces/authconfig.html" class="tsd-kind-icon"
+          <a href="../interfaces/authconfig.html" class="tsd-kind-icon"
             >Auth<wbr />Config</a
           >
         </li>
         <li class="tsd-kind-interface">
-          <a href="interfaces/httpinterceptorconfig.html" class="tsd-kind-icon"
+          <a
+            href="../interfaces/httpinterceptorconfig.html"
+            class="tsd-kind-icon"
             >Http<wbr />Interceptor<wbr />Config</a
           >
         </li>
         <li class="tsd-kind-interface">
           <a
-            href="interfaces/httpinterceptorrouteconfig.html"
+            href="../interfaces/httpinterceptorrouteconfig.html"
             class="tsd-kind-icon"
             >Http<wbr />Interceptor<wbr />Route<wbr />Config</a
           >
         </li>
         <li class="tsd-kind-type-alias">
-          <a href="globals.html#apiroutedefinition" class="tsd-kind-icon"
+          <a href="../globals.html#apiroutedefinition" class="tsd-kind-icon"
             >Api<wbr />Route<wbr />Definition</a
           >
         </li>
         <li class="tsd-kind-variable">
-          <a href="globals.html#authconfigservice" class="tsd-kind-icon"
+          <a href="../globals.html#authconfigservice" class="tsd-kind-icon"
             >Auth<wbr />Config<wbr />Service</a
           >
         </li>
@@ -3107,848 +3105,53 @@
     </nav>
     <div class="container container-main">
       <div class="content-wrap">
-        <div class="tsd-panel tsd-typography">
-          <p>
-            <img
-              src="https://img.shields.io/badge/stage-stable-green"
-              alt="Stage: Stable Release"
-            />
-            <img
-              src="https://img.shields.io/github/v/release/auth0/auth0-angular"
-              alt="Release"
-            />
-            <a href="https://circleci.com/gh/auth0/auth0-angular"
-              ><img
-                src="https://img.shields.io/circleci/build/github/auth0/auth0-angular"
-                alt="CircleCI"
-            /></a>
-            <a href="https://codecov.io/gh/auth0/auth0-angular"
-              ><img
-                src="https://img.shields.io/codecov/c/github/auth0/auth0-angular"
-                alt="Codecov"
-            /></a>
-            <img
-              src="https://img.shields.io/npm/dw/@auth0/auth0-angular"
-              alt="Downloads"
-            />
-          </p>
-
-          <a
-            href="#auth0-angular-sdk"
-            id="auth0-angular-sdk"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h1>Auth0 Angular SDK</h1>
-          </a>
-          <p>
-            A library for integrating <a href="https://auth0.com">Auth0</a> into
-            an Angular 9+ application.
-          </p>
-          <a
-            href="#table-of-contents"
-            id="table-of-contents"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Table of Contents</h2>
-          </a>
-          <ul>
-            <li><a href="#documentation">Documentation</a></li>
-            <li><a href="#installation">Installation</a></li>
-            <li><a href="#getting-started">Getting Started</a></li>
-            <li><a href="#angular-universal">Angular Universal</a></li>
-            <li><a href="#development">Development</a></li>
-            <li><a href="#contributing">Contributing</a></li>
-            <li><a href="#support--feedback">Support + Feedback</a></li>
+        <section class="tsd-panel tsd-comment">
+          <div class="tsd-comment tsd-typography">
+            <div class="lead">
+              <p>
+                Gets and sets configuration for the internal Auth0 client. This
+                can be used to provide configuration outside of using
+                AuthModule.forRoot, i.e. from a factory provided by
+                APP_INITIALIZER.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="tsd-panel tsd-hierarchy">
+          <h3>Hierarchy</h3>
+          <ul class="tsd-hierarchy">
             <li>
-              <a href="#vulnerability-reporting">Vulnerability Reporting</a>
-            </li>
-            <li><a href="#what-is-auth0">What is Auth0</a></li>
-            <li><a href="#license">License</a></li>
-          </ul>
-          <a
-            href="#documentation"
-            id="documentation"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Documentation</h2>
-          </a>
-          <ul>
-            <li>
-              <a href="https://auth0.github.io/auth0-angular/">API Reference</a>
-            </li>
-            <li>
-              <a href="https://auth0.com/docs/quickstart/spa/angular-next"
-                >Quickstart Guide</a
-              >
+              <span class="target">AuthClientConfig</span>
             </li>
           </ul>
-          <a
-            href="#installation"
-            id="installation"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Installation</h2>
-          </a>
-          <p>Using npm:</p>
-          <pre><code class="language-sh">npm install @auth0/auth0-angular</code></pre>
-          <p>
-            We also have <code>ng-add</code> support, so the library can also be
-            installed using the Angular CLI:
-          </p>
-          <pre><code class="language-sh">ng add @auth0/auth0-angular</code></pre>
-          <a
-            href="#getting-started"
-            id="getting-started"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Getting Started</h2>
-          </a>
-          <ul>
-            <li>
-              <a href="#register-the-authentication-module"
-                >Register the authentication module</a
-              >
-            </li>
-            <li>
-              <a href="#add-login-to-your-application"
-                >Add login to your application</a
-              >
-            </li>
-            <li>
-              <a href="#add-logout-to-your-application"
-                >Add logout to your application</a
-              >
-            </li>
-            <li>
-              <a href="#display-the-user-profile">Display the user profile</a>
-            </li>
-            <li><a href="#protect-a-route">Protect a route</a></li>
-            <li><a href="#call-an-api">Call an API</a></li>
-            <li><a href="#dynamic-configuration">Dynamic configuration</a></li>
-          </ul>
-          <a
-            href="#register-the-authentication-module"
-            id="register-the-authentication-module"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Register the authentication module</h3>
-          </a>
-          <p>
-            Install the SDK into your application by importing
-            <code>AuthModule</code> and configuring with your Auth0 domain and
-            client ID:
-          </p>
-          <pre><code class="language-js"><span class="hljs-keyword">import</span> { BrowserModule } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/platform-browser&#x27;</span>;
-<span class="hljs-keyword">import</span> { NgModule } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;
-<span class="hljs-keyword">import</span> { AppComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./app.component&#x27;</span>;
-
-<span class="hljs-comment">// Import the module from the SDK</span>
-<span class="hljs-keyword">import</span> { AuthModule } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
-
-@NgModule({
-  <span class="hljs-attr">declarations</span>: [AppComponent],
-  <span class="hljs-attr">imports</span>: [
-    BrowserModule,
-
-    <span class="hljs-comment">// Import the module into the application, with configuration</span>
-    AuthModule.forRoot({
-      <span class="hljs-attr">domain</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_DOMAIN&#x27;</span>,
-      <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_CLIENT_ID&#x27;</span>,
-    }),
-  ],
-
-  <span class="hljs-attr">bootstrap</span>: [AppComponent],
-})
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppModule</span> </span>{}</code></pre>
-          <a
-            href="#add-login-to-your-application"
-            id="add-login-to-your-application"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Add login to your application</h3>
-          </a>
-          <p>
-            Next, inject the <code>AuthService</code> service into a component
-            where you intend to provide the functionality to log in, by adding
-            the <code>AuthService</code> type to your constructor. Then, provide
-            a <code>loginWithRedirect()</code> method and call
-            <code>this.auth.loginWithRedirect()</code> to log the user into the
-            application.
-          </p>
-          <pre><code class="language-js"><span class="hljs-keyword">import</span> { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;
-
-<span class="hljs-comment">// Import the AuthService type from the SDK</span>
-<span class="hljs-keyword">import</span> { AuthService } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
-
-@Component({
-  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-root&#x27;</span>,
-  <span class="hljs-attr">templateUrl</span>: <span class="hljs-string">&#x27;./app.component.html&#x27;</span>,
-  <span class="hljs-attr">styleUrls</span>: [<span class="hljs-string">&#x27;./app.component.css&#x27;</span>],
-})
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppComponent</span> </span>{
-  title = <span class="hljs-string">&#x27;My App&#x27;</span>;
-
-  <span class="hljs-comment">// Inject the authentication service into your component through the constructor</span>
-  <span class="hljs-keyword">constructor</span>(public auth: AuthService) {}
-
-  loginWithRedirect(): <span class="hljs-keyword">void</span> {
-    <span class="hljs-comment">// Call this to redirect the user to the login page</span>
-    <span class="hljs-built_in">this</span>.auth.loginWithRedirect();
-  }
-}</code></pre>
-          <p>
-            By default the application will ask Auth0 will redirect back to the
-            root URL of your application after authentication, but this can be
-            configured by setting the
-            <a
-              href="https://auth0.github.io/auth0-angular/interfaces/authconfig.html#redirecturi"
-              ><code>redirectUri</code> option</a
-            >.
-          </p>
-          <p>
-            On your template, provide a button that will allow the user to log
-            in to the application. Use the
-            <code>isAuthenticated$</code> observable to check that the user is
-            not already authenticated:
-          </p>
-          <pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
-  *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">&quot;(auth.isAuthenticated$ | async) === false&quot;</span>
-  (<span class="hljs-attr">click</span>)=<span class="hljs-string">&quot;loginWithRedirect()&quot;</span>
-&gt;</span>
-  Log in
-<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></code></pre>
-          <a
-            href="#add-logout-to-your-application"
-            id="add-logout-to-your-application"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Add logout to your application</h3>
-          </a>
-          <p>
-            Add a <code>logout</code> method to your component and call the
-            SDK&#39;s <code>logout</code> method:
-          </p>
-          <pre><code class="language-js">logout(): <span class="hljs-keyword">void</span> {
-  <span class="hljs-comment">// Call this to log the user out of the application</span>
-  <span class="hljs-built_in">this</span>.auth.logout({ <span class="hljs-attr">returnTo</span>: <span class="hljs-built_in">window</span>.location.origin });
-}</code></pre>
-          <p>
-            Then on your component&#39;s template, add a button that will log
-            the user out of the application. Use the
-            <code>isAuthenticated$</code> observable to check that the user has
-            already been authenticated:
-          </p>
-          <pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">&quot;auth.isAuthenticated$ | async&quot;</span> (<span class="hljs-attr">click</span>)=<span class="hljs-string">&quot;logout()&quot;</span>&gt;</span>
-  Log out
-<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></code></pre>
-          <a
-            href="#display-the-user-profile"
-            id="display-the-user-profile"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Display the user profile</h3>
-          </a>
-          <p>
-            Access the <code>user$</code> observable on the
-            <code>AuthService</code> instance to retrieve the user profile. This
-            observable already heeds the
-            <code>isAuthenticated$</code> observable, so you do not need to
-            check if the user is authenticated before using it:
-          </p>
-          <pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">&quot;auth.user$ | async as user&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>{{ user.name }}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>{{ user.email }}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
-          <a
-            href="#handle-errors"
-            id="handle-errors"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Handle errors</h3>
-          </a>
-          <p>
-            Errors in the login flow can be captured by subscribing to the
-            <code>error$</code> observable:
-          </p>
-          <pre><code class="language-js">authService.error$.subscribe(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(error));</code></pre>
-          <a
-            href="#protect-a-route"
-            id="protect-a-route"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Protect a route</h3>
-          </a>
-          <p>
-            To ensure that a route can only be visited by authenticated users,
-            add the built-in <code>AuthGuard</code> type to the
-            <code>canActivate</code> property on the route you wish to protect.
-          </p>
-          <p>
-            If an unauthenticated user tries to access this route, they will
-            first be redirected to Auth0 to log in before returning to the URL
-            they tried to get to before login:
-          </p>
-          <pre><code class="language-js"><span class="hljs-keyword">import</span> { NgModule } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;
-<span class="hljs-keyword">import</span> { Routes, RouterModule } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/router&#x27;</span>;
-<span class="hljs-keyword">import</span> { HomeComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./unprotected/unprotected.component&#x27;</span>;
-<span class="hljs-keyword">import</span> { ProtectedComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./protected/protected.component&#x27;</span>;
-
-<span class="hljs-comment">// Import the authentication guard</span>
-<span class="hljs-keyword">import</span> { AuthGuard } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
-
-<span class="hljs-keyword">const</span> routes: Routes = [
-  {
-    <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;protected&#x27;</span>,
-    <span class="hljs-attr">component</span>: ProtectedComponent,
-
-    <span class="hljs-comment">// Protect a route by registering the auth guard in the `canActivate` hook</span>
-    <span class="hljs-attr">canActivate</span>: [AuthGuard],
-  },
-  {
-    <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;&#x27;</span>,
-    <span class="hljs-attr">component</span>: HomeComponent,
-    <span class="hljs-attr">pathMatch</span>: <span class="hljs-string">&#x27;full&#x27;</span>,
-  },
-];
-
-@NgModule({
-  <span class="hljs-attr">imports</span>: [RouterModule.forRoot(routes)],
-  <span class="hljs-attr">exports</span>: [RouterModule],
-})
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppRoutingModule</span> </span>{}</code></pre>
-          <a
-            href="#call-an-api"
-            id="call-an-api"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Call an API</h3>
-          </a>
-          <p>
-            The SDK provides an <code>HttpInterceptor</code> that automatically
-            attaches access tokens to outgoing requests when using the built-in
-            <code>HttpClient</code>. However, you must provide configuration
-            that tells the interceptor which requests to attach access tokens
-            to.
-          </p>
-          <a
-            href="#register-authhttpinterceptor"
-            id="register-authhttpinterceptor"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h4>Register AuthHttpInterceptor</h4>
-          </a>
-          <p>
-            First, register the interceptor with your application module, along
-            with the <code>HttpClientModule</code>.
-          </p>
-          <p>
-            <strong>Note:</strong> We do not do this automatically for you as we
-            want you to be explicit about including this interceptor. Also, you
-            may want to chain this interceptor with others, making it hard for
-            us to place it accurately.
-          </p>
-          <pre><code class="language-js"><span class="hljs-comment">// Import the interceptor module and the Angular types you&#x27;ll need</span>
-<span class="hljs-keyword">import</span> { HttpClientModule, HTTP_INTERCEPTORS } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/common/http&#x27;</span>;
-<span class="hljs-keyword">import</span> { AuthHttpInterceptor } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
-
-<span class="hljs-comment">// Register the interceptor with your app module in the `providers` array</span>
-@NgModule({
-  <span class="hljs-attr">declarations</span>: [],
-  <span class="hljs-attr">imports</span>: [
-    BrowserModule,
-    HttpClientModule,     <span class="hljs-comment">// Register this so that you can make API calls using HttpClient</span>
-    AppRoutingModule,
-    AuthModule.forRoot(...),
-  ],
-  <span class="hljs-attr">providers</span>: [
-    { <span class="hljs-attr">provide</span>: HTTP_INTERCEPTORS, <span class="hljs-attr">useClass</span>: AuthHttpInterceptor, <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span> },
-  ],
-  <span class="hljs-attr">bootstrap</span>: [AppComponent],
-})</code></pre>
-          <a
-            href="#configure-authhttpinterceptor-to-attach-access-tokens"
-            id="configure-authhttpinterceptor-to-attach-access-tokens"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h4>Configure AuthHttpInterceptor to attach access tokens</h4>
-          </a>
-          <p>
-            Next, tell the SDK which requests to attach access tokens to in the
-            SDK configuration. These are matched on the URL by using a string, a
-            regex, or more complex object that also allows you to specify the
-            configuration for fetching tokens by setting the
-            <code>tokenOptions</code> property.
-          </p>
-          <p>
-            If an HTTP call is made using <code>HttpClient</code> and there is
-            no match in this configuration for that URL, then the interceptor
-            will simply be bypassed and the call will be executed without a
-            token attached in the <code>Authorization</code> header.
-          </p>
-          <p>
-            <strong>Note:</strong> We do this to help prevent tokens being
-            unintentionally attached to requests to the wrong recipient, which
-            is a serious security issue. Those recipients could then use that
-            token to call the API as if it were your application.
-          </p>
-          <p>Here are some examples:</p>
-          <pre><code class="language-js"><span class="hljs-keyword">import</span> { HttpMethod } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
-
-<span class="hljs-comment">// Modify your existing SDK configuration to include the httpInterceptor config</span>
-AuthModule.forRoot({
-  <span class="hljs-attr">domain</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_DOMAIN&#x27;</span>,
-  <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_CLIENT_ID&#x27;</span>,
-  <span class="hljs-attr">redirectUri</span>: <span class="hljs-built_in">window</span>.location.origin,
-
-  <span class="hljs-comment">// The AuthHttpInterceptor configuration</span>
-  <span class="hljs-attr">httpInterceptor</span>: {
-    <span class="hljs-attr">allowedList</span>: [
-      <span class="hljs-comment">// Attach access tokens to any calls to &#x27;/api&#x27; (exact match)</span>
-      <span class="hljs-string">&#x27;/api&#x27;</span>,
-
-      <span class="hljs-comment">// Attach access tokens to any calls that start with &#x27;/api/&#x27;</span>
-      <span class="hljs-string">&#x27;/api/*&#x27;</span>,
-
-      <span class="hljs-comment">// Match anything starting with /api/accounts, but also specify the audience and scope the attached</span>
-      <span class="hljs-comment">// access token must have</span>
-      {
-        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/api/accounts/*&#x27;</span>,
-        <span class="hljs-attr">tokenOptions</span>: {
-          <span class="hljs-attr">audience</span>: <span class="hljs-string">&#x27;http://my-api/&#x27;</span>,
-          <span class="hljs-attr">scope</span>: <span class="hljs-string">&#x27;read:accounts&#x27;</span>,
-        },
-      },
-
-      <span class="hljs-comment">// Matching on HTTP method</span>
-      {
-        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/api/orders&#x27;</span>,
-        <span class="hljs-attr">httpMethod</span>: HttpMethod.Post,
-        <span class="hljs-attr">tokenOptions</span>: {
-          <span class="hljs-attr">audience</span>: <span class="hljs-string">&#x27;http://my-api/&#x27;</span>,
-          <span class="hljs-attr">scope</span>: <span class="hljs-string">&#x27;write:orders&#x27;</span>,
-        },
-      },
-
-      <span class="hljs-comment">// Using an absolute URI</span>
-      {
-        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;https://your-domain.auth0.com/api/v2/users&#x27;</span>,
-        <span class="hljs-attr">tokenOptions</span>: {
-          <span class="hljs-attr">audience</span>: <span class="hljs-string">&#x27;https://your-domain.com/api/v2/&#x27;</span>,
-          <span class="hljs-attr">scope</span>: <span class="hljs-string">&#x27;read:users&#x27;</span>,
-        },
-      },
-    ],
-  },
-});</code></pre>
-          <blockquote>
-            <p>
-              Under the hood, <code>tokenOptions</code> is passed as-is to
-              <a
-                href="https://auth0.github.io/auth0-spa-js/classes/auth0client.html#gettokensilently"
-                >the <code>getTokenSilently</code> method</a
-              >
-              on the underlying SDK, so all the same options apply here.
-            </p>
-          </blockquote>
-          <a
-            href="#use-httpclient-to-make-an-api-call"
-            id="use-httpclient-to-make-an-api-call"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h4>Use HttpClient to make an API call</h4>
-          </a>
-          <p>
-            Finally, make your API call using the <code>HttpClient</code>.
-            Access tokens are then attached automatically in the
-            <code>Authorization</code> header:
-          </p>
-          <pre><code class="language-js"><span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> </span>{
-  <span class="hljs-keyword">constructor</span>(private http: HttpClient) {}
-
-  callApi(): <span class="hljs-keyword">void</span> {
-    <span class="hljs-built_in">this</span>.http.get(<span class="hljs-string">&#x27;/api&#x27;</span>).subscribe(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(result));
-  }
-}</code></pre>
-          <a
-            href="#dynamic-configuration"
-            id="dynamic-configuration"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Dynamic Configuration</h2>
-          </a>
-          <p>
-            Instead of using <code>AuthModule.forRoot</code> to specify auth
-            configuration, you can provide a factory function using
-            <code>APP_INITIALIZER</code> to load your config from an external
-            source before the auth module is loaded, and provide your
-            configuration using <code>AuthClientConfig.set</code>:
-          </p>
-          <pre><code class="language-js"><span class="hljs-comment">// app.module.ts</span>
-<span class="hljs-comment">// ---------------------------</span>
-<span class="hljs-keyword">import</span> { AuthModule, AuthClientConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
-
-<span class="hljs-comment">// Provide an initializer function that returns a Promise</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">configInitializer</span>(<span class="hljs-params">
-  http: HttpClient,
-  config: AuthClientConfig
-</span>) </span>{
-  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span>
-    http
-      .get(<span class="hljs-string">&#x27;/config&#x27;</span>)
-      .toPromise()
-      .then(<span class="hljs-function">(<span class="hljs-params">loadedConfig: any</span>) =&gt;</span> config.set(loadedConfig));   <span class="hljs-comment">// Set the config that was loaded asynchronously here</span>
-}
-
-<span class="hljs-comment">// Provide APP_INITIALIZER with this function. Note that there is no config passed to AuthModule.forRoot</span>
-<span class="hljs-attr">imports</span>: [
-  <span class="hljs-comment">// other imports..</span>
-
-  HttpClientModule,
-  AuthModule.forRoot(),   <span class="hljs-comment">//&lt;- don&#x27;t pass any config here</span>
-],
-<span class="hljs-attr">providers</span>: [
-  {
-    <span class="hljs-attr">provide</span>: APP_INITIALIZER,
-    <span class="hljs-attr">useFactory</span>: configInitializer,    <span class="hljs-comment">// &lt;- pass your initializer function here</span>
-    <span class="hljs-attr">deps</span>: [HttpClient, AuthClientConfig],
-    <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span>,
-  },
-],</code></pre>
-          <a
-            href="#angular-universal"
-            id="angular-universal"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Angular Universal</h2>
-          </a>
-          <p>
-            This library makes use of the <code>window</code> object in a couple
-            of places during initialization, as well as
-            <code>sessionStorage</code> in the underlying Auth0 SPA SDK, and
-            thus
-            <a
-              href="https://github.com/angular/universal/blob/master/docs/gotchas.md#window-is-not-defined"
-              >will have problems</a
-            >
-            when being used in an Angular Universal project. The recommendation
-            currently is to only import this library into a module that is to be
-            used in the browser, and omit it from any module that is to
-            participate in a server-side environment.
-          </p>
-          <p>
-            See
-            <a
-              href="https://github.com/angular/universal/blob/master/docs/gotchas.md#strategy-2-guards"
-              >Guards, and creating separate modules</a
-            >
-            in the Angular Universal &quot;Gotchas&quot; document.
-          </p>
-          <a
-            href="#development"
-            id="development"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Development</h2>
-          </a>
-          <a
-            href="#build"
-            id="build"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Build</h3>
-          </a>
-          <p>
-            Run <code>ng build</code> to build the project. The build artifacts
-            will be stored in the <code>dist/</code> directory. Use the
-            <code>--prod</code> flag for a production build.
-          </p>
-          <a
-            href="#running-unit-tests"
-            id="running-unit-tests"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Running unit tests</h3>
-          </a>
-          <p>
-            Run <code>ng test</code> to execute the unit tests via
-            <a href="https://karma-runner.github.io">Karma</a>.
-          </p>
-          <a
-            href="#running-end-to-end-tests"
-            id="running-end-to-end-tests"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Running end-to-end tests</h3>
-          </a>
-          <p>
-            Run <code>ng e2e</code> to execute the end-to-end tests via
-            <a href="http://www.protractortest.org/">Protractor</a>.
-          </p>
-          <a
-            href="#running-the-playground-app"
-            id="running-the-playground-app"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h3>Running the playground app</h3>
-          </a>
-          <p>
-            The workspace includes a playground application that can be used to
-            test out features of the SDK. Run this using
-            <code>ng serve playground</code> and browse to
-            <a href="http://localhost:4200">http://localhost:4200</a>.
-          </p>
-          <a
-            href="#further-help"
-            id="further-help"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Further help</h2>
-          </a>
-          <p>
-            To get more help on the Angular CLI use <code>ng help</code> or go
-            check out the
-            <a
-              href="https://github.com/angular/angular-cli/blob/master/README.md"
-              >Angular CLI README</a
-            >.
-          </p>
-          <a
-            href="#contributing"
-            id="contributing"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Contributing</h2>
-          </a>
-          <p>
-            We appreciate feedback and contribution to this repo! Before you get
-            started, please see the following:
-          </p>
-          <ul>
-            <li>
-              <a
-                href="https://github.com/auth0/open-source-template/blob/master/GENERAL-CONTRIBUTING.md"
-                >Auth0&#39;s general contribution guidelines</a
-              >
-            </li>
-            <li>
-              <a
-                href="https://github.com/auth0/open-source-template/blob/master/CODE-OF-CONDUCT.md"
-                >Auth0&#39;s code of conduct guidelines</a
-              >
-            </li>
-          </ul>
-          <a
-            href="#support--feedback"
-            id="support--feedback"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Support + Feedback</h2>
-          </a>
-          <p>
-            For support or to provide feedback, please
-            <a href="https://github.com/auth0/auth0-angular/issues"
-              >raise an issue on our issue tracker</a
-            >.
-          </p>
-          <a
-            href="#vulnerability-reporting"
-            id="vulnerability-reporting"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>Vulnerability Reporting</h2>
-          </a>
-          <p>
-            Please do not report security vulnerabilities on the public GitHub
-            issue tracker. The
-            <a href="https://auth0.com/responsible-disclosure-policy"
-              >Responsible Disclosure Program</a
-            >
-            details the procedure for disclosing security issues.
-          </p>
-          <a
-            href="#what-is-auth0"
-            id="what-is-auth0"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>What is Auth0?</h2>
-          </a>
-          <p>Auth0 helps you to easily:</p>
-          <ul>
-            <li>
-              Implement authentication with multiple identity providers,
-              including social (e.g., Google, Facebook, Microsoft, LinkedIn,
-              GitHub, Twitter, etc), or enterprise (e.g., Windows Azure AD,
-              Google Apps, Active Directory, ADFS, SAML, etc.)
-            </li>
-            <li>
-              Log in users with username/password databases, passwordless, or
-              multi-factor authentication
-            </li>
-            <li>Link multiple user accounts together</li>
-            <li>
-              Generate signed JSON Web Tokens to authorize your API calls and
-              flow the user identity securely
-            </li>
-            <li>
-              Access demographics and analytics detailing how, when, and where
-              users are logging in
-            </li>
-            <li>
-              Enrich user profiles from other data sources using customizable
-              JavaScript rules
-            </li>
-          </ul>
-          <p><a href="https://auth0.com/why-auth0">Why Auth0?</a></p>
-          <a
-            href="#license"
-            id="license"
-            style="color: inherit; text-decoration: none;"
-          >
-            <h2>License</h2>
-          </a>
-          <p>
-            This project is licensed under the MIT license. See the
-            <a href="https://github.com/auth0/auth0-angular/blob/master/LICENSE"
-              >LICENSE</a
-            >
-            file for more info.
-          </p>
-        </div>
+        </section>
         <section class="tsd-panel-group tsd-index-group">
           <h2>Index</h2>
           <section class="tsd-panel tsd-index-panel">
             <div class="tsd-index-content">
               <section class="tsd-index-section">
-                <h3>Enumerations</h3>
+                <h3>Constructors</h3>
                 <ul class="tsd-index-list">
-                  <li class="tsd-kind-enum">
-                    <a href="enums/httpmethod.html" class="tsd-kind-icon"
-                      >Http<wbr />Method</a
+                  <li class="tsd-kind-constructor tsd-parent-kind-class">
+                    <a
+                      href="authclientconfig.html#constructor"
+                      class="tsd-kind-icon"
+                      >constructor</a
                     >
                   </li>
                 </ul>
               </section>
               <section class="tsd-index-section">
-                <h3>Classes</h3>
+                <h3>Methods</h3>
                 <ul class="tsd-index-list">
-                  <li class="tsd-kind-class">
-                    <a
-                      href="classes/abstractnavigator.html"
-                      class="tsd-kind-icon"
-                      >Abstract<wbr />Navigator</a
+                  <li class="tsd-kind-method tsd-parent-kind-class">
+                    <a href="authclientconfig.html#get" class="tsd-kind-icon"
+                      >get</a
                     >
                   </li>
-                  <li class="tsd-kind-class">
-                    <a
-                      href="classes/auth0clientfactory.html"
-                      class="tsd-kind-icon"
-                      >Auth0<wbr />Client<wbr />Factory</a
-                    >
-                  </li>
-                  <li class="tsd-kind-class">
-                    <a
-                      href="classes/authclientconfig.html"
-                      class="tsd-kind-icon"
-                      >Auth<wbr />Client<wbr />Config</a
-                    >
-                  </li>
-                  <li class="tsd-kind-class">
-                    <a href="classes/authguard.html" class="tsd-kind-icon"
-                      >Auth<wbr />Guard</a
-                    >
-                  </li>
-                  <li class="tsd-kind-class">
-                    <a
-                      href="classes/authhttpinterceptor.html"
-                      class="tsd-kind-icon"
-                      >Auth<wbr />Http<wbr />Interceptor</a
-                    >
-                  </li>
-                  <li class="tsd-kind-class">
-                    <a href="classes/authmodule.html" class="tsd-kind-icon"
-                      >Auth<wbr />Module</a
-                    >
-                  </li>
-                  <li class="tsd-kind-class">
-                    <a href="classes/authservice.html" class="tsd-kind-icon"
-                      >Auth<wbr />Service</a
-                    >
-                  </li>
-                </ul>
-              </section>
-              <section class="tsd-index-section">
-                <h3>Interfaces</h3>
-                <ul class="tsd-index-list">
-                  <li class="tsd-kind-interface">
-                    <a href="interfaces/authconfig.html" class="tsd-kind-icon"
-                      >Auth<wbr />Config</a
-                    >
-                  </li>
-                  <li class="tsd-kind-interface">
-                    <a
-                      href="interfaces/httpinterceptorconfig.html"
-                      class="tsd-kind-icon"
-                      >Http<wbr />Interceptor<wbr />Config</a
-                    >
-                  </li>
-                  <li class="tsd-kind-interface">
-                    <a
-                      href="interfaces/httpinterceptorrouteconfig.html"
-                      class="tsd-kind-icon"
-                      >Http<wbr />Interceptor<wbr />Route<wbr />Config</a
-                    >
-                  </li>
-                </ul>
-              </section>
-              <section class="tsd-index-section">
-                <h3>Type aliases</h3>
-                <ul class="tsd-index-list">
-                  <li class="tsd-kind-type-alias">
-                    <a
-                      href="globals.html#apiroutedefinition"
-                      class="tsd-kind-icon"
-                      >Api<wbr />Route<wbr />Definition</a
-                    >
-                  </li>
-                </ul>
-              </section>
-              <section class="tsd-index-section">
-                <h3>Variables</h3>
-                <ul class="tsd-index-list">
-                  <li class="tsd-kind-variable">
-                    <a
-                      href="globals.html#auth0clientservice"
-                      class="tsd-kind-icon"
-                      >Auth0<wbr />Client<wbr />Service</a
-                    >
-                  </li>
-                  <li class="tsd-kind-variable">
-                    <a
-                      href="globals.html#authconfigservice"
-                      class="tsd-kind-icon"
-                      >Auth<wbr />Config<wbr />Service</a
-                    >
-                  </li>
-                  <li class="tsd-kind-variable">
-                    <a href="globals.html#context" class="tsd-kind-icon"
-                      >context</a
-                    >
-                  </li>
-                  <li class="tsd-kind-variable">
-                    <a href="globals.html#require" class="tsd-kind-icon"
-                      >require</a
-                    >
-                  </li>
-                </ul>
-              </section>
-              <section class="tsd-index-section">
-                <h3>Functions</h3>
-                <ul class="tsd-index-list">
-                  <li class="tsd-kind-function">
-                    <a
-                      href="globals.html#ishttpinterceptorrouteconfig"
-                      class="tsd-kind-icon"
-                      >is<wbr />Http<wbr />Interceptor<wbr />Route<wbr />Config</a
+                  <li class="tsd-kind-method tsd-parent-kind-class">
+                    <a href="authclientconfig.html#set" class="tsd-kind-icon"
+                      >set</a
                     >
                   </li>
                 </ul>
@@ -3957,430 +3160,28 @@ AuthModule.forRoot({
           </section>
         </section>
         <section class="tsd-panel-group tsd-member-group">
-          <h2>Type aliases</h2>
-          <section class="tsd-panel tsd-member tsd-kind-type-alias">
-            <a name="apiroutedefinition" class="tsd-anchor"></a>
-            <h3>Api<wbr />Route<wbr />Definition</h3>
-            <div class="tsd-signature tsd-kind-icon">
-              Api<wbr />Route<wbr />Definition<span class="tsd-signature-symbol"
-                >:</span
-              >
-              <a
-                href="interfaces/httpinterceptorrouteconfig.html"
-                class="tsd-signature-type"
-                >HttpInterceptorRouteConfig</a
-              ><span class="tsd-signature-symbol"> | </span
-              ><span class="tsd-signature-type">string</span>
-            </div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/lib/auth.config.ts#L22"
-                    >projects/auth0-angular/src/lib/auth.config.ts:22</a
-                  >
-                </li>
-              </ul>
-            </aside>
-            <div class="tsd-comment tsd-typography">
-              <div class="lead">
-                <p>Defines the type for a route config entry. Can either be:</p>
-              </div>
-              <ul>
-                <li>an object of type HttpInterceptorConfig</li>
-                <li>a string</li>
-              </ul>
-            </div>
-          </section>
-        </section>
-        <section class="tsd-panel-group tsd-member-group">
-          <h2>Variables</h2>
-          <section class="tsd-panel tsd-member tsd-kind-variable">
-            <a name="auth0clientservice" class="tsd-anchor"></a>
-            <h3>
-              <span class="tsd-flag ts-flagConst">Const</span>
-              Auth0<wbr />Client<wbr />Service
-            </h3>
-            <div class="tsd-signature tsd-kind-icon">
-              Auth0<wbr />Client<wbr />Service<span class="tsd-signature-symbol"
-                >:</span
-              >
-              <span class="tsd-signature-type">InjectionToken</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">Auth0Client</span
-              ><span class="tsd-signature-symbol">&gt;</span
-              ><span class="tsd-signature-symbol">
-                = new
-                InjectionToken&lt;Auth0Client&gt;(&#x27;auth0.client&#x27;)</span
-              >
-            </div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/lib/auth.client.ts#L31"
-                    >projects/auth0-angular/src/lib/auth.client.ts:31</a
-                  >
-                </li>
-              </ul>
-            </aside>
-          </section>
-          <section class="tsd-panel tsd-member tsd-kind-variable">
-            <a name="authconfigservice" class="tsd-anchor"></a>
-            <h3>
-              <span class="tsd-flag ts-flagConst">Const</span>
-              Auth<wbr />Config<wbr />Service
-            </h3>
-            <div class="tsd-signature tsd-kind-icon">
-              Auth<wbr />Config<wbr />Service<span class="tsd-signature-symbol"
-                >:</span
-              >
-              <span class="tsd-signature-type">InjectionToken</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><a href="interfaces/authconfig.html" class="tsd-signature-type"
-                >AuthConfig</a
-              ><span class="tsd-signature-symbol">&gt;</span
-              ><span class="tsd-signature-symbol">
-                = new
-                InjectionToken&lt;AuthConfig&gt;(&#x27;auth0-angular.config&#x27;)</span
-              >
-            </div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/lib/auth.config.ts#L216"
-                    >projects/auth0-angular/src/lib/auth.config.ts:216</a
-                  >
-                </li>
-              </ul>
-            </aside>
-            <div class="tsd-comment tsd-typography">
-              <div class="lead">
-                <p>Injection token for accessing configuration.</p>
-              </div>
-              <dl class="tsd-comment-tags">
-                <dt>usagenotes</dt>
-                <dd>
-                  <p>
-                    Use the <code>Inject</code> decorator to access the
-                    configuration from a service or component:
-                  </p>
-                  <pre><code><span class="hljs-selector-tag">class</span> <span class="hljs-selector-tag">MyService</span>(<span class="hljs-variable">@Inject</span>(AuthConfigService) <span class="hljs-attribute">config</span>: AuthConfig) {}</code></pre>
-                </dd>
-              </dl>
-            </div>
-          </section>
-          <section class="tsd-panel tsd-member tsd-kind-variable">
-            <a name="context" class="tsd-anchor"></a>
-            <h3><span class="tsd-flag ts-flagConst">Const</span> context</h3>
-            <div class="tsd-signature tsd-kind-icon">
-              context<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-symbol">{ </span>keys<span
-                class="tsd-signature-symbol"
-                >: </span
-              ><span class="tsd-signature-type">any</span
-              ><span class="tsd-signature-symbol"> }</span
-              ><span class="tsd-signature-symbol">
-                = require.context(&#x27;./&#x27;, true, /\.spec\.ts$/)</span
-              >
-            </div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/test.ts#L24"
-                    >projects/auth0-angular/src/test.ts:24</a
-                  >
-                </li>
-              </ul>
-            </aside>
-            <div class="tsd-type-declaration">
-              <h4>Type declaration</h4>
-              <ul class="tsd-parameters">
-                <li class="tsd-parameter-signature">
-                  <ul
-                    class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable tsd-has-type-parameter"
-                  >
-                    <li class="tsd-signature tsd-kind-icon">
-                      &lt;T&gt;<span class="tsd-signature-symbol">(</span
-                      >id<span class="tsd-signature-symbol">: </span
-                      ><span class="tsd-signature-type">string</span
-                      ><span class="tsd-signature-symbol">)</span
-                      ><span class="tsd-signature-symbol">: </span
-                      ><span class="tsd-signature-type">T</span>
-                    </li>
-                  </ul>
-                  <ul class="tsd-descriptions">
-                    <li class="tsd-description">
-                      <h4 class="tsd-type-parameters-title">Type parameters</h4>
-                      <ul class="tsd-type-parameters">
-                        <li>
-                          <h4>T</h4>
-                        </li>
-                      </ul>
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameters">
-                        <li>
-                          <h5>
-                            id: <span class="tsd-signature-type">string</span>
-                          </h5>
-                        </li>
-                      </ul>
-                      <h4 class="tsd-returns-title">
-                        Returns <span class="tsd-signature-type">T</span>
-                      </h4>
-                    </li>
-                  </ul>
-                </li>
-                <li class="tsd-parameter">
-                  <h5>
-                    keys<span class="tsd-signature-symbol">: </span>function
-                  </h5>
-                  <ul
-                    class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal"
-                  >
-                    <li class="tsd-signature tsd-kind-icon">
-                      keys<span class="tsd-signature-symbol">(</span
-                      ><span class="tsd-signature-symbol">)</span
-                      ><span class="tsd-signature-symbol">: </span
-                      ><span class="tsd-signature-type">string</span
-                      ><span class="tsd-signature-symbol">[]</span>
-                    </li>
-                  </ul>
-                  <ul class="tsd-descriptions">
-                    <li class="tsd-description">
-                      <aside class="tsd-sources">
-                        <ul>
-                          <li>
-                            Defined in
-                            <a
-                              href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/test.ts#L13"
-                              >projects/auth0-angular/src/test.ts:13</a
-                            >
-                          </li>
-                        </ul>
-                      </aside>
-                      <h4 class="tsd-returns-title">
-                        Returns <span class="tsd-signature-type">string</span
-                        ><span class="tsd-signature-symbol">[]</span>
-                      </h4>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </section>
-          <section class="tsd-panel tsd-member tsd-kind-variable">
-            <a name="require" class="tsd-anchor"></a>
-            <h3><span class="tsd-flag ts-flagConst">Const</span> require</h3>
-            <div class="tsd-signature tsd-kind-icon">
-              require<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-symbol">{ </span>context<span
-                class="tsd-signature-symbol"
-                >: </span
-              ><span class="tsd-signature-type">any</span
-              ><span class="tsd-signature-symbol"> }</span>
-            </div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/test.ts#L11"
-                    >projects/auth0-angular/src/test.ts:11</a
-                  >
-                </li>
-              </ul>
-            </aside>
-            <div class="tsd-type-declaration">
-              <h4>Type declaration</h4>
-              <ul class="tsd-parameters">
-                <li class="tsd-parameter">
-                  <h5>
-                    context<span class="tsd-signature-symbol">: </span>function
-                  </h5>
-                  <ul
-                    class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal"
-                  >
-                    <li class="tsd-signature tsd-kind-icon">
-                      context<span class="tsd-signature-symbol">(</span
-                      >path<span class="tsd-signature-symbol">: </span
-                      ><span class="tsd-signature-type">string</span>, deep<span
-                        class="tsd-signature-symbol"
-                        >?: </span
-                      ><span class="tsd-signature-type">boolean</span>,
-                      filter<span class="tsd-signature-symbol">?: </span
-                      ><span class="tsd-signature-type">RegExp</span
-                      ><span class="tsd-signature-symbol">)</span
-                      ><span class="tsd-signature-symbol">: </span
-                      ><span class="tsd-signature-symbol">{ </span>keys<span
-                        class="tsd-signature-symbol"
-                        >: </span
-                      ><span class="tsd-signature-type">any</span
-                      ><span class="tsd-signature-symbol"> }</span>
-                    </li>
-                  </ul>
-                  <ul class="tsd-descriptions">
-                    <li class="tsd-description">
-                      <aside class="tsd-sources">
-                        <ul>
-                          <li>
-                            Defined in
-                            <a
-                              href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/test.ts#L12"
-                              >projects/auth0-angular/src/test.ts:12</a
-                            >
-                          </li>
-                        </ul>
-                      </aside>
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameters">
-                        <li>
-                          <h5>
-                            path: <span class="tsd-signature-type">string</span>
-                          </h5>
-                        </li>
-                        <li>
-                          <h5>
-                            <span class="tsd-flag ts-flagOptional"
-                              >Optional</span
-                            >
-                            deep:
-                            <span class="tsd-signature-type">boolean</span>
-                          </h5>
-                        </li>
-                        <li>
-                          <h5>
-                            <span class="tsd-flag ts-flagOptional"
-                              >Optional</span
-                            >
-                            filter:
-                            <span class="tsd-signature-type">RegExp</span>
-                          </h5>
-                        </li>
-                      </ul>
-                      <h4 class="tsd-returns-title">
-                        Returns
-                        <span class="tsd-signature-symbol">{ </span>keys<span
-                          class="tsd-signature-symbol"
-                          >: </span
-                        ><span class="tsd-signature-type">any</span
-                        ><span class="tsd-signature-symbol"> }</span>
-                      </h4>
-                      <ul class="tsd-parameters">
-                        <li class="tsd-parameter-signature">
-                          <ul
-                            class="tsd-signatures tsd-kind-type-literal tsd-has-type-parameter"
-                          >
-                            <li class="tsd-signature tsd-kind-icon">
-                              &lt;T&gt;<span class="tsd-signature-symbol"
-                                >(</span
-                              >id<span class="tsd-signature-symbol">: </span
-                              ><span class="tsd-signature-type">string</span
-                              ><span class="tsd-signature-symbol">)</span
-                              ><span class="tsd-signature-symbol">: </span
-                              ><span class="tsd-signature-type">T</span>
-                            </li>
-                          </ul>
-                          <ul class="tsd-descriptions">
-                            <li class="tsd-description">
-                              <h4 class="tsd-type-parameters-title">
-                                Type parameters
-                              </h4>
-                              <ul class="tsd-type-parameters">
-                                <li>
-                                  <h4>T</h4>
-                                </li>
-                              </ul>
-                              <h4 class="tsd-parameters-title">Parameters</h4>
-                              <ul class="tsd-parameters">
-                                <li>
-                                  <h5>
-                                    id:
-                                    <span class="tsd-signature-type"
-                                      >string</span
-                                    >
-                                  </h5>
-                                </li>
-                              </ul>
-                              <h4 class="tsd-returns-title">
-                                Returns
-                                <span class="tsd-signature-type">T</span>
-                              </h4>
-                            </li>
-                          </ul>
-                        </li>
-                        <li class="tsd-parameter">
-                          <h5>
-                            keys<span class="tsd-signature-symbol">: </span
-                            >function
-                          </h5>
-                          <ul
-                            class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal"
-                          >
-                            <li class="tsd-signature tsd-kind-icon">
-                              keys<span class="tsd-signature-symbol">(</span
-                              ><span class="tsd-signature-symbol">)</span
-                              ><span class="tsd-signature-symbol">: </span
-                              ><span class="tsd-signature-type">string</span
-                              ><span class="tsd-signature-symbol">[]</span>
-                            </li>
-                          </ul>
-                          <ul class="tsd-descriptions">
-                            <li class="tsd-description">
-                              <aside class="tsd-sources">
-                                <ul>
-                                  <li>
-                                    Defined in
-                                    <a
-                                      href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/test.ts#L13"
-                                      >projects/auth0-angular/src/test.ts:13</a
-                                    >
-                                  </li>
-                                </ul>
-                              </aside>
-                              <h4 class="tsd-returns-title">
-                                Returns
-                                <span class="tsd-signature-type">string</span
-                                ><span class="tsd-signature-symbol">[]</span>
-                              </h4>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </section>
-        </section>
-        <section class="tsd-panel-group tsd-member-group">
-          <h2>Functions</h2>
-          <section class="tsd-panel tsd-member tsd-kind-function">
-            <a name="ishttpinterceptorrouteconfig" class="tsd-anchor"></a>
-            <h3>is<wbr />Http<wbr />Interceptor<wbr />Route<wbr />Config</h3>
-            <ul class="tsd-signatures tsd-kind-function">
+          <h2>Constructors</h2>
+          <section
+            class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"
+          >
+            <a name="constructor" class="tsd-anchor"></a>
+            <h3>constructor</h3>
+            <ul
+              class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class"
+            >
               <li class="tsd-signature tsd-kind-icon">
-                is<wbr />Http<wbr />Interceptor<wbr />Route<wbr />Config<span
+                new <wbr />Auth<wbr />Client<wbr />Config<span
                   class="tsd-signature-symbol"
                   >(</span
-                >def<span class="tsd-signature-symbol">: </span
+                >config<span class="tsd-signature-symbol">?: </span
                 ><a
-                  href="globals.html#apiroutedefinition"
+                  href="../interfaces/authconfig.html"
                   class="tsd-signature-type"
-                  >ApiRouteDefinition</a
+                  >AuthConfig</a
                 ><span class="tsd-signature-symbol">)</span
                 ><span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">def</span
-                ><span class="tsd-signature-symbol"> is </span
-                ><span class="tsd-signature-type"
-                  >HttpInterceptorRouteConfig</span
+                ><a href="authclientconfig.html" class="tsd-signature-type"
+                  >AuthClientConfig</a
                 >
               </li>
             </ul>
@@ -4391,42 +3192,126 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/lib/auth.config.ts#L28"
-                        >projects/auth0-angular/src/lib/auth.config.ts:28</a
+                        href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/lib/auth.config.ts#L188"
+                        >projects/auth0-angular/src/lib/auth.config.ts:188</a
                       >
                     </li>
                   </ul>
                 </aside>
-                <div class="tsd-comment tsd-typography">
-                  <div class="lead">
-                    <p>
-                      A custom type guard to help identify route definitions
-                      that are actually HttpInterceptorRouteConfig types.
-                    </p>
-                  </div>
-                </div>
                 <h4 class="tsd-parameters-title">Parameters</h4>
                 <ul class="tsd-parameters">
                   <li>
                     <h5>
-                      def:
+                      <span class="tsd-flag ts-flagOptional">Optional</span>
+                      config:
                       <a
-                        href="globals.html#apiroutedefinition"
+                        href="../interfaces/authconfig.html"
                         class="tsd-signature-type"
-                        >ApiRouteDefinition</a
+                        >AuthConfig</a
                       >
                     </h5>
-                    <div class="tsd-comment tsd-typography">
-                      <p>The route definition type</p>
-                    </div>
                   </li>
                 </ul>
                 <h4 class="tsd-returns-title">
-                  Returns <span class="tsd-signature-type">def</span
-                  ><span class="tsd-signature-symbol"> is </span
-                  ><span class="tsd-signature-type"
-                    >HttpInterceptorRouteConfig</span
+                  Returns
+                  <a href="authclientconfig.html" class="tsd-signature-type"
+                    >AuthClientConfig</a
                   >
+                </h4>
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section class="tsd-panel-group tsd-member-group">
+          <h2>Methods</h2>
+          <section
+            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
+          >
+            <a name="get" class="tsd-anchor"></a>
+            <h3>get</h3>
+            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+              <li class="tsd-signature tsd-kind-icon">
+                get<span class="tsd-signature-symbol">(</span
+                ><span class="tsd-signature-symbol">)</span
+                ><span class="tsd-signature-symbol">: </span
+                ><a
+                  href="../interfaces/authconfig.html"
+                  class="tsd-signature-type"
+                  >AuthConfig</a
+                >
+              </li>
+            </ul>
+            <ul class="tsd-descriptions">
+              <li class="tsd-description">
+                <aside class="tsd-sources">
+                  <ul>
+                    <li>
+                      Defined in
+                      <a
+                        href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/lib/auth.config.ts#L200"
+                        >projects/auth0-angular/src/lib/auth.config.ts:200</a
+                      >
+                    </li>
+                  </ul>
+                </aside>
+                <h4 class="tsd-returns-title">
+                  Returns
+                  <a
+                    href="../interfaces/authconfig.html"
+                    class="tsd-signature-type"
+                    >AuthConfig</a
+                  >
+                </h4>
+              </li>
+            </ul>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
+          >
+            <a name="set" class="tsd-anchor"></a>
+            <h3>set</h3>
+            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+              <li class="tsd-signature tsd-kind-icon">
+                set<span class="tsd-signature-symbol">(</span>config<span
+                  class="tsd-signature-symbol"
+                  >: </span
+                ><a
+                  href="../interfaces/authconfig.html"
+                  class="tsd-signature-type"
+                  >AuthConfig</a
+                ><span class="tsd-signature-symbol">)</span
+                ><span class="tsd-signature-symbol">: </span
+                ><span class="tsd-signature-type">void</span>
+              </li>
+            </ul>
+            <ul class="tsd-descriptions">
+              <li class="tsd-description">
+                <aside class="tsd-sources">
+                  <ul>
+                    <li>
+                      Defined in
+                      <a
+                        href="https://github.com/auth0/auth0-angular/blob/b405904/projects/auth0-angular/src/lib/auth.config.ts#L196"
+                        >projects/auth0-angular/src/lib/auth.config.ts:196</a
+                      >
+                    </li>
+                  </ul>
+                </aside>
+                <h4 class="tsd-parameters-title">Parameters</h4>
+                <ul class="tsd-parameters">
+                  <li>
+                    <h5>
+                      config:
+                      <a
+                        href="../interfaces/authconfig.html"
+                        class="tsd-signature-type"
+                        >AuthConfig</a
+                      >
+                    </h5>
+                  </li>
+                </ul>
+                <h4 class="tsd-returns-title">
+                  Returns <span class="tsd-signature-type">void</span>
                 </h4>
               </li>
             </ul>
