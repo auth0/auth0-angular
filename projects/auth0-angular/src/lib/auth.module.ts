@@ -19,9 +19,7 @@ export class AuthModule {
         AuthGuard,
         {
           provide: AuthConfigService,
-          useFactory(): AuthConfig {
-            return config;
-          },
+          useValue: config,
         },
         {
           provide: Auth0ClientService,
