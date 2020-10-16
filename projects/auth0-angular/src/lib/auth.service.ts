@@ -73,6 +73,15 @@ export class AuthService implements OnDestroy {
   );
 
   /**
+   * Emits ID token claims when `isAuthenticated$` is `true`.
+   */
+  readonly idTokenClaims$ = this.isAuthenticated$.pipe(
+    filter((authenticated) => authenticated),
+    distinctUntilChanged(),
+    concatMap(() => this.auth0Client.getIdTokenClaims())
+  );
+
+  /**
    * Emits errors that occur during login, or when checking for an active session on startup.
    */
   readonly error$ = this.errorSubject$.asObservable();

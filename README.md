@@ -150,6 +150,14 @@ Access the `user$` observable on the `AuthService` instance to retrieve the user
 </ul>
 ```
 
+### Access ID token claims
+
+Access the `idTokenClaims$` observable on the `AuthService` instance to retrieve the ID token claims. Like the `user$` observable, this observable already heeds the `isAuthenticated$` observable, so you do not need to check if the user is authenticated before using it:
+
+```js
+authService.idTokenClaims$.subscribe((claims) => console.log(claims));
+```
+
 ### Handle errors
 
 Errors in the login flow can be captured by subscribing to the `error$` observable:
