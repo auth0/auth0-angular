@@ -40,11 +40,13 @@ describe('The Auth HTTP Interceptor', () => {
     expect(req.request.headers.get('Authorization')).toBeFalsy();
   };
 
+  let config: Partial<AuthConfig>;
+
   beforeEach(() => {
     auth0Client = jasmine.createSpyObj('Auth0Client', ['getTokenSilently']);
     auth0Client.getTokenSilently.and.resolveTo('access-token');
 
-    const config: Partial<AuthConfig> = {
+    config = {
       httpInterceptor: {
         allowedList: [
           '',
@@ -93,6 +95,15 @@ describe('The Auth HTTP Interceptor', () => {
   afterEach(() => {
     httpTestingController.verify();
     req.flush(testData);
+  });
+
+  describe('When no config is configured', () => {
+    it('pass through and do not have access tokens attached', fakeAsync((
+      done
+    ) => {
+      config.httpInterceptor = null;
+      assertPassThruApiCallTo('/api/public', done);
+    }));
   });
 
   describe('Requests that do not require authentication', () => {
