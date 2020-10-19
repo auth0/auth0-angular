@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http/testing';
 import { Data } from '@angular/router';
 import { Auth0ClientService } from './auth.client';
-import { AuthConfigService, AuthConfig, HttpMethod } from './auth.config';
+import { AuthConfig, HttpMethod, AuthClientConfig } from './auth.config';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -80,8 +80,8 @@ describe('The Auth HTTP Interceptor', () => {
         },
         { provide: Auth0ClientService, useValue: auth0Client },
         {
-          provide: AuthConfigService,
-          useValue: config,
+          provide: AuthClientConfig,
+          useValue: { get: () => config },
         },
       ],
     });
