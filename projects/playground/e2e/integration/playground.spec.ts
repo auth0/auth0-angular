@@ -45,14 +45,13 @@ describe('Smoke tests', () => {
   it('do redirect login and show user and access token', () => {
     cy.visit('/');
     cy.get('#login').should('be.visible').click();
-
     cy.url().should('include', 'https://brucke.auth0.com/login');
     loginToAuth0();
-
     cy.get('[data-cy=userProfile]').contains(`"email": "${EMAIL}"`);
-
+    cy.get('[data-cy=idTokenClaims]').contains('__raw');
     cy.get('[data-cy=accessToken]').should('be.empty');
     cy.get('#accessToken').click();
+
     cy.get('[data-cy=accessToken]')
       .should('not.be.empty')
       .invoke('text')
