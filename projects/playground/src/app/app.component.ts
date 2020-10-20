@@ -15,6 +15,7 @@ export class AppComponent {
   isAuthenticated$ = this.auth.isAuthenticated$;
   isLoading$ = this.auth.isLoading$;
   user$ = this.auth.user$;
+  claims$ = this.auth.idTokenClaims$;
   accessToken = '';
   error$ = this.auth.error$;
 
