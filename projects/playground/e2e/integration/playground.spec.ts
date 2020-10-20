@@ -1,5 +1,5 @@
-const EMAIL = Cypress.env('USER_EMAIL');
-const PASSWORD = Cypress.env('USER_PASSWORD');
+const EMAIL = 'johnfoo+integration@gmail.com';
+const PASSWORD = '1234';
 
 if (!EMAIL || !PASSWORD) {
   throw new Error(
