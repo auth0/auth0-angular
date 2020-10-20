@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http/testing';
 import { Data } from '@angular/router';
 import { Auth0ClientService } from './auth.client';
-import { AuthConfigService, AuthConfig, HttpMethod } from './auth.config';
+import { AuthConfig, HttpMethod, AuthClientConfig } from './auth.config';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -40,11 +40,13 @@ describe('The Auth HTTP Interceptor', () => {
     expect(req.request.headers.get('Authorization')).toBeFalsy();
   };
 
+  let config: Partial<AuthConfig>;
+
   beforeEach(() => {
     auth0Client = jasmine.createSpyObj('Auth0Client', ['getTokenSilently']);
     auth0Client.getTokenSilently.and.resolveTo('access-token');
 
-    const config: Partial<AuthConfig> = {
+    config = {
       httpInterceptor: {
         allowedList: [
           '',
@@ -80,8 +82,8 @@ describe('The Auth HTTP Interceptor', () => {
         },
         { provide: Auth0ClientService, useValue: auth0Client },
         {
-          provide: AuthConfigService,
-          useValue: config,
+          provide: AuthClientConfig,
+          useValue: { get: () => config },
         },
       ],
     });
@@ -93,6 +95,15 @@ describe('The Auth HTTP Interceptor', () => {
   afterEach(() => {
     httpTestingController.verify();
     req.flush(testData);
+  });
+
+  describe('When no config is configured', () => {
+    it('pass through and do not have access tokens attached', fakeAsync((
+      done
+    ) => {
+      config.httpInterceptor = null;
+      assertPassThruApiCallTo('/api/public', done);
+    }));
   });
 
   describe('Requests that do not require authentication', () => {

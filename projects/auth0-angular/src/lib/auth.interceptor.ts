@@ -9,11 +9,11 @@ import { Observable, from, of, iif } from 'rxjs';
 import { Injectable, Inject } from '@angular/core';
 
 import {
-  AuthConfig,
-  AuthConfigService,
   HttpInterceptorRouteConfig,
   ApiRouteDefinition,
   isHttpInterceptorRouteConfig,
+  AuthClientConfig,
+  AuthConfig,
 } from './auth.config';
 
 import { Auth0ClientService } from './auth.client';
@@ -23,7 +23,7 @@ import { switchMap, first, concatMap, pluck } from 'rxjs/operators';
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
   constructor(
-    @Inject(AuthConfigService) private config: AuthConfig,
+    private configFactory: AuthClientConfig,
     @Inject(Auth0ClientService) private auth0Client: Auth0Client
   ) {}
 
@@ -31,11 +31,12 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (!this.config.httpInterceptor?.allowedList) {
+    const config = this.configFactory.get();
+    if (!config.httpInterceptor?.allowedList) {
       return next.handle(req);
     }
 
-    return this.findMatchingRoute(req).pipe(
+    return this.findMatchingRoute(req, config).pipe(
       concatMap((route) =>
         iif(
           // Check if a route was matched
@@ -129,9 +130,10 @@ export class AuthHttpInterceptor implements HttpInterceptor {
    * @param request The Http request
    */
   private findMatchingRoute(
-    request: HttpRequest<any>
+    request: HttpRequest<any>,
+    config: AuthConfig
   ): Observable<HttpInterceptorRouteConfig> {
-    return from(this.config.httpInterceptor.allowedList).pipe(
+    return from(config.httpInterceptor.allowedList).pipe(
       first((route) => this.canAttachToken(route, request), null)
     );
   }
