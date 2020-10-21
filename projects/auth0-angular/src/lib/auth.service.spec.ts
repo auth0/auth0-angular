@@ -128,15 +128,20 @@ describe('AuthService', () => {
     });
 
     it('should not get the user if not authenticated', (done) => {
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+      const user = {
+        name: 'Test User',
+      };
 
-      let user;
-      service.user$.subscribe((value) => {
-        user = value;
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
+
+      let value;
+      service.user$.subscribe((v) => {
+        value = v;
       });
 
       setTimeout(() => {
-        expect(user).toBeUndefined();
+        expect(value).toBeUndefined();
         done();
       }, 1000);
     });
@@ -161,15 +166,23 @@ describe('AuthService', () => {
     });
 
     it('should not get the ID token claims if not authenticated', (done) => {
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+      const claims: IdToken = {
+        __raw: 'idToken',
+        exp: 1602887231,
+        iat: 1602883631,
+        iss: 'https://example.eu.auth0.com/',
+      };
 
-      let claims;
-      service.idTokenClaims$.subscribe((value) => {
-        claims = value;
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
+
+      let value;
+      service.idTokenClaims$.subscribe((v) => {
+        value = v;
       });
 
       setTimeout(() => {
-        expect(claims).toBeUndefined();
+        expect(value).toBeUndefined();
         done();
       }, 1000);
     });
