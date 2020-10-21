@@ -127,13 +127,18 @@ describe('AuthService', () => {
       });
     });
 
-    it('should get the user if not authenticated', (done) => {
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+    it('should not get the user if not authenticated', (done) => {
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
 
+      let user;
       service.user$.subscribe((value) => {
-        expect(value).toBeFalsy();
-        done();
+        user = value;
       });
+
+      setTimeout(() => {
+        expect(user).toBeUndefined();
+        done();
+      }, 1000);
     });
   });
 
@@ -155,13 +160,18 @@ describe('AuthService', () => {
       });
     });
 
-    it('should get the ID token claims if not authenticated', (done) => {
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+    it('should not get the ID token claims if not authenticated', (done) => {
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
 
+      let claims;
       service.idTokenClaims$.subscribe((value) => {
-        expect(value).toBeFalsy();
-        done();
+        claims = value;
       });
+
+      setTimeout(() => {
+        expect(claims).toBeUndefined();
+        done();
+      }, 1000);
     });
   });
 
