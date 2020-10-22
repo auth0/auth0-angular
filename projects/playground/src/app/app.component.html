@@ -72,6 +72,19 @@
           user$ | async | json
         }}</textarea>
       </li>
+      <li class="artifact" *ngIf="claims$ | async as claims">
+        <p>ID token claims:</p>
+        <textarea
+          name=""
+          id=""
+          cols="50"
+          rows="15"
+          data-cy="idTokenClaims"
+          disabled="true"
+        >
+          {{ claims | json }}
+        </textarea>
+      </li>
       <li class="artifact">
         <p>
           Access Token: Select a mode and click the button to retrieve the

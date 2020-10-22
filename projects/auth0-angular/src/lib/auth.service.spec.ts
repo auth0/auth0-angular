@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import { Auth0Client } from '@auth0/auth0-spa-js';
+import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
@@ -36,6 +36,7 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'checkSession').and.resolveTo();
     spyOn(auth0Client, 'isAuthenticated').and.resolveTo(false);
     spyOn(auth0Client, 'getUser').and.resolveTo(null);
+    spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(null);
     spyOn(auth0Client, 'logout');
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
 
@@ -125,12 +126,22 @@ describe('AuthService', () => {
         done();
       });
     });
+  });
 
-    it('should get the user if not authenticated', (done) => {
+  describe('The `idTokenClaims` observable', () => {
+    it('should get the ID token claims if authenticated', (done) => {
+      const claims: IdToken = {
+        __raw: 'idToken',
+        exp: 1602887231,
+        iat: 1602883631,
+        iss: 'https://example.eu.auth0.com/',
+      };
+
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
 
-      service.user$.subscribe((value) => {
-        expect(value).toBeFalsy();
+      service.idTokenClaims$.subscribe((value) => {
+        expect(value).toBe(claims);
         done();
       });
     });

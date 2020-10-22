@@ -1,11 +1,5 @@
-const EMAIL = Cypress.env('USER_EMAIL');
-const PASSWORD = Cypress.env('USER_PASSWORD');
-
-if (!EMAIL || !PASSWORD) {
-  throw new Error(
-    'You must provide CYPRESS_USER_EMAIL and CYPRESS_USER_PASSWORD environment variables'
-  );
-}
+const EMAIL = 'johnfoo+integration@gmail.com';
+const PASSWORD = '1234';
 
 const loginToAuth0 = () => {
   cy.get('.auth0-lock-form')
@@ -51,14 +45,13 @@ describe('Smoke tests', () => {
   it('do redirect login and show user and access token', () => {
     cy.visit('/');
     cy.get('#login').should('be.visible').click();
-
     cy.url().should('include', 'https://brucke.auth0.com/login');
     loginToAuth0();
-
     cy.get('[data-cy=userProfile]').contains(`"email": "${EMAIL}"`);
-
+    cy.get('[data-cy=idTokenClaims]').contains('__raw');
     cy.get('[data-cy=accessToken]').should('be.empty');
     cy.get('#accessToken').click();
+
     cy.get('[data-cy=accessToken]')
       .should('not.be.empty')
       .invoke('text')
