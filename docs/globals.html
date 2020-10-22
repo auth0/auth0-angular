@@ -3137,11 +3137,10 @@
               alt="Downloads"
             />
           </p>
-
           <a
             href="#auth0-angular-sdk"
             id="auth0-angular-sdk"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h1>Auth0 Angular SDK</h1>
           </a>
@@ -3152,7 +3151,7 @@
           <a
             href="#table-of-contents"
             id="table-of-contents"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Table of Contents</h2>
           </a>
@@ -3173,7 +3172,7 @@
           <a
             href="#documentation"
             id="documentation"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Documentation</h2>
           </a>
@@ -3190,7 +3189,7 @@
           <a
             href="#installation"
             id="installation"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Installation</h2>
           </a>
@@ -3204,7 +3203,7 @@
           <a
             href="#getting-started"
             id="getting-started"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Getting Started</h2>
           </a>
@@ -3234,7 +3233,7 @@
           <a
             href="#register-the-authentication-module"
             id="register-the-authentication-module"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Register the authentication module</h3>
           </a>
@@ -3268,7 +3267,7 @@
           <a
             href="#add-login-to-your-application"
             id="add-login-to-your-application"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Add login to your application</h3>
           </a>
@@ -3325,7 +3324,7 @@
           <a
             href="#add-logout-to-your-application"
             id="add-logout-to-your-application"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Add logout to your application</h3>
           </a>
@@ -3349,7 +3348,7 @@
           <a
             href="#display-the-user-profile"
             id="display-the-user-profile"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Display the user profile</h3>
           </a>
@@ -3365,9 +3364,24 @@
   <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>{{ user.email }}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
           <a
+            href="#access-id-token-claims"
+            id="access-id-token-claims"
+            style="color: inherit; text-decoration: none"
+          >
+            <h3>Access ID token claims</h3>
+          </a>
+          <p>
+            Access the <code>idTokenClaims$</code> observable on the
+            <code>AuthService</code> instance to retrieve the ID token claims.
+            Like the <code>user$</code> observable, this observable already
+            heeds the <code>isAuthenticated$</code> observable, so you do not
+            need to check if the user is authenticated before using it:
+          </p>
+          <pre><code class="language-js">authService.idTokenClaims$.subscribe(<span class="hljs-function">(<span class="hljs-params">claims</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(claims));</code></pre>
+          <a
             href="#handle-errors"
             id="handle-errors"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Handle errors</h3>
           </a>
@@ -3379,7 +3393,7 @@
           <a
             href="#protect-a-route"
             id="protect-a-route"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Protect a route</h3>
           </a>
@@ -3424,7 +3438,7 @@
           <a
             href="#call-an-api"
             id="call-an-api"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Call an API</h3>
           </a>
@@ -3438,7 +3452,7 @@
           <a
             href="#register-authhttpinterceptor"
             id="register-authhttpinterceptor"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h4>Register AuthHttpInterceptor</h4>
           </a>
@@ -3473,7 +3487,7 @@
           <a
             href="#configure-authhttpinterceptor-to-attach-access-tokens"
             id="configure-authhttpinterceptor-to-attach-access-tokens"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h4>Configure AuthHttpInterceptor to attach access tokens</h4>
           </a>
@@ -3558,7 +3572,7 @@ AuthModule.forRoot({
           <a
             href="#use-httpclient-to-make-an-api-call"
             id="use-httpclient-to-make-an-api-call"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h4>Use HttpClient to make an API call</h4>
           </a>
@@ -3577,7 +3591,7 @@ AuthModule.forRoot({
           <a
             href="#dynamic-configuration"
             id="dynamic-configuration"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Dynamic Configuration</h2>
           </a>
@@ -3622,7 +3636,7 @@ AuthModule.forRoot({
           <a
             href="#angular-universal"
             id="angular-universal"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Angular Universal</h2>
           </a>
@@ -3651,14 +3665,14 @@ AuthModule.forRoot({
           <a
             href="#development"
             id="development"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Development</h2>
           </a>
           <a
             href="#build"
             id="build"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Build</h3>
           </a>
@@ -3670,7 +3684,7 @@ AuthModule.forRoot({
           <a
             href="#running-unit-tests"
             id="running-unit-tests"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Running unit tests</h3>
           </a>
@@ -3681,7 +3695,7 @@ AuthModule.forRoot({
           <a
             href="#running-end-to-end-tests"
             id="running-end-to-end-tests"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Running end-to-end tests</h3>
           </a>
@@ -3692,7 +3706,7 @@ AuthModule.forRoot({
           <a
             href="#running-the-playground-app"
             id="running-the-playground-app"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h3>Running the playground app</h3>
           </a>
@@ -3705,7 +3719,7 @@ AuthModule.forRoot({
           <a
             href="#further-help"
             id="further-help"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Further help</h2>
           </a>
@@ -3720,7 +3734,7 @@ AuthModule.forRoot({
           <a
             href="#contributing"
             id="contributing"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Contributing</h2>
           </a>
@@ -3745,7 +3759,7 @@ AuthModule.forRoot({
           <a
             href="#support--feedback"
             id="support--feedback"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Support + Feedback</h2>
           </a>
@@ -3758,22 +3772,21 @@ AuthModule.forRoot({
           <a
             href="#vulnerability-reporting"
             id="vulnerability-reporting"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>Vulnerability Reporting</h2>
           </a>
           <p>
             Please do not report security vulnerabilities on the public GitHub
-            issue tracker. The
-            <a href="https://auth0.com/responsible-disclosure-policy"
+            issue tracker. The <a
+              href="https://auth0.com/responsible-disclosure-policy"
               >Responsible Disclosure Program</a
-            >
-            details the procedure for disclosing security issues.
+            > details the procedure for disclosing security issues.
           </p>
           <a
             href="#what-is-auth0"
             id="what-is-auth0"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>What is Auth0?</h2>
           </a>
@@ -3807,7 +3820,7 @@ AuthModule.forRoot({
           <a
             href="#license"
             id="license"
-            style="color: inherit; text-decoration: none;"
+            style="color: inherit; text-decoration: none"
           >
             <h2>License</h2>
           </a>
@@ -3982,7 +3995,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L22"
+                    href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/lib/auth.config.ts#L22"
                     >projects/auth0-angular/src/lib/auth.config.ts:22</a
                   >
                 </li>
@@ -4025,7 +4038,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.client.ts#L31"
+                    href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/lib/auth.client.ts#L31"
                     >projects/auth0-angular/src/lib/auth.client.ts:31</a
                   >
                 </li>
@@ -4057,7 +4070,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L260"
+                    href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/lib/auth.config.ts#L260"
                     >projects/auth0-angular/src/lib/auth.config.ts:260</a
                   >
                 </li>
@@ -4098,7 +4111,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4164,7 +4177,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4196,7 +4209,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4237,7 +4250,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4343,7 +4356,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4396,7 +4409,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/19a8302/projects/auth0-angular/src/lib/auth.config.ts#L28"
+                        href="https://github.com/auth0/auth0-angular/blob/b56cd1f/projects/auth0-angular/src/lib/auth.config.ts#L28"
                         >projects/auth0-angular/src/lib/auth.config.ts:28</a
                       >
                     </li>
