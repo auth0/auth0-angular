@@ -1,5 +1,18 @@
 # Change Log
 
+## [v1.2.0](https://github.com/auth0/auth0-angular/tree/v1.2.0) (2020-10-22)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.1.0...v1.2.0)
+
+**Added**
+
+- Get ID Token claims [\#69](https://github.com/auth0/auth0-angular/pull/69) ([7opf](https://github.com/7opf))
+
+**Fixed**
+
+- Ensure interceptor uses AuthClientConfig [\#71](https://github.com/auth0/auth0-angular/pull/71) ([frederikprijck](https://github.com/frederikprijck))
+- Swap useFactory for useValue when providing AuthConfigService [\#67](https://github.com/auth0/auth0-angular/pull/67) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
 ## [v1.1.0](https://github.com/auth0/auth0-angular/tree/v1.1.0) (2020-10-14)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.0.0...v1.1.0)
