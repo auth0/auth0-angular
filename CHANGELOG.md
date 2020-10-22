@@ -6,7 +6,7 @@
 
 **Added**
 
-- Get id token claims [\#69](https://github.com/auth0/auth0-angular/pull/69) ([7opf](https://github.com/7opf))
+- Get ID Token claims [\#69](https://github.com/auth0/auth0-angular/pull/69) ([7opf](https://github.com/7opf))
 
 **Fixed**
 
