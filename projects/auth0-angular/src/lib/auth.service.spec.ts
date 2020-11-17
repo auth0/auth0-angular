@@ -5,6 +5,7 @@ import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import { AuthClientConfig } from './auth.config';
 
 /**
  * Wraps service.isLoading$ so that assertions can be made
@@ -19,6 +20,7 @@ describe('AuthService', () => {
   let moduleSetup: any;
   let service: AuthService;
   let locationSpy: jasmine.SpyObj<Location>;
+  let authClientConfigSpy: jasmine.SpyObj<AuthClientConfig>;
 
   const createService = () => {
     return TestBed.inject(AuthService);
@@ -46,6 +48,8 @@ describe('AuthService', () => {
 
     locationSpy = jasmine.createSpyObj('Location', ['path']);
     locationSpy.path.and.returnValue('');
+
+    authClientConfigSpy = jasmine.createSpyObj(['get']);
 
     moduleSetup = {
       providers: [
@@ -172,6 +176,10 @@ describe('AuthService', () => {
             provide: Location,
             useValue: locationSpy,
           },
+          {
+            provide: AuthClientConfig,
+            useValue: authClientConfigSpy,
+          },
         ],
       });
 
@@ -183,6 +191,19 @@ describe('AuthService', () => {
 
       loaded(localService).subscribe(() => {
         expect(auth0Client.handleRedirectCallback).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+    it('should not handle the callback when skipRedirectCallback is true', (done) => {
+      authClientConfigSpy.get.and.returnValue({
+        skipRedirectCallback: true,
+      } as any);
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalledTimes(1);
         done();
       });
     });

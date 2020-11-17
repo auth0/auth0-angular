@@ -106,6 +106,13 @@ export interface AuthConfig {
   redirectUri?: string;
 
   /**
+   * By default, if the page url has code/state params, the SDK will treat them as Auth0's and attempt to exchange the
+   * code for a token. In some cases the code might be for something else (another OAuth SDK perhaps). In these
+   * instances you can instruct the client to ignore them.
+   */
+  skipRedirectCallback?: boolean;
+
+  /**
    * The value in seconds used to account for clock skew in JWT expirations.
    * Typically, this value is no more than a minute or two at maximum.
    * Defaults to 60s.
