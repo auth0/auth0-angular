@@ -172,6 +172,11 @@ export interface AuthConfig {
   httpInterceptor?: HttpInterceptorConfig;
 
   /**
+   * Path in your application to redirect to when the Authorization server
+   * returns an error. Defaults to `/`
+   */
+  errorPath?: string;
+  /**
    * If you need to send custom parameters to the Authorization Server,
    * make sure to use the original parameter name.
    */
