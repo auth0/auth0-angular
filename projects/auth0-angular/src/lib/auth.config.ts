@@ -108,7 +108,17 @@ export interface AuthConfig {
   /**
    * By default, if the page url has code/state params, the SDK will treat them as Auth0's and attempt to exchange the
    * code for a token. In some cases the code might be for something else (another OAuth SDK perhaps). In these
-   * instances you can instruct the client to ignore them.
+   * instances you can instruct the client to ignore them by setting the skipRedirectCallback.
+   *
+   * ```js
+   * AuthModule.forRoot({
+   *   skipRedirectCallback: window.location.pathname === '/other-callback'
+   * })
+   * ```
+   *
+   * **Note**: In the above example, `/other-callback` is an existing route that will be called
+   * by any other OAuth provider with a `code` (or `error` in case when something went wrong) and `state`.
+   *
    */
   skipRedirectCallback?: boolean;
 

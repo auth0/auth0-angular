@@ -17,7 +17,6 @@ import {
 const authConfig: AuthConfig = {
   clientId: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
   domain: 'brucke.auth0.com',
-  skipRedirectCallback: window.location.pathname === '/other-callback',
 };
 
 /**

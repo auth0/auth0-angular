@@ -49,6 +49,7 @@ ng add @auth0/auth0-angular
 - [Protect a route](#protect-a-route)
 - [Call an API](#call-an-api)
 - [Dynamic configuration](#dynamic-configuration)
+- [Using multiple OAuth providers](#using-multiple-oauth-providers)
 
 ### Register the authentication module
 
@@ -311,7 +312,7 @@ export class MyComponent {
 }
 ```
 
-## Dynamic Configuration
+### Dynamic Configuration
 
 Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`:
 
@@ -348,6 +349,20 @@ providers: [
   },
 ],
 ```
+
+### Using multiple OAuth providers
+
+If your application is making use of multiple OAuth providers, you might need to use multiple callback paths as well, one for each OAuth provider.
+To ensure the SDK does not process the callback for any provider other than Auth0,
+you should configure the AuthModule by setting `skipRedirectCallback`.
+
+```js
+AuthModule.forRoot({
+  skipRedirectCallback: window.location.pathname === '/other-callback',
+});
+```
+
+**Note**: In the above example, `/other-callback` is an existing route that will be called by any other OAuth provider with a `code` (or `error` in case something went wrong) and `state`.
 
 ## Angular Universal
 
