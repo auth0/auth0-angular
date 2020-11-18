@@ -107,7 +107,7 @@ export class AuthService implements OnDestroy {
             catchError((error) => {
               const config = this.configFactory.get();
               this.errorSubject$.next(error);
-              this.navigator.navigateByUrl(config?.errorPath || '/');
+              this.navigator.navigateByUrl(config.errorPath || '/');
               return of(undefined);
             })
           )
