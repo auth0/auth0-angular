@@ -259,7 +259,7 @@ export class AuthService implements OnDestroy {
         return (
           (search.includes('code=') || search.includes('error=')) &&
           search.includes('state=') &&
-          !this.configFactory.get()?.skipRedirectCallback
+          !this.configFactory.get().skipRedirectCallback
         );
       })
     );
