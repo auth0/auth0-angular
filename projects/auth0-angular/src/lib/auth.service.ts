@@ -67,18 +67,20 @@ export class AuthService implements OnDestroy {
    * Emits details about the authenticated user when `isAuthenticated$` is `true`.
    */
   readonly user$ = this.isAuthenticated$.pipe(
-    filter((authenticated) => authenticated),
     distinctUntilChanged(),
-    concatMap(() => this.auth0Client.getUser())
+    concatMap((authenticated) =>
+      authenticated ? this.auth0Client.getUser() : of(null)
+    )
   );
 
   /**
    * Emits ID token claims when `isAuthenticated$` is `true`.
    */
   readonly idTokenClaims$ = this.isAuthenticated$.pipe(
-    filter((authenticated) => authenticated),
     distinctUntilChanged(),
-    concatMap(() => this.auth0Client.getIdTokenClaims())
+    concatMap((authenticated) =>
+      authenticated ? this.auth0Client.getIdTokenClaims() : of(null)
+    )
   );
 
   /**
