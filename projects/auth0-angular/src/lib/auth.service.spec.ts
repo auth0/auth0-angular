@@ -247,6 +247,22 @@ describe('AuthService', () => {
       });
     });
 
+    it('should redirect to errorPath when an error occured in handleRedirectCallback', (done) => {
+      const errorObj = new Error('An error has occured');
+
+      authConfig.errorPath = '/error';
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.throwError(
+        errorObj
+      );
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/error');
+        done();
+      });
+    });
+
     it('should process the callback when an error appears in the query string', (done) => {
       locationSpy.path.and.returnValue(
         `?error=${encodeURIComponent('This is an error')}&state=456`

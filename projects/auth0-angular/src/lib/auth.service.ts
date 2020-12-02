@@ -105,8 +105,9 @@ export class AuthService implements OnDestroy {
         switchMap((isCallback) =>
           checkSessionOrCallback$(isCallback).pipe(
             catchError((error) => {
+              const config = this.configFactory.get();
               this.errorSubject$.next(error);
-              this.navigator.navigateByUrl('/');
+              this.navigator.navigateByUrl(config.errorPath || '/');
               return of(undefined);
             })
           )

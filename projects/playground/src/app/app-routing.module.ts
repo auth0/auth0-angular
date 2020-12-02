@@ -5,6 +5,7 @@ import { AuthGuard } from 'projects/auth0-angular/src/lib/auth.guard';
 import { UnprotectedComponent } from './components/unprotected.component';
 import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
+import { ErrorComponent } from './components/error.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
     canLoad: [AuthGuard],
     loadChildren: () =>
       import('./lazy-module.module').then((m) => m.LazyModuleModule),
+  },
+  {
+    path: 'error',
+    component: ErrorComponent,
   },
 ];
 
