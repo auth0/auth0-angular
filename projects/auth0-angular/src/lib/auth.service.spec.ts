@@ -200,7 +200,7 @@ describe('AuthService', () => {
       const localService = createService();
 
       loaded(localService).subscribe(() => {
-        expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalledTimes(1);
+        expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalled();
         done();
       });
     });
