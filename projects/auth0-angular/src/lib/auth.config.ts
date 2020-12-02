@@ -106,9 +106,9 @@ export interface AuthConfig {
   redirectUri?: string;
 
   /**
-   * By default, if the page url has code/state params, the SDK will treat them as Auth0's and attempt to exchange the
-   * code for a token. In some cases the code might be for something else (another OAuth SDK perhaps). In these
-   * instances you can instruct the client to ignore them by setting the skipRedirectCallback.
+   * By default, if the page URL has code and state parameters, the SDK will assume they are for an Auth0 application and attempt to exchange the
+   * code for a token. In some cases the code might be for something else (e.g. another OAuth SDK). In these
+   * instances you can instruct the client to ignore them by setting `skipRedirectCallback`.
    *
    * ```js
    * AuthModule.forRoot({
