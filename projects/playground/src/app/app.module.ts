@@ -8,6 +8,7 @@ import { ProtectedComponent } from './components/protected.component';
 import { UnprotectedComponent } from './components/unprotected.component';
 import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
+import { ErrorComponent } from './components/error.component';
 
 import {
   AuthClientConfig,
@@ -17,6 +18,7 @@ import {
 const authConfig: AuthConfig = {
   clientId: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
   domain: 'brucke.auth0.com',
+  errorPath: '/error',
 };
 
 /**
@@ -37,6 +39,7 @@ function configInitializer(config: AuthClientConfig): () => Promise<any> {
     UnprotectedComponent,
     ChildRouteComponent,
     NestedChildRouteComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
