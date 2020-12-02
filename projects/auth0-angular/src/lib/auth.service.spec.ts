@@ -194,6 +194,17 @@ describe('AuthService', () => {
       });
     });
 
+    it('should not handle the callback when skipRedirectCallback is true', (done) => {
+      authConfig.skipRedirectCallback = true;
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
     it('should redirect to the correct route', (done) => {
       const localService = createService();
 

@@ -256,11 +256,13 @@ export class AuthService implements OnDestroy {
 
   private shouldHandleCallback(): Observable<boolean> {
     return of(this.location.path()).pipe(
-      map(
-        (search) =>
+      map((search) => {
+        return (
           (search.includes('code=') || search.includes('error=')) &&
-          search.includes('state=')
-      )
+          search.includes('state=') &&
+          !this.configFactory.get().skipRedirectCallback
+        );
+      })
     );
   }
 
