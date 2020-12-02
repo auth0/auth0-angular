@@ -36,6 +36,7 @@ import {
 import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { Location } from '@angular/common';
+import { AuthClientConfig } from './auth.config';
 
 @Injectable({
   providedIn: 'root',
@@ -90,6 +91,7 @@ export class AuthService implements OnDestroy {
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
+    private configFactory: AuthClientConfig,
     private location: Location,
     private navigator: AbstractNavigator
   ) {
@@ -105,8 +107,9 @@ export class AuthService implements OnDestroy {
         switchMap((isCallback) =>
           checkSessionOrCallback$(isCallback).pipe(
             catchError((error) => {
+              const config = this.configFactory.get();
               this.errorSubject$.next(error);
-              this.navigator.navigateByUrl('/');
+              this.navigator.navigateByUrl(config.errorPath || '/');
               return of(undefined);
             })
           )

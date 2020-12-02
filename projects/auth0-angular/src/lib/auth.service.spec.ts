@@ -5,6 +5,7 @@ import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import { bufferCount, filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import { AuthConfig, AuthConfigService } from './auth.config';
 
 /**
  * Wraps service.isLoading$ so that assertions can be made
@@ -19,12 +20,14 @@ describe('AuthService', () => {
   let moduleSetup: any;
   let service: AuthService;
   let locationSpy: jasmine.SpyObj<Location>;
+  let authConfig: Partial<AuthConfig>;
 
   const createService = () => {
     return TestBed.inject(AuthService);
   };
 
   beforeEach(() => {
+    authConfig = {};
     auth0Client = new Auth0Client({
       domain: '',
       client_id: '',
@@ -217,6 +220,10 @@ describe('AuthService', () => {
             provide: Location,
             useValue: locationSpy,
           },
+          {
+            provide: AuthConfigService,
+            useValue: authConfig,
+          },
         ],
       });
 
@@ -271,6 +278,22 @@ describe('AuthService', () => {
           expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
           done();
         });
+      });
+    });
+
+    it('should redirect to errorPath when an error occured in handleRedirectCallback', (done) => {
+      const errorObj = new Error('An error has occured');
+
+      authConfig.errorPath = '/error';
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.throwError(
+        errorObj
+      );
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/error');
+        done();
       });
     });
 

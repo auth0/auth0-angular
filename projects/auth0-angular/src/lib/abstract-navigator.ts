@@ -21,9 +21,7 @@ export class AbstractNavigator {
    */
   navigateByUrl(url: string): void {
     if (this.router) {
-      setTimeout(() => {
-        this.router.navigateByUrl(url);
-      }, 0);
+      this.router.navigateByUrl(url);
 
       return;
     }
