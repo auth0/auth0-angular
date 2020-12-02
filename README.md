@@ -352,7 +352,7 @@ providers: [
 
 ### Using multiple OAuth providers
 
-If your application is making use of multiple OAuth providers, you might need to use multiple callback paths as well, one for each OAuth provider.
+If your application uses multiple OAuth providers, you may need to use multiple callback paths as well, one for each OAuth provider.
 To ensure the SDK does not process the callback for any provider other than Auth0, you should configure the AuthModule by setting `skipRedirectCallback`.
 
 ```js
