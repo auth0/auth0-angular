@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
-import { filter } from 'rxjs/operators';
+import { bufferCount, filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
 
@@ -129,6 +129,27 @@ describe('AuthService', () => {
         done();
       });
     });
+
+    it('should return null when logged out', (done) => {
+      const user = {
+        name: 'Test User',
+      };
+
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
+
+      service.user$.pipe(bufferCount(2)).subscribe((values) => {
+        expect(values[0]).toBe(user);
+        expect(values[1]).toBe(null);
+        done();
+      });
+
+      service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
+        service.logout({
+          localOnly: true,
+        });
+      });
+    });
   });
 
   describe('The `idTokenClaims` observable', () => {
@@ -146,6 +167,30 @@ describe('AuthService', () => {
       service.idTokenClaims$.subscribe((value) => {
         expect(value).toBe(claims);
         done();
+      });
+    });
+
+    it('should return null when logged out', (done) => {
+      const claims: IdToken = {
+        __raw: 'idToken',
+        exp: 1602887231,
+        iat: 1602883631,
+        iss: 'https://example.eu.auth0.com/',
+      };
+
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
+
+      service.idTokenClaims$.pipe(bufferCount(2)).subscribe((values) => {
+        expect(values[0]).toBe(claims);
+        expect(values[1]).toBe(null);
+        done();
+      });
+
+      service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
+        service.logout({
+          localOnly: true,
+        });
       });
     });
   });
