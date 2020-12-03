@@ -1,5 +1,28 @@
 # Change Log
 
+## [v1.3.0](https://github.com/auth0/auth0-angular/tree/v1.3.0) (2020-12-03)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.2.0...v1.3.0)
+
+**Added**
+
+- [SDK-2161] Allow to skip the redirect callback [\#86](https://github.com/auth0/auth0-angular/pull/86) ([frederikprijck](https://github.com/frederikprijck))
+- [SDK-2139] Add errorPath configuration [\#84](https://github.com/auth0/auth0-angular/pull/84) ([frederikprijck](https://github.com/frederikprijck))
+
+**Changed**
+
+- Bump auth0-spa-js to 1.13.4 [\#95](https://github.com/auth0/auth0-angular/pull/95) ([frederikprijck](https://github.com/frederikprijck))
+- Do not send httpInterceptor to Auth0Client constructor [\#91](https://github.com/auth0/auth0-angular/pull/91) ([frederikprijck](https://github.com/frederikprijck))
+- Update peer dependencies to include Angular 9 and 11 [\#85](https://github.com/auth0/auth0-angular/pull/85) ([frederikprijck](https://github.com/frederikprijck))
+
+**Fixed**
+
+- [SDK-2140] Emit null for user and idTokenClaims when logged out [\#90](https://github.com/auth0/auth0-angular/pull/90) ([frederikprijck](https://github.com/frederikprijck))
+
+**Security**
+
+- Update dependencies [\#77](https://github.com/auth0/auth0-angular/pull/77) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
 ## [v1.2.0](https://github.com/auth0/auth0-angular/tree/v1.2.0) (2020-10-22)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.1.0...v1.2.0)
