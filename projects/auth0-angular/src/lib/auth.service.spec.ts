@@ -130,6 +130,30 @@ describe('AuthService', () => {
       });
     });
 
+    it('should update the user if a new token is requested', (done) => {
+      const user = {
+        name: 'Test User',
+      };
+
+      const user2 = {
+        name: 'Test User2',
+      };
+
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
+
+      service.user$.pipe(bufferCount(2)).subscribe((values) => {
+        expect(values[0]).toBe(user);
+        expect(values[1]).toBe(user2);
+        done();
+      });
+
+      (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user2);
+
+      service.getAccessTokenSilently().subscribe();
+    });
+
     it('should return null when logged out', (done) => {
       const user = {
         name: 'Test User',
@@ -168,6 +192,36 @@ describe('AuthService', () => {
         expect(value).toBe(claims);
         done();
       });
+    });
+
+    it('should update the ID token claims if a new token is requested', (done) => {
+      const claims: IdToken = {
+        __raw: 'idToken',
+        exp: 1602887231,
+        iat: 1602883631,
+        iss: 'https://example.eu.auth0.com/',
+      };
+
+      const claims2: IdToken = {
+        __raw: 'idToken2',
+        exp: 1602887231,
+        iat: 1602883631,
+        iss: 'https://example.eu.auth0.com/',
+      };
+
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
+
+      service.idTokenClaims$.pipe(bufferCount(2)).subscribe((values) => {
+        expect(values[0]).toBe(claims);
+        expect(values[1]).toBe(claims2);
+        done();
+      });
+
+      (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
+      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims2);
+
+      service.getAccessTokenSilently().subscribe();
     });
 
     it('should return null when logged out', (done) => {

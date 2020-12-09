@@ -20,6 +20,7 @@ import {
   iif,
   defer,
   ReplaySubject,
+  merge,
 } from 'rxjs';
 
 import {
@@ -31,6 +32,8 @@ import {
   distinctUntilChanged,
   catchError,
   switchMap,
+  withLatestFrom,
+  mergeMap,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -48,7 +51,7 @@ export class AuthService implements OnDestroy {
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject();
-
+  private refreshUser$ = new Subject();
   /**
    * Emits boolean values indicating the loading state of the SDK.
    */
@@ -65,20 +68,32 @@ export class AuthService implements OnDestroy {
   );
 
   /**
-   * Emits details about the authenticated user when `isAuthenticated$` is `true`.
+   * Trigger used to pull User information from the Auth0Client.
+   * Triggers both when:
+   *   - The authenticated state switches from true to false or vica versa.
+   *   - A trigger is manually requested through the refreshUser$ Subject
    */
-  readonly user$ = this.isAuthenticated$.pipe(
-    distinctUntilChanged(),
+  readonly userTrigger$ = merge([
+    this.isAuthenticated$.pipe(distinctUntilChanged()),
+    this.refreshUser$.pipe(
+      withLatestFrom(this.isAuthenticated$),
+      map(([_, isAuthenticated]) => isAuthenticated)
+    ),
+  ]);
+
+  /**
+   * Emits details about the authenticated user, or null if not authenticated.
+   */
+  readonly user$ = this.userTrigger$.pipe(
     concatMap((authenticated) =>
       authenticated ? this.auth0Client.getUser() : of(null)
     )
   );
 
   /**
-   * Emits ID token claims when `isAuthenticated$` is `true`.
+   * Emits ID token claims when authenticated, null if not authenticated.
    */
-  readonly idTokenClaims$ = this.isAuthenticated$.pipe(
-    distinctUntilChanged(),
+  readonly idTokenClaims$ = this.userTrigger$.pipe(
     concatMap((authenticated) =>
       authenticated ? this.auth0Client.getIdTokenClaims() : of(null)
     )
@@ -232,7 +247,8 @@ export class AuthService implements OnDestroy {
     options?: GetTokenSilentlyOptions
   ): Observable<string> {
     return of(this.auth0Client).pipe(
-      concatMap((client) => client.getTokenSilently(options))
+      concatMap((client) => client.getTokenSilently(options)),
+      tap(() => this.refreshUser$.next())
     );
   }
 
@@ -252,7 +268,8 @@ export class AuthService implements OnDestroy {
     options?: GetTokenWithPopupOptions
   ): Observable<string> {
     return of(this.auth0Client).pipe(
-      concatMap((client) => client.getTokenWithPopup(options))
+      concatMap((client) => client.getTokenWithPopup(options)),
+      tap(() => this.refreshUser$.next())
     );
   }
 
