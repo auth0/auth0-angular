@@ -33,7 +33,6 @@ import {
   catchError,
   switchMap,
   withLatestFrom,
-  mergeMap,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
