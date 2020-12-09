@@ -148,10 +148,14 @@ describe('AuthService', () => {
         done();
       });
 
-      (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
-      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user2);
+      // Add a small delay before triggering a new emit to the user$.
+      // This ensures we can capture both emits using the above bufferCount(2)
+      setTimeout(() => {
+        (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
+        (auth0Client.getUser as jasmine.Spy).and.resolveTo(user2);
 
-      service.getAccessTokenSilently().subscribe();
+        service.getAccessTokenSilently().subscribe();
+      }, 0);
     });
 
     it('should return null when logged out', (done) => {
@@ -218,10 +222,14 @@ describe('AuthService', () => {
         done();
       });
 
-      (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
-      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims2);
+      // Add a small delay before triggering a new emit to the idTokenClaims$.
+      // This ensures we can capture both emits using the above bufferCount(2)
+      setTimeout(() => {
+        (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
+        (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims2);
 
-      service.getAccessTokenSilently().subscribe();
+        service.getAccessTokenSilently().subscribe();
+      }, 0);
     });
 
     it('should return null when logged out', (done) => {

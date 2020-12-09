@@ -72,13 +72,13 @@ export class AuthService implements OnDestroy {
    *   - The authenticated state switches from true to false or vica versa.
    *   - A trigger is manually requested through the refreshUser$ Subject
    */
-  readonly userTrigger$ = merge([
+  readonly userTrigger$ = merge(
     this.isAuthenticated$.pipe(distinctUntilChanged()),
     this.refreshUser$.pipe(
       withLatestFrom(this.isAuthenticated$),
       map(([_, isAuthenticated]) => isAuthenticated)
-    ),
-  ]);
+    )
+  );
 
   /**
    * Emits details about the authenticated user, or null if not authenticated.
