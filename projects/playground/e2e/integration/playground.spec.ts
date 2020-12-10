@@ -33,7 +33,7 @@ describe('Smoke tests', () => {
 
     loginToAuth0();
 
-    cy.get('[data-cy=logout-local]').should('not.be.checked');
+    cy.get('[data-cy=logout-localOnly]').should('not.be.checked');
     cy.get('[data-cy=logout-federated]').should('not.be.checked');
     cy.get('[data-cy=accessToken-ignoreCache]').should('not.be.checked');
     cy.get('[data-cy=accessToken-silently]').should('be.checked');
@@ -120,7 +120,7 @@ describe('Smoke tests', () => {
 
     cy.get('#login').should('be.visible').click();
     cy.url().should('include', 'https://brucke.auth0.com/login');
-    cy.get('.auth0-lock-last-login-pane').should('not.be.visible');
+    cy.get('.auth0-lock-last-login-pane').should('not.exist');
     loginToAuth0();
 
     cy.get('#logout').should('be.visible').click();
@@ -129,7 +129,7 @@ describe('Smoke tests', () => {
 
   it('should protect a route and return to path after login', () => {
     cy.visit('/');
-    cy.get('[data-cy=protected]').should('not.be.visible');
+    cy.get('[data-cy=protected]').should('not.exist');
     cy.visit('/protected');
 
     cy.url().should('include', 'https://brucke.auth0.com/login');
@@ -145,7 +145,7 @@ describe('Smoke tests', () => {
     cy.get('#login').should('be.visible');
 
     cy.get('[data-cy=unprotected]').should('be.visible');
-    cy.get('[data-cy=protected]').should('not.be.visible');
+    cy.get('[data-cy=protected]').should('not.exist');
   });
 
   it('should see child route content without logging in', () => {
@@ -157,7 +157,7 @@ describe('Smoke tests', () => {
 
   it('should protect the nested child route and return to the right place after login', () => {
     cy.visit('/');
-    cy.get('[data-cy=nested-child-route]').should('not.be.visible');
+    cy.get('[data-cy=nested-child-route]').should('not.exist');
     cy.visit('/child/nested');
 
     cy.url().should('include', 'https://brucke.auth0.com/login');
@@ -170,7 +170,7 @@ describe('Smoke tests', () => {
 
   it('should not navigate to the lazy loaded module when not authenticated', () => {
     cy.visit('/lazy');
-    cy.get('[data-cy=lazy-module]').should('not.be.visible');
+    cy.get('[data-cy=lazy-module]').should('not.exist');
   });
 
   it('should show lazy module content when authenticated', () => {
