@@ -205,7 +205,6 @@ export class AuthService implements OnDestroy {
     this.auth0Client.logout(options);
 
     if (options?.localOnly) {
-      // this.isAuthenticatedSubject$.next(false);
       this.refreshState$.next();
     }
   }
