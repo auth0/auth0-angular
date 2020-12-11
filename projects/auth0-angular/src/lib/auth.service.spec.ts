@@ -114,7 +114,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('should return true when retrieving a token succesful', (done) => {
+    it('should return true after successfully getting a new token', (done) => {
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
 
       service.isAuthenticated$.pipe(bufferCount(2)).subscribe((values) => {
@@ -149,7 +149,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('should update the user if a new token is requested', (done) => {
+    it('should update the user after successfully getting a new token', (done) => {
       const user = {
         name: 'Test User',
       };
