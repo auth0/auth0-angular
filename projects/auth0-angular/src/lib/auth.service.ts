@@ -20,6 +20,7 @@ import {
   iif,
   defer,
   ReplaySubject,
+  merge,
 } from 'rxjs';
 
 import {
@@ -32,6 +33,7 @@ import {
   catchError,
   switchMap,
   mergeMap,
+  shareReplay,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -62,11 +64,19 @@ export class AuthService implements OnDestroy {
   private isAuthenticatedTrigger$ = this.isLoading$.pipe(
     filter((loading) => !loading),
     distinctUntilChanged(),
-    concatMap(() =>
-      this.refreshState$.pipe(
-        mergeMap(() => this.auth0Client.isAuthenticated())
+    switchMap(() =>
+      // To track the value of isAuthenticated over time, we need to merge:
+      //  - the current value
+      //  - the value whenever refreshState$ emits
+      merge(
+        defer(() => this.auth0Client.isAuthenticated()),
+        this.refreshState$.pipe(
+          mergeMap(() => this.auth0Client.isAuthenticated())
+        )
       )
-    )
+    ),
+    // Ensure every future subscriber receives the last known value
+    shareReplay(1)
   );
 
   /**
@@ -127,7 +137,6 @@ export class AuthService implements OnDestroy {
         ),
         tap(() => {
           this.isLoadingSubject$.next(false);
-          this.refreshState$.next();
         }),
         takeUntil(this.ngUnsubscribe$)
       )
