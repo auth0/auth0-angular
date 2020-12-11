@@ -20,7 +20,6 @@ import {
   iif,
   defer,
   ReplaySubject,
-  merge,
 } from 'rxjs';
 
 import {
@@ -32,7 +31,7 @@ import {
   distinctUntilChanged,
   catchError,
   switchMap,
-  withLatestFrom,
+  mergeMap,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -45,54 +44,52 @@ import { AuthClientConfig } from './auth.config';
 })
 export class AuthService implements OnDestroy {
   private isLoadingSubject$ = new BehaviorSubject(true);
-  private isAuthenticatedSubject$ = new BehaviorSubject(false);
   private errorSubject$ = new ReplaySubject<Error>(1);
+  private refreshState$ = new Subject();
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject();
-  private refreshUser$ = new Subject();
   /**
    * Emits boolean values indicating the loading state of the SDK.
    */
   readonly isLoading$ = this.isLoadingSubject$.asObservable();
 
   /**
-   * Emits boolean values indicating the authentication state of the user. If `true`, it means a user has authenticated.
-   * This depends on the value of `isLoading$`, so there is no need to manually check the loading state of the SDK.
+   * Trigger used to pull User information from the Auth0Client.
+   * Triggers when an event occurs that needs to retrigger the User Profile information.
+   * Such as: Initially, getAccessTokenSilently, getAccessTokenWithPopup and Logout
    */
-  readonly isAuthenticated$ = this.isLoading$.pipe(
+  private isAuthenticatedTrigger$ = this.isLoading$.pipe(
     filter((loading) => !loading),
     distinctUntilChanged(),
-    concatMap(() => this.isAuthenticatedSubject$)
+    concatMap(() =>
+      this.refreshState$.pipe(
+        mergeMap(() => this.auth0Client.isAuthenticated())
+      )
+    )
   );
 
   /**
-   * Trigger used to pull User information from the Auth0Client.
-   * Triggers both when:
-   *   - The authenticated state switches from true to false or vica versa.
-   *   - A trigger is manually requested through the refreshUser$ Subject
+   * Emits boolean values indicating the authentication state of the user. If `true`, it means a user has authenticated.
+   * This depends on the value of `isLoading$`, so there is no need to manually check the loading state of the SDK.
    */
-  readonly userTrigger$ = merge(
-    this.isAuthenticated$.pipe(distinctUntilChanged()),
-    this.refreshUser$.pipe(
-      withLatestFrom(this.isAuthenticated$),
-      map(([_, isAuthenticated]) => isAuthenticated)
-    )
+  readonly isAuthenticated$ = this.isAuthenticatedTrigger$.pipe(
+    distinctUntilChanged()
   );
 
   /**
    * Emits details about the authenticated user, or null if not authenticated.
    */
-  readonly user$ = this.userTrigger$.pipe(
+  readonly user$ = this.isAuthenticatedTrigger$.pipe(
     concatMap((authenticated) =>
       authenticated ? this.auth0Client.getUser() : of(null)
     )
   );
 
   /**
-   * Emits ID token claims when authenticated, null if not authenticated.
+   * Emits ID token claims when authenticated, or null if not authenticated.
    */
-  readonly idTokenClaims$ = this.userTrigger$.pipe(
+  readonly idTokenClaims$ = this.isAuthenticatedTrigger$.pipe(
     concatMap((authenticated) =>
       authenticated ? this.auth0Client.getIdTokenClaims() : of(null)
     )
@@ -128,10 +125,9 @@ export class AuthService implements OnDestroy {
             })
           )
         ),
-        concatMap(() => this.auth0Client.isAuthenticated()),
-        tap((authenticated) => {
-          this.isAuthenticatedSubject$.next(authenticated);
+        tap(() => {
           this.isLoadingSubject$.next(false);
+          this.refreshState$.next();
         }),
         takeUntil(this.ngUnsubscribe$)
       )
@@ -185,9 +181,7 @@ export class AuthService implements OnDestroy {
   ): Observable<void> {
     return from(
       this.auth0Client.loginWithPopup(options, config).then(async () => {
-        this.isAuthenticatedSubject$.next(
-          await this.auth0Client.isAuthenticated()
-        );
+        this.refreshState$.next();
       })
     );
   }
@@ -211,7 +205,8 @@ export class AuthService implements OnDestroy {
     this.auth0Client.logout(options);
 
     if (options?.localOnly) {
-      this.isAuthenticatedSubject$.next(false);
+      // this.isAuthenticatedSubject$.next(false);
+      this.refreshState$.next();
     }
   }
 
@@ -247,7 +242,7 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options)),
-      tap(() => this.refreshUser$.next())
+      tap(() => this.refreshState$.next())
     );
   }
 
@@ -268,7 +263,7 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenWithPopup(options)),
-      tap(() => this.refreshUser$.next())
+      tap(() => this.refreshState$.next())
     );
   }
 

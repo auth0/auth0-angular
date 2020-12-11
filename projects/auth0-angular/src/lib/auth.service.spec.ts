@@ -113,6 +113,25 @@ describe('AuthService', () => {
         });
       });
     });
+
+    it('should return true when retrieving a token succesful', (done) => {
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+
+      service.isAuthenticated$.pipe(bufferCount(2)).subscribe((values) => {
+        expect(values[0]).toBe(false);
+        expect(values[1]).toBe(true);
+        done();
+      });
+
+      // Add a small delay before triggering a new emit to the isAuthenticated$.
+      // This ensures we can capture both emits using the above bufferCount(2)
+      setTimeout(() => {
+        (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
+        (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+
+        service.getAccessTokenSilently().subscribe();
+      }, 0);
+    });
   });
 
   describe('The `user` observable', () => {
@@ -173,6 +192,7 @@ describe('AuthService', () => {
       });
 
       service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
+        (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
         service.logout({
           localOnly: true,
         });
@@ -250,6 +270,7 @@ describe('AuthService', () => {
       });
 
       service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
+        (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
         service.logout({
           localOnly: true,
         });
