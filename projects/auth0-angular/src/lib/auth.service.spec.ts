@@ -155,7 +155,7 @@ describe('AuthService', () => {
       };
 
       const user2 = {
-        name: 'Test User2',
+        name: 'Another User',
       };
 
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
@@ -227,9 +227,9 @@ describe('AuthService', () => {
       };
 
       const claims2: IdToken = {
-        __raw: 'idToken2',
-        exp: 1602887231,
-        iat: 1602883631,
+        __raw: 'another_idToken',
+        exp: 1613108744,
+        iat: 1613105547,
         iss: 'https://example.eu.auth0.com/',
       };
 
