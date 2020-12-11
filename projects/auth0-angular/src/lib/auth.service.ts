@@ -180,7 +180,7 @@ export class AuthService implements OnDestroy {
     config?: PopupConfigOptions
   ): Observable<void> {
     return from(
-      this.auth0Client.loginWithPopup(options, config).then(async () => {
+      this.auth0Client.loginWithPopup(options, config).then(() => {
         this.refreshState$.next();
       })
     );
