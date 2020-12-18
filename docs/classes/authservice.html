@@ -3315,8 +3315,8 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L90"
-                        >projects/auth0-angular/src/lib/auth.service.ts:90</a
+                        href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L111"
+                        >projects/auth0-angular/src/lib/auth.service.ts:111</a
                       >
                     </li>
                   </ul>
@@ -3387,8 +3387,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L90"
-                    >projects/auth0-angular/src/lib/auth.service.ts:90</a
+                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L111"
+                    >projects/auth0-angular/src/lib/auth.service.ts:111</a
                   >
                 </li>
               </ul>
@@ -3419,8 +3419,7 @@
               ><span class="tsd-signature-type">any</span
               ><span class="tsd-signature-symbol">&gt;</span
               ><span class="tsd-signature-symbol">
-                =
-                this.isAuthenticated$.pipe(distinctUntilChanged(),concatMap((authenticated)
+                = this.isAuthenticatedTrigger$.pipe(concatMap((authenticated)
                 &#x3D;&gt;authenticated ? this.auth0Client.getIdTokenClaims() :
                 of(null)))</span
               >
@@ -3430,8 +3429,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L80"
-                    >projects/auth0-angular/src/lib/auth.service.ts:80</a
+                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L102"
+                    >projects/auth0-angular/src/lib/auth.service.ts:102</a
                   >
                 </li>
               </ul>
@@ -3439,8 +3438,8 @@
             <div class="tsd-comment tsd-typography">
               <div class="lead">
                 <p>
-                  Emits ID token claims when <code>isAuthenticated$</code> is
-                  <code>true</code>.
+                  Emits ID token claims when authenticated, or null if not
+                  authenticated.
                 </p>
               </div>
             </div>
@@ -3460,9 +3459,8 @@
               ><span class="tsd-signature-type">boolean</span
               ><span class="tsd-signature-symbol">&gt;</span
               ><span class="tsd-signature-symbol">
-                = this.isLoading$.pipe(filter((loading) &#x3D;&gt;
-                !loading),distinctUntilChanged(),concatMap(() &#x3D;&gt;
-                this.isAuthenticatedSubject$))</span
+                =
+                this.isAuthenticatedTrigger$.pipe(distinctUntilChanged())</span
               >
             </div>
             <aside class="tsd-sources">
@@ -3470,8 +3468,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L61"
-                    >projects/auth0-angular/src/lib/auth.service.ts:61</a
+                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L86"
+                    >projects/auth0-angular/src/lib/auth.service.ts:86</a
                   >
                 </li>
               </ul>
@@ -3511,8 +3509,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L55"
-                    >projects/auth0-angular/src/lib/auth.service.ts:55</a
+                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L57"
+                    >projects/auth0-angular/src/lib/auth.service.ts:57</a
                   >
                 </li>
               </ul>
@@ -3539,8 +3537,7 @@
               ><span class="tsd-signature-type">any</span
               ><span class="tsd-signature-symbol">&gt;</span
               ><span class="tsd-signature-symbol">
-                =
-                this.isAuthenticated$.pipe(distinctUntilChanged(),concatMap((authenticated)
+                = this.isAuthenticatedTrigger$.pipe(concatMap((authenticated)
                 &#x3D;&gt;authenticated ? this.auth0Client.getUser() :
                 of(null)))</span
               >
@@ -3550,8 +3547,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L70"
-                    >projects/auth0-angular/src/lib/auth.service.ts:70</a
+                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L93"
+                    >projects/auth0-angular/src/lib/auth.service.ts:93</a
                   >
                 </li>
               </ul>
@@ -3559,8 +3556,8 @@
             <div class="tsd-comment tsd-typography">
               <div class="lead">
                 <p>
-                  Emits details about the authenticated user when
-                  <code>isAuthenticated$</code> is <code>true</code>.
+                  Emits details about the authenticated user, or null if not
+                  authenticated.
                 </p>
               </div>
             </div>
@@ -3595,8 +3592,8 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L231"
-                        >projects/auth0-angular/src/lib/auth.service.ts:231</a
+                        href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L248"
+                        >projects/auth0-angular/src/lib/auth.service.ts:248</a
                       >
                     </li>
                   </ul>
@@ -3686,8 +3683,8 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L251"
-                        >projects/auth0-angular/src/lib/auth.service.ts:251</a
+                        href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L269"
+                        >projects/auth0-angular/src/lib/auth.service.ts:269</a
                       >
                     </li>
                   </ul>
@@ -3754,8 +3751,8 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L168"
-                        >projects/auth0-angular/src/lib/auth.service.ts:168</a
+                        href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L187"
+                        >projects/auth0-angular/src/lib/auth.service.ts:187</a
                       >
                     </li>
                   </ul>
@@ -3837,8 +3834,8 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L147"
-                        >projects/auth0-angular/src/lib/auth.service.ts:147</a
+                        href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L166"
+                        >projects/auth0-angular/src/lib/auth.service.ts:166</a
                       >
                     </li>
                   </ul>
@@ -3901,8 +3898,8 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L196"
-                        >projects/auth0-angular/src/lib/auth.service.ts:196</a
+                        href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L213"
+                        >projects/auth0-angular/src/lib/auth.service.ts:213</a
                       >
                     </li>
                   </ul>
@@ -3965,8 +3962,8 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/8c82ec2/projects/auth0-angular/src/lib/auth.service.ts#L130"
-                        >projects/auth0-angular/src/lib/auth.service.ts:130</a
+                        href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.service.ts#L149"
+                        >projects/auth0-angular/src/lib/auth.service.ts:149</a
                       >
                     </li>
                   </ul>
