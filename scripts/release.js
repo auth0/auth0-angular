@@ -24,12 +24,12 @@ fs.writeFileSync(lastVersionFile, libPkg.version);
 const branch = process.argv[3] || 'master';
 
 (async () => {
-  /*if (branch) {
+  if (branch) {
     await exec(`git checkout ${branch}`);
   }
 
   await exec('git pull origin master');
-  await exec(`git checkout -b prepare/${newVersion}`);*/
+  await exec(`git checkout -b prepare/${newVersion}`);
 
   const newReadme = fs
     .readFileSync('./README.md')
