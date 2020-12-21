@@ -1,5 +1,21 @@
 # Change Log
 
+## [v1.3.1](https://github.com/auth0/auth0-angular/tree/v1.3.1) (2020-12-18)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.3.0...v1.3.1)
+
+**Changed**
+
+- Update dependencies to Angular 11 [\#101](https://github.com/auth0/auth0-angular/pull/101) ([frederikprijck](https://github.com/frederikprijck))
+
+**Fixed**
+
+- [SDK-2189] Update State after renewing tokens [\#100](https://github.com/auth0/auth0-angular/pull/100) ([frederikprijck](https://github.com/frederikprijck))
+
+**Security**
+
+- Bump highlight.js from 10.1.2 to 10.4.1 [\#99](https://github.com/auth0/auth0-angular/pull/99) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v1.3.0](https://github.com/auth0/auth0-angular/tree/v1.3.0) (2020-12-03)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.2.0...v1.3.0)
