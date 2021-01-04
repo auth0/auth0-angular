@@ -497,6 +497,32 @@ describe('AuthService', () => {
         done();
       });
     });
+
+    it('should record errors in the error$ observable', (done) => {
+      const errorObj = new Error('An error has occured');
+
+      (auth0Client.getTokenSilently as jasmine.Spy).and.rejectWith(errorObj);
+
+      service.getAccessTokenSilently().subscribe();
+
+      service.error$.subscribe((err: Error) => {
+        expect(err).toBe(errorObj);
+        done();
+      });
+    });
+
+    it('should bubble errors', (done) => {
+      const errorObj = new Error('An error has occured');
+
+      (auth0Client.getTokenSilently as jasmine.Spy).and.rejectWith(errorObj);
+
+      service.getAccessTokenSilently().subscribe({
+        error: (err: Error) => {
+          expect(err).toBe(errorObj);
+          done();
+        },
+      });
+    });
   });
 
   describe('getAccessTokenWithPopup', () => {
@@ -514,6 +540,32 @@ describe('AuthService', () => {
       service.getAccessTokenWithPopup(options).subscribe((token) => {
         expect(auth0Client.getTokenWithPopup).toHaveBeenCalledWith(options);
         done();
+      });
+    });
+
+    it('should record errors in the error$ observable', (done) => {
+      const errorObj = new Error('An error has occured');
+
+      (auth0Client.getTokenWithPopup as jasmine.Spy).and.rejectWith(errorObj);
+
+      service.getAccessTokenWithPopup().subscribe();
+
+      service.error$.subscribe((err: Error) => {
+        expect(err).toBe(errorObj);
+        done();
+      });
+    });
+
+    it('should bubble errors', (done) => {
+      const errorObj = new Error('An error has occured');
+
+      (auth0Client.getTokenWithPopup as jasmine.Spy).and.rejectWith(errorObj);
+
+      service.getAccessTokenWithPopup().subscribe({
+        error: (err: Error) => {
+          expect(err).toBe(errorObj);
+          done();
+        },
       });
     });
   });

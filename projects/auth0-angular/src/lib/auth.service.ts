@@ -21,6 +21,7 @@ import {
   defer,
   ReplaySubject,
   merge,
+  throwError,
 } from 'rxjs';
 
 import {
@@ -250,7 +251,11 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options)),
-      tap(() => this.refreshState$.next())
+      tap(() => this.refreshState$.next()),
+      catchError((error) => {
+        this.errorSubject$.next(error);
+        return throwError(error);
+      })
     );
   }
 
@@ -271,7 +276,11 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenWithPopup(options)),
-      tap(() => this.refreshState$.next())
+      tap(() => this.refreshState$.next()),
+      catchError((error) => {
+        this.errorSubject$.next(error);
+        return throwError(error);
+      })
     );
   }
 
