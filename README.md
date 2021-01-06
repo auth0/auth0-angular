@@ -314,7 +314,7 @@ export class MyComponent {
 
 #### Handling errors
 
-Whenever the SDK fails to retrieve a token, either as part of the above interceptor or when manually calling `AuthService.getAccessTokenSilently` and `AuthService.getAccessTokenWithPopup`, it will emit the corresponding error in the `AuthService.error$` observable.
+Whenever the SDK fails to retrieve an Access Token, either as part of the above interceptor or when manually calling `AuthService.getAccessTokenSilently` and `AuthService.getAccessTokenWithPopup`, it will emit the corresponding error in the `AuthService.error$` observable.
 
 If you want to interact to these errors, subscribe to the `error$` observable and act accordingly.
 
@@ -326,7 +326,7 @@ ngOnInit() {
 }
 ```
 
-A common reason you might want to handle the above errors, emitted by the error$ observable, is to re-login the user when the SDK throws a `login_required` error.
+A common reason you might want to handle the above errors, emitted by the `error$` observable, is to re-login the user when the SDK throws a `login_required` error.
 
 ```
 ngOnInit() {
