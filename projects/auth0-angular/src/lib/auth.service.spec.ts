@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
-import { bufferCount, filter } from 'rxjs/operators';
+import { bufferCount, bufferTime, filter, take } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
 
@@ -149,21 +149,53 @@ describe('AuthService', () => {
       });
     });
 
-    it('should update the user after successfully getting a new token', (done) => {
+    it('should update the user after successfully getting a new token and the user has a different updated_at', (done) => {
       const user = {
         name: 'Test User',
+        updated_at: '1',
       };
 
       const user2 = {
         name: 'Another User',
+        updated_at: '2',
       };
 
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
       (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
 
-      service.user$.pipe(bufferCount(2)).subscribe((values) => {
+      service.user$.pipe(bufferTime(10), take(1)).subscribe((values) => {
         expect(values[0]).toBe(user);
         expect(values[1]).toBe(user2);
+        done();
+      });
+
+      // Add a small delay before triggering a new emit to the user$.
+      // This ensures we can capture both emits using the above bufferCount(2)
+      setTimeout(() => {
+        (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
+        (auth0Client.getUser as jasmine.Spy).and.resolveTo(user2);
+
+        service.getAccessTokenSilently().subscribe();
+      }, 0);
+    });
+
+    it('should update the user after successfully getting a new token and the user has the same updated_at', (done) => {
+      const user = {
+        name: 'Test User',
+        updated_at: '1',
+      };
+
+      const user2 = {
+        name: 'Another User',
+        updated_at: '1',
+      };
+
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
+
+      service.user$.pipe(bufferTime(10), take(1)).subscribe((values) => {
+        expect(values[0]).toBe(user);
+        expect(values.length).toBe(1);
         done();
       });
 
@@ -210,6 +242,7 @@ describe('AuthService', () => {
       };
 
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo({});
       (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
 
       service.idTokenClaims$.subscribe((value) => {
@@ -218,7 +251,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('should update the ID token claims if a new token is requested', (done) => {
+    it('should update the ID token claims if a new token is requested and the user has a different updated_at', (done) => {
       const claims: IdToken = {
         __raw: 'idToken',
         exp: 1602887231,
@@ -234,18 +267,60 @@ describe('AuthService', () => {
       };
 
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo({ updated_at: '1' });
       (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
 
-      service.idTokenClaims$.pipe(bufferCount(2)).subscribe((values) => {
-        expect(values[0]).toBe(claims);
-        expect(values[1]).toBe(claims2);
-        done();
-      });
+      service.idTokenClaims$
+        .pipe(bufferTime(10), take(1))
+        .subscribe((values) => {
+          expect(values[0]).toBe(claims);
+          expect(values[1]).toBe(claims2);
+          done();
+        });
 
       // Add a small delay before triggering a new emit to the idTokenClaims$.
       // This ensures we can capture both emits using the above bufferCount(2)
       setTimeout(() => {
         (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
+        (auth0Client.getUser as jasmine.Spy).and.resolveTo({ updated_at: '2' });
+        (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims2);
+
+        service.getAccessTokenSilently().subscribe();
+      }, 0);
+    });
+
+    it('should not update the ID token claims if a new token is requested and the user has the same updated_at', (done) => {
+      const claims: IdToken = {
+        __raw: 'idToken',
+        exp: 1602887231,
+        iat: 1602883631,
+        iss: 'https://example.eu.auth0.com/',
+      };
+
+      const claims2: IdToken = {
+        __raw: 'another_idToken',
+        exp: 1613108744,
+        iat: 1613105547,
+        iss: 'https://example.eu.auth0.com/',
+      };
+
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo({ updated_at: '1' });
+      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
+
+      service.idTokenClaims$
+        .pipe(bufferTime(10), take(1))
+        .subscribe((values) => {
+          expect(values[0]).toBe(claims);
+          expect(values.length).toBe(1);
+          done();
+        });
+
+      // Add a small delay before triggering a new emit to the idTokenClaims$.
+      // This ensures we can capture both emits using the above bufferCount(2)
+      setTimeout(() => {
+        (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
+        (auth0Client.getUser as jasmine.Spy).and.resolveTo({ updated_at: '1' });
         (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims2);
 
         service.getAccessTokenSilently().subscribe();
@@ -261,6 +336,7 @@ describe('AuthService', () => {
       };
 
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo({});
       (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
 
       service.idTokenClaims$.pipe(bufferCount(2)).subscribe((values) => {

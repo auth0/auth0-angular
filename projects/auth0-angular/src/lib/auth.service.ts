@@ -34,6 +34,7 @@ import {
   switchMap,
   mergeMap,
   shareReplay,
+  scan,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -93,16 +94,26 @@ export class AuthService implements OnDestroy {
   readonly user$ = this.isAuthenticatedTrigger$.pipe(
     concatMap((authenticated) =>
       authenticated ? this.auth0Client.getUser() : of(null)
-    )
+    ),
+    scan((previousUser, currentUser) => {
+      if (!currentUser || !previousUser) {
+        return currentUser;
+      }
+
+      if (previousUser.updated_at === currentUser.updated_at) {
+        return previousUser;
+      }
+
+      return currentUser;
+    }),
+    distinctUntilChanged()
   );
 
   /**
-   * Emits ID token claims when authenticated, or null if not authenticated.
+   * Emits ID token claims when there is a user, or null if not.
    */
-  readonly idTokenClaims$ = this.isAuthenticatedTrigger$.pipe(
-    concatMap((authenticated) =>
-      authenticated ? this.auth0Client.getIdTokenClaims() : of(null)
-    )
+  readonly idTokenClaims$ = this.user$.pipe(
+    concatMap((user) => (user ? this.auth0Client.getIdTokenClaims() : of(null)))
   );
 
   /**
