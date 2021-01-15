@@ -16,15 +16,14 @@ import {
   AuthConfig,
 } from './auth.config';
 
-import { Auth0ClientService } from './auth.client';
-import { Auth0Client } from '@auth0/auth0-spa-js';
 import { switchMap, first, concatMap, pluck } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
   constructor(
     private configFactory: AuthClientConfig,
-    @Inject(Auth0ClientService) private auth0Client: Auth0Client
+    private authService: AuthService
   ) {}
 
   intercept(
@@ -45,7 +44,9 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           // outgoing request
           of(route).pipe(
             pluck('tokenOptions'),
-            concatMap((options) => this.auth0Client.getTokenSilently(options)),
+            concatMap((options) =>
+              this.authService.getAccessTokenSilently(options)
+            ),
             switchMap((token: string) => {
               // Clone the request and attach the bearer token
               const clone = req.clone({

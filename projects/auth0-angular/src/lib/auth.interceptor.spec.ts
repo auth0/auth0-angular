@@ -9,13 +9,14 @@ import {
 import { Data } from '@angular/router';
 import { Auth0ClientService } from './auth.client';
 import { AuthConfig, HttpMethod, AuthClientConfig } from './auth.config';
+import { AuthService } from './auth.service';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
 describe('The Auth HTTP Interceptor', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let auth0Client: any;
+  let authService: Partial<AuthService>;
   let req: TestRequest;
   const testData: Data = { message: 'Hello, world' };
 
@@ -43,8 +44,12 @@ describe('The Auth HTTP Interceptor', () => {
   let config: Partial<AuthConfig>;
 
   beforeEach(() => {
-    auth0Client = jasmine.createSpyObj('Auth0Client', ['getTokenSilently']);
-    auth0Client.getTokenSilently.and.resolveTo('access-token');
+    authService = jasmine.createSpyObj('AuthService', [
+      'getAccessTokenSilently',
+    ]);
+    (authService.getAccessTokenSilently as jasmine.Spy).and.resolveTo(
+      'access-token'
+    );
 
     config = {
       httpInterceptor: {
@@ -80,7 +85,7 @@ describe('The Auth HTTP Interceptor', () => {
           useClass: AuthHttpInterceptor,
           multi: true,
         },
-        { provide: Auth0ClientService, useValue: auth0Client },
+        { provide: AuthService, useValue: authService },
         {
           provide: AuthClientConfig,
           useValue: { get: () => config },
@@ -157,7 +162,7 @@ describe('The Auth HTTP Interceptor', () => {
       // Testing { uri: /api/addresses } (exact match)
       assertAuthorizedApiCallTo('/api/addresses', done);
 
-      expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
+      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
         audience: 'audience',
         scope: 'scope',
       });

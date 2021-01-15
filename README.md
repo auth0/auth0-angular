@@ -312,6 +312,31 @@ export class MyComponent {
 }
 ```
 
+#### Handling errors
+
+Whenever the SDK fails to retrieve an Access Token, either as part of the above interceptor or when manually calling `AuthService.getAccessTokenSilently` and `AuthService.getAccessTokenWithPopup`, it will emit the corresponding error in the `AuthService.error$` observable.
+
+If you want to interact to these errors, subscribe to the `error$` observable and act accordingly.
+
+```
+ngOnInit() {
+  this.authService.error$.subscribe(error => {
+    // Handle Error here
+  });
+}
+```
+
+A common reason you might want to handle the above errors, emitted by the `error$` observable, is to re-login the user when the SDK throws a `login_required` error.
+
+```
+ngOnInit() {
+  this.authService.error$.pipe(
+    filter(e => e.error === 'login_required'),
+    mergeMap(() => this.authService.loginWithRedirect())
+  ).subscribe();
+}
+```
+
 ### Dynamic Configuration
 
 Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`:
