@@ -34,7 +34,6 @@ import {
   catchError,
   switchMap,
   mergeMap,
-  shareReplay,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -75,9 +74,7 @@ export class AuthService implements OnDestroy {
           mergeMap(() => this.auth0Client.isAuthenticated())
         )
       )
-    ),
-    // Ensure every future subscriber receives the last known value
-    shareReplay(1)
+    )
   );
 
   /**
