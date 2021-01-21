@@ -503,9 +503,7 @@ describe('AuthService', () => {
 
       (auth0Client.getTokenSilently as jasmine.Spy).and.rejectWith(errorObj);
 
-      service.getAccessTokenSilently().subscribe({
-        error: () => {},
-      });
+      service.getAccessTokenSilently().subscribe();
 
       service.error$.subscribe((err: Error) => {
         expect(err).toBe(errorObj);
@@ -550,9 +548,7 @@ describe('AuthService', () => {
 
       (auth0Client.getTokenWithPopup as jasmine.Spy).and.rejectWith(errorObj);
 
-      service.getAccessTokenWithPopup().subscribe({
-        error: () => {},
-      });
+      service.getAccessTokenWithPopup().subscribe();
 
       service.error$.subscribe((err: Error) => {
         expect(err).toBe(errorObj);
