@@ -3594,6 +3594,41 @@ AuthModule.forRoot({
   }
 }</code></pre>
           <a
+            href="#handling-errors"
+            id="handling-errors"
+            style="color: inherit; text-decoration: none"
+          >
+            <h4>Handling errors</h4>
+          </a>
+          <p>
+            Whenever the SDK fails to retrieve an Access Token, either as part
+            of the above interceptor or when manually calling
+            <code>AuthService.getAccessTokenSilently</code> and
+            <code>AuthService.getAccessTokenWithPopup</code>, it will emit the
+            corresponding error in the
+            <code>AuthService.error$</code> observable.
+          </p>
+          <p>
+            If you want to interact to these errors, subscribe to the
+            <code>error$</code> observable and act accordingly.
+          </p>
+          <pre><code>ngOnInit() {
+  <span class="hljs-built_in">this</span>.authService.error$.subscribe(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
+    <span class="hljs-comment">// Handle Error here</span>
+  });
+}</code></pre>
+          <p>
+            A common reason you might want to handle the above errors, emitted
+            by the <code>error$</code> observable, is to re-login the user when
+            the SDK throws a <code>login_required</code> error.
+          </p>
+          <pre><code>ngOnInit() {
+  <span class="hljs-built_in">this</span>.authService.error$.pipe(
+    filter(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> e.error === <span class="hljs-string">&#x27;login_required&#x27;</span>),
+    mergeMap(<span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">this</span>.authService.loginWithRedirect())
+  ).subscribe();
+}</code></pre>
+          <a
             href="#dynamic-configuration"
             id="dynamic-configuration"
             style="color: inherit; text-decoration: none"
@@ -4027,7 +4062,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.config.ts#L22"
+                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L22"
                     >projects/auth0-angular/src/lib/auth.config.ts:22</a
                   >
                 </li>
@@ -4070,7 +4105,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.client.ts#L31"
+                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.client.ts#L31"
                     >projects/auth0-angular/src/lib/auth.client.ts:31</a
                   >
                 </li>
@@ -4102,7 +4137,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.config.ts#L284"
+                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L284"
                     >projects/auth0-angular/src/lib/auth.config.ts:284</a
                   >
                 </li>
@@ -4143,7 +4178,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4209,7 +4244,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4241,7 +4276,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4282,7 +4317,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4388,7 +4423,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4441,7 +4476,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/08fd561/projects/auth0-angular/src/lib/auth.config.ts#L28"
+                        href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L28"
                         >projects/auth0-angular/src/lib/auth.config.ts:28</a
                       >
                     </li>
