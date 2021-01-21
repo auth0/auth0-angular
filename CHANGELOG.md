@@ -1,5 +1,17 @@
 # Change Log
 
+## [v1.3.2](https://github.com/auth0/auth0-angular/tree/v1.3.2) (2021-01-21)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.3.1...v1.3.2)
+
+**Changed**
+
+- Record getToken errors in the errors\$ observable [\#104](https://github.com/auth0/auth0-angular/pull/104) ([frederikprijck](https://github.com/frederikprijck))
+
+**Fixed**
+
+- Ensure isAuthenticated always pulls live value from SPA JS SDK [\#109](https://github.com/auth0/auth0-angular/pull/109) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.3.1](https://github.com/auth0/auth0-angular/tree/v1.3.1) (2020-12-18)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.3.0...v1.3.1)
