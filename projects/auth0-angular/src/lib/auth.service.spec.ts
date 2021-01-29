@@ -418,7 +418,7 @@ describe('AuthService', () => {
   });
 
   it('should call `loginWithPopup`', (done) => {
-    loaded(service).subscribe(async () => {
+    loaded(service).subscribe(() => {
       (auth0Client.isAuthenticated as jasmine.Spy).calls.reset();
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
 
@@ -434,7 +434,7 @@ describe('AuthService', () => {
     });
   });
 
-  it('should call `loginWithPopup` with options', async (done) => {
+  it('should call `loginWithPopup` with options', (done) => {
     // These objects are empty, as we just want to check that the
     // same object reference was passed through than any specific options.
     const options = {};
@@ -503,7 +503,9 @@ describe('AuthService', () => {
 
       (auth0Client.getTokenSilently as jasmine.Spy).and.rejectWith(errorObj);
 
-      service.getAccessTokenSilently().subscribe();
+      service.getAccessTokenSilently().subscribe({
+        error: () => {},
+      });
 
       service.error$.subscribe((err: Error) => {
         expect(err).toBe(errorObj);
@@ -548,7 +550,9 @@ describe('AuthService', () => {
 
       (auth0Client.getTokenWithPopup as jasmine.Spy).and.rejectWith(errorObj);
 
-      service.getAccessTokenWithPopup().subscribe();
+      service.getAccessTokenWithPopup().subscribe({
+        error: () => {},
+      });
 
       service.error$.subscribe((err: Error) => {
         expect(err).toBe(errorObj);
