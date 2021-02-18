@@ -16,7 +16,7 @@ export const enum HttpMethod {
 /**
  * Defines the type for a route config entry. Can either be:
  *
- * - an object of type HttpInterceptorConfig
+ * - an object of type HttpInterceptorRouteConfig
  * - a string
  */
 export type ApiRouteDefinition = HttpInterceptorRouteConfig | string;
@@ -28,7 +28,10 @@ export type ApiRouteDefinition = HttpInterceptorRouteConfig | string;
 export function isHttpInterceptorRouteConfig(
   def: ApiRouteDefinition
 ): def is HttpInterceptorRouteConfig {
-  return (def as HttpInterceptorRouteConfig).uri !== undefined;
+  return (
+    (def as HttpInterceptorRouteConfig).uri !== undefined ||
+    (def as HttpInterceptorRouteConfig).uriMatcher !== undefined
+  );
 }
 
 /**
@@ -57,7 +60,19 @@ export interface HttpInterceptorRouteConfig {
    * '/api' - exactly match the route /api
    * '/api/*' - match any route that starts with /api/
    */
-  uri: string;
+  uri?: string;
+
+  /**
+   * A function that will be called with the HttpRequest.url value, allowing you to do
+   * any kind of flexible matching.
+   *
+   * If this function returns true, then
+   * an access token is attached to the request in the
+   *  ["Authorization" header](https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1).
+   *
+   * If the test does not pass, the request proceeds without the access token attached.
+   */
+  uriMatcher?: (uri: string) => boolean;
 
   /**
    * The options that are passed to the SDK when retrieving the

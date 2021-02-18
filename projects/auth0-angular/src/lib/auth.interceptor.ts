@@ -91,10 +91,6 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     request: HttpRequest<any>
   ): boolean {
     const testPrimitive = (value: string) => {
-      if (value) {
-        value.trim();
-      }
-
       if (!value) {
         return false;
       }
@@ -119,7 +115,9 @@ export class AuthHttpInterceptor implements HttpInterceptor {
         return false;
       }
 
-      return testPrimitive(route.uri);
+      return route.uriMatcher
+        ? route.uriMatcher(request.url)
+        : testPrimitive(route.uri);
     }
 
     return testPrimitive(route);
