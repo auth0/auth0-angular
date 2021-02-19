@@ -27,7 +27,10 @@ import {
  * @param handler The HttpBackend instance used to instantiate HttpClient manually
  * @param config The AuthConfigClient service
  */
-function configInitializer(handler: HttpBackend, config: AuthClientConfig) {
+function configInitializer(
+  handler: HttpBackend,
+  config: AuthClientConfig
+): () => Promise<any> {
   return () =>
     new HttpClient(handler)
       .get('/assets/config.json')
