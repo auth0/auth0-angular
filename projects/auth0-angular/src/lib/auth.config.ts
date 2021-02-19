@@ -28,10 +28,7 @@ export type ApiRouteDefinition = HttpInterceptorRouteConfig | string;
 export function isHttpInterceptorRouteConfig(
   def: ApiRouteDefinition
 ): def is HttpInterceptorRouteConfig {
-  return (
-    (def as HttpInterceptorRouteConfig).uri !== undefined ||
-    (def as HttpInterceptorRouteConfig).uriMatcher !== undefined
-  );
+  return typeof def !== 'string';
 }
 
 /**

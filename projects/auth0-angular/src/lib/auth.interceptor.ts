@@ -115,6 +115,12 @@ export class AuthHttpInterceptor implements HttpInterceptor {
         return false;
       }
 
+      if (!route.uri && !route.uriMatcher) {
+        console.warn(
+          'Either a uri or uriMatcher is required when configuring the HTTP interceptor.'
+        );
+      }
+
       return route.uriMatcher
         ? route.uriMatcher(request.url)
         : testPrimitive(route.uri);
