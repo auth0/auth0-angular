@@ -291,6 +291,16 @@ AuthModule.forRoot({
           scope: 'read:users',
         },
       },
+
+      // Using an URI matcher
+      {
+        uriMatcher: (uri) => uri.indexOf('/api/orders') > -1,
+        httpMethod: HttpMethod.Post,
+        tokenOptions: {
+          audience: 'http://my-api/',
+          scope: 'write:orders',
+        },
+      },
     ],
   },
 });
