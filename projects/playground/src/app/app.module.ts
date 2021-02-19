@@ -1,6 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
+import {
+  HttpClient,
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+  HttpBackend,
+} from '@angular/common/http';
 import { AuthModule } from 'projects/auth0-angular/src/lib/auth.module';
+import { AuthHttpInterceptor } from 'projects/auth0-angular/src/lib/auth.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,21 +22,20 @@ import {
   AuthConfig,
 } from 'projects/auth0-angular/src/lib/auth.config';
 
-const authConfig: AuthConfig = {
-  clientId: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
-  domain: 'brucke.auth0.com',
-  errorPath: '/error',
-};
-
 /**
  * Provides configuration to the application
+ * @param handler The HttpBackend instance used to instantiate HttpClient manually
  * @param config The AuthConfigClient service
  */
-function configInitializer(config: AuthClientConfig): () => Promise<any> {
-  return () => {
-    config.set(authConfig);
-    return Promise.resolve();
-  };
+function configInitializer(
+  handler: HttpBackend,
+  config: AuthClientConfig
+): () => Promise<any> {
+  return () =>
+    new HttpClient(handler)
+      .get('/assets/config.json')
+      .toPromise()
+      .then((loadedConfig: any) => config.set(loadedConfig)); // Set the config that was loaded asynchronously here
 }
 
 @NgModule({
@@ -45,6 +51,7 @@ function configInitializer(config: AuthClientConfig): () => Promise<any> {
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    HttpClientModule,
 
     // This playground has been configured by default to use dynamic configuration.
     // If you wish to specify configuration to `forRoot` directly, uncomment `authConfig`
@@ -55,9 +62,10 @@ function configInitializer(config: AuthClientConfig): () => Promise<any> {
     {
       provide: APP_INITIALIZER,
       useFactory: configInitializer,
-      deps: [AuthClientConfig],
+      deps: [HttpBackend, AuthClientConfig],
       multi: true,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
