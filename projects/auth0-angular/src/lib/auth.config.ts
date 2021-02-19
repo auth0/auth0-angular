@@ -70,7 +70,7 @@ export interface HttpInterceptorRouteConfig {
    * an access token is attached to the request in the
    *  ["Authorization" header](https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1).
    *
-   * If the test does not pass, the request proceeds without the access token attached.
+   * If it returns false, the request proceeds without the access token attached.
    */
   uriMatcher?: (uri: string) => boolean;
 
