@@ -6,18 +6,18 @@ import {
 } from '@angular/common/http';
 
 import { Observable, from, of, iif } from 'rxjs';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import {
-  HttpInterceptorRouteConfig,
   ApiRouteDefinition,
   isHttpInterceptorRouteConfig,
   AuthClientConfig,
-  AuthConfig,
+  HttpInterceptorConfig,
 } from './auth.config';
 
 import { switchMap, first, concatMap, pluck } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -35,7 +35,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    return this.findMatchingRoute(req, config).pipe(
+    return this.findMatchingRoute(req, config.httpInterceptor).pipe(
       concatMap((route) =>
         iif(
           // Check if a route was matched
@@ -44,7 +44,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           // outgoing request
           of(route).pipe(
             pluck('tokenOptions'),
-            concatMap((options) =>
+            concatMap<GetTokenSilentlyOptions, Observable<string>>((options) =>
               this.authService.getAccessTokenSilently(options)
             ),
             switchMap((token: string) => {
@@ -90,7 +90,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     route: ApiRouteDefinition,
     request: HttpRequest<any>
   ): boolean {
-    const testPrimitive = (value: string) => {
+    const testPrimitive = (value: string): boolean => {
       if (value) {
         value.trim();
       }
@@ -106,12 +106,10 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       }
 
       // If the URL ends with an asterisk, match using startsWith.
-      if (
+      return (
         value.indexOf('*') === value.length - 1 &&
         request.url.startsWith(value.substr(0, value.length - 1))
-      ) {
-        return true;
-      }
+      );
     };
 
     if (isHttpInterceptorRouteConfig(route)) {
@@ -129,12 +127,13 @@ export class AuthHttpInterceptor implements HttpInterceptor {
    * Tries to match a route from the SDK configuration to the HTTP request.
    * If a match is found, the route configuration is returned.
    * @param request The Http request
+   * @param config HttpInterceptorConfig
    */
   private findMatchingRoute(
     request: HttpRequest<any>,
-    config: AuthConfig
-  ): Observable<HttpInterceptorRouteConfig> {
-    return from(config.httpInterceptor.allowedList).pipe(
+    config: HttpInterceptorConfig
+  ): Observable<ApiRouteDefinition | null> {
+    return from(config.allowedList).pipe(
       first((route) => this.canAttachToken(route, request), null)
     );
   }

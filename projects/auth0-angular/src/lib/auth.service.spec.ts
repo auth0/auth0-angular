@@ -38,8 +38,8 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'loginWithPopup').and.resolveTo();
     spyOn(auth0Client, 'checkSession').and.resolveTo();
     spyOn(auth0Client, 'isAuthenticated').and.resolveTo(false);
-    spyOn(auth0Client, 'getUser').and.resolveTo(null);
-    spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(null);
+    spyOn(auth0Client, 'getUser').and.resolveTo(undefined);
+    spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(undefined);
     spyOn(auth0Client, 'logout');
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
 
@@ -82,7 +82,7 @@ describe('AuthService', () => {
     });
 
     it('should set isLoading$ in the correct sequence', (done) => {
-      const values = [];
+      const values: boolean[] = [];
 
       service.isLoading$.subscribe((loading) => {
         values.push(loading);
