@@ -291,8 +291,22 @@ AuthModule.forRoot({
           scope: 'read:users',
         },
       },
+    ],
+  },
+});
+```
 
-      // Using an URI matcher
+> Under the hood, `tokenOptions` is passed as-is to [the `getTokenSilently` method](https://auth0.github.io/auth0-spa-js/classes/auth0client.html#gettokensilently) on the underlying SDK, so all the same options apply here.
+
+**Uri Matching**
+
+If you need more fine-grained control over the URI matching, you can provide a callback function to the `uriMatcher` property that takes a single `uri` argument (being [`HttpRequest.url`](https://angular.io/api/common/http/HttpRequest#url)) and returns a boolean. If this function returns true, then an access token is attached to the request in the ["Authorization" header](https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1). If it returns false, the request proceeds without the access token attached.
+
+```
+AuthModule.forRoot({
+  ...
+  httpInterceptor: {
+    allowedList: [
       {
         uriMatcher: (uri) => uri.indexOf('/api/orders') > -1,
         httpMethod: HttpMethod.Post,
@@ -306,7 +320,7 @@ AuthModule.forRoot({
 });
 ```
 
-> Under the hood, `tokenOptions` is passed as-is to [the `getTokenSilently` method](https://auth0.github.io/auth0-spa-js/classes/auth0client.html#gettokensilently) on the underlying SDK, so all the same options apply here.
+You might want to do this in scenarios where you need the token on multiple endpoints, but want to exclude it from only a few other endpoints. Instead of explicitly listing all endpoints that do need a token, a uriMatcher can be used to include all but the few endpoints that do not need a token attached to its requests.
 
 #### Use HttpClient to make an API call
 
