@@ -41,9 +41,9 @@ export class AppComponent {
   launchLogin(): void {
     const usePopup = this.loginOptionsForm.value.usePopup === true;
     if (usePopup) {
-      this.auth.loginWithPopup();
+      this.auth.loginWithPopup().subscribe();
     } else {
-      this.auth.loginWithRedirect();
+      this.auth.loginWithRedirect().subscribe();
     }
   }
 
