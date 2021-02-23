@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
-import { bufferCount, filter } from 'rxjs/operators';
+import { bufferCount, bufferTime, filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
 
@@ -91,6 +91,24 @@ describe('AuthService', () => {
           expect(values).toEqual([true, false]);
           done();
         }
+      });
+    });
+
+    it('should not set isLoading when service destroyed before checkSession finished', (done) => {
+      (auth0Client.checkSession as jasmine.Spy).and.callFake(() => {
+        return new Promise((resolve) => setTimeout(resolve, 20));
+      });
+
+      const localService = createService();
+
+      localService.ngOnDestroy();
+
+      localService.isLoading$.pipe(bufferTime(25)).subscribe((loading) => {
+        expect(loading.length).toEqual(1);
+        expect(loading).toEqual([true]);
+        done();
+
+        (auth0Client.checkSession as jasmine.Spy).and.resolveTo();
       });
     });
   });
@@ -334,6 +352,17 @@ describe('AuthService', () => {
     });
 
     it('should redirect to the correct route', (done) => {
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
+        done();
+      });
+    });
+
+    it('should redirect to the correct route when null is returned', (done) => {
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo(null);
+
       const localService = createService();
 
       loaded(localService).subscribe(() => {
