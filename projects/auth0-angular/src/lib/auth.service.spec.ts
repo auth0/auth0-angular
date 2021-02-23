@@ -95,21 +95,15 @@ describe('AuthService', () => {
     });
 
     it('should not set isLoading when service destroyed before checkSession finished', (done) => {
-      (auth0Client.checkSession as jasmine.Spy).and.callFake(() => {
-        return new Promise((resolve) => setTimeout(resolve, 20));
-      });
-
       const localService = createService();
 
-      localService.ngOnDestroy();
-
-      localService.isLoading$.pipe(bufferTime(25)).subscribe((loading) => {
+      localService.isLoading$.pipe(bufferTime(500)).subscribe((loading) => {
         expect(loading.length).toEqual(1);
         expect(loading).toEqual([true]);
         done();
-
-        (auth0Client.checkSession as jasmine.Spy).and.resolveTo();
       });
+
+      localService.ngOnDestroy();
     });
   });
 
