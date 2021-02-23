@@ -22,7 +22,9 @@ describe('AuthGuard', () => {
     it('should redirect a logged out user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(false),
-        loginWithRedirect: jasmine.createSpy('loginWithRedirect'),
+        loginWithRedirect: jasmine
+          .createSpy('loginWithRedirect')
+          .and.returnValue(of()),
       };
       guard = new AuthGuard(authServiceMock);
       guard.canActivate(routeMock, routeStateMock).subscribe();
@@ -48,7 +50,9 @@ describe('AuthGuard', () => {
     it('should redirect a logged out user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(false),
-        loginWithRedirect: jasmine.createSpy('loginWithRedirect'),
+        loginWithRedirect: jasmine
+          .createSpy('loginWithRedirect')
+          .and.returnValue(of()),
       };
       guard = new AuthGuard(authServiceMock);
       guard.canActivateChild(routeMock, routeStateMock).subscribe();

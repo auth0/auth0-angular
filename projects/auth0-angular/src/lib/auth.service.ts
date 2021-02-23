@@ -114,25 +114,21 @@ export class AuthService implements OnDestroy {
     private location: Location,
     private navigator: AbstractNavigator
   ) {
-    const checkSessionOrCallback$ = (isCallback: boolean) =>
+    const checkSessionOrCallback$ = () =>
       iif(
-        () => isCallback,
+        () => this.shouldHandleCallback(),
         this.handleRedirectCallback(),
         defer(() => this.auth0Client.checkSession())
       );
 
-    this.shouldHandleCallback()
+    checkSessionOrCallback$()
       .pipe(
-        switchMap((isCallback) =>
-          checkSessionOrCallback$(isCallback).pipe(
-            catchError((error) => {
-              const config = this.configFactory.get();
-              this.errorSubject$.next(error);
-              this.navigator.navigateByUrl(config.errorPath || '/');
-              return of(undefined);
-            })
-          )
-        ),
+        catchError((error) => {
+          const config = this.configFactory.get();
+          this.errorSubject$.next(error);
+          this.navigator.navigateByUrl(config.errorPath || '/');
+          return of(undefined);
+        }),
         tap(() => {
           this.isLoadingSubject$.next(false);
         }),
@@ -162,7 +158,7 @@ export class AuthService implements OnDestroy {
    * @param options The login options
    */
   loginWithRedirect(options?: RedirectLoginOptions): Observable<void> {
-    return from(this.auth0Client.loginWithRedirect(options));
+    return defer(() => from(this.auth0Client.loginWithRedirect(options)));
   }
 
   /**
@@ -186,10 +182,12 @@ export class AuthService implements OnDestroy {
     options?: PopupLoginOptions,
     config?: PopupConfigOptions
   ): Observable<void> {
-    return from(
-      this.auth0Client.loginWithPopup(options, config).then(() => {
-        this.refreshState$.next();
-      })
+    return defer(() =>
+      from(
+        this.auth0Client.loginWithPopup(options, config).then(() => {
+          this.refreshState$.next();
+        })
+      )
     );
   }
 
@@ -246,8 +244,7 @@ export class AuthService implements OnDestroy {
   getAccessTokenSilently(
     options?: GetTokenSilentlyOptions
   ): Observable<string> {
-    return of(this.auth0Client).pipe(
-      concatMap((client) => client.getTokenSilently(options)),
+    return defer(() => from(this.auth0Client.getTokenSilently(options))).pipe(
       tap(() => this.refreshState$.next()),
       catchError((error) => {
         this.errorSubject$.next(error);
@@ -271,8 +268,7 @@ export class AuthService implements OnDestroy {
   getAccessTokenWithPopup(
     options?: GetTokenWithPopupOptions
   ): Observable<string> {
-    return of(this.auth0Client).pipe(
-      concatMap((client) => client.getTokenWithPopup(options)),
+    return defer(() => from(this.auth0Client.getTokenWithPopup(options))).pipe(
       tap(() => this.refreshState$.next()),
       catchError((error) => {
         this.errorSubject$.next(error);
@@ -281,15 +277,12 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  private shouldHandleCallback(): Observable<boolean> {
-    return of(this.location.path()).pipe(
-      map((search) => {
-        return (
-          (search.includes('code=') || search.includes('error=')) &&
-          search.includes('state=') &&
-          !this.configFactory.get().skipRedirectCallback
-        );
-      })
+  private shouldHandleCallback(): boolean {
+    const search = this.location.path();
+    return (
+      (search.includes('code=') || search.includes('error=')) &&
+      search.includes('state=') &&
+      !this.configFactory.get().skipRedirectCallback
     );
   }
 

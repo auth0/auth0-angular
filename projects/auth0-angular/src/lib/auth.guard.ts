@@ -9,7 +9,7 @@ import {
   CanActivateChild,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { tap, take } from 'rxjs/operators';
+import { take, mergeMap, mapTo } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -40,9 +40,11 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.auth.isAuthenticated$.pipe(
-      tap((loggedIn) => {
+      mergeMap((loggedIn) => {
         if (!loggedIn) {
-          this.auth.loginWithRedirect({ appState: { target: state.url } });
+          return this.auth
+            .loginWithRedirect({ appState: { target: state.url } })
+            .pipe(mapTo(false));
         } else {
           return of(true);
         }

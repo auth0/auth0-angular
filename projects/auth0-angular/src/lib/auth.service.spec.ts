@@ -422,7 +422,7 @@ describe('AuthService', () => {
       (auth0Client.isAuthenticated as jasmine.Spy).calls.reset();
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
 
-      service.loginWithPopup();
+      service.loginWithPopup().subscribe();
 
       service.isAuthenticated$.subscribe((authenticated) => {
         if (authenticated) {
@@ -444,7 +444,7 @@ describe('AuthService', () => {
       (auth0Client.isAuthenticated as jasmine.Spy).calls.reset();
       (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
 
-      service.loginWithPopup(options, config);
+      service.loginWithPopup(options, config).subscribe();
 
       service.isAuthenticated$.subscribe((authenticated) => {
         if (authenticated) {
