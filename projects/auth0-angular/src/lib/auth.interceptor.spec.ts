@@ -217,7 +217,7 @@ describe('The Auth HTTP Interceptor', () => {
       });
     }));
 
-    it('does not attaches the access token when the HTTP method does not match', fakeAsync((
+    it('does not attach the access token when the HTTP method does not match', fakeAsync((
       done
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
