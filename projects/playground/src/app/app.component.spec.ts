@@ -15,11 +15,11 @@ describe('AppComponent', () => {
     authMock = jasmine.createSpyObj(
       'AuthService',
       {
-        loginWithRedirect: jasmine.createSpy().and.returnValue(null),
-        loginWithPopup: jasmine.createSpy().and.returnValue(null),
+        loginWithRedirect: jasmine.createSpy(),
+        loginWithPopup: jasmine.createSpy(),
         logout: jasmine.createSpy().and.returnValue(null),
-        getAccessTokenSilently: jasmine.createSpy().and.returnValue(null),
-        getAccessTokenWithPopup: jasmine.createSpy().and.returnValue(null),
+        getAccessTokenSilently: jasmine.createSpy(),
+        getAccessTokenWithPopup: jasmine.createSpy(),
       },
       {
         user$: new BehaviorSubject(null),
@@ -27,6 +27,11 @@ describe('AppComponent', () => {
         isAuthenticated$: new BehaviorSubject(false),
       }
     ) as any;
+
+    (authMock.loginWithRedirect as jasmine.Spy).and.returnValue(of(null));
+    (authMock.loginWithPopup as jasmine.Spy).and.returnValue(of(null));
+    (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(of(null));
+    (authMock.getAccessTokenWithPopup as jasmine.Spy).and.returnValue(of(null));
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ReactiveFormsModule],
@@ -82,9 +87,7 @@ describe('AppComponent', () => {
   describe('when user is authenticated', () => {
     beforeEach(() => {
       const loading = authMock.isLoading$ as BehaviorSubject<boolean>;
-      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<
-        boolean
-      >;
+      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<boolean>;
       const user = authMock.user$ as BehaviorSubject<any>;
 
       loading.next(false);
@@ -261,9 +264,7 @@ describe('AppComponent', () => {
   describe('when user is not authenticated', () => {
     beforeEach(() => {
       const loading = authMock.isLoading$ as BehaviorSubject<boolean>;
-      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<
-        boolean
-      >;
+      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<boolean>;
 
       loading.next(false);
       authenticated.next(false);
