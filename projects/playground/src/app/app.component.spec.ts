@@ -9,7 +9,7 @@ describe('AppComponent', () => {
   let authMock: AuthService;
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
-  let ne;
+  let ne: HTMLElement;
 
   beforeEach(() => {
     authMock = jasmine.createSpyObj(
@@ -52,18 +52,20 @@ describe('AppComponent', () => {
 
     it('should render title', () => {
       const h1 = ne.querySelector('h1');
-      expect(h1.textContent).toContain('AUTH0 ANGULAR PLAYGROUND');
+      expect(h1?.textContent).toContain('AUTH0 ANGULAR PLAYGROUND');
     });
 
     it('should render SDK loading status', () => {
       const loadingIndicator = ne.querySelector('p.status-indicator');
-      expect(loadingIndicator.textContent).toContain('SDK initialized = false');
+      expect(loadingIndicator?.textContent).toContain(
+        'SDK initialized = false'
+      );
 
       const loading = authMock.isLoading$ as BehaviorSubject<boolean>;
       loading.next(false);
       fixture.detectChanges();
 
-      expect(loadingIndicator.textContent).toContain('SDK initialized = true');
+      expect(loadingIndicator?.textContent).toContain('SDK initialized = true');
     });
 
     it('should show controls when SDK finishes loading', () => {
@@ -82,9 +84,7 @@ describe('AppComponent', () => {
   describe('when user is authenticated', () => {
     beforeEach(() => {
       const loading = authMock.isLoading$ as BehaviorSubject<boolean>;
-      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<
-        boolean
-      >;
+      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<boolean>;
       const user = authMock.user$ as BehaviorSubject<any>;
 
       loading.next(false);
@@ -111,7 +111,7 @@ describe('AppComponent', () => {
       form.localOnly.setValue(false);
       form.federated.setValue(false);
 
-      const btnLogout = ne.querySelector('#logout');
+      const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
       fixture.detectChanges();
 
@@ -127,7 +127,7 @@ describe('AppComponent', () => {
       form.localOnly.setValue(false);
       form.federated.setValue(true);
 
-      const btnLogout = ne.querySelector('#logout');
+      const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
       fixture.detectChanges();
 
@@ -143,7 +143,7 @@ describe('AppComponent', () => {
       form.localOnly.setValue(true);
       form.federated.setValue(false);
 
-      const btnLogout = ne.querySelector('#logout');
+      const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
       fixture.detectChanges();
 
@@ -156,27 +156,29 @@ describe('AppComponent', () => {
 
     it('should show user profile', () => {
       const divProfile = ne.querySelectorAll('.artifacts-wrapper .artifact')[0];
-      expect(divProfile.querySelector('p').textContent).toContain(
+      expect(divProfile.querySelector('p')?.textContent).toContain(
         'User Profile: Subset of the ID token claims'
       );
       const userValue = JSON.parse(
-        divProfile.querySelector('textarea').textContent
+        divProfile.querySelector('textarea')?.textContent ?? ''
       );
       expect(userValue).toEqual({ name: 'John', lastname: 'Doe' });
     });
 
     it('should show empty access token by default', () => {
       const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
-      expect(divToken.querySelector('p').textContent).toContain(
+      expect(divToken.querySelector('p')?.textContent).toContain(
         'Access Token: Select a mode and click the button to retrieve the token.'
       );
-      const tokenContent = divToken.querySelector('textarea').textContent;
+      const tokenContent = divToken.querySelector('textarea')?.textContent;
       expect(tokenContent).toEqual('');
     });
 
     it('should get access token silently', () => {
       const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
-      expect(divToken.querySelector('p').textContent).toContain('Access Token');
+      expect(divToken.querySelector('p')?.textContent).toContain(
+        'Access Token'
+      );
       const form = component.accessTokenOptionsForm.controls;
       form.usePopup.setValue(false);
       (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
@@ -184,20 +186,22 @@ describe('AppComponent', () => {
       );
 
       const btnRefresh = divToken.querySelector('button');
-      btnRefresh.click();
+      btnRefresh?.click();
       fixture.detectChanges();
 
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
         ignoreCache: false,
       });
       console.log(divToken.querySelector('textarea'));
-      const tokenContent = divToken.querySelector('textarea').textContent;
+      const tokenContent = divToken.querySelector('textarea')?.textContent;
       expect(tokenContent).toEqual('access token silently');
     });
 
     it('should get access token silently', () => {
       const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
-      expect(divToken.querySelector('p').textContent).toContain('Access Token');
+      expect(divToken.querySelector('p')?.textContent).toContain(
+        'Access Token'
+      );
       const form = component.accessTokenOptionsForm.controls;
       form.usePopup.setValue(false);
       form.ignoreCache.setValue(false);
@@ -206,20 +210,22 @@ describe('AppComponent', () => {
       );
 
       const btnRefresh = divToken.querySelector('button');
-      btnRefresh.click();
+      btnRefresh?.click();
       fixture.detectChanges();
 
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
         ignoreCache: false,
       });
       console.log(divToken.querySelector('textarea'));
-      const tokenContent = divToken.querySelector('textarea').textContent;
+      const tokenContent = divToken.querySelector('textarea')?.textContent;
       expect(tokenContent).toEqual('access token silently');
     });
 
     it('should get access token silently ignoring cache', () => {
       const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
-      expect(divToken.querySelector('p').textContent).toContain('Access Token');
+      expect(divToken.querySelector('p')?.textContent).toContain(
+        'Access Token'
+      );
       const form = component.accessTokenOptionsForm.controls;
       form.usePopup.setValue(false);
       form.ignoreCache.setValue(true);
@@ -228,20 +234,22 @@ describe('AppComponent', () => {
       );
 
       const btnRefresh = divToken.querySelector('button');
-      btnRefresh.click();
+      btnRefresh?.click();
       fixture.detectChanges();
 
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
         ignoreCache: true,
       });
       console.log(divToken.querySelector('textarea'));
-      const tokenContent = divToken.querySelector('textarea').textContent;
+      const tokenContent = divToken.querySelector('textarea')?.textContent;
       expect(tokenContent).toEqual('access token silently');
     });
 
     it('should get access token with popup', () => {
       const divToken = ne.querySelectorAll('.artifacts-wrapper .artifact')[1];
-      expect(divToken.querySelector('p').textContent).toContain('Access Token');
+      expect(divToken.querySelector('p')?.textContent).toContain(
+        'Access Token'
+      );
       const form = component.accessTokenOptionsForm.controls;
       form.usePopup.setValue(true);
       (authMock.getAccessTokenWithPopup as jasmine.Spy).and.returnValue(
@@ -249,11 +257,11 @@ describe('AppComponent', () => {
       );
 
       const btnRefresh = divToken.querySelector('button');
-      btnRefresh.click();
+      btnRefresh?.click();
       fixture.detectChanges();
 
       expect(authMock.getAccessTokenWithPopup).toHaveBeenCalledWith();
-      const tokenContent = divToken.querySelector('textarea').textContent;
+      const tokenContent = divToken.querySelector('textarea')?.textContent;
       expect(tokenContent).toEqual('access token popup');
     });
   });
@@ -261,9 +269,7 @@ describe('AppComponent', () => {
   describe('when user is not authenticated', () => {
     beforeEach(() => {
       const loading = authMock.isLoading$ as BehaviorSubject<boolean>;
-      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<
-        boolean
-      >;
+      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<boolean>;
 
       loading.next(false);
       authenticated.next(false);
@@ -288,8 +294,8 @@ describe('AppComponent', () => {
       const form = component.loginOptionsForm.controls;
       form.usePopup.setValue(false);
 
-      const btnRefresh = wrapLogin.querySelector('button');
-      btnRefresh.click();
+      const btnRefresh = wrapLogin?.querySelector('button');
+      btnRefresh?.click();
       fixture.detectChanges();
 
       expect(authMock.loginWithRedirect).toHaveBeenCalledWith();
@@ -300,8 +306,8 @@ describe('AppComponent', () => {
       const form = component.loginOptionsForm.controls;
       form.usePopup.setValue(true);
 
-      const btnRefresh = wrapLogin.querySelector('button');
-      btnRefresh.click();
+      const btnRefresh = wrapLogin?.querySelector('button');
+      btnRefresh?.click();
       fixture.detectChanges();
 
       expect(authMock.loginWithPopup).toHaveBeenCalledWith();

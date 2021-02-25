@@ -246,7 +246,7 @@ export interface AuthConfig {
  */
 @Injectable({ providedIn: 'root' })
 export class AuthClientConfig {
-  private config: AuthConfig;
+  private config?: AuthConfig;
 
   constructor(@Optional() @Inject(AuthConfigService) config?: AuthConfig) {
     if (config) {
@@ -266,7 +266,7 @@ export class AuthClientConfig {
    * Gets the config that has been set by other consumers of the service
    */
   get(): AuthConfig {
-    return this.config;
+    return this.config as AuthConfig;
   }
 }
 
