@@ -43,3 +43,9 @@ this.authService.loginWithRedirect({
 ```
 
 By doing that, in the very last step the SDK will not redirect the user back to `/`, but to `/some-url` instead.
+
+## 4. Getting an infinite redirect loop between my application and Auth0
+
+In situations where the `redirectUri` points to a _protected_ route, your application will end up in an infinite redirect loop between your application and Auth0.
+
+The `redirectUri` should always be a **public** route in your application (even if the entire application is secure, our SDK needs a public route to be redirected back to). This is because, when redirecting back to the application, there is no user information available yet. The SDK first needs to process the URL (`code` and `state` query parameters) and call Auth0's endpoints to exchange the code for a token. Once that is successful, the user is considered authenticated.
