@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
-import { bufferCount, filter } from 'rxjs/operators';
+import { bufferCount, bufferTime, filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
 
@@ -38,8 +38,8 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'loginWithPopup').and.resolveTo();
     spyOn(auth0Client, 'checkSession').and.resolveTo();
     spyOn(auth0Client, 'isAuthenticated').and.resolveTo(false);
-    spyOn(auth0Client, 'getUser').and.resolveTo(null);
-    spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(null);
+    spyOn(auth0Client, 'getUser').and.resolveTo(undefined);
+    spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(undefined);
     spyOn(auth0Client, 'logout');
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
 
@@ -82,7 +82,7 @@ describe('AuthService', () => {
     });
 
     it('should set isLoading$ in the correct sequence', (done) => {
-      const values = [];
+      const values: boolean[] = [];
 
       service.isLoading$.subscribe((loading) => {
         values.push(loading);
@@ -92,6 +92,18 @@ describe('AuthService', () => {
           done();
         }
       });
+    });
+
+    it('should not set isLoading when service destroyed before checkSession finished', (done) => {
+      const localService = createService();
+
+      localService.isLoading$.pipe(bufferTime(500)).subscribe((loading) => {
+        expect(loading.length).toEqual(1);
+        expect(loading).toEqual([true]);
+        done();
+      });
+
+      localService.ngOnDestroy();
     });
   });
 
