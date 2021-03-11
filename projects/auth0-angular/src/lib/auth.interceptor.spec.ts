@@ -7,8 +7,12 @@ import {
   TestRequest,
 } from '@angular/common/http/testing';
 import { Data } from '@angular/router';
-import { Auth0ClientService } from './auth.client';
-import { AuthConfig, HttpMethod, AuthClientConfig } from './auth.config';
+import {
+  AuthConfig,
+  HttpMethod,
+  AuthClientConfig,
+  HttpInterceptorConfig,
+} from './auth.config';
 import { AuthService } from './auth.service';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
@@ -25,7 +29,7 @@ describe('The Auth HTTP Interceptor', () => {
     done: () => void,
     method = 'get'
   ) => {
-    httpClient[method](url).subscribe(done);
+    httpClient.request(method, url).subscribe(done);
     flush();
     req = httpTestingController.expectOne(url);
 
@@ -110,18 +114,18 @@ describe('The Auth HTTP Interceptor', () => {
     req.flush(testData);
   });
 
-  describe('When no config is configured', () => {
+  describe('When no httpInterceptor is configured', () => {
     it('pass through and do not have access tokens attached', fakeAsync((
-      done
+      done: () => void
     ) => {
-      config.httpInterceptor = null;
+      config.httpInterceptor = (null as unknown) as HttpInterceptorConfig;
       assertPassThruApiCallTo('/api/public', done);
     }));
   });
 
   describe('Requests that do not require authentication', () => {
     it('pass through and do not have access tokens attached', fakeAsync((
-      done
+      done: () => void
     ) => {
       assertPassThruApiCallTo('/api/public', done);
     }));
@@ -129,43 +133,47 @@ describe('The Auth HTTP Interceptor', () => {
 
   describe('Requests that are configured using a primitive', () => {
     it('attach the access token when the configuration uri is a string', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing /api/photos (exact match)
       assertAuthorizedApiCallTo('/api/photos', done);
     }));
 
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing /api/people* (wildcard match)
       assertAuthorizedApiCallTo('/api/people/profile', done);
     }));
 
-    it('matches a full url to an API', fakeAsync((done) => {
+    it('matches a full url to an API', fakeAsync((done: () => void) => {
       // Testing 'https://my-api.com/orders' (exact)
       assertAuthorizedApiCallTo('https://my-api.com/orders', done);
     }));
 
-    it('matches a URL that contains a query string', fakeAsync((done) => {
+    it('matches a URL that contains a query string', fakeAsync((
+      done: () => void
+    ) => {
       assertAuthorizedApiCallTo('/api/people?name=test', done);
     }));
 
-    it('matches a URL that contains a hash fragment', fakeAsync((done) => {
+    it('matches a URL that contains a hash fragment', fakeAsync((
+      done: () => void
+    ) => {
       assertAuthorizedApiCallTo('/api/people#hash-fragment', done);
     }));
   });
 
   describe('Requests that are configured using a complex object', () => {
     it('attach the access token when the uri is configured using a string', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing { uri: /api/orders } (exact match)
       assertAuthorizedApiCallTo('/api/orders', done);
     }));
 
     it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing { uri: /api/addresses } (exact match)
       assertAuthorizedApiCallTo('/api/addresses', done);
@@ -177,21 +185,21 @@ describe('The Auth HTTP Interceptor', () => {
     }));
 
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing { uri: /api/calendar* } (wildcard match)
       assertAuthorizedApiCallTo('/api/calendar/events', done);
     }));
 
     it('attaches the access token when the HTTP method matches', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing { uri: /api/register } (wildcard match)
       assertAuthorizedApiCallTo('/api/register', done, 'post');
     }));
 
     it('does not attach the access token if the HTTP method does not match', fakeAsync((
-      done
+      done: () => void
     ) => {
       assertPassThruApiCallTo('/api/public', done);
     }));

@@ -363,7 +363,11 @@ ngOnInit() {
 
 ### Dynamic Configuration
 
-Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`:
+Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`.
+
+The configuration will only be used initially when the SDK is instantiated. Any changes made to the configuration at a later moment in time will have no effect on the default options used when calling the SDK's methods. This is also the reason why the dynamic configuration should be set using an `APP_INITIALIZER`, because doing so ensures the configuration is available prior to instantiating the SDK.
+
+> :information_source: Any request made through an instance of `HttpClient` that got instantiated by Angular, will use all of the configured interceptors, including our `AuthHttpInterceptor`. Because the `AuthHttpInterceptor` requires the existence of configuration settings, the request for retrieving those dynamic configuration settings should ensure it's not using any of those interceptors. In Angular, this can be done by manually instantiating `HttpClient` using an injected `HttpBackend` instance.
 
 ```js
 // app.module.ts
@@ -372,11 +376,11 @@ import { AuthModule, AuthClientConfig } from '@auth0/auth0-angular';
 
 // Provide an initializer function that returns a Promise
 function configInitializer(
-  http: HttpClient,
+  handler: HttpBackend,
   config: AuthClientConfig
 ) {
   return () =>
-    http
+    new HttpClient(handler)
       .get('/config')
       .toPromise()
       .then((loadedConfig: any) => config.set(loadedConfig));   // Set the config that was loaded asynchronously here
@@ -393,7 +397,7 @@ providers: [
   {
     provide: APP_INITIALIZER,
     useFactory: configInitializer,    // <- pass your initializer function here
-    deps: [HttpClient, AuthClientConfig],
+    deps: [HttpBackend, AuthClientConfig],
     multi: true,
   },
 ],

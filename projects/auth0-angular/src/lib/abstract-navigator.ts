@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
   providedIn: 'root',
 })
 export class AbstractNavigator {
-  private readonly router: Router;
+  private readonly router?: Router;
 
   constructor(private location: Location, injector: Injector) {
     try {

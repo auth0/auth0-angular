@@ -45,12 +45,12 @@ import { AuthClientConfig } from './auth.config';
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private isLoadingSubject$ = new BehaviorSubject(true);
+  private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
   private errorSubject$ = new ReplaySubject<Error>(1);
-  private refreshState$ = new Subject();
+  private refreshState$ = new Subject<void>();
 
   // https://stackoverflow.com/a/41177163
-  private ngUnsubscribe$ = new Subject();
+  private ngUnsubscribe$ = new Subject<void>();
   /**
    * Emits boolean values indicating the loading state of the SDK.
    */
@@ -251,6 +251,7 @@ export class AuthService implements OnDestroy {
       tap(() => this.refreshState$.next()),
       catchError((error) => {
         this.errorSubject$.next(error);
+        this.refreshState$.next();
         return throwError(error);
       })
     );
@@ -276,6 +277,7 @@ export class AuthService implements OnDestroy {
       tap(() => this.refreshState$.next()),
       catchError((error) => {
         this.errorSubject$.next(error);
+        this.refreshState$.next();
         return throwError(error);
       })
     );
