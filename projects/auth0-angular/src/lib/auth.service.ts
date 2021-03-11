@@ -81,18 +81,25 @@ export class AuthService implements OnDestroy {
   /**
    * Trigger used to pull User information from the Auth0Client.
    * Triggers when an event occurs that needs to retrigger the User Profile information.
-   * Events: Access Token change and Logout
+   * Events: Login, Access Token change and Logout
    */
   private isAuthenticatedTrigger$ = this.isLoading$.pipe(
     filter((loading) => !loading),
     distinctUntilChanged(),
     switchMap(() =>
       // To track the value of isAuthenticated over time, we need to merge:
+      //  - the current value
       //  - the value whenever the access token changes. (this should always be true of there is an access token
       //    but it is safer to pass this through this.auth0Client.isAuthenticated() nevertheless)
       //  - the value whenever refreshState$ emits
-      merge(this.accessTokenTrigger$, this.refreshState$).pipe(
-        mergeMap(() => this.auth0Client.isAuthenticated())
+      merge(
+        defer(() => this.auth0Client.isAuthenticated()),
+        this.accessTokenTrigger$.pipe(
+          mergeMap(() => this.auth0Client.isAuthenticated())
+        ),
+        this.refreshState$.pipe(
+          mergeMap(() => this.auth0Client.isAuthenticated())
+        )
       )
     )
   );
@@ -138,9 +145,7 @@ export class AuthService implements OnDestroy {
       iif(
         () => isCallback,
         this.handleRedirectCallback(),
-        defer(() => this.auth0Client.checkSession()).pipe(
-          mergeMap(() => this.getAccessTokenSilently(/* { cacheOnly: true } */))
-        )
+        defer(() => this.auth0Client.checkSession())
       );
 
     this.shouldHandleCallback()
@@ -208,9 +213,10 @@ export class AuthService implements OnDestroy {
     options?: PopupLoginOptions,
     config?: PopupConfigOptions
   ): Observable<void> {
-    return from(this.auth0Client.loginWithPopup(options, config)).pipe(
-      mergeMap(() => this.getAccessTokenSilently(/* { cacheOnly: true } */)),
-      mergeMap(() => of<void>())
+    return from(
+      this.auth0Client.loginWithPopup(options, config).then(() => {
+        this.refreshState$.next();
+      })
     );
   }
 
