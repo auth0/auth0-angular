@@ -113,6 +113,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
         return false;
       }
 
+      /* istanbul ignore if */
       if (!route.uri && !route.uriMatcher) {
         console.warn(
           'Either a uri or uriMatcher is required when configuring the HTTP interceptor.'
