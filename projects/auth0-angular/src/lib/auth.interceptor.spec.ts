@@ -207,14 +207,14 @@ describe('The Auth HTTP Interceptor', () => {
 
   describe('Requests that are configured using an uri matcher', () => {
     it('attach the access token when the matcher returns true', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
       assertAuthorizedApiCallTo('/api/contact', done, 'post');
     }));
 
     it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
       assertAuthorizedApiCallTo('/api/contact', done, 'post');
@@ -226,7 +226,7 @@ describe('The Auth HTTP Interceptor', () => {
     }));
 
     it('does not attach the access token when the HTTP method does not match', fakeAsync((
-      done
+      done: () => void
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
       assertAuthorizedApiCallTo('/api/contact', done, 'post');
