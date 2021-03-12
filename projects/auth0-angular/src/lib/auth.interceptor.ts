@@ -90,7 +90,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     route: ApiRouteDefinition,
     request: HttpRequest<any>
   ): boolean {
-    const testPrimitive = (value: string): boolean => {
+    const testPrimitive = (value: string | undefined): boolean => {
       if (!value) {
         return false;
       }
