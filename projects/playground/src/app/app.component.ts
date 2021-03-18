@@ -19,6 +19,8 @@ export class AppComponent {
   accessToken = '';
   error$ = this.auth.error$;
 
+  organization = 'org_9G5LOmyGvbtOeR7b';
+
   loginOptionsForm = new FormGroup({
     usePopup: new FormControl(false),
   });
@@ -43,7 +45,29 @@ export class AppComponent {
     if (usePopup) {
       this.auth.loginWithPopup();
     } else {
-      this.auth.loginWithRedirect();
+      this.auth.loginWithRedirect({
+        organization: this.organization,
+      });
+    }
+  }
+
+  loginHandleInvitationUrl(): void {
+    var url = prompt('Your invitation URL');
+
+    if (url) {
+      const inviteMatches = url.match(/invitation=([a-zA-Z0-9_]+)/);
+      const orgMatches = url.match(/organization=([a-zA-Z0-9_]+)/);
+
+      if (orgMatches && inviteMatches) {
+        this.auth.loginWithRedirect({
+          organization: orgMatches[1],
+          invitation: inviteMatches[1],
+        });
+      } else if (orgMatches) {
+        this.auth.loginWithRedirect({
+          organization: orgMatches[1],
+        });
+      }
     }
   }
 
