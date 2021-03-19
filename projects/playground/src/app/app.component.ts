@@ -19,7 +19,7 @@ export class AppComponent {
   accessToken = '';
   error$ = this.auth.error$;
 
-  organization = 'org_9G5LOmyGvbtOeR7b';
+  organization = '';
 
   loginOptionsForm = new FormGroup({
     usePopup: new FormControl(false),
