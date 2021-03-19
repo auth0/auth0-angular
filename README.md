@@ -436,24 +436,12 @@ this.auth.loginWithPopup({
 });
 ```
 
-### Accept user invitations
+#### Accept user invitations
 
 Accept a user invitation through the SDK by creating a route within your application that can handle the user invitation URL, and log the user in by passing the `organization` and `invitation` parameters from this URL. You can either use `loginWithRedirect` or `loginWithPopup` as needed.
 
 ```js
-const params = new URLSearchParams(invitationUrl);
-const organization = params.get('organization');
-const invitation = params.get('invitation');
-if (organization && invitation) {
-  this.auth.loginWithRedirect({
-    organization,
-    invitation
-  });
-}
-
 import { Component } from '@angular/core';
-
-// Import the AuthService type from the SDK
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
@@ -466,7 +454,7 @@ export class AppComponent {
 
   loginWithRedirect(): void {
     const { organization, invitation } = this.activatedRoute.snapshot.params;
-    // Call this to redirect the user to the login page
+
     this.auth.loginWithRedirect({
       organization,
       invitation
