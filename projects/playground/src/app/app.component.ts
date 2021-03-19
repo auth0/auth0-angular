@@ -43,10 +43,12 @@ export class AppComponent {
   launchLogin(): void {
     const usePopup = this.loginOptionsForm.value.usePopup === true;
     if (usePopup) {
-      this.auth.loginWithPopup();
+      this.auth.loginWithPopup({
+        ...(this.organization ? { organization: this.organization } : null),
+      });
     } else {
       this.auth.loginWithRedirect({
-        organization: this.organization,
+        ...(this.organization ? { organization: this.organization } : null),
       });
     }
   }
