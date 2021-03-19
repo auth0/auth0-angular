@@ -52,7 +52,7 @@ export class AppComponent {
   }
 
   loginHandleInvitationUrl(): void {
-    var url = prompt('Your invitation URL');
+    const url = prompt('Your invitation URL');
 
     if (url) {
       const inviteMatches = url.match(/invitation=([a-zA-Z0-9_]+)/);
