@@ -204,7 +204,9 @@ export interface AuthConfig {
   organization?: string;
 
   /**
-   * The Id of an invitation to accept. This is available from the user invitation URL that is given when participating in a user invitation flow.
+   * The Id of an invitation to accept.
+   *
+   * This is available from the user invitation URL that is given when participating in a user invitation flow.
    */
   invitation?: string;
 
