@@ -19,6 +19,8 @@ export class AppComponent {
   accessToken = '';
   error$ = this.auth.error$;
 
+  organization = '';
+
   loginOptionsForm = new FormGroup({
     usePopup: new FormControl(false),
   });
@@ -41,9 +43,33 @@ export class AppComponent {
   launchLogin(): void {
     const usePopup = this.loginOptionsForm.value.usePopup === true;
     if (usePopup) {
-      this.auth.loginWithPopup();
+      this.auth.loginWithPopup({
+        ...(this.organization ? { organization: this.organization } : null),
+      });
     } else {
-      this.auth.loginWithRedirect();
+      this.auth.loginWithRedirect({
+        ...(this.organization ? { organization: this.organization } : null),
+      });
+    }
+  }
+
+  loginHandleInvitationUrl(): void {
+    const url = prompt('Your invitation URL');
+
+    if (url) {
+      const inviteMatches = url.match(/invitation=([a-zA-Z0-9_]+)/);
+      const orgMatches = url.match(/organization=([a-zA-Z0-9_]+)/);
+
+      if (orgMatches && inviteMatches) {
+        this.auth.loginWithRedirect({
+          organization: orgMatches[1],
+          invitation: inviteMatches[1],
+        });
+      } else if (orgMatches) {
+        this.auth.loginWithRedirect({
+          organization: orgMatches[1],
+        });
+      }
     }
   }
 
