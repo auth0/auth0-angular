@@ -369,6 +369,30 @@ describe('AuthService', () => {
       });
     });
 
+    it('should fallback to `/` when missing appState', (done) => {
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({});
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
+        done();
+      });
+    });
+
+    it('should fallback to `/` when handleRedirectCallback returns undefined', (done) => {
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo(
+        undefined
+      );
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(navigator.navigateByUrl).toHaveBeenCalledWith('/');
+        done();
+      });
+    });
+
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 

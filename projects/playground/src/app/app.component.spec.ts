@@ -298,7 +298,7 @@ describe('AppComponent', () => {
       btnRefresh?.click();
       fixture.detectChanges();
 
-      expect(authMock.loginWithRedirect).toHaveBeenCalledWith();
+      expect(authMock.loginWithRedirect).toHaveBeenCalledWith({});
     });
 
     it('should login with popup', () => {
@@ -310,7 +310,7 @@ describe('AppComponent', () => {
       btnRefresh?.click();
       fixture.detectChanges();
 
-      expect(authMock.loginWithPopup).toHaveBeenCalledWith();
+      expect(authMock.loginWithPopup).toHaveBeenCalledWith({});
     });
   });
 });
