@@ -77,6 +77,14 @@ describe('The Auth HTTP Interceptor', () => {
             uri: '/api/register',
             httpMethod: HttpMethod.Post,
           },
+          {
+            uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1,
+            httpMethod: HttpMethod.Post,
+            tokenOptions: {
+              audience: 'audience',
+              scope: 'scope',
+            },
+          },
         ],
       },
     };
@@ -194,6 +202,35 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       assertPassThruApiCallTo('/api/public', done);
+    }));
+  });
+
+  describe('Requests that are configured using an uri matcher', () => {
+    it('attach the access token when the matcher returns true', fakeAsync((
+      done: () => void
+    ) => {
+      // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
+      assertAuthorizedApiCallTo('/api/contact', done, 'post');
+    }));
+
+    it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
+      done: () => void
+    ) => {
+      // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
+      assertAuthorizedApiCallTo('/api/contact', done, 'post');
+
+      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
+        audience: 'audience',
+        scope: 'scope',
+      });
+    }));
+
+    it('does not attach the access token when the HTTP method does not match', fakeAsync((
+      done: () => void
+    ) => {
+      // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
+      assertAuthorizedApiCallTo('/api/contact', done, 'post');
+      assertPassThruApiCallTo('/api/contact', done);
     }));
   });
 });
