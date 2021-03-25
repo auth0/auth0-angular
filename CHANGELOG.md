@@ -1,5 +1,19 @@
 # Change Log
 
+## [v1.4.0](https://github.com/auth0/auth0-angular/tree/v1.4.0) (2021-03-25)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.3.2...v1.4.0)
+
+**Added**
+
+- [SDK-2390] Add Support for Organizations [\#135](https://github.com/auth0/auth0-angular/pull/135) ([frederikprijck](https://github.com/frederikprijck))
+- Add uriMatcher to HttpInterceptorRouteConfig [\#122](https://github.com/auth0/auth0-angular/pull/122) ([frederikprijck](https://github.com/frederikprijck))
+
+**Changed**
+
+- Update State when error occurs while getting token [\#124](https://github.com/auth0/auth0-angular/pull/124) ([frederikprijck](https://github.com/frederikprijck))
+- Enable strict mode [\#123](https://github.com/auth0/auth0-angular/pull/123) ([AlexElin](https://github.com/AlexElin))
+
 ## [v1.3.2](https://github.com/auth0/auth0-angular/tree/v1.3.2) (2021-01-21)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.3.1...v1.3.2)

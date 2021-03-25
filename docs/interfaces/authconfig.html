@@ -3125,6 +3125,11 @@
               >
             </li>
             <li class="tsd-kind-property tsd-parent-kind-interface">
+              <a href="authconfig.html#invitation" class="tsd-kind-icon"
+                >invitation</a
+              >
+            </li>
+            <li class="tsd-kind-property tsd-parent-kind-interface">
               <a href="authconfig.html#issuer" class="tsd-kind-icon">issuer</a>
             </li>
             <li class="tsd-kind-property tsd-parent-kind-interface">
@@ -3133,6 +3138,11 @@
             <li class="tsd-kind-property tsd-parent-kind-interface">
               <a href="authconfig.html#maxage" class="tsd-kind-icon"
                 >max<wbr />Age</a
+              >
+            </li>
+            <li class="tsd-kind-property tsd-parent-kind-interface">
+              <a href="authconfig.html#organization" class="tsd-kind-icon"
+                >organization</a
               >
             </li>
             <li class="tsd-kind-property tsd-parent-kind-interface">
@@ -3269,6 +3279,11 @@
                     >
                   </li>
                   <li class="tsd-kind-property tsd-parent-kind-interface">
+                    <a href="authconfig.html#invitation" class="tsd-kind-icon"
+                      >invitation</a
+                    >
+                  </li>
+                  <li class="tsd-kind-property tsd-parent-kind-interface">
                     <a href="authconfig.html#issuer" class="tsd-kind-icon"
                       >issuer</a
                     >
@@ -3281,6 +3296,11 @@
                   <li class="tsd-kind-property tsd-parent-kind-interface">
                     <a href="authconfig.html#maxage" class="tsd-kind-icon"
                       >max<wbr />Age</a
+                    >
+                  </li>
+                  <li class="tsd-kind-property tsd-parent-kind-interface">
+                    <a href="authconfig.html#organization" class="tsd-kind-icon"
+                      >organization</a
                     >
                   </li>
                   <li class="tsd-kind-property tsd-parent-kind-interface">
@@ -3324,9 +3344,13 @@
             </h3>
             <div class="tsd-signature tsd-kind-icon">
               advanced<wbr />Options<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-symbol">{ </span>defaultScope<span
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-symbol">{ </span>defaultScope<span
                 class="tsd-signature-symbol"
                 >?: </span
+              ><span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
               ><span class="tsd-signature-type">string</span
               ><span class="tsd-signature-symbol"> }</span>
             </div>
@@ -3335,8 +3359,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L157"
-                    >projects/auth0-angular/src/lib/auth.config.ts:157</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L169"
+                    >projects/auth0-angular/src/lib/auth.config.ts:169</a
                   >
                 </li>
               </ul>
@@ -3345,34 +3369,6 @@
               <div class="lead">
                 <p>Changes to recommended defaults, like defaultScope</p>
               </div>
-            </div>
-            <div class="tsd-type-declaration">
-              <h4>Type declaration</h4>
-              <ul class="tsd-parameters">
-                <li class="tsd-parameter">
-                  <h5>
-                    <span class="tsd-flag ts-flagOptional">Optional</span>
-                    default<wbr />Scope<span class="tsd-signature-symbol"
-                      >?: </span
-                    ><span class="tsd-signature-type">string</span>
-                  </h5>
-                  <div class="tsd-comment tsd-typography">
-                    <div class="lead">
-                      <p>
-                        The default scope to be included with all requests. If
-                        not provided, &#39;openid profile email&#39; is used.
-                        This can be set to <code>null</code> in order to
-                        effectively remove the default scopes.
-                      </p>
-                    </div>
-                    <p>
-                      Note: The <code>openid</code> scope is
-                      <strong>always applied</strong> regardless of this
-                      setting.
-                    </p>
-                  </div>
-                </li>
-              </ul>
             </div>
           </section>
           <section
@@ -3384,15 +3380,17 @@
             </h3>
             <div class="tsd-signature tsd-kind-icon">
               audience<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">string</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L184"
-                    >projects/auth0-angular/src/lib/auth.config.ts:184</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L196"
+                    >projects/auth0-angular/src/lib/auth.config.ts:196</a
                   >
                 </li>
               </ul>
@@ -3418,15 +3416,17 @@
                 class="tsd-signature-symbol"
                 >:</span
               >
-              <span class="tsd-signature-type">number</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">number</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L152"
-                    >projects/auth0-angular/src/lib/auth.config.ts:152</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L164"
+                    >projects/auth0-angular/src/lib/auth.config.ts:164</a
                   >
                 </li>
               </ul>
@@ -3458,8 +3458,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L137"
-                    >projects/auth0-angular/src/lib/auth.config.ts:137</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L149"
+                    >projects/auth0-angular/src/lib/auth.config.ts:149</a
                   >
                 </li>
               </ul>
@@ -3488,8 +3488,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L97"
-                    >projects/auth0-angular/src/lib/auth.config.ts:97</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L109"
+                    >projects/auth0-angular/src/lib/auth.config.ts:109</a
                   >
                 </li>
               </ul>
@@ -3514,8 +3514,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L87"
-                    >projects/auth0-angular/src/lib/auth.config.ts:87</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L99"
+                    >projects/auth0-angular/src/lib/auth.config.ts:99</a
                   >
                 </li>
               </ul>
@@ -3544,15 +3544,17 @@
             </h3>
             <div class="tsd-signature tsd-kind-icon">
               error<wbr />Path<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">string</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L196"
-                    >projects/auth0-angular/src/lib/auth.config.ts:196</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L208"
+                    >projects/auth0-angular/src/lib/auth.config.ts:208</a
                   >
                 </li>
               </ul>
@@ -3585,8 +3587,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L190"
-                    >projects/auth0-angular/src/lib/auth.config.ts:190</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L202"
+                    >projects/auth0-angular/src/lib/auth.config.ts:202</a
                   >
                 </li>
               </ul>
@@ -3603,21 +3605,57 @@
           <section
             class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
           >
-            <a name="issuer" class="tsd-anchor"></a>
+            <a name="invitation" class="tsd-anchor"></a>
             <h3>
-              <span class="tsd-flag ts-flagOptional">Optional</span> issuer
+              <span class="tsd-flag ts-flagOptional">Optional</span> invitation
             </h3>
             <div class="tsd-signature tsd-kind-icon">
-              issuer<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">string</span>
+              invitation<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L92"
-                    >projects/auth0-angular/src/lib/auth.config.ts:92</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L223"
+                    >projects/auth0-angular/src/lib/auth.config.ts:223</a
+                  >
+                </li>
+              </ul>
+            </aside>
+            <div class="tsd-comment tsd-typography">
+              <div class="lead">
+                <p>The Id of an invitation to accept.</p>
+              </div>
+              <p>
+                This is available from the user invitation URL that is given
+                when participating in a user invitation flow.
+              </p>
+            </div>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
+          >
+            <a name="issuer" class="tsd-anchor"></a>
+            <h3>
+              <span class="tsd-flag ts-flagOptional">Optional</span> issuer
+            </h3>
+            <div class="tsd-signature tsd-kind-icon">
+              issuer<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">string</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L104"
+                    >projects/auth0-angular/src/lib/auth.config.ts:104</a
                   >
                 </li>
               </ul>
@@ -3640,15 +3678,17 @@
             </h3>
             <div class="tsd-signature tsd-kind-icon">
               leeway<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">number</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">number</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L131"
-                    >projects/auth0-angular/src/lib/auth.config.ts:131</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L143"
+                    >projects/auth0-angular/src/lib/auth.config.ts:143</a
                   >
                 </li>
               </ul>
@@ -3682,8 +3722,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L172"
-                    >projects/auth0-angular/src/lib/auth.config.ts:172</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L184"
+                    >projects/auth0-angular/src/lib/auth.config.ts:184</a
                   >
                 </li>
               </ul>
@@ -3701,6 +3741,45 @@
           <section
             class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
           >
+            <a name="organization" class="tsd-anchor"></a>
+            <h3>
+              <span class="tsd-flag ts-flagOptional">Optional</span>
+              organization
+            </h3>
+            <div class="tsd-signature tsd-kind-icon">
+              organization<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">string</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L216"
+                    >projects/auth0-angular/src/lib/auth.config.ts:216</a
+                  >
+                </li>
+              </ul>
+            </aside>
+            <div class="tsd-comment tsd-typography">
+              <div class="lead">
+                <p>
+                  The Id of an organization to log in to (Organizations is
+                  currently a Closed Beta).
+                </p>
+              </div>
+              <p>
+                This will specify an <code>organization</code> parameter in your
+                user&#39;s login request and will add a step to validate the
+                <code>org_id</code> claim in your user&#39;s ID Token.
+              </p>
+            </div>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
+          >
             <a name="redirecturi" class="tsd-anchor"></a>
             <h3>
               <span class="tsd-flag ts-flagOptional">Optional</span>
@@ -3708,15 +3787,17 @@
             </h3>
             <div class="tsd-signature tsd-kind-icon">
               redirect<wbr />Uri<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">string</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L106"
-                    >projects/auth0-angular/src/lib/auth.config.ts:106</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L118"
+                    >projects/auth0-angular/src/lib/auth.config.ts:118</a
                   >
                 </li>
               </ul>
@@ -3742,15 +3823,17 @@
             </h3>
             <div class="tsd-signature tsd-kind-icon">
               scope<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">string</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L179"
-                    >projects/auth0-angular/src/lib/auth.config.ts:179</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L191"
+                    >projects/auth0-angular/src/lib/auth.config.ts:191</a
                   >
                 </li>
               </ul>
@@ -3778,15 +3861,19 @@
                 class="tsd-signature-symbol"
                 >:</span
               >
-              <span class="tsd-signature-type">boolean</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">false</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">true</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L124"
-                    >projects/auth0-angular/src/lib/auth.config.ts:124</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L136"
+                    >projects/auth0-angular/src/lib/auth.config.ts:136</a
                   >
                 </li>
               </ul>
@@ -3826,15 +3913,19 @@
               use<wbr />Refresh<wbr />Tokens<span class="tsd-signature-symbol"
                 >:</span
               >
-              <span class="tsd-signature-type">boolean</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">false</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">true</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L146"
-                    >projects/auth0-angular/src/lib/auth.config.ts:146</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L158"
+                    >projects/auth0-angular/src/lib/auth.config.ts:158</a
                   >
                 </li>
               </ul>
