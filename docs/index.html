@@ -3574,6 +3574,43 @@ AuthModule.forRoot({
               on the underlying SDK, so all the same options apply here.
             </p>
           </blockquote>
+          <p><strong>Uri Matching</strong></p>
+          <p>
+            If you need more fine-grained control over the URI matching, you can
+            provide a callback function to the <code>uriMatcher</code> property
+            that takes a single <code>uri</code> argument (being
+            <a href="https://angular.io/api/common/http/HttpRequest#url"
+              ><code>HttpRequest.url</code></a
+            >) and returns a boolean. If this function returns true, then an
+            access token is attached to the request in the
+            <a
+              href="https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1"
+              >&quot;Authorization&quot; header</a
+            >. If it returns false, the request proceeds without the access
+            token attached.
+          </p>
+          <pre><code><span class="hljs-string">AuthModule.forRoot({</span>
+  <span class="hljs-string">...</span>
+  <span class="hljs-attr">httpInterceptor:</span> {
+    <span class="hljs-attr">allowedList:</span> [
+      {
+        <span class="hljs-attr">uriMatcher:</span> <span class="hljs-string">(uri)</span> <span class="hljs-string">=&gt;</span> <span class="hljs-string">uri.indexOf(&#x27;/api/orders&#x27;)</span> <span class="hljs-string">&gt;</span> <span class="hljs-number">-1</span>,
+        <span class="hljs-attr">httpMethod:</span> <span class="hljs-string">HttpMethod.Post</span>,
+        <span class="hljs-attr">tokenOptions:</span> {
+          <span class="hljs-attr">audience:</span> <span class="hljs-string">&#x27;http://my-api/&#x27;</span>,
+          <span class="hljs-attr">scope:</span> <span class="hljs-string">&#x27;write:orders&#x27;</span>,
+        },
+      },
+    ],
+  }<span class="hljs-string">,</span>
+<span class="hljs-string">});</span></code></pre>
+          <p>
+            You might want to do this in scenarios where you need the token on
+            multiple endpoints, but want to exclude it from only a few other
+            endpoints. Instead of explicitly listing all endpoints that do need
+            a token, a uriMatcher can be used to include all but the few
+            endpoints that do not need a token attached to its requests.
+          </p>
           <a
             href="#use-httpclient-to-make-an-api-call"
             id="use-httpclient-to-make-an-api-call"
@@ -3640,19 +3677,42 @@ AuthModule.forRoot({
             configuration, you can provide a factory function using
             <code>APP_INITIALIZER</code> to load your config from an external
             source before the auth module is loaded, and provide your
-            configuration using <code>AuthClientConfig.set</code>:
+            configuration using <code>AuthClientConfig.set</code>.
           </p>
+          <p>
+            The configuration will only be used initially when the SDK is
+            instantiated. Any changes made to the configuration at a later
+            moment in time will have no effect on the default options used when
+            calling the SDK&#39;s methods. This is also the reason why the
+            dynamic configuration should be set using an
+            <code>APP_INITIALIZER</code>, because doing so ensures the
+            configuration is available prior to instantiating the SDK.
+          </p>
+          <blockquote>
+            <p>
+              :information_source: Any request made through an instance of
+              <code>HttpClient</code> that got instantiated by Angular, will use
+              all of the configured interceptors, including our
+              <code>AuthHttpInterceptor</code>. Because the
+              <code>AuthHttpInterceptor</code> requires the existence of
+              configuration settings, the request for retrieving those dynamic
+              configuration settings should ensure it&#39;s not using any of
+              those interceptors. In Angular, this can be done by manually
+              instantiating <code>HttpClient</code> using an injected
+              <code>HttpBackend</code> instance.
+            </p>
+          </blockquote>
           <pre><code class="language-js"><span class="hljs-comment">// app.module.ts</span>
 <span class="hljs-comment">// ---------------------------</span>
 <span class="hljs-keyword">import</span> { AuthModule, AuthClientConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
 
 <span class="hljs-comment">// Provide an initializer function that returns a Promise</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">configInitializer</span>(<span class="hljs-params">
-  http: HttpClient,
+  handler: HttpBackend,
   config: AuthClientConfig
 </span>) </span>{
   <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span>
-    http
+    <span class="hljs-keyword">new</span> HttpClient(handler)
       .get(<span class="hljs-string">&#x27;/config&#x27;</span>)
       .toPromise()
       .then(<span class="hljs-function">(<span class="hljs-params">loadedConfig: any</span>) =&gt;</span> config.set(loadedConfig));   <span class="hljs-comment">// Set the config that was loaded asynchronously here</span>
@@ -3669,7 +3729,7 @@ AuthModule.forRoot({
   {
     <span class="hljs-attr">provide</span>: APP_INITIALIZER,
     <span class="hljs-attr">useFactory</span>: configInitializer,    <span class="hljs-comment">// &lt;- pass your initializer function here</span>
-    <span class="hljs-attr">deps</span>: [HttpClient, AuthClientConfig],
+    <span class="hljs-attr">deps</span>: [HttpBackend, AuthClientConfig],
     <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span>,
   },
 ],</code></pre>
@@ -3697,6 +3757,119 @@ AuthModule.forRoot({
             <code>error</code> in case something went wrong) and
             <code>state</code>.
           </p>
+          <a
+            href="#organizations-closed-beta"
+            id="organizations-closed-beta"
+            style="color: inherit; text-decoration: none"
+          >
+            <h3>Organizations (Closed Beta)</h3>
+          </a>
+          <p>
+            Organizations is a set of features that provide better support for
+            developers who build and maintain SaaS and Business-to-Business
+            (B2B) applications.
+          </p>
+          <p>Using Organizations, you can:</p>
+          <ul>
+            <li>
+              <p>
+                Represent teams, business customers, partner companies, or any
+                logical grouping of users that should have different ways of
+                accessing your applications, as organizations.
+              </p>
+            </li>
+            <li>
+              <p>
+                Manage their membership in a variety of ways, including user
+                invitation.
+              </p>
+            </li>
+            <li>
+              <p>
+                Configure branded, federated login flows for each organization.
+              </p>
+            </li>
+            <li>
+              <p>
+                Implement role-based access control, such that users can have
+                different roles when authenticating in the context of different
+                organizations.
+              </p>
+            </li>
+            <li>
+              <p>
+                Build administration capabilities into your products, using
+                Organizations APIs, so that those businesses can manage their
+                own organizations.
+              </p>
+            </li>
+          </ul>
+          <p>
+            Note that Organizations is currently only available to customers on
+            our Enterprise and Startup subscription plans.
+          </p>
+          <a
+            href="#log-in-to-an-organization"
+            id="log-in-to-an-organization"
+            style="color: inherit; text-decoration: none"
+          >
+            <h4>Log in to an organization</h4>
+          </a>
+          <p>
+            Log in to an organization by specifying the
+            <code>organization</code> parameter importing the
+            <code>AuthModule</code>:
+          </p>
+          <pre><code><span class="hljs-selector-tag">AuthModule</span><span class="hljs-selector-class">.forRoot</span>({
+  <span class="hljs-attribute">domain</span>: <span class="hljs-string">&#x27;YOUR_AUTH0_DOMAIN&#x27;</span>,
+  clientId: <span class="hljs-string">&#x27;YOUR_AUTH0_CLIENT_ID&#x27;</span>,
+  organization: <span class="hljs-string">&#x27;YOUR_ORGANIZATION_ID&#x27;</span>
+}),</code></pre>
+          <p>You can also specify the organization when logging in:</p>
+          <pre><code><span class="hljs-comment">// Using a redirect</span>
+<span class="hljs-keyword">this</span>.auth.loginWithRedirect({
+  organization: <span class="hljs-string">&#x27;YOUR_ORGANIZATION_ID&#x27;</span>
+});
+
+<span class="hljs-comment">// Using a popup window</span>
+<span class="hljs-keyword">this</span>.auth.loginWithPopup({
+  organization: <span class="hljs-string">&#x27;YOUR_ORGANIZATION_ID&#x27;</span>
+});</code></pre>
+          <a
+            href="#accept-user-invitations"
+            id="accept-user-invitations"
+            style="color: inherit; text-decoration: none"
+          >
+            <h4>Accept user invitations</h4>
+          </a>
+          <p>
+            Accept a user invitation through the SDK by creating a route within
+            your application that can handle the user invitation URL, and log
+            the user in by passing the <code>organization</code> and
+            <code>invitation</code> parameters from this URL. You can either use
+            <code>loginWithRedirect</code> or <code>loginWithPopup</code> as
+            needed.
+          </p>
+          <pre><code class="language-js"><span class="hljs-keyword">import</span> { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;
+<span class="hljs-keyword">import</span> { AuthService } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
+
+@Component({
+  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-root&#x27;</span>,
+  <span class="hljs-attr">templateUrl</span>: <span class="hljs-string">&#x27;./app.component.html&#x27;</span>,
+  <span class="hljs-attr">styleUrls</span>: [<span class="hljs-string">&#x27;./app.component.css&#x27;</span>],
+})
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppComponent</span> </span>{
+  <span class="hljs-keyword">constructor</span>(public auth: AuthService, private activatedRoute: ActivatedRoute) {}
+
+  loginWithRedirect(): <span class="hljs-keyword">void</span> {
+    <span class="hljs-keyword">const</span> { organization, invitation } = <span class="hljs-built_in">this</span>.activatedRoute.snapshot.params;
+
+    <span class="hljs-built_in">this</span>.auth.loginWithRedirect({
+      organization,
+      invitation
+    });
+  }
+}</code></pre>
           <a
             href="#angular-universal"
             id="angular-universal"
@@ -4062,7 +4235,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L22"
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L22"
                     >projects/auth0-angular/src/lib/auth.config.ts:22</a
                   >
                 </li>
@@ -4073,7 +4246,7 @@ AuthModule.forRoot({
                 <p>Defines the type for a route config entry. Can either be:</p>
               </div>
               <ul>
-                <li>an object of type HttpInterceptorConfig</li>
+                <li>an object of type HttpInterceptorRouteConfig</li>
                 <li>a string</li>
               </ul>
             </div>
@@ -4105,7 +4278,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.client.ts#L31"
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.client.ts#L31"
                     >projects/auth0-angular/src/lib/auth.client.ts:31</a
                   >
                 </li>
@@ -4137,8 +4310,8 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L284"
-                    >projects/auth0-angular/src/lib/auth.config.ts:284</a
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L311"
+                    >projects/auth0-angular/src/lib/auth.config.ts:311</a
                   >
                 </li>
               </ul>
@@ -4178,7 +4351,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4244,7 +4417,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4276,7 +4449,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4298,8 +4471,13 @@ AuthModule.forRoot({
                       ><span class="tsd-signature-type">string</span>, deep<span
                         class="tsd-signature-symbol"
                         >?: </span
-                      ><span class="tsd-signature-type">boolean</span>,
-                      filter<span class="tsd-signature-symbol">?: </span
+                      ><span class="tsd-signature-type">undefined</span
+                      ><span class="tsd-signature-symbol"> | </span
+                      ><span class="tsd-signature-type">false</span
+                      ><span class="tsd-signature-symbol"> | </span
+                      ><span class="tsd-signature-type">true</span>, filter<span
+                        class="tsd-signature-symbol"
+                        >?: </span
                       ><span class="tsd-signature-type">RegExp</span
                       ><span class="tsd-signature-symbol">)</span
                       ><span class="tsd-signature-symbol">: </span
@@ -4317,7 +4495,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4336,7 +4514,11 @@ AuthModule.forRoot({
                               >Optional</span
                             >
                             deep:
-                            <span class="tsd-signature-type">boolean</span>
+                            <span class="tsd-signature-type">undefined</span
+                            ><span class="tsd-signature-symbol"> | </span
+                            ><span class="tsd-signature-type">false</span
+                            ><span class="tsd-signature-symbol"> | </span
+                            ><span class="tsd-signature-type">true</span>
                           </h5>
                         </li>
                         <li>
@@ -4423,7 +4605,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4476,7 +4658,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L28"
+                        href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L28"
                         >projects/auth0-angular/src/lib/auth.config.ts:28</a
                       >
                     </li>
