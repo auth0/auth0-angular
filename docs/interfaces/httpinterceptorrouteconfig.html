@@ -3215,7 +3215,7 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L87"
+                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L87"
                     >projects/auth0-angular/src/lib/auth.config.ts:87</a
                   >
                 </li>
@@ -3249,7 +3249,7 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L78"
+                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L78"
                     >projects/auth0-angular/src/lib/auth.config.ts:78</a
                   >
                 </li>
@@ -3280,7 +3280,7 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L60"
+                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L60"
                     >projects/auth0-angular/src/lib/auth.config.ts:60</a
                   >
                 </li>
@@ -3345,7 +3345,7 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/27adc16/projects/auth0-angular/src/lib/auth.config.ts#L72"
+                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L72"
                     >projects/auth0-angular/src/lib/auth.config.ts:72</a
                   >
                 </li>
@@ -5357,12 +5357,13 @@
                             _this.setValue(e.target.dataset.value || '');
                         });
                       }),
-                      document.addEventListener(typedoc.pointerDown, function (
-                        e
-                      ) {
-                        _this.select.contains(e.target) ||
-                          _this.select.classList.remove('active');
-                      });
+                      document.addEventListener(
+                        typedoc.pointerDown,
+                        function (e) {
+                          _this.select.contains(e.target) ||
+                            _this.select.classList.remove('active');
+                        }
+                      );
                   }
                 }),
                 (FilterItemSelect.prototype.handleValueChange = function (
@@ -5777,11 +5778,12 @@
                   _this.container &&
                     (_this.el.classList.add('active'),
                     Array.from(_this.el.children).forEach(function (signature) {
-                      signature.addEventListener('touchstart', function (
-                        event
-                      ) {
-                        return _this.onClick(event);
-                      }),
+                      signature.addEventListener(
+                        'touchstart',
+                        function (event) {
+                          return _this.onClick(event);
+                        }
+                      ),
                         signature.addEventListener('click', function (event) {
                           return _this.onClick(event);
                         });
