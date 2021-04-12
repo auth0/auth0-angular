@@ -47,6 +47,7 @@ this.authService.loginWithRedirect({
 By doing that, in the very last step the SDK will not redirect the user back to `/`, but to `/some-url` instead.
 
 **Restoring querystring parameters**
+
 The same approach can be used in order to restore application specific querystring parameters that need to be restored after being redirected back to your application.
 
 ```
