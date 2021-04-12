@@ -156,11 +156,11 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     );
   }
 
-  private allowAnonymous(route: ApiRouteDefinition | null, err: any) {
+  private allowAnonymous(route: ApiRouteDefinition | null, err: any): boolean {
     return (
-      route &&
+      !!route &&
       isHttpInterceptorRouteConfig(route) &&
-      route.allowAnonymous &&
+      !!route.allowAnonymous &&
       ['login_required', 'consent_required'].includes(err.error)
     );
   }
