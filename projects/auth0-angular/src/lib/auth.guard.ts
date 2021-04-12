@@ -8,7 +8,7 @@ import {
   UrlSegment,
   CanActivateChild,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { tap, take } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
@@ -42,11 +42,9 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
     return this.auth.isAuthenticated$.pipe(
       tap((loggedIn) => {
         if (!loggedIn) {
-          return this.auth.loginWithRedirect({
+          this.auth.loginWithRedirect({
             appState: { target: state.url },
           });
-        } else {
-          return of(true);
         }
       })
     );
