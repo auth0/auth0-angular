@@ -85,6 +85,13 @@ export interface HttpInterceptorRouteConfig {
    * The HTTP method name is case-sensitive.
    */
   httpMethod?: HttpMethod | string;
+
+  /**
+   * Allow the HTTP call to be executed anonymously, when no token is available.
+   *
+   * When omitted (or set to false), calls that match the configuration will fail when no token is available.
+   */
+  allowAnonymous?: boolean;
 }
 
 /**
