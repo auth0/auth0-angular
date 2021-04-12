@@ -5,7 +5,7 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 
-import { Observable, from, of, iif } from 'rxjs';
+import { Observable, from, of, iif, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import {
@@ -15,7 +15,7 @@ import {
   HttpInterceptorConfig,
 } from './auth.config';
 
-import { switchMap, first, concatMap, pluck } from 'rxjs/operators';
+import { switchMap, first, concatMap, pluck, catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 
@@ -45,13 +45,30 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           of(route).pipe(
             pluck('tokenOptions'),
             concatMap<GetTokenSilentlyOptions, Observable<string>>((options) =>
-              this.authService.getAccessTokenSilently(options)
+              this.authService.getAccessTokenSilently(options).pipe(
+                catchError((err) => {
+                  if (
+                    route &&
+                    isHttpInterceptorRouteConfig(route) &&
+                    route.allowAnonymous
+                  ) {
+                    return of('');
+                  }
+
+                  return throwError(err);
+                })
+              )
             ),
             switchMap((token: string) => {
               // Clone the request and attach the bearer token
-              const clone = req.clone({
-                headers: req.headers.set('Authorization', `Bearer ${token}`),
-              });
+              const clone = token
+                ? req.clone({
+                    headers: req.headers.set(
+                      'Authorization',
+                      `Bearer ${token}`
+                    ),
+                  })
+                : req;
 
               return next.handle(clone);
             })

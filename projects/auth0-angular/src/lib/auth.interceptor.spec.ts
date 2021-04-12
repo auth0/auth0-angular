@@ -14,6 +14,7 @@ import {
   HttpInterceptorConfig,
 } from './auth.config';
 import { AuthService } from './auth.service';
+import { of, throwError } from 'rxjs';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -48,11 +49,12 @@ describe('The Auth HTTP Interceptor', () => {
   let config: Partial<AuthConfig>;
 
   beforeEach(() => {
+    req = undefined as any;
     authService = jasmine.createSpyObj('AuthService', [
       'getAccessTokenSilently',
     ]);
-    (authService.getAccessTokenSilently as jasmine.Spy).and.resolveTo(
-      'access-token'
+    (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+      of('access-token')
     );
 
     config = {
@@ -62,7 +64,10 @@ describe('The Auth HTTP Interceptor', () => {
           '/api/photos',
           '/api/people*',
           'https://my-api.com/orders',
-          { uri: '/api/orders' },
+          {
+            uri: '/api/orders',
+            allowAnonymous: true,
+          },
           {
             uri: '/api/addresses',
             tokenOptions: {
@@ -111,7 +116,9 @@ describe('The Auth HTTP Interceptor', () => {
 
   afterEach(() => {
     httpTestingController.verify();
-    req.flush(testData);
+    if (req) {
+      req.flush(testData);
+    }
   });
 
   describe('When no httpInterceptor is configured', () => {
@@ -202,6 +209,31 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       assertPassThruApiCallTo('/api/public', done);
+    }));
+
+    it('does not execute HTTP call when not able to retrieve a token', fakeAsync((
+      done: () => void
+    ) => {
+      (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+        throwError('ERROR')
+      );
+
+      httpClient
+        .request('get', '/api/calendar')
+        .subscribe({ error: (err) => expect(err).toBe('ERROR') });
+
+      httpTestingController.expectNone('/api/calendar');
+      flush();
+    }));
+
+    it('does execute HTTP call when not able to retrieve a token but allowAnonymous is set to true', fakeAsync((
+      done: () => void
+    ) => {
+      (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+        throwError('ERROR')
+      );
+
+      assertPassThruApiCallTo('/api/orders', done);
     }));
   });
 
