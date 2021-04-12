@@ -100,7 +100,7 @@ export class AppComponent {
       });
   }
 
-  callExternalAPI() {
+  callExternalAPI(): void {
     this.httpClient
       .get('http://localhost:3001/api/external')
       .subscribe(console.log, console.error);
