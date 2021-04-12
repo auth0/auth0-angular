@@ -47,11 +47,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
             concatMap<GetTokenSilentlyOptions, Observable<string>>((options) =>
               this.authService.getAccessTokenSilently(options).pipe(
                 catchError((err) => {
-                  if (
-                    route &&
-                    isHttpInterceptorRouteConfig(route) &&
-                    route.allowAnonymous
-                  ) {
+                  if (this.allowAnonymous(route, err)) {
                     return of('');
                   }
 
@@ -157,6 +153,15 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   ): Observable<ApiRouteDefinition | null> {
     return from(config.allowedList).pipe(
       first((route) => this.canAttachToken(route, request), null)
+    );
+  }
+
+  private allowAnonymous(route: ApiRouteDefinition | null, err: any) {
+    return (
+      route &&
+      isHttpInterceptorRouteConfig(route) &&
+      route.allowAnonymous &&
+      ['login_required', 'consent_required'].includes(err.error)
     );
   }
 }

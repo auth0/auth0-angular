@@ -215,12 +215,14 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
-        throwError('ERROR')
+        throwError({ error: 'login_required' })
       );
 
       httpClient
         .request('get', '/api/calendar')
-        .subscribe({ error: (err) => expect(err).toBe('ERROR') });
+        .subscribe({
+          error: (err) => expect(err).toEqual({ error: 'login_required' }),
+        });
 
       httpTestingController.expectNone('/api/calendar');
       flush();
@@ -230,7 +232,7 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
-        throwError('ERROR')
+        throwError({ error: 'login_required' })
       );
 
       assertPassThruApiCallTo('/api/orders', done);
