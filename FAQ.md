@@ -4,6 +4,8 @@
 
 1. [User is not logged in after page refresh](#1-user-is-not-logged-in-after-page-refresh)
 2. [User is not logged in after successful sign in with redirect](#2-user-is-not-logged-in-after-successful-sign-in-with-redirect)
+3. [User is redirected to `/` after successful sign in with redirect](#3-user-is-redirected-to--after-successful-sign-in-with-redirect)
+4. [Getting an infinite redirect loop between my application and Auth0](#4-getting-an-infinite-redirect-loop-between-my-application-and-auth0)
 
 ## 1. User is not logged in after page refresh
 
@@ -43,6 +45,16 @@ this.authService.loginWithRedirect({
 ```
 
 By doing that, in the very last step the SDK will not redirect the user back to `/`, but to `/some-url` instead.
+
+**Restoring querystring parameters**
+
+The same approach can be used in order to restore application specific querystring parameters that need to be restored after being redirected back to your application.
+
+```
+this.authService.loginWithRedirect({
+ appState: { target: '/some-url?query=value' }
+});
+```
 
 ## 4. Getting an infinite redirect loop between my application and Auth0
 
