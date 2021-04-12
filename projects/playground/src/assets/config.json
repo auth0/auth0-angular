@@ -1,5 +1,13 @@
 {
   "clientId": "wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp",
   "domain": "brucke.auth0.com",
-  "errorPath": "/error"
+  "audience": "http://localhost/",
+  "errorPath": "/error",
+  "httpInterceptor": {
+    "allowedList": [
+      {
+        "uri": "http://localhost:3001/api/external"
+      }
+    ]
+  }
 }

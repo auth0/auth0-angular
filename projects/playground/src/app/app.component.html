@@ -62,6 +62,11 @@
     {{ err.message }}
   </div>
 
+  <div class="api-wrapper">
+    <h2>Call API</h2>
+    <button (click)="callExternalAPI()">Call external API</button>
+  </div>
+
   <div class="artifacts-wrapper" *ngIf="isAuthenticated$ | async">
     <h2>Artifacts</h2>
     <ul class="artifacts-list">
