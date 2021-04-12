@@ -27,8 +27,9 @@
           data-cy="login-popup"
         />
       </label>
-      <button id="login" (click)="launchLogin()">
-        Log in
+      <button id="login" (click)="launchLogin()">Log in</button>
+      <button id="loginWithInvitation" (click)="loginHandleInvitationUrl()">
+        Log in with Invitation
       </button>
     </form>
   </div>
@@ -52,9 +53,7 @@
           data-cy="logout-federated"
         />
       </label>
-      <button id="logout" (click)="launchLogout()">
-        Log out
-      </button>
+      <button id="logout" (click)="launchLogout()">Log out</button>
     </form>
   </div>
 

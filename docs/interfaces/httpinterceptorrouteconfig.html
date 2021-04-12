@@ -3115,6 +3115,13 @@
                 >uri</a
               >
             </li>
+            <li class="tsd-kind-property tsd-parent-kind-interface">
+              <a
+                href="httpinterceptorrouteconfig.html#urimatcher"
+                class="tsd-kind-icon"
+                >uri<wbr />Matcher</a
+              >
+            </li>
           </ul>
         </li>
         <li class="tsd-kind-type-alias">
@@ -3174,6 +3181,13 @@
                       >uri</a
                     >
                   </li>
+                  <li class="tsd-kind-property tsd-parent-kind-interface">
+                    <a
+                      href="httpinterceptorrouteconfig.html#urimatcher"
+                      class="tsd-kind-icon"
+                      >uri<wbr />Matcher</a
+                    >
+                  </li>
                 </ul>
               </section>
             </div>
@@ -3201,8 +3215,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L75"
-                    >projects/auth0-angular/src/lib/auth.config.ts:75</a
+                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L87"
+                    >projects/auth0-angular/src/lib/auth.config.ts:87</a
                   >
                 </li>
               </ul>
@@ -3235,8 +3249,8 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L66"
-                    >projects/auth0-angular/src/lib/auth.config.ts:66</a
+                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L78"
+                    >projects/auth0-angular/src/lib/auth.config.ts:78</a
                   >
                 </li>
               </ul>
@@ -3254,17 +3268,19 @@
             class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
           >
             <a name="uri" class="tsd-anchor"></a>
-            <h3>uri</h3>
+            <h3><span class="tsd-flag ts-flagOptional">Optional</span> uri</h3>
             <div class="tsd-signature tsd-kind-icon">
               uri<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">string</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/fb797e7/projects/auth0-angular/src/lib/auth.config.ts#L60"
+                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L60"
                     >projects/auth0-angular/src/lib/auth.config.ts:60</a
                   >
                 </li>
@@ -3300,6 +3316,60 @@
                   </p>
                 </dd>
               </dl>
+            </div>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
+          >
+            <a name="urimatcher" class="tsd-anchor"></a>
+            <h3>
+              <span class="tsd-flag ts-flagOptional">Optional</span>
+              uri<wbr />Matcher
+            </h3>
+            <div class="tsd-signature tsd-kind-icon">
+              uri<wbr />Matcher<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-symbol">(</span
+              ><span class="tsd-signature-symbol">(</span>uri<span
+                class="tsd-signature-symbol"
+                >: </span
+              ><span class="tsd-signature-type">string</span
+              ><span class="tsd-signature-symbol">)</span
+              ><span class="tsd-signature-symbol"> =&gt; </span
+              ><span class="tsd-signature-type">boolean</span
+              ><span class="tsd-signature-symbol">)</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L72"
+                    >projects/auth0-angular/src/lib/auth.config.ts:72</a
+                  >
+                </li>
+              </ul>
+            </aside>
+            <div class="tsd-comment tsd-typography">
+              <div class="lead">
+                <p>
+                  A function that will be called with the HttpRequest.url value,
+                  allowing you to do any kind of flexible matching.
+                </p>
+              </div>
+              <p>
+                If this function returns true, then an access token is attached
+                to the request in the
+                <a
+                  href="https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1"
+                  >&quot;Authorization&quot; header</a
+                >.
+              </p>
+              <p>
+                If it returns false, the request proceeds without the access
+                token attached.
+              </p>
             </div>
           </section>
         </section>
@@ -5287,12 +5357,13 @@
                             _this.setValue(e.target.dataset.value || '');
                         });
                       }),
-                      document.addEventListener(typedoc.pointerDown, function (
-                        e
-                      ) {
-                        _this.select.contains(e.target) ||
-                          _this.select.classList.remove('active');
-                      });
+                      document.addEventListener(
+                        typedoc.pointerDown,
+                        function (e) {
+                          _this.select.contains(e.target) ||
+                            _this.select.classList.remove('active');
+                        }
+                      );
                   }
                 }),
                 (FilterItemSelect.prototype.handleValueChange = function (
@@ -5707,11 +5778,12 @@
                   _this.container &&
                     (_this.el.classList.add('active'),
                     Array.from(_this.el.children).forEach(function (signature) {
-                      signature.addEventListener('touchstart', function (
-                        event
-                      ) {
-                        return _this.onClick(event);
-                      }),
+                      signature.addEventListener(
+                        'touchstart',
+                        function (event) {
+                          return _this.onClick(event);
+                        }
+                      ),
                         signature.addEventListener('click', function (event) {
                           return _this.onClick(event);
                         });

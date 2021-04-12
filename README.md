@@ -298,6 +298,30 @@ AuthModule.forRoot({
 
 > Under the hood, `tokenOptions` is passed as-is to [the `getTokenSilently` method](https://auth0.github.io/auth0-spa-js/classes/auth0client.html#gettokensilently) on the underlying SDK, so all the same options apply here.
 
+**Uri Matching**
+
+If you need more fine-grained control over the URI matching, you can provide a callback function to the `uriMatcher` property that takes a single `uri` argument (being [`HttpRequest.url`](https://angular.io/api/common/http/HttpRequest#url)) and returns a boolean. If this function returns true, then an access token is attached to the request in the ["Authorization" header](https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1). If it returns false, the request proceeds without the access token attached.
+
+```
+AuthModule.forRoot({
+  ...
+  httpInterceptor: {
+    allowedList: [
+      {
+        uriMatcher: (uri) => uri.indexOf('/api/orders') > -1,
+        httpMethod: HttpMethod.Post,
+        tokenOptions: {
+          audience: 'http://my-api/',
+          scope: 'write:orders',
+        },
+      },
+    ],
+  },
+});
+```
+
+You might want to do this in scenarios where you need the token on multiple endpoints, but want to exclude it from only a few other endpoints. Instead of explicitly listing all endpoints that do need a token, a uriMatcher can be used to include all but the few endpoints that do not need a token attached to its requests.
+
 #### Use HttpClient to make an API call
 
 Finally, make your API call using the `HttpClient`. Access tokens are then attached automatically in the `Authorization` header:
@@ -391,6 +415,77 @@ AuthModule.forRoot({
 ```
 
 **Note**: In the above example, `/other-callback` is an existing route that will be called by any other OAuth provider with a `code` (or `error` in case something went wrong) and `state`.
+
+### Organizations
+
+[Organizations](https://auth0.com/docs/organizations) is a set of features that provide better support for developers who build and maintain SaaS and Business-to-Business (B2B) applications.
+
+Using Organizations, you can:
+
+- Represent teams, business customers, partner companies, or any logical grouping of users that should have different ways of accessing your applications, as organizations.
+
+- Manage their membership in a variety of ways, including user invitation.
+
+- Configure branded, federated login flows for each organization.
+
+- Implement role-based access control, such that users can have different roles when authenticating in the context of different organizations.
+
+- Build administration capabilities into your products, using Organizations APIs, so that those businesses can manage their own organizations.
+
+Note that Organizations is currently only available to customers on our Enterprise and Startup subscription plans.
+
+#### Log in to an organization
+
+Log in to an organization by specifying the `organization` parameter importing the `AuthModule`:
+
+```
+AuthModule.forRoot({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  organization: 'YOUR_ORGANIZATION_ID'
+}),
+```
+
+You can also specify the organization when logging in:
+
+```
+// Using a redirect
+this.auth.loginWithRedirect({
+  organization: 'YOUR_ORGANIZATION_ID'
+});
+
+// Using a popup window
+this.auth.loginWithPopup({
+  organization: 'YOUR_ORGANIZATION_ID'
+});
+```
+
+#### Accept user invitations
+
+Accept a user invitation through the SDK by creating a route within your application that can handle the user invitation URL, and log the user in by passing the `organization` and `invitation` parameters from this URL. You can either use `loginWithRedirect` or `loginWithPopup` as needed.
+
+```js
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService, private activatedRoute: ActivatedRoute) {}
+
+  loginWithRedirect(): void {
+    const { organization, invitation } = this.activatedRoute.snapshot.params;
+
+    this.auth.loginWithRedirect({
+      organization,
+      invitation
+    });
+  }
+}
+```
 
 ## Angular Universal
 

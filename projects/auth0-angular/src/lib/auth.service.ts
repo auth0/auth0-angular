@@ -278,6 +278,7 @@ export class AuthService implements OnDestroy {
       tap((token) => this.accessToken$.next(token)),
       catchError((error) => {
         this.errorSubject$.next(error);
+        this.refreshState$.next();
         return throwError(error);
       })
     );
@@ -303,6 +304,7 @@ export class AuthService implements OnDestroy {
       tap((token) => this.accessToken$.next(token)),
       catchError((error) => {
         this.errorSubject$.next(error);
+        this.refreshState$.next();
         return throwError(error);
       })
     );
