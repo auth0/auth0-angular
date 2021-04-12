@@ -243,6 +243,8 @@ If an HTTP call is made using `HttpClient` and there is no match in this configu
 
 **Note:** We do this to help prevent tokens being unintentionally attached to requests to the wrong recipient, which is a serious security issue. Those recipients could then use that token to call the API as if it were your application.
 
+In the event that requests should be made available for both anonymous and authenticated users, the `allowAnonymous` property can be set to `true`. When omitted, or set to `false`, requests that match the configuration, will not be executed when there is no access token available.
+
 Here are some examples:
 
 ```js
@@ -262,6 +264,12 @@ AuthModule.forRoot({
 
       // Attach access tokens to any calls that start with '/api/'
       '/api/*',
+
+      // Match anything starting with /api/products, but also allow for anonymous users.
+      {
+        uri: '/api/products/*',
+        allowAnonymous: true,
+      },
 
       // Match anything starting with /api/accounts, but also specify the audience and scope the attached
       // access token must have
