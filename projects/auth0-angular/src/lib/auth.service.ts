@@ -34,6 +34,7 @@ import {
   catchError,
   switchMap,
   mergeMap,
+  scan,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -48,6 +49,7 @@ export class AuthService implements OnDestroy {
   private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
   private errorSubject$ = new ReplaySubject<Error>(1);
   private refreshState$ = new Subject<void>();
+  private accessToken$ = new ReplaySubject<string>(1);
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject<void>();
@@ -58,8 +60,28 @@ export class AuthService implements OnDestroy {
 
   /**
    * Trigger used to pull User information from the Auth0Client.
+   * Triggers when the access token has changed.
+   */
+  private accessTokenTrigger$ = this.accessToken$.pipe(
+    scan(
+      (
+        acc: { current: string | null; previous: string | null },
+        current: string | null
+      ) => {
+        return {
+          previous: acc.current,
+          current,
+        };
+      },
+      { current: null, previous: null }
+    ),
+    filter(({ previous, current }) => previous !== current)
+  );
+
+  /**
+   * Trigger used to pull User information from the Auth0Client.
    * Triggers when an event occurs that needs to retrigger the User Profile information.
-   * Such as: Initially, getAccessTokenSilently, getAccessTokenWithPopup and Logout
+   * Events: Login, Access Token change and Logout
    */
   private isAuthenticatedTrigger$ = this.isLoading$.pipe(
     filter((loading) => !loading),
@@ -67,9 +89,14 @@ export class AuthService implements OnDestroy {
     switchMap(() =>
       // To track the value of isAuthenticated over time, we need to merge:
       //  - the current value
+      //  - the value whenever the access token changes. (this should always be true of there is an access token
+      //    but it is safer to pass this through this.auth0Client.isAuthenticated() nevertheless)
       //  - the value whenever refreshState$ emits
       merge(
         defer(() => this.auth0Client.isAuthenticated()),
+        this.accessTokenTrigger$.pipe(
+          mergeMap(() => this.auth0Client.isAuthenticated())
+        ),
         this.refreshState$.pipe(
           mergeMap(() => this.auth0Client.isAuthenticated())
         )
@@ -248,7 +275,7 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options)),
-      tap(() => this.refreshState$.next()),
+      tap((token) => this.accessToken$.next(token)),
       catchError((error) => {
         this.errorSubject$.next(error);
         this.refreshState$.next();
@@ -274,7 +301,7 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenWithPopup(options)),
-      tap(() => this.refreshState$.next()),
+      tap((token) => this.accessToken$.next(token)),
       catchError((error) => {
         this.errorSubject$.next(error);
         this.refreshState$.next();
