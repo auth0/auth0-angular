@@ -511,6 +511,13 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 The workspace includes a playground application that can be used to test out features of the SDK. Run this using `ng serve playground` and browse to http://localhost:4200.
 
+#### Running an express server
+
+An express server can be started by running `npm run server:api`, which can be used to make testing Http Interceptors easier.
+The express server exposes a single endpoint at `http://localhost:3001/api/external` that needs to be called with an `Authorization` header containing a token for the corresponding `domain` and `audience`, configurable in [`api-server.js`](api-server.js).
+
+The playground application is preconfigured to call the above endpoint when clicking the `Call external API` button.
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
