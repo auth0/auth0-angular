@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('AppComponent', () => {
   let authMock: AuthService;
@@ -29,7 +30,7 @@ describe('AppComponent', () => {
     ) as any;
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ReactiveFormsModule],
+      imports: [RouterTestingModule, ReactiveFormsModule, HttpClientModule],
       declarations: [AppComponent],
       providers: [
         {
