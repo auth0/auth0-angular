@@ -2104,12 +2104,11 @@ var typedoc,
                     }
                   ),
                   parent = row.parent || '';
-                (parent = parent.replace(
-                  new RegExp(this.query, 'i'),
-                  function (match) {
-                    return '<b>' + match + '</b>';
-                  }
-                )) &&
+                (parent = parent.replace(new RegExp(this.query, 'i'), function (
+                  match
+                ) {
+                  return '<b>' + match + '</b>';
+                })) &&
                   (name = '<span class="parent">' + parent + '.</span>' + name);
                 var item = document.createElement('li');
                 (item.classList.value = row.classes),

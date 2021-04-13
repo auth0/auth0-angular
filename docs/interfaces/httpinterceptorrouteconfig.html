@@ -3096,6 +3096,13 @@
           <ul>
             <li class="tsd-kind-property tsd-parent-kind-interface">
               <a
+                href="httpinterceptorrouteconfig.html#allowanonymous"
+                class="tsd-kind-icon"
+                >allow<wbr />Anonymous</a
+              >
+            </li>
+            <li class="tsd-kind-property tsd-parent-kind-interface">
+              <a
                 href="httpinterceptorrouteconfig.html#httpmethod"
                 class="tsd-kind-icon"
                 >http<wbr />Method</a
@@ -3162,6 +3169,13 @@
                 <ul class="tsd-index-list">
                   <li class="tsd-kind-property tsd-parent-kind-interface">
                     <a
+                      href="httpinterceptorrouteconfig.html#allowanonymous"
+                      class="tsd-kind-icon"
+                      >allow<wbr />Anonymous</a
+                    >
+                  </li>
+                  <li class="tsd-kind-property tsd-parent-kind-interface">
+                    <a
                       href="httpinterceptorrouteconfig.html#httpmethod"
                       class="tsd-kind-icon"
                       >http<wbr />Method</a
@@ -3198,6 +3212,46 @@
           <section
             class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
           >
+            <a name="allowanonymous" class="tsd-anchor"></a>
+            <h3>
+              <span class="tsd-flag ts-flagOptional">Optional</span>
+              allow<wbr />Anonymous
+            </h3>
+            <div class="tsd-signature tsd-kind-icon">
+              allow<wbr />Anonymous<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">undefined</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">false</span
+              ><span class="tsd-signature-symbol"> | </span
+              ><span class="tsd-signature-type">true</span>
+            </div>
+            <aside class="tsd-sources">
+              <ul>
+                <li>
+                  Defined in
+                  <a
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.config.ts#L94"
+                    >projects/auth0-angular/src/lib/auth.config.ts:94</a
+                  >
+                </li>
+              </ul>
+            </aside>
+            <div class="tsd-comment tsd-typography">
+              <div class="lead">
+                <p>
+                  Allow the HTTP call to be executed anonymously, when no token
+                  is available.
+                </p>
+              </div>
+              <p>
+                When omitted (or set to false), calls that match the
+                configuration will fail when no token is available.
+              </p>
+            </div>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
+          >
             <a name="httpmethod" class="tsd-anchor"></a>
             <h3>
               <span class="tsd-flag ts-flagOptional">Optional</span>
@@ -3215,7 +3269,7 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L87"
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.config.ts#L87"
                     >projects/auth0-angular/src/lib/auth.config.ts:87</a
                   >
                 </li>
@@ -3249,7 +3303,7 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L78"
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.config.ts#L78"
                     >projects/auth0-angular/src/lib/auth.config.ts:78</a
                   >
                 </li>
@@ -3280,7 +3334,7 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L60"
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.config.ts#L60"
                     >projects/auth0-angular/src/lib/auth.config.ts:60</a
                   >
                 </li>
@@ -3345,7 +3399,7 @@
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L72"
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.config.ts#L72"
                     >projects/auth0-angular/src/lib/auth.config.ts:72</a
                   >
                 </li>
@@ -5357,13 +5411,12 @@
                             _this.setValue(e.target.dataset.value || '');
                         });
                       }),
-                      document.addEventListener(
-                        typedoc.pointerDown,
-                        function (e) {
-                          _this.select.contains(e.target) ||
-                            _this.select.classList.remove('active');
-                        }
-                      );
+                      document.addEventListener(typedoc.pointerDown, function (
+                        e
+                      ) {
+                        _this.select.contains(e.target) ||
+                          _this.select.classList.remove('active');
+                      });
                   }
                 }),
                 (FilterItemSelect.prototype.handleValueChange = function (
@@ -5778,12 +5831,11 @@
                   _this.container &&
                     (_this.el.classList.add('active'),
                     Array.from(_this.el.children).forEach(function (signature) {
-                      signature.addEventListener(
-                        'touchstart',
-                        function (event) {
-                          return _this.onClick(event);
-                        }
-                      ),
+                      signature.addEventListener('touchstart', function (
+                        event
+                      ) {
+                        return _this.onClick(event);
+                      }),
                         signature.addEventListener('click', function (event) {
                           return _this.onClick(event);
                         });

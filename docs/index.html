@@ -3298,7 +3298,7 @@
   title = <span class="hljs-string">&#x27;My App&#x27;</span>;
 
   <span class="hljs-comment">// Inject the authentication service into your component through the constructor</span>
-  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">public auth: AuthService</span>)</span> {}
+  <span class="hljs-keyword">constructor</span>(public auth: AuthService) {}
 
   loginWithRedirect(): <span class="hljs-keyword">void</span> {
     <span class="hljs-comment">// Call this to redirect the user to the login page</span>
@@ -3515,6 +3515,14 @@
             is a serious security issue. Those recipients could then use that
             token to call the API as if it were your application.
           </p>
+          <p>
+            In the event that requests should be made available for both
+            anonymous and authenticated users, the
+            <code>allowAnonymous</code> property can be set to
+            <code>true</code>. When omitted, or set to <code>false</code>,
+            requests that match the configuration, will not be executed when
+            there is no access token available.
+          </p>
           <p>Here are some examples:</p>
           <pre><code class="language-js"><span class="hljs-keyword">import</span> { HttpMethod } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
 
@@ -3532,6 +3540,12 @@ AuthModule.forRoot({
 
       <span class="hljs-comment">// Attach access tokens to any calls that start with &#x27;/api/&#x27;</span>
       <span class="hljs-string">&#x27;/api/*&#x27;</span>,
+
+      <span class="hljs-comment">// Match anything starting with /api/products, but also allow for anonymous users.</span>
+      {
+        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/api/products/*&#x27;</span>,
+        <span class="hljs-attr">allowAnonymous</span>: <span class="hljs-literal">true</span>,
+      },
 
       <span class="hljs-comment">// Match anything starting with /api/accounts, but also specify the audience and scope the attached</span>
       <span class="hljs-comment">// access token must have</span>
@@ -3589,21 +3603,21 @@ AuthModule.forRoot({
             >. If it returns false, the request proceeds without the access
             token attached.
           </p>
-          <pre><code><span class="hljs-attr">AuthModule.forRoot({</span>
-  <span class="hljs-attr">...</span>
-  <span class="hljs-attr">httpInterceptor</span>: <span class="hljs-string">{</span>
-    <span class="hljs-attr">allowedList</span>: <span class="hljs-string">[</span>
-      <span class="hljs-attr">{</span>
-        <span class="hljs-attr">uriMatcher</span>: <span class="hljs-string">(uri) =&gt; uri.indexOf(&#x27;/api/orders&#x27;) &gt; -1,</span>
-        <span class="hljs-attr">httpMethod</span>: <span class="hljs-string">HttpMethod.Post,</span>
-        <span class="hljs-attr">tokenOptions</span>: <span class="hljs-string">{</span>
-          <span class="hljs-attr">audience</span>: <span class="hljs-string">&#x27;http://my-api/&#x27;,</span>
-          <span class="hljs-attr">scope</span>: <span class="hljs-string">&#x27;write:orders&#x27;,</span>
-        <span class="hljs-attr">},</span>
-      <span class="hljs-attr">},</span>
-    <span class="hljs-attr">],</span>
-  <span class="hljs-attr">},</span>
-<span class="hljs-attr">});</span></code></pre>
+          <pre><code><span class="hljs-string">AuthModule.forRoot({</span>
+  <span class="hljs-string">...</span>
+  <span class="hljs-attr">httpInterceptor:</span> {
+    <span class="hljs-attr">allowedList:</span> [
+      {
+        <span class="hljs-attr">uriMatcher:</span> <span class="hljs-string">(uri)</span> <span class="hljs-string">=&gt;</span> <span class="hljs-string">uri.indexOf(&#x27;/api/orders&#x27;)</span> <span class="hljs-string">&gt;</span> <span class="hljs-number">-1</span>,
+        <span class="hljs-attr">httpMethod:</span> <span class="hljs-string">HttpMethod.Post</span>,
+        <span class="hljs-attr">tokenOptions:</span> {
+          <span class="hljs-attr">audience:</span> <span class="hljs-string">&#x27;http://my-api/&#x27;</span>,
+          <span class="hljs-attr">scope:</span> <span class="hljs-string">&#x27;write:orders&#x27;</span>,
+        },
+      },
+    ],
+  }<span class="hljs-string">,</span>
+<span class="hljs-string">});</span></code></pre>
           <p>
             You might want to do this in scenarios where you need the token on
             multiple endpoints, but want to exclude it from only a few other
@@ -3624,7 +3638,7 @@ AuthModule.forRoot({
             <code>Authorization</code> header:
           </p>
           <pre><code class="language-js"><span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> </span>{
-  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">private http: HttpClient</span>)</span> {}
+  <span class="hljs-keyword">constructor</span>(private http: HttpClient) {}
 
   callApi(): <span class="hljs-keyword">void</span> {
     <span class="hljs-built_in">this</span>.http.get(<span class="hljs-string">&#x27;/api&#x27;</span>).subscribe(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(result));
@@ -3649,7 +3663,7 @@ AuthModule.forRoot({
             If you want to interact to these errors, subscribe to the
             <code>error$</code> observable and act accordingly.
           </p>
-          <pre><code><span class="hljs-function"><span class="hljs-title">ngOnInit</span>(<span class="hljs-params"></span>)</span> {
+          <pre><code>ngOnInit() {
   <span class="hljs-built_in">this</span>.authService.error$.subscribe(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
     <span class="hljs-comment">// Handle Error here</span>
   });
@@ -3659,7 +3673,7 @@ AuthModule.forRoot({
             by the <code>error$</code> observable, is to re-login the user when
             the SDK throws a <code>login_required</code> error.
           </p>
-          <pre><code><span class="hljs-function"><span class="hljs-title">ngOnInit</span>(<span class="hljs-params"></span>)</span> {
+          <pre><code>ngOnInit() {
   <span class="hljs-built_in">this</span>.authService.error$.pipe(
     filter(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> e.error === <span class="hljs-string">&#x27;login_required&#x27;</span>),
     mergeMap(<span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">this</span>.authService.loginWithRedirect())
@@ -3826,14 +3840,14 @@ AuthModule.forRoot({
   organization: <span class="hljs-string">&#x27;YOUR_ORGANIZATION_ID&#x27;</span>
 }),</code></pre>
           <p>You can also specify the organization when logging in:</p>
-          <pre><code>// <span class="hljs-selector-tag">Using</span> <span class="hljs-selector-tag">a</span> <span class="hljs-selector-tag">redirect</span>
-<span class="hljs-selector-tag">this</span><span class="hljs-selector-class">.auth</span><span class="hljs-selector-class">.loginWithRedirect</span>({
-  <span class="hljs-attribute">organization</span>: <span class="hljs-string">&#x27;YOUR_ORGANIZATION_ID&#x27;</span>
+          <pre><code><span class="hljs-comment">// Using a redirect</span>
+<span class="hljs-keyword">this</span>.auth.loginWithRedirect({
+  organization: <span class="hljs-string">&#x27;YOUR_ORGANIZATION_ID&#x27;</span>
 });
 
-// <span class="hljs-selector-tag">Using</span> <span class="hljs-selector-tag">a</span> <span class="hljs-selector-tag">popup</span> <span class="hljs-selector-tag">window</span>
-<span class="hljs-selector-tag">this</span><span class="hljs-selector-class">.auth</span><span class="hljs-selector-class">.loginWithPopup</span>({
-  <span class="hljs-attribute">organization</span>: <span class="hljs-string">&#x27;YOUR_ORGANIZATION_ID&#x27;</span>
+<span class="hljs-comment">// Using a popup window</span>
+<span class="hljs-keyword">this</span>.auth.loginWithPopup({
+  organization: <span class="hljs-string">&#x27;YOUR_ORGANIZATION_ID&#x27;</span>
 });</code></pre>
           <a
             href="#accept-user-invitations"
@@ -3859,7 +3873,7 @@ AuthModule.forRoot({
   <span class="hljs-attr">styleUrls</span>: [<span class="hljs-string">&#x27;./app.component.css&#x27;</span>],
 })
 <span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppComponent</span> </span>{
-  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">public auth: AuthService, private activatedRoute: ActivatedRoute</span>)</span> {}
+  <span class="hljs-keyword">constructor</span>(public auth: AuthService, private activatedRoute: ActivatedRoute) {}
 
   loginWithRedirect(): <span class="hljs-keyword">void</span> {
     <span class="hljs-keyword">const</span> { organization, invitation } = <span class="hljs-built_in">this</span>.activatedRoute.snapshot.params;
@@ -3952,6 +3966,28 @@ AuthModule.forRoot({
             test out features of the SDK. Run this using
             <code>ng serve playground</code> and browse to
             <a href="http://localhost:4200">http://localhost:4200</a>.
+          </p>
+          <a
+            href="#running-an-express-server"
+            id="running-an-express-server"
+            style="color: inherit; text-decoration: none"
+          >
+            <h4>Running an express server</h4>
+          </a>
+          <p>
+            An express server can be started by running
+            <code>npm run server:api</code>, which can be used to make testing
+            Http Interceptors easier. The express server exposes a single
+            endpoint at <code>http://localhost:3001/api/external</code> that
+            needs to be called with an <code>Authorization</code> header
+            containing a token for the corresponding <code>domain</code> and
+            <code>audience</code>, configurable in
+            <a href="api-server.js"><code>api-server.js</code></a
+            >.
+          </p>
+          <p>
+            The playground application is preconfigured to call the above
+            endpoint when clicking the <code>Call external API</code> button.
           </p>
           <a
             href="#further-help"
@@ -4235,7 +4271,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L22"
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.config.ts#L22"
                     >projects/auth0-angular/src/lib/auth.config.ts:22</a
                   >
                 </li>
@@ -4278,7 +4314,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.client.ts#L31"
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.client.ts#L31"
                     >projects/auth0-angular/src/lib/auth.client.ts:31</a
                   >
                 </li>
@@ -4310,8 +4346,8 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L311"
-                    >projects/auth0-angular/src/lib/auth.config.ts:311</a
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.config.ts#L318"
+                    >projects/auth0-angular/src/lib/auth.config.ts:318</a
                   >
                 </li>
               </ul>
@@ -4351,7 +4387,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4417,7 +4453,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4449,7 +4485,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4495,7 +4531,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4605,7 +4641,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4658,7 +4694,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L28"
+                        href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.config.ts#L28"
                         >projects/auth0-angular/src/lib/auth.config.ts:28</a
                       >
                     </li>
@@ -6683,13 +6719,12 @@ AuthModule.forRoot({
                             _this.setValue(e.target.dataset.value || '');
                         });
                       }),
-                      document.addEventListener(
-                        typedoc.pointerDown,
-                        function (e) {
-                          _this.select.contains(e.target) ||
-                            _this.select.classList.remove('active');
-                        }
-                      );
+                      document.addEventListener(typedoc.pointerDown, function (
+                        e
+                      ) {
+                        _this.select.contains(e.target) ||
+                          _this.select.classList.remove('active');
+                      });
                   }
                 }),
                 (FilterItemSelect.prototype.handleValueChange = function (
@@ -7104,12 +7139,11 @@ AuthModule.forRoot({
                   _this.container &&
                     (_this.el.classList.add('active'),
                     Array.from(_this.el.children).forEach(function (signature) {
-                      signature.addEventListener(
-                        'touchstart',
-                        function (event) {
-                          return _this.onClick(event);
-                        }
-                      ),
+                      signature.addEventListener('touchstart', function (
+                        event
+                      ) {
+                        return _this.onClick(event);
+                      }),
                         signature.addEventListener('click', function (event) {
                           return _this.onClick(event);
                         });

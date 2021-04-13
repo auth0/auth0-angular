@@ -1,5 +1,18 @@
 # Change Log
 
+## [v1.4.1](https://github.com/auth0/auth0-angular/tree/v1.4.1) (2021-04-13)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.4.0...v1.4.1)
+
+**Added**
+
+- [SDK-2482] Add allowAnonymous option to HttpInterceptor config [\#145](https://github.com/auth0/auth0-angular/pull/145) ([frederikprijck](https://github.com/frederikprijck))
+
+**Changed**
+
+- Remove unnecessary returns from tap [\#141](https://github.com/auth0/auth0-angular/pull/141) ([sorohan](https://github.com/sorohan))
+- Only emit user$ and idTokenClaims$ when login, logout or token changed [\#131](https://github.com/auth0/auth0-angular/pull/131) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.4.0](https://github.com/auth0/auth0-angular/tree/v1.4.0) (2021-03-25)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.3.2...v1.4.0)

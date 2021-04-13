@@ -3217,7 +3217,7 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.guard.ts#L18"
+                        href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.guard.ts#L18"
                         >projects/auth0-angular/src/lib/auth.guard.ts:18</a
                       >
                     </li>
@@ -3273,7 +3273,7 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.guard.ts#L25"
+                        href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.guard.ts#L25"
                         >projects/auth0-angular/src/lib/auth.guard.ts:25</a
                       >
                     </li>
@@ -3335,7 +3335,7 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.guard.ts#L32"
+                        href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.guard.ts#L32"
                         >projects/auth0-angular/src/lib/auth.guard.ts:32</a
                       >
                     </li>
@@ -3398,7 +3398,7 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.guard.ts#L21"
+                        href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/auth.guard.ts#L21"
                         >projects/auth0-angular/src/lib/auth.guard.ts:21</a
                       >
                     </li>
@@ -5413,13 +5413,12 @@
                             _this.setValue(e.target.dataset.value || '');
                         });
                       }),
-                      document.addEventListener(
-                        typedoc.pointerDown,
-                        function (e) {
-                          _this.select.contains(e.target) ||
-                            _this.select.classList.remove('active');
-                        }
-                      );
+                      document.addEventListener(typedoc.pointerDown, function (
+                        e
+                      ) {
+                        _this.select.contains(e.target) ||
+                          _this.select.classList.remove('active');
+                      });
                   }
                 }),
                 (FilterItemSelect.prototype.handleValueChange = function (
@@ -5834,12 +5833,11 @@
                   _this.container &&
                     (_this.el.classList.add('active'),
                     Array.from(_this.el.children).forEach(function (signature) {
-                      signature.addEventListener(
-                        'touchstart',
-                        function (event) {
-                          return _this.onClick(event);
-                        }
-                      ),
+                      signature.addEventListener('touchstart', function (
+                        event
+                      ) {
+                        return _this.onClick(event);
+                      }),
                         signature.addEventListener('click', function (event) {
                           return _this.onClick(event);
                         });
