@@ -5,6 +5,7 @@ import { iif } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { LogoutOptions } from '@auth0/auth0-spa-js';
 import { DOCUMENT } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +38,8 @@ export class AppComponent {
 
   constructor(
     public auth: AuthService,
-    @Inject(DOCUMENT) private doc: Document
+    @Inject(DOCUMENT) private doc: Document,
+    private httpClient: HttpClient
   ) {}
 
   launchLogin(): void {
@@ -96,5 +98,11 @@ export class AppComponent {
       .subscribe((token) => {
         this.accessToken = token;
       });
+  }
+
+  callExternalAPI(): void {
+    this.httpClient
+      .get('http://localhost:3001/api/external')
+      .subscribe(console.log, console.error);
   }
 }
