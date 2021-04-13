@@ -3182,7 +3182,7 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/abstract-navigator.ts#L9"
+                        href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/abstract-navigator.ts#L9"
                         >projects/auth0-angular/src/lib/abstract-navigator.ts:9</a
                       >
                     </li>
@@ -3235,7 +3235,7 @@
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/26a8ae3/projects/auth0-angular/src/lib/abstract-navigator.ts#L22"
+                        href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/abstract-navigator.ts#L22"
                         >projects/auth0-angular/src/lib/abstract-navigator.ts:22</a
                       >
                     </li>
@@ -5250,12 +5250,13 @@
                             _this.setValue(e.target.dataset.value || '');
                         });
                       }),
-                      document.addEventListener(typedoc.pointerDown, function (
-                        e
-                      ) {
-                        _this.select.contains(e.target) ||
-                          _this.select.classList.remove('active');
-                      });
+                      document.addEventListener(
+                        typedoc.pointerDown,
+                        function (e) {
+                          _this.select.contains(e.target) ||
+                            _this.select.classList.remove('active');
+                        }
+                      );
                   }
                 }),
                 (FilterItemSelect.prototype.handleValueChange = function (
@@ -5670,11 +5671,12 @@
                   _this.container &&
                     (_this.el.classList.add('active'),
                     Array.from(_this.el.children).forEach(function (signature) {
-                      signature.addEventListener('touchstart', function (
-                        event
-                      ) {
-                        return _this.onClick(event);
-                      }),
+                      signature.addEventListener(
+                        'touchstart',
+                        function (event) {
+                          return _this.onClick(event);
+                        }
+                      ),
                         signature.addEventListener('click', function (event) {
                           return _this.onClick(event);
                         });
