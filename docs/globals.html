@@ -3515,6 +3515,14 @@
             is a serious security issue. Those recipients could then use that
             token to call the API as if it were your application.
           </p>
+          <p>
+            In the event that requests should be made available for both
+            anonymous and authenticated users, the
+            <code>allowAnonymous</code> property can be set to
+            <code>true</code>. When omitted, or set to <code>false</code>,
+            requests that match the configuration, will not be executed when
+            there is no access token available.
+          </p>
           <p>Here are some examples:</p>
           <pre><code class="language-js"><span class="hljs-keyword">import</span> { HttpMethod } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/auth0-angular&#x27;</span>;
 
@@ -3532,6 +3540,12 @@ AuthModule.forRoot({
 
       <span class="hljs-comment">// Attach access tokens to any calls that start with &#x27;/api/&#x27;</span>
       <span class="hljs-string">&#x27;/api/*&#x27;</span>,
+
+      <span class="hljs-comment">// Match anything starting with /api/products, but also allow for anonymous users.</span>
+      {
+        <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/api/products/*&#x27;</span>,
+        <span class="hljs-attr">allowAnonymous</span>: <span class="hljs-literal">true</span>,
+      },
 
       <span class="hljs-comment">// Match anything starting with /api/accounts, but also specify the audience and scope the attached</span>
       <span class="hljs-comment">// access token must have</span>
@@ -3954,6 +3968,28 @@ AuthModule.forRoot({
             <a href="http://localhost:4200">http://localhost:4200</a>.
           </p>
           <a
+            href="#running-an-express-server"
+            id="running-an-express-server"
+            style="color: inherit; text-decoration: none"
+          >
+            <h4>Running an express server</h4>
+          </a>
+          <p>
+            An express server can be started by running
+            <code>npm run server:api</code>, which can be used to make testing
+            Http Interceptors easier. The express server exposes a single
+            endpoint at <code>http://localhost:3001/api/external</code> that
+            needs to be called with an <code>Authorization</code> header
+            containing a token for the corresponding <code>domain</code> and
+            <code>audience</code>, configurable in
+            <a href="api-server.js"><code>api-server.js</code></a
+            >.
+          </p>
+          <p>
+            The playground application is preconfigured to call the above
+            endpoint when clicking the <code>Call external API</code> button.
+          </p>
+          <a
             href="#further-help"
             id="further-help"
             style="color: inherit; text-decoration: none"
@@ -4232,7 +4268,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L22"
+                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/auth.config.ts#L22"
                     >projects/auth0-angular/src/lib/auth.config.ts:22</a
                   >
                 </li>
@@ -4275,7 +4311,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.client.ts#L31"
+                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/auth.client.ts#L31"
                     >projects/auth0-angular/src/lib/auth.client.ts:31</a
                   >
                 </li>
@@ -4307,8 +4343,8 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L311"
-                    >projects/auth0-angular/src/lib/auth.config.ts:311</a
+                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/auth.config.ts#L318"
+                    >projects/auth0-angular/src/lib/auth.config.ts:318</a
                   >
                 </li>
               </ul>
@@ -4348,7 +4384,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4414,7 +4450,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4446,7 +4482,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4492,7 +4528,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4602,7 +4638,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4655,7 +4691,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/b08b3f9/projects/auth0-angular/src/lib/auth.config.ts#L28"
+                        href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/auth.config.ts#L28"
                         >projects/auth0-angular/src/lib/auth.config.ts:28</a
                       >
                     </li>
