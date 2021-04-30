@@ -47,7 +47,7 @@ describe('AuthService', () => {
       '__access_token_from_popup__'
     );
 
-    locationSpy = jasmine.createSpyObj('Location', ['path']);
+    locationSpy = jasmine.createSpyObj('Location', ['path', 'replaceState']);
     locationSpy.path.and.returnValue('');
 
     moduleSetup = {
@@ -607,6 +607,84 @@ describe('AuthService', () => {
           done();
         },
       });
+    });
+  });
+
+  describe('handleRedirectCallback', () => {
+    let navigator: AbstractNavigator;
+
+    beforeEach(() => {
+      TestBed.resetTestingModule();
+
+      navigator = jasmine.createSpyObj('RouteNavigator', {
+        navigateByUrl: Promise.resolve(true),
+      }) as any;
+
+      TestBed.configureTestingModule({
+        ...moduleSetup,
+        providers: [
+          {
+            provide: AbstractNavigator,
+            useValue: navigator,
+          },
+          {
+            provide: Auth0ClientService,
+            useValue: auth0Client,
+          },
+          {
+            provide: Location,
+            useValue: locationSpy,
+          },
+          {
+            provide: AuthConfigService,
+            useValue: {
+              ...authConfig,
+              skipRedirectCallback: true,
+            },
+          },
+        ],
+      });
+
+      locationSpy.path.and.returnValue('');
+    });
+
+    it('should call the underlying SDK', (done) => {
+      const localService = createService();
+
+      localService.handleRedirectCallback().subscribe((result) => {
+        expect(auth0Client.handleRedirectCallback).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should call the underlying SDK and pass options', (done) => {
+      const url = 'http://localhost';
+      const localService = createService();
+
+      localService.handleRedirectCallback(url).subscribe((result) => {
+        expect(auth0Client.handleRedirectCallback).toHaveBeenCalledWith(url);
+        done();
+      });
+    });
+
+    fit('should refresh the internal state', (done) => {
+      const localService = createService();
+
+      localService.isLoading$.subscribe((loading) =>
+        console.log('loading observable', loading)
+      );
+
+      // (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+
+      localService.isAuthenticated$.pipe(bufferCount(1)).subscribe((result) => {
+        console.log(result);
+        expect(auth0Client.isAuthenticated).toHaveBeenCalled();
+        done();
+      });
+
+      // localService.handleRedirectCallback().subscribe((result) => {
+      //   console.log('result', result);
+      // });
     });
   });
 });
