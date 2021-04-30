@@ -311,20 +311,20 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  private shouldHandleCallback(): Observable<boolean> {
-    return of(this.location.path()).pipe(
-      map((search) => {
-        return (
-          (search.includes('code=') || search.includes('error=')) &&
-          search.includes('state=') &&
-          !this.configFactory.get().skipRedirectCallback
-        );
-      })
-    );
-  }
-
-  handleRedirectCallback(): Observable<RedirectLoginResult> {
-    return defer(() => this.auth0Client.handleRedirectCallback()).pipe(
+  /**
+   * ```js
+   * handleRedirectCallback(url).subscribe(result => ...)
+   * ```
+   *
+   * After the browser redirects back to the callback page,
+   * call `handleRedirectCallback` to handle success and error
+   * responses from Auth0. If the response is successful, results
+   * will be valid according to their expiration times.
+   *
+   * @param url The URL to that should be used to retrieve the `state` and `code` values. Defaults to `window.location.href` if not given.
+   */
+  handleRedirectCallback(url?: string): Observable<RedirectLoginResult> {
+    return defer(() => this.auth0Client.handleRedirectCallback(url)).pipe(
       withLatestFrom(this.isLoadingSubject$),
       tap(([result, isLoading]) => {
         if (!isLoading) {
@@ -334,6 +334,18 @@ export class AuthService implements OnDestroy {
         this.navigator.navigateByUrl(target);
       }),
       map(([result]) => result)
+    );
+  }
+
+  private shouldHandleCallback(): Observable<boolean> {
+    return of(this.location.path()).pipe(
+      map((search) => {
+        return (
+          (search.includes('code=') || search.includes('error=')) &&
+          search.includes('state=') &&
+          !this.configFactory.get().skipRedirectCallback
+        );
+      })
     );
   }
 }
