@@ -35,6 +35,7 @@ import {
   switchMap,
   mergeMap,
   scan,
+  withLatestFrom,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -322,12 +323,17 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  private handleRedirectCallback(): Observable<RedirectLoginResult> {
+  handleRedirectCallback(): Observable<RedirectLoginResult> {
     return defer(() => this.auth0Client.handleRedirectCallback()).pipe(
-      tap((result) => {
+      withLatestFrom(this.isLoadingSubject$),
+      tap(([result, isLoading]) => {
+        if (!isLoading) {
+          this.refreshState$.next();
+        }
         const target = result?.appState?.target ?? '/';
         this.navigator.navigateByUrl(target);
-      })
+      }),
+      map(([result]) => result)
     );
   }
 }
