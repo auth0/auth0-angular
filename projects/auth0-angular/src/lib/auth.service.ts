@@ -327,7 +327,6 @@ export class AuthService implements OnDestroy {
     return defer(() => this.auth0Client.handleRedirectCallback(url)).pipe(
       withLatestFrom(this.isLoadingSubject$),
       tap(([result, isLoading]) => {
-        console.log('isLoading', isLoading);
         if (!isLoading) {
           this.refreshState$.next();
         }

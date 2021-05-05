@@ -651,7 +651,7 @@ describe('AuthService', () => {
     it('should call the underlying SDK', (done) => {
       const localService = createService();
 
-      localService.handleRedirectCallback().subscribe((result) => {
+      localService.handleRedirectCallback().subscribe(() => {
         expect(auth0Client.handleRedirectCallback).toHaveBeenCalled();
         done();
       });
@@ -661,30 +661,30 @@ describe('AuthService', () => {
       const url = 'http://localhost';
       const localService = createService();
 
-      localService.handleRedirectCallback(url).subscribe((result) => {
+      localService.handleRedirectCallback(url).subscribe(() => {
         expect(auth0Client.handleRedirectCallback).toHaveBeenCalledWith(url);
         done();
       });
     });
 
-    fit('should refresh the internal state', (done) => {
+    it('should refresh the internal state', (done) => {
       const localService = createService();
 
-      localService.isLoading$.subscribe((loading) =>
-        console.log('loading observable', loading)
-      );
+      localService.isLoading$.subscribe((loading) => {
+        if (!loading) {
+          localService.isAuthenticated$
+            .pipe(bufferCount(2))
+            .subscribe((authenticatedStates) => {
+              expect(authenticatedStates).toEqual([false, true]);
+              expect(auth0Client.isAuthenticated).toHaveBeenCalled();
+              done();
+            });
 
-      // (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+          (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
 
-      localService.isAuthenticated$.pipe(bufferCount(1)).subscribe((result) => {
-        console.log(result);
-        expect(auth0Client.isAuthenticated).toHaveBeenCalled();
-        done();
+          localService.handleRedirectCallback().subscribe();
+        }
       });
-
-      // localService.handleRedirectCallback().subscribe((result) => {
-      //   console.log('result', result);
-      // });
     });
   });
 });
