@@ -47,7 +47,7 @@ describe('AuthService', () => {
       '__access_token_from_popup__'
     );
 
-    locationSpy = jasmine.createSpyObj('Location', ['path', 'replaceState']);
+    locationSpy = jasmine.createSpyObj('Location', ['path']);
     locationSpy.path.and.returnValue('');
 
     moduleSetup = {
