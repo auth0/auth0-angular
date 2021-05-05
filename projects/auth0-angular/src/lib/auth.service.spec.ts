@@ -1,7 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
+import {
+  Auth0Client,
+  IdToken,
+  RedirectLoginOptions,
+} from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import { bufferCount, bufferTime, filter, mergeMap, tap } from 'rxjs/operators';
 import { Location } from '@angular/common';
@@ -42,6 +46,7 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(undefined);
     spyOn(auth0Client, 'logout');
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
+    spyOn(auth0Client, 'buildAuthorizeUrl').and.resolveTo('/authorize');
 
     spyOn(auth0Client, 'getTokenWithPopup').and.resolveTo(
       '__access_token_from_popup__'
@@ -687,6 +692,18 @@ describe('AuthService', () => {
           mergeMap(() => localService.handleRedirectCallback())
         )
         .subscribe();
+    });
+  });
+
+  describe('buildAuthorizeUrl', () => {
+    it('should call the underlying SDK', (done) => {
+      const options: RedirectLoginOptions = {};
+
+      service.buildAuthorizeUrl(options).subscribe((url) => {
+        expect(url).toBeTruthy();
+        expect(auth0Client.buildAuthorizeUrl).toHaveBeenCalledWith(options);
+        done();
+      });
     });
   });
 });

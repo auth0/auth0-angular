@@ -9,6 +9,7 @@ import {
   GetTokenSilentlyOptions,
   GetTokenWithPopupOptions,
   RedirectLoginResult,
+  LogoutUrlOptions,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -337,6 +338,21 @@ export class AuthService implements OnDestroy {
       }),
       map(([result]) => result)
     );
+  }
+
+  /**
+   * ```js
+   * buildAuthorizeUrl().subscribe(url => ...)
+   * ```
+   *
+   * Builds an `/authorize` URL for loginWithRedirect using the parameters
+   * provided as arguments. Random and secure `state` and `nonce`
+   * parameters will be auto-generated.
+   * @param options The options
+   * @returns A URL to the authorize endpoint
+   */
+  buildAuthorizeUrl(options?: RedirectLoginOptions): Observable<string> {
+    return defer(() => this.auth0Client.buildAuthorizeUrl(options));
   }
 
   private shouldHandleCallback(): Observable<boolean> {
