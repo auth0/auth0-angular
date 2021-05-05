@@ -355,6 +355,19 @@ export class AuthService implements OnDestroy {
     return defer(() => this.auth0Client.buildAuthorizeUrl(options));
   }
 
+  /**
+   * ```js
+   * buildLogoutUrl().subscribe(url => ...)
+   * ```
+   * Builds a URL to the logout endpoint.
+   *
+   * @param options The options used to configure the parameters that appear in the logout endpoint URL.
+   * @returns a URL to the logout endpoint using the parameters provided as arguments.
+   */
+  buildLogoutUrl(options?: LogoutUrlOptions): Observable<string> {
+    return of(this.auth0Client.buildLogoutUrl(options));
+  }
+
   private shouldHandleCallback(): Observable<boolean> {
     return of(this.location.path()).pipe(
       map((search) => {

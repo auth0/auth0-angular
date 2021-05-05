@@ -4,6 +4,7 @@ import { Auth0ClientService } from './auth.client';
 import {
   Auth0Client,
   IdToken,
+  LogoutUrlOptions,
   RedirectLoginOptions,
 } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
@@ -47,6 +48,7 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'logout');
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
     spyOn(auth0Client, 'buildAuthorizeUrl').and.resolveTo('/authorize');
+    spyOn(auth0Client, 'buildLogoutUrl').and.returnValue('/v2/logout');
 
     spyOn(auth0Client, 'getTokenWithPopup').and.resolveTo(
       '__access_token_from_popup__'
@@ -702,6 +704,18 @@ describe('AuthService', () => {
       service.buildAuthorizeUrl(options).subscribe((url) => {
         expect(url).toBeTruthy();
         expect(auth0Client.buildAuthorizeUrl).toHaveBeenCalledWith(options);
+        done();
+      });
+    });
+  });
+
+  describe('buildLogoutUrl', () => {
+    it('should call the underlying SDK', (done) => {
+      const options: LogoutUrlOptions = {};
+
+      service.buildLogoutUrl(options).subscribe((url) => {
+        expect(url).toBeTruthy();
+        expect(auth0Client.buildLogoutUrl).toHaveBeenCalledWith(options);
         done();
       });
     });
