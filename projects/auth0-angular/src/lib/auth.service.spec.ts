@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
-import { bufferCount, bufferTime, filter } from 'rxjs/operators';
+import { bufferCount, bufferTime, filter, mergeMap, tap } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
 
@@ -670,21 +670,23 @@ describe('AuthService', () => {
     it('should refresh the internal state', (done) => {
       const localService = createService();
 
-      localService.isLoading$.subscribe((loading) => {
-        if (!loading) {
-          localService.isAuthenticated$
-            .pipe(bufferCount(2))
-            .subscribe((authenticatedStates) => {
-              expect(authenticatedStates).toEqual([false, true]);
-              expect(auth0Client.isAuthenticated).toHaveBeenCalled();
-              done();
-            });
+      localService.isAuthenticated$
+        .pipe(bufferCount(2))
+        .subscribe((authenticatedStates) => {
+          expect(authenticatedStates).toEqual([false, true]);
+          expect(auth0Client.isAuthenticated).toHaveBeenCalled();
+          done();
+        });
 
-          (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
-
-          localService.handleRedirectCallback().subscribe();
-        }
-      });
+      localService.isLoading$
+        .pipe(
+          filter((isLoading) => !isLoading),
+          tap(() =>
+            (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true)
+          ),
+          mergeMap(() => localService.handleRedirectCallback())
+        )
+        .subscribe();
     });
   });
 });
