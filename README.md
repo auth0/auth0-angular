@@ -513,7 +513,13 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ### Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+The end-to-end tests are executed using [Cypress](https://www.cypress.io/) against the built-in playground app.
+
+The E2E tests require that the user password be specified as an environment variable. This is already set up in the CI environment, but locally you can do:
+
+```
+CYPRESS_INTEGRATION_PASSWORD=<password> ng e2e
+```
 
 ### Running the playground app
 
