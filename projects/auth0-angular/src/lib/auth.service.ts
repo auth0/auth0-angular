@@ -321,6 +321,8 @@ export class AuthService implements OnDestroy {
    * responses from Auth0. If the response is successful, results
    * will be valid according to their expiration times.
    *
+   * Calling this method also refreshes the authentication and user states.
+   *
    * @param url The URL to that should be used to retrieve the `state` and `code` values. Defaults to `window.location.href` if not given.
    */
   handleRedirectCallback(url?: string): Observable<RedirectLoginResult> {
