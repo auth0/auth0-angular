@@ -1,9 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
+import {
+  Auth0Client,
+  IdToken,
+  LogoutUrlOptions,
+  RedirectLoginOptions,
+} from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
-import { bufferCount, bufferTime, filter } from 'rxjs/operators';
+import { bufferCount, bufferTime, filter, mergeMap, tap } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
 
@@ -42,6 +47,8 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(undefined);
     spyOn(auth0Client, 'logout');
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
+    spyOn(auth0Client, 'buildAuthorizeUrl').and.resolveTo('/authorize');
+    spyOn(auth0Client, 'buildLogoutUrl').and.returnValue('/v2/logout');
 
     spyOn(auth0Client, 'getTokenWithPopup').and.resolveTo(
       '__access_token_from_popup__'
@@ -606,6 +613,110 @@ describe('AuthService', () => {
           expect(err).toBe(errorObj);
           done();
         },
+      });
+    });
+  });
+
+  describe('handleRedirectCallback', () => {
+    let navigator: AbstractNavigator;
+
+    beforeEach(() => {
+      TestBed.resetTestingModule();
+
+      navigator = jasmine.createSpyObj('RouteNavigator', {
+        navigateByUrl: Promise.resolve(true),
+      }) as any;
+
+      TestBed.configureTestingModule({
+        ...moduleSetup,
+        providers: [
+          {
+            provide: AbstractNavigator,
+            useValue: navigator,
+          },
+          {
+            provide: Auth0ClientService,
+            useValue: auth0Client,
+          },
+          {
+            provide: Location,
+            useValue: locationSpy,
+          },
+          {
+            provide: AuthConfigService,
+            useValue: {
+              ...authConfig,
+              skipRedirectCallback: true,
+            },
+          },
+        ],
+      });
+
+      locationSpy.path.and.returnValue('');
+    });
+
+    it('should call the underlying SDK', (done) => {
+      const localService = createService();
+
+      localService.handleRedirectCallback().subscribe(() => {
+        expect(auth0Client.handleRedirectCallback).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should call the underlying SDK and pass options', (done) => {
+      const url = 'http://localhost';
+      const localService = createService();
+
+      localService.handleRedirectCallback(url).subscribe(() => {
+        expect(auth0Client.handleRedirectCallback).toHaveBeenCalledWith(url);
+        done();
+      });
+    });
+
+    it('should refresh the internal state', (done) => {
+      const localService = createService();
+
+      localService.isAuthenticated$
+        .pipe(bufferCount(2))
+        .subscribe((authenticatedStates) => {
+          expect(authenticatedStates).toEqual([false, true]);
+          expect(auth0Client.isAuthenticated).toHaveBeenCalled();
+          done();
+        });
+
+      localService.isLoading$
+        .pipe(
+          filter((isLoading) => !isLoading),
+          tap(() =>
+            (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true)
+          ),
+          mergeMap(() => localService.handleRedirectCallback())
+        )
+        .subscribe();
+    });
+  });
+
+  describe('buildAuthorizeUrl', () => {
+    it('should call the underlying SDK', (done) => {
+      const options: RedirectLoginOptions = {};
+
+      service.buildAuthorizeUrl(options).subscribe((url) => {
+        expect(url).toBeTruthy();
+        expect(auth0Client.buildAuthorizeUrl).toHaveBeenCalledWith(options);
+        done();
+      });
+    });
+  });
+
+  describe('buildLogoutUrl', () => {
+    it('should call the underlying SDK', (done) => {
+      const options: LogoutUrlOptions = {};
+
+      service.buildLogoutUrl(options).subscribe((url) => {
+        expect(url).toBeTruthy();
+        expect(auth0Client.buildLogoutUrl).toHaveBeenCalledWith(options);
+        done();
       });
     });
   });

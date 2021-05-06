@@ -9,6 +9,7 @@ import {
   GetTokenSilentlyOptions,
   GetTokenWithPopupOptions,
   RedirectLoginResult,
+  LogoutUrlOptions,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -35,6 +36,7 @@ import {
   switchMap,
   mergeMap,
   scan,
+  withLatestFrom,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -310,6 +312,62 @@ export class AuthService implements OnDestroy {
     );
   }
 
+  /**
+   * ```js
+   * handleRedirectCallback(url).subscribe(result => ...)
+   * ```
+   *
+   * After the browser redirects back to the callback page,
+   * call `handleRedirectCallback` to handle success and error
+   * responses from Auth0. If the response is successful, results
+   * will be valid according to their expiration times.
+   *
+   * Calling this method also refreshes the authentication and user states.
+   *
+   * @param url The URL to that should be used to retrieve the `state` and `code` values. Defaults to `window.location.href` if not given.
+   */
+  handleRedirectCallback(url?: string): Observable<RedirectLoginResult> {
+    return defer(() => this.auth0Client.handleRedirectCallback(url)).pipe(
+      withLatestFrom(this.isLoadingSubject$),
+      tap(([result, isLoading]) => {
+        if (!isLoading) {
+          this.refreshState$.next();
+        }
+        const target = result?.appState?.target ?? '/';
+        this.navigator.navigateByUrl(target);
+      }),
+      map(([result]) => result)
+    );
+  }
+
+  /**
+   * ```js
+   * buildAuthorizeUrl().subscribe(url => ...)
+   * ```
+   *
+   * Builds an `/authorize` URL for loginWithRedirect using the parameters
+   * provided as arguments. Random and secure `state` and `nonce`
+   * parameters will be auto-generated.
+   * @param options The options
+   * @returns A URL to the authorize endpoint
+   */
+  buildAuthorizeUrl(options?: RedirectLoginOptions): Observable<string> {
+    return defer(() => this.auth0Client.buildAuthorizeUrl(options));
+  }
+
+  /**
+   * ```js
+   * buildLogoutUrl().subscribe(url => ...)
+   * ```
+   * Builds a URL to the logout endpoint.
+   *
+   * @param options The options used to configure the parameters that appear in the logout endpoint URL.
+   * @returns a URL to the logout endpoint using the parameters provided as arguments.
+   */
+  buildLogoutUrl(options?: LogoutUrlOptions): Observable<string> {
+    return of(this.auth0Client.buildLogoutUrl(options));
+  }
+
   private shouldHandleCallback(): Observable<boolean> {
     return of(this.location.path()).pipe(
       map((search) => {
@@ -318,15 +376,6 @@ export class AuthService implements OnDestroy {
           search.includes('state=') &&
           !this.configFactory.get().skipRedirectCallback
         );
-      })
-    );
-  }
-
-  private handleRedirectCallback(): Observable<RedirectLoginResult> {
-    return defer(() => this.auth0Client.handleRedirectCallback()).pipe(
-      tap((result) => {
-        const target = result?.appState?.target ?? '/';
-        this.navigator.navigateByUrl(target);
       })
     );
   }
