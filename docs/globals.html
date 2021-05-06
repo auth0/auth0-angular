@@ -3951,9 +3951,16 @@ AuthModule.forRoot({
             <h3>Running end-to-end tests</h3>
           </a>
           <p>
-            Run <code>ng e2e</code> to execute the end-to-end tests via
-            <a href="http://www.protractortest.org/">Protractor</a>.
+            The end-to-end tests are executed using
+            <a href="https://www.cypress.io/">Cypress</a> against the built-in
+            playground app.
           </p>
+          <p>
+            The E2E tests require that the user password be specified as an
+            environment variable. This is already set up in the CI environment,
+            but locally you can do:
+          </p>
+          <pre><code><span class="hljs-attr">CYPRESS_INTEGRATION_PASSWORD</span>=&lt;password&gt; ng e2e</code></pre>
           <a
             href="#running-the-playground-app"
             id="running-the-playground-app"
@@ -4268,7 +4275,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/auth.config.ts#L22"
+                    href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/lib/auth.config.ts#L22"
                     >projects/auth0-angular/src/lib/auth.config.ts:22</a
                   >
                 </li>
@@ -4311,7 +4318,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/auth.client.ts#L31"
+                    href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/lib/auth.client.ts#L31"
                     >projects/auth0-angular/src/lib/auth.client.ts:31</a
                   >
                 </li>
@@ -4343,7 +4350,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/auth.config.ts#L318"
+                    href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/lib/auth.config.ts#L318"
                     >projects/auth0-angular/src/lib/auth.config.ts:318</a
                   >
                 </li>
@@ -4384,7 +4391,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L24"
+                    href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/test.ts#L24"
                     >projects/auth0-angular/src/test.ts:24</a
                   >
                 </li>
@@ -4450,7 +4457,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L13"
+                              href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/test.ts#L13"
                               >projects/auth0-angular/src/test.ts:13</a
                             >
                           </li>
@@ -4482,7 +4489,7 @@ AuthModule.forRoot({
                 <li>
                   Defined in
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L11"
+                    href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/test.ts#L11"
                     >projects/auth0-angular/src/test.ts:11</a
                   >
                 </li>
@@ -4528,7 +4535,7 @@ AuthModule.forRoot({
                           <li>
                             Defined in
                             <a
-                              href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L12"
+                              href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/test.ts#L12"
                               >projects/auth0-angular/src/test.ts:12</a
                             >
                           </li>
@@ -4638,7 +4645,7 @@ AuthModule.forRoot({
                                   <li>
                                     Defined in
                                     <a
-                                      href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/test.ts#L13"
+                                      href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/test.ts#L13"
                                       >projects/auth0-angular/src/test.ts:13</a
                                     >
                                   </li>
@@ -4691,7 +4698,7 @@ AuthModule.forRoot({
                     <li>
                       Defined in
                       <a
-                        href="https://github.com/auth0/auth0-angular/blob/24e98fd/projects/auth0-angular/src/lib/auth.config.ts#L28"
+                        href="https://github.com/auth0/auth0-angular/blob/2117a23/projects/auth0-angular/src/lib/auth.config.ts#L28"
                         >projects/auth0-angular/src/lib/auth.config.ts:28</a
                       >
                     </li>
