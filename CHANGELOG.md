@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.5.0](https://github.com/auth0/auth0-angular/tree/v1.5.0) (2021-05-06)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.4.1...v1.5.0)
+
+**Added**
+
+- [SDK-2542] Expose methods from Auth0 SPA SDK [\#150](https://github.com/auth0/auth0-angular/pull/150) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
 ## [v1.4.1](https://github.com/auth0/auth0-angular/tree/v1.4.1) (2021-04-13)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.4.0...v1.4.1)
