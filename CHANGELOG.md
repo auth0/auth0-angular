@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.5.1](https://github.com/auth0/auth0-angular/tree/v1.5.1) (2021-05-25)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.5.0...v1.5.1)
+
+**Changed**
+
+- Add support for Angular 12 [\#158](https://github.com/auth0/auth0-angular/pull/158) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.5.0](https://github.com/auth0/auth0-angular/tree/v1.5.0) (2021-05-06)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.4.1...v1.5.0)
