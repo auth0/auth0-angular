@@ -6,7 +6,7 @@
 
 **Changed**
 
-- Add support for Angular 12 [\#158](https://github.com/auth0/auth0-angular/pull/158) ([frederikprijck](https://github.com/frederikprijck))
+- Modified the allowed Angular version range to accept Angular 12 [\#158](https://github.com/auth0/auth0-angular/pull/158) ([frederikprijck](https://github.com/frederikprijck))
 
 ## [v1.5.0](https://github.com/auth0/auth0-angular/tree/v1.5.0) (2021-05-06)
 
