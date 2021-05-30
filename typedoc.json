@@ -1,26 +1,10 @@
 {
-  "inputFiles": ["./projects/auth0-angular/src"],
-  "exclude": ["src/test.ts", "**/*.spec.ts"],
+  "entryPoints": ["./projects/auth0-angular/src/lib"],
+  "exclude": ["**/*.spec.ts"],
   "tsconfig": "./projects/auth0-angular/tsconfig.lib.json",
-  "mode": "file",
   "out": "docs",
   "excludeExternals": true,
   "excludePrivate": true,
-  "excludeNotExported": true,
-  "includeDeclarations": true,
   "hideGenerator": true,
-  "theme": "minimal",
-  "readme": "./README.md",
-  "toc": [
-    "AuthGuard",
-    "AuthHttpInterceptor",
-    "AuthModule",
-    "AuthService",
-    "AuthConfig",
-    "AuthClientConfig",
-    "HttpInterceptorConfig",
-    "HttpInterceptorRouteConfig",
-    "ApiRouteDefinition",
-    "AuthConfigService"
-  ]
+  "readme": "./README.md"
 }
