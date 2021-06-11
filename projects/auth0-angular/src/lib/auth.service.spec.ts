@@ -400,6 +400,27 @@ describe('AuthService', () => {
       });
     });
 
+    it('should record the appState in the appState$ observable if it is present', (done) => {
+      const appState = {
+        very: {
+          deeply: {
+            nested: 'value',
+          },
+        },
+      };
+
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({
+        appState,
+      });
+
+      const localService = createService();
+
+      localService.appState$.subscribe((recievedState) => {
+        expect(recievedState).toEqual(appState);
+        done();
+      });
+    });
+
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
@@ -694,6 +715,28 @@ describe('AuthService', () => {
           mergeMap(() => localService.handleRedirectCallback())
         )
         .subscribe();
+    });
+
+    it('should record the appState in the appState$ observable if it is present', (done) => {
+      const appState = {
+        very: {
+          deeply: {
+            nested: 'value',
+          },
+        },
+      };
+
+      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({
+        appState,
+      });
+
+      const localService = createService();
+      localService.handleRedirectCallback().subscribe(() => {
+        localService.appState$.subscribe((recievedState) => {
+          expect(recievedState).toEqual(appState);
+          done();
+        });
+      });
     });
   });
 

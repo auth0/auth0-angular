@@ -52,6 +52,7 @@ export class AuthService implements OnDestroy {
   private errorSubject$ = new ReplaySubject<Error>(1);
   private refreshState$ = new Subject<void>();
   private accessToken$ = new ReplaySubject<string>(1);
+  private appStateSubject$ = new ReplaySubject<any>(1);
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject<void>();
@@ -136,6 +137,12 @@ export class AuthService implements OnDestroy {
    * Emits errors that occur during login, or when checking for an active session on startup.
    */
   readonly error$ = this.errorSubject$.asObservable();
+
+  /**
+   * Emits the value (if any) that was passed to the `loginWithRedirect` method call
+   * but only **after** `handleRedirectCallback` is first called
+   */
+  readonly appState$ = this.appStateSubject$.asObservable();
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
@@ -333,7 +340,10 @@ export class AuthService implements OnDestroy {
         if (!isLoading) {
           this.refreshState$.next();
         }
-        const target = result?.appState?.target ?? '/';
+        const appState = result.appState;
+        const target = appState?.target ?? '/';
+
+        this.appStateSubject$.next(appState);
         this.navigator.navigateByUrl(target);
       }),
       map(([result]) => result)
