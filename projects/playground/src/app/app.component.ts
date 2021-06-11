@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
 import { iif } from 'rxjs';
@@ -12,17 +12,19 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   isAuthenticated$ = this.auth.isAuthenticated$;
   isLoading$ = this.auth.isLoading$;
   user$ = this.auth.user$;
   claims$ = this.auth.idTokenClaims$;
   accessToken = '';
+  appState = '';
   error$ = this.auth.error$;
 
   organization = '';
 
   loginOptionsForm = new FormGroup({
+    appState: new FormControl(''),
     usePopup: new FormControl(false),
   });
 
@@ -35,6 +37,12 @@ export class AppComponent {
     usePopup: new FormControl(false),
     ignoreCache: new FormControl(false),
   });
+
+  ngOnInit(): void {
+    this.auth.appState$.subscribe((appState) => {
+      this.appState = appState.deeply.nested.value;
+    });
+  }
 
   constructor(
     public auth: AuthService,
@@ -51,6 +59,13 @@ export class AppComponent {
     } else {
       this.auth.loginWithRedirect({
         ...(this.organization ? { organization: this.organization } : null),
+        appState: {
+          deeply: {
+            nested: {
+              value: this.loginOptionsForm.value.appState,
+            },
+          },
+        },
       });
     }
   }
