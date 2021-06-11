@@ -121,6 +121,56 @@ On your template, provide a button that will allow the user to log in to the app
 </button>
 ```
 
+### Preserve application state through redirects
+
+To preserve application state through the redirect to Auth0 and the subsequent redirect back to your application (if the user authentications succesfully), you can pass in the state that you want preserved to the `loginWithRedirect` method:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {}
+
+  loginWithRedirect(): void {
+    this.auth.loginWithRedirect({
+      appState: {
+        // Specify which application state you would like to preserve here (yes, objects ARE allowed)
+      },
+    });
+  }
+}
+```
+
+After Auth0 redirects the user back to your application, you can access the stored state using the `appState$` observable on the `AuthService`:
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {}
+
+  ngOnInit() {
+    this.auth.appState$.subscribe((appState) => {
+      // Your value will be available here
+    });
+  }
+}
+```
+
+> This method of saving application state will save it in Session Storage which is capable of holding multiple MBs worth of data, so you should have more than enough space for your needs
+
 ### Add logout to your application
 
 Add a `logout` method to your component and call the SDK's `logout` method:
