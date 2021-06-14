@@ -121,58 +121,6 @@ On your template, provide a button that will allow the user to log in to the app
 </button>
 ```
 
-### Preserve application state through redirects
-
-To preserve application state through the redirect to Auth0 and the subsequent redirect back to your application (if the user authentications succesfully), you can pass in the state that you want preserved to the `loginWithRedirect` method:
-
-```ts
-import { Component } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-})
-export class AppComponent {
-  constructor(public auth: AuthService) {}
-
-  loginWithRedirect(): void {
-    this.auth.loginWithRedirect({
-      appState: {
-        myValue: 'My State to Track',
-      },
-    });
-  }
-}
-```
-
-After Auth0 redirects the user back to your application, you can access the stored state using the `appState$` observable on the `AuthService`:
-
-```ts
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-})
-export class AppComponent {
-  constructor(public auth: AuthService) {}
-
-  ngOnInit() {
-    this.auth.appState$.subscribe((appState) => {
-      console.log(appState.myValue);
-    });
-  }
-}
-```
-
-> By default, this method of saving application state will store it in Session Storage; however, if `useCookiesForTransactions` is set, a Cookie will be used instead.
-
-> This information will be removed from storage once the user is redirected back to your application after a successful login attempt (although it will continue to be accessible on the `AuthService`).
-
 ### Add logout to your application
 
 Add a `logout` method to your component and call the SDK's `logout` method:
