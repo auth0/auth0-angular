@@ -343,7 +343,10 @@ export class AuthService implements OnDestroy {
         const appState = result?.appState;
         const target = appState?.target ?? '/';
 
-        this.appStateSubject$.next(appState);
+        if (appState) {
+          this.appStateSubject$.next(appState);
+        }
+
         this.navigator.navigateByUrl(target);
       }),
       map(([result]) => result)
