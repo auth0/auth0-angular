@@ -140,7 +140,7 @@ export class AppComponent {
   loginWithRedirect(): void {
     this.auth.loginWithRedirect({
       appState: {
-        // Specify which application state you would like to preserve here (yes, objects ARE allowed)
+        myValue: 'My State to Track',
       },
     });
   }
@@ -163,7 +163,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.auth.appState$.subscribe((appState) => {
-      // Your value will be available here
+      console.log(appState.myValue);
     });
   }
 }
