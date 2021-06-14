@@ -18,13 +18,13 @@ export class AppComponent implements OnInit {
   user$ = this.auth.user$;
   claims$ = this.auth.idTokenClaims$;
   accessToken = '';
-  appState = '';
+  appStateResult = '';
   error$ = this.auth.error$;
 
   organization = '';
 
   loginOptionsForm = new FormGroup({
-    appState: new FormControl(''),
+    appStateInput: new FormControl(''),
     usePopup: new FormControl(false),
   });
 
@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.appState$.subscribe((appState) => {
-      this.appState = appState.deeply.nested.value;
+      this.appStateResult = appState.myValue;
     });
   }
 
@@ -60,11 +60,7 @@ export class AppComponent implements OnInit {
       this.auth.loginWithRedirect({
         ...(this.organization ? { organization: this.organization } : null),
         appState: {
-          deeply: {
-            nested: {
-              value: this.loginOptionsForm.value.appState,
-            },
-          },
+          myValue: this.loginOptionsForm.value.appStateInput,
         },
       });
     }
