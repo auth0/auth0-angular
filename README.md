@@ -169,7 +169,9 @@ export class AppComponent {
 }
 ```
 
-> This method of saving application state will save it in Session Storage which is capable of holding multiple MBs worth of data, so you should have more than enough space for your needs
+> By default, this method of saving application state will store it in Session Storage; however, if `useCookiesForTransactions` is set, a Cookie will be used instead.
+
+> This information will be removed from storage once the user is redirected back to your application after a successful login attempt (although it will continue to be accessible on the `AuthService`).
 
 ### Add logout to your application
 
