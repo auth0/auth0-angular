@@ -402,11 +402,7 @@ describe('AuthService', () => {
 
     it('should record the appState in the appState$ observable if it is present', (done) => {
       const appState = {
-        very: {
-          deeply: {
-            nested: 'value',
-          },
-        },
+        myValue: 'State to Preserve',
       };
 
       (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({
@@ -719,11 +715,7 @@ describe('AuthService', () => {
 
     it('should record the appState in the appState$ observable if it is present', (done) => {
       const appState = {
-        very: {
-          deeply: {
-            nested: 'value',
-          },
-        },
+        myValue: 'State to Preserve',
       };
 
       (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({
