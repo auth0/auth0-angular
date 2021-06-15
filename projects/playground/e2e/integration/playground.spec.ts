@@ -42,7 +42,7 @@ describe('Smoke tests', () => {
     cy.get('#logout').should('be.visible').click();
   });
 
-  it('do redirect login and show user and access token', () => {
+  it('do redirect login and show user, access token and appState', () => {
     const appState = 'Any Random String';
 
     cy.visit('/');
