@@ -1,5 +1,11 @@
-const EMAIL = 'johnfoo+integration@gmail.com';
-const PASSWORD = Cypress.env('INTEGRATION_PASSWORD');
+const EMAIL = Cypress.env('USER_EMAIL');
+const PASSWORD = Cypress.env('USER_PASSWORD');
+
+if (!EMAIL || !PASSWORD) {
+  throw new Error(
+    'You must provide CYPRESS_USER_EMAIL and CYPRESS_USER_PASSWORD environment variables'
+  );
+}
 
 const loginToAuth0 = () => {
   cy.get('.auth0-lock-form')
