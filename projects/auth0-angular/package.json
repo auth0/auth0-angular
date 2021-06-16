@@ -12,7 +12,7 @@
     "angular"
   ],
   "scripts": {
-    "build": "../../node_modules/.bin/tsc -p tsconfig.schematics.json",
+    "build": "tsc -p tsconfig.schematics.json",
     "copy:collection": "cp schematics/collection.json ../../dist/auth0-angular/schematics/collection.json",
     "postbuild": "npm run copy:collection"
   },
