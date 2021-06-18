@@ -10,6 +10,7 @@ import {
   GetTokenWithPopupOptions,
   RedirectLoginResult,
   LogoutUrlOptions,
+  GenericError,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -49,7 +50,7 @@ import { AuthClientConfig } from './auth.config';
 })
 export class AuthService implements OnDestroy {
   private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
-  private errorSubject$ = new ReplaySubject<Error>(1);
+  private errorSubject$ = new ReplaySubject<GenericError>(1);
   private refreshState$ = new Subject<void>();
   private accessToken$ = new ReplaySubject<string>(1);
   private appStateSubject$ = new ReplaySubject<any>(1);
