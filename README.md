@@ -363,7 +363,7 @@ A common reason you might want to handle the above errors, emitted by the `error
 ```
 ngOnInit() {
   this.authService.error$.pipe(
-    filter(e => e.error === 'login_required'),
+    filter((e) => e instanceof GenericError && e.error === 'login_required'),
     mergeMap(() => this.authService.loginWithRedirect())
   ).subscribe();
 }
