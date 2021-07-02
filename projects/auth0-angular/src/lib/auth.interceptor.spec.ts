@@ -61,25 +61,25 @@ describe('The Auth HTTP Interceptor', () => {
       httpInterceptor: {
         allowedList: [
           '',
-          '/api/photos',
-          '/api/people*',
+          'https://my-api.com/api/photos',
+          'https://my-api.com/api/people*',
           'https://my-api.com/orders',
           {
-            uri: '/api/orders',
+            uri: 'https://my-api.com/api/orders',
             allowAnonymous: true,
           },
           {
-            uri: '/api/addresses',
+            uri: 'https://my-api.com/api/addresses',
             tokenOptions: {
               audience: 'audience',
               scope: 'scope',
             },
           },
           {
-            uri: '/api/calendar*',
+            uri: 'https://my-api.com/api/calendar*',
           },
           {
-            uri: '/api/register',
+            uri: 'https://my-api.com/api/register',
             httpMethod: HttpMethod.Post,
           },
           {
@@ -126,7 +126,7 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       config.httpInterceptor = (null as unknown) as HttpInterceptorConfig;
-      assertPassThruApiCallTo('/api/public', done);
+      assertPassThruApiCallTo('https://my-api.com/api/public', done);
     }));
   });
 
@@ -134,7 +134,7 @@ describe('The Auth HTTP Interceptor', () => {
     it('pass through and do not have access tokens attached', fakeAsync((
       done: () => void
     ) => {
-      assertPassThruApiCallTo('/api/public', done);
+      assertPassThruApiCallTo('https://my-api.com/api/public', done);
     }));
   });
 
@@ -143,14 +143,14 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       // Testing /api/photos (exact match)
-      assertAuthorizedApiCallTo('/api/photos', done);
+      assertAuthorizedApiCallTo('https://my-api.com/api/photos', done);
     }));
 
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
       done: () => void
     ) => {
       // Testing /api/people* (wildcard match)
-      assertAuthorizedApiCallTo('/api/people/profile', done);
+      assertAuthorizedApiCallTo('https://my-api.com/api/people/profile', done);
     }));
 
     it('matches a full url to an API', fakeAsync((done: () => void) => {
@@ -161,13 +161,19 @@ describe('The Auth HTTP Interceptor', () => {
     it('matches a URL that contains a query string', fakeAsync((
       done: () => void
     ) => {
-      assertAuthorizedApiCallTo('/api/people?name=test', done);
+      assertAuthorizedApiCallTo(
+        'https://my-api.com/api/people?name=test',
+        done
+      );
     }));
 
     it('matches a URL that contains a hash fragment', fakeAsync((
       done: () => void
     ) => {
-      assertAuthorizedApiCallTo('/api/people#hash-fragment', done);
+      assertAuthorizedApiCallTo(
+        'https://my-api.com/api/people#hash-fragment',
+        done
+      );
     }));
   });
 
@@ -176,14 +182,14 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       // Testing { uri: /api/orders } (exact match)
-      assertAuthorizedApiCallTo('/api/orders', done);
+      assertAuthorizedApiCallTo('https://my-api.com/api/orders', done);
     }));
 
     it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
       done: () => void
     ) => {
       // Testing { uri: /api/addresses } (exact match)
-      assertAuthorizedApiCallTo('/api/addresses', done);
+      assertAuthorizedApiCallTo('https://my-api.com/api/addresses', done);
 
       expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
         audience: 'audience',
@@ -195,20 +201,24 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       // Testing { uri: /api/calendar* } (wildcard match)
-      assertAuthorizedApiCallTo('/api/calendar/events', done);
+      assertAuthorizedApiCallTo('https://my-api.com/api/calendar/events', done);
     }));
 
     it('attaches the access token when the HTTP method matches', fakeAsync((
       done: () => void
     ) => {
       // Testing { uri: /api/register } (wildcard match)
-      assertAuthorizedApiCallTo('/api/register', done, 'post');
+      assertAuthorizedApiCallTo(
+        'https://my-api.com/api/register',
+        done,
+        'post'
+      );
     }));
 
     it('does not attach the access token if the HTTP method does not match', fakeAsync((
       done: () => void
     ) => {
-      assertPassThruApiCallTo('/api/public', done);
+      assertPassThruApiCallTo('https://my-api.com/api/public', done);
     }));
 
     it('does not execute HTTP call when not able to retrieve a token', fakeAsync((
@@ -218,13 +228,11 @@ describe('The Auth HTTP Interceptor', () => {
         throwError({ error: 'login_required' })
       );
 
-      httpClient
-        .request('get', '/api/calendar')
-        .subscribe({
-          error: (err) => expect(err).toEqual({ error: 'login_required' }),
-        });
+      httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
+        error: (err) => expect(err).toEqual({ error: 'login_required' }),
+      });
 
-      httpTestingController.expectNone('/api/calendar');
+      httpTestingController.expectNone('https://my-api.com/api/calendar');
       flush();
     }));
 
@@ -235,7 +243,7 @@ describe('The Auth HTTP Interceptor', () => {
         throwError({ error: 'login_required' })
       );
 
-      assertPassThruApiCallTo('/api/orders', done);
+      assertPassThruApiCallTo('https://my-api.com/api/orders', done);
     }));
   });
 
@@ -244,14 +252,14 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
-      assertAuthorizedApiCallTo('/api/contact', done, 'post');
+      assertAuthorizedApiCallTo('https://my-api.com/api/contact', done, 'post');
     }));
 
     it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
       done: () => void
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
-      assertAuthorizedApiCallTo('/api/contact', done, 'post');
+      assertAuthorizedApiCallTo('https://my-api.com/api/contact', done, 'post');
 
       expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
         audience: 'audience',
@@ -263,8 +271,8 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
-      assertAuthorizedApiCallTo('/api/contact', done, 'post');
-      assertPassThruApiCallTo('/api/contact', done);
+      assertAuthorizedApiCallTo('https://my-api.com/api/contact', done, 'post');
+      assertPassThruApiCallTo('https://my-api.com/api/contact', done);
     }));
   });
 });
