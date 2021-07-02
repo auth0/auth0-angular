@@ -27,6 +27,22 @@
           data-cy="login-popup"
         />
       </label>
+
+      <br />
+      <br />
+
+      <label>
+        App State:
+        <input
+          type="text"
+          formControlName="appStateInput"
+          data-cy="app-state-input"
+        />
+      </label>
+
+      <br />
+      <br />
+
       <button id="login" (click)="launchLogin()">Log in</button>
       <button id="loginWithInvitation" (click)="loginHandleInvitationUrl()">
         Log in with Invitation
@@ -132,6 +148,17 @@
         <textarea data-cy="accessToken" cols="50" rows="2" disabled="true">{{
           accessToken
         }}</textarea>
+
+        <br />
+        <br />
+
+        <textarea
+          data-cy="app-state-result"
+          cols="50"
+          rows="2"
+          disabled="true"
+          >{{ appStateResult }}</textarea
+        >
       </li>
     </ul>
   </div>
