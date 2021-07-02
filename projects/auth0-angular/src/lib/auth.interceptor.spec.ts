@@ -61,25 +61,25 @@ describe('The Auth HTTP Interceptor', () => {
       httpInterceptor: {
         allowedList: [
           '',
-          '/api/photos',
-          '/api/people*',
+          'https://my-api.com/api/photos',
+          'https://my-api.com/api/people*',
           'https://my-api.com/orders',
           {
-            uri: '/api/orders',
+            uri: 'https://my-api.com/api/orders',
             allowAnonymous: true,
           },
           {
-            uri: '/api/addresses',
+            uri: 'https://my-api.com/api/addresses',
             tokenOptions: {
               audience: 'audience',
               scope: 'scope',
             },
           },
           {
-            uri: '/api/calendar*',
+            uri: 'https://my-api.com/api/calendar*',
           },
           {
-            uri: '/api/register',
+            uri: 'https://my-api.com/api/register',
             httpMethod: HttpMethod.Post,
           },
           {
