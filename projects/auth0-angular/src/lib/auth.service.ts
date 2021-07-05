@@ -369,6 +369,14 @@ export class AuthService implements OnDestroy {
     return of(this.auth0Client.buildLogoutUrl(options));
   }
 
+  refreshState(): void {
+    this.refreshState$.next();
+  }
+
+  refreshAccessToken(token: string) {
+    this.accessToken$.next(token);
+  }
+
   private shouldHandleCallback(): Observable<boolean> {
     return of(this.location.path()).pipe(
       map((search) => {

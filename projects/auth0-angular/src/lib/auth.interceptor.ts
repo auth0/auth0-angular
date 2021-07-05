@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 
 import { Observable, from, of, iif, throwError } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 import {
   ApiRouteDefinition,
@@ -24,15 +24,18 @@ import {
   tap,
 } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
+import { Auth0Client, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { AuthErrorService } from './auth-error.service';
+import { Auth0ClientService } from './auth.client';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
   constructor(
     private configFactory: AuthClientConfig,
     private authService: AuthService,
-    private errorService: AuthErrorService
+    private errorService: AuthErrorService,
+
+    @Inject(Auth0ClientService) private auth0Client: Auth0Client
   ) {}
 
   intercept(
@@ -57,19 +60,22 @@ export class AuthHttpInterceptor implements HttpInterceptor {
                 (this.errorService.disabled = this.allowAnonymous(route))
             ),
             pluck('tokenOptions'),
-            concatMap<GetTokenSilentlyOptions, Observable<string>>((options) =>
-              this.authService.getAccessTokenSilently(options).pipe(
-                tap(() => (this.errorService.disabled = false)),
-                catchError((err) => {
-                  this.errorService.disabled = undefined;
+            concatMap<GetTokenSilentlyOptions, Observable<string>>(
+              (options) => {
+                return from(this.auth0Client.getTokenSilently(options)).pipe(
+                  tap((token) => this.authService.refreshAccessToken(token)),
+                  catchError((err) => {
+                    if (this.allowAnonymous(route)) {
+                      return of('');
+                    }
 
-                  if (this.allowAnonymous(route)) {
-                    return of('');
-                  }
+                    this.errorService.recordError(err);
+                    this.authService.refreshState();
 
-                  return throwError(err);
-                })
-              )
+                    return throwError(err);
+                  })
+                );
+              }
             ),
             switchMap((token: string) => {
               // Clone the request and attach the bearer token
