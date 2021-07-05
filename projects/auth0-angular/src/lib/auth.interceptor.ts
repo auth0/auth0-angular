@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 
 import { Observable, from, of, iif, throwError } from 'rxjs';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import {
   ApiRouteDefinition,
@@ -24,18 +24,13 @@ import {
   tap,
 } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { Auth0Client, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
-import { AuthErrorService } from './auth-error.service';
-import { Auth0ClientService } from './auth.client';
+import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
   constructor(
     private configFactory: AuthClientConfig,
-    private authService: AuthService,
-    private errorService: AuthErrorService,
-
-    @Inject(Auth0ClientService) private auth0Client: Auth0Client
+    private authService: AuthService
   ) {}
 
   intercept(
@@ -55,26 +50,22 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           // If we have a matching route, call getTokenSilently and attach the token to the
           // outgoing request
           of(route).pipe(
-            tap(
-              (route: ApiRouteDefinition | null) =>
-                (this.errorService.disabled = this.allowAnonymous(route))
-            ),
             pluck('tokenOptions'),
             concatMap<GetTokenSilentlyOptions, Observable<string>>(
               (options) => {
-                return from(this.auth0Client.getTokenSilently(options)).pipe(
-                  tap((token) => this.authService.refreshAccessToken(token)),
-                  catchError((err) => {
-                    if (this.allowAnonymous(route)) {
-                      return of('');
-                    }
-
-                    this.errorService.recordError(err);
-                    this.authService.refreshState();
-
-                    return throwError(err);
+                return this.authService
+                  .getAccessTokenSilently(options, {
+                    emitError: (err) => !this.allowAnonymous(route, err),
                   })
-                );
+                  .pipe(
+                    catchError((err) => {
+                      if (this.allowAnonymous(route, err)) {
+                        return of('');
+                      }
+
+                      return throwError(err);
+                    })
+                  );
               }
             ),
             switchMap((token: string) => {
@@ -178,9 +169,12 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     );
   }
 
-  private allowAnonymous(route: ApiRouteDefinition | null): boolean {
+  private allowAnonymous(route: ApiRouteDefinition | null, err: any): boolean {
     return (
-      !!route && isHttpInterceptorRouteConfig(route) && !!route.allowAnonymous
+      !!route &&
+      isHttpInterceptorRouteConfig(route) &&
+      !!route.allowAnonymous &&
+      ['login_required', 'consent_required'].includes(err.error)
     );
   }
 }
