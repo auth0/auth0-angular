@@ -273,13 +273,16 @@ export class AuthService implements OnDestroy {
    * @param options The options for configuring the token fetch.
    */
   getAccessTokenSilently(
-    options?: GetTokenSilentlyOptions
+    options?: GetTokenSilentlyOptions,
+    notifyOnError?: (err: any) => boolean
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options)),
       tap((token) => this.accessToken$.next(token)),
       catchError((error) => {
-        this.errorSubject$.next(error);
+        if (!notifyOnError || notifyOnError(error)) {
+          this.errorSubject$.next(error);
+        }
         this.refreshState$.next();
         return throwError(error);
       })

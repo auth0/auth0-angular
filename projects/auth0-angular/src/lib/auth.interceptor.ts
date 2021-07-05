@@ -45,15 +45,20 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           of(route).pipe(
             pluck('tokenOptions'),
             concatMap<GetTokenSilentlyOptions, Observable<string>>((options) =>
-              this.authService.getAccessTokenSilently(options).pipe(
-                catchError((err) => {
-                  if (this.allowAnonymous(route, err)) {
-                    return of('');
-                  }
+              this.authService
+                .getAccessTokenSilently(
+                  options,
+                  (err) => !this.allowAnonymous(route, err)
+                )
+                .pipe(
+                  catchError((err) => {
+                    if (this.allowAnonymous(route, err)) {
+                      return of('');
+                    }
 
-                  return throwError(err);
-                })
-              )
+                    return throwError(err);
+                  })
+                )
             ),
             switchMap((token: string) => {
               // Clone the request and attach the bearer token

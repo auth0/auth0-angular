@@ -556,6 +556,23 @@ describe('AuthService', () => {
       });
     });
 
+    it('should not record errors in the error$ observable when notifyOnError returns false', (done) => {
+      const errorObj = new Error('An error has occured');
+
+      (auth0Client.getTokenSilently as jasmine.Spy).and.rejectWith(errorObj);
+
+      service
+        .getAccessTokenSilently(undefined, (err) => false)
+        .subscribe({
+          error: () => {},
+        });
+
+      service.error$.pipe(bufferTime(250)).subscribe((errors: Error[]) => {
+        expect(errors.length).toBe(0);
+        done();
+      });
+    });
+
     it('should bubble errors', (done) => {
       const errorObj = new Error('An error has occured');
 

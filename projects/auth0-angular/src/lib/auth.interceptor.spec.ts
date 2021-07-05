@@ -185,10 +185,13 @@ describe('The Auth HTTP Interceptor', () => {
       // Testing { uri: /api/addresses } (exact match)
       assertAuthorizedApiCallTo('/api/addresses', done);
 
-      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
-        audience: 'audience',
-        scope: 'scope',
-      });
+      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith(
+        {
+          audience: 'audience',
+          scope: 'scope',
+        },
+        jasmine.any(Function)
+      );
     }));
 
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
@@ -218,11 +221,9 @@ describe('The Auth HTTP Interceptor', () => {
         throwError({ error: 'login_required' })
       );
 
-      httpClient
-        .request('get', '/api/calendar')
-        .subscribe({
-          error: (err) => expect(err).toEqual({ error: 'login_required' }),
-        });
+      httpClient.request('get', '/api/calendar').subscribe({
+        error: (err) => expect(err).toEqual({ error: 'login_required' }),
+      });
 
       httpTestingController.expectNone('/api/calendar');
       flush();
@@ -236,6 +237,16 @@ describe('The Auth HTTP Interceptor', () => {
       );
 
       assertPassThruApiCallTo('/api/orders', done);
+    }));
+
+    it('does not emit error when not able to retrieve a token but allowAnonymous is set to true', fakeAsync((
+      done: () => void
+    ) => {
+      (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+        throwError({ error: 'login_required' })
+      );
+
+      assertPassThruApiCallTo('https://my-api.com/api/orders', done);
     }));
   });
 
@@ -253,10 +264,13 @@ describe('The Auth HTTP Interceptor', () => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
       assertAuthorizedApiCallTo('/api/contact', done, 'post');
 
-      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
-        audience: 'audience',
-        scope: 'scope',
-      });
+      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith(
+        {
+          audience: 'audience',
+          scope: 'scope',
+        },
+        jasmine.any(Function)
+      );
     }));
 
     it('does not attach the access token when the HTTP method does not match', fakeAsync((
