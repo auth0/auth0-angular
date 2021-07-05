@@ -1,4 +1,9 @@
-import { CacheLocation, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
+import {
+  CacheLocation,
+  GetTokenSilentlyOptions,
+  ICache,
+} from '@auth0/auth0-spa-js';
+
 import { InjectionToken, Injectable, Optional, Inject } from '@angular/core';
 
 /**
@@ -154,6 +159,14 @@ export interface AuthConfig {
    * The default setting is `memory`.
    */
   cacheLocation?: CacheLocation;
+
+  /**
+   * Specify a custom cache implementation to use for token storage and retrieval.
+   * This setting takes precedence over `cacheLocation` if they are both specified.
+   *
+   * Read more about [creating a custom cache](https://github.com/auth0/auth0-spa-js#creating-a-custom-cache)
+   */
+  cache?: ICache;
 
   /**
    * If true, refresh tokens are used to fetch new access tokens from the Auth0 server.
