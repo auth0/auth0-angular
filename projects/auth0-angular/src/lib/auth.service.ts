@@ -43,13 +43,13 @@ import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { Location } from '@angular/common';
 import { AuthClientConfig } from './auth.config';
+import { AuthErrorService } from './auth-error.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
   private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
-  private errorSubject$ = new ReplaySubject<Error>(1);
   private refreshState$ = new Subject<void>();
   private accessToken$ = new ReplaySubject<string>(1);
 
@@ -135,13 +135,14 @@ export class AuthService implements OnDestroy {
   /**
    * Emits errors that occur during login, or when checking for an active session on startup.
    */
-  readonly error$ = this.errorSubject$.asObservable();
+  readonly error$ = this.errorService.error$;
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     private configFactory: AuthClientConfig,
     private location: Location,
-    private navigator: AbstractNavigator
+    private navigator: AbstractNavigator,
+    private errorService: AuthErrorService
   ) {
     const checkSessionOrCallback$ = (isCallback: boolean) =>
       iif(
@@ -156,7 +157,7 @@ export class AuthService implements OnDestroy {
           checkSessionOrCallback$(isCallback).pipe(
             catchError((error) => {
               const config = this.configFactory.get();
-              this.errorSubject$.next(error);
+              this.errorService.recordError(error);
               this.navigator.navigateByUrl(config.errorPath || '/');
               return of(undefined);
             })
@@ -273,16 +274,13 @@ export class AuthService implements OnDestroy {
    * @param options The options for configuring the token fetch.
    */
   getAccessTokenSilently(
-    options?: GetTokenSilentlyOptions,
-    notifyOnError?: (err: any) => boolean
+    options?: GetTokenSilentlyOptions
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options)),
       tap((token) => this.accessToken$.next(token)),
       catchError((error) => {
-        if (!notifyOnError || notifyOnError(error)) {
-          this.errorSubject$.next(error);
-        }
+        this.errorService.recordError(error);
         this.refreshState$.next();
         return throwError(error);
       })
@@ -308,7 +306,7 @@ export class AuthService implements OnDestroy {
       concatMap((client) => client.getTokenWithPopup(options)),
       tap((token) => this.accessToken$.next(token)),
       catchError((error) => {
-        this.errorSubject$.next(error);
+        this.errorService.recordError(error);
         this.refreshState$.next();
         return throwError(error);
       })

@@ -1,5 +1,5 @@
 import { AuthHttpInterceptor } from './auth.interceptor';
-import { TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   HttpClientTestingModule,
@@ -15,6 +15,7 @@ import {
 } from './auth.config';
 import { AuthService } from './auth.service';
 import { of, throwError } from 'rxjs';
+import { AuthErrorService } from './auth-error.service';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -22,6 +23,7 @@ describe('The Auth HTTP Interceptor', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   let authService: Partial<AuthService>;
+  let authErrorService: AuthErrorService;
   let req: TestRequest;
   const testData: Data = { message: 'Hello, world' };
 
@@ -65,7 +67,7 @@ describe('The Auth HTTP Interceptor', () => {
           '/api/people*',
           'https://my-api.com/orders',
           {
-            uri: '/api/orders',
+            uri: 'https://my-api.com/api/orders',
             allowAnonymous: true,
           },
           {
@@ -112,6 +114,7 @@ describe('The Auth HTTP Interceptor', () => {
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
+    authErrorService = TestBed.inject(AuthErrorService);
   });
 
   afterEach(() => {
@@ -176,7 +179,7 @@ describe('The Auth HTTP Interceptor', () => {
       done: () => void
     ) => {
       // Testing { uri: /api/orders } (exact match)
-      assertAuthorizedApiCallTo('/api/orders', done);
+      assertAuthorizedApiCallTo('https://my-api.com/api/orders', done);
     }));
 
     it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
@@ -185,13 +188,10 @@ describe('The Auth HTTP Interceptor', () => {
       // Testing { uri: /api/addresses } (exact match)
       assertAuthorizedApiCallTo('/api/addresses', done);
 
-      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith(
-        {
-          audience: 'audience',
-          scope: 'scope',
-        },
-        jasmine.any(Function)
-      );
+      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
+        audience: 'audience',
+        scope: 'scope',
+      });
     }));
 
     it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
@@ -242,11 +242,14 @@ describe('The Auth HTTP Interceptor', () => {
     it('does not emit error when not able to retrieve a token but allowAnonymous is set to true', fakeAsync((
       done: () => void
     ) => {
-      (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
-        throwError({ error: 'login_required' })
-      );
+      (authService.getAccessTokenSilently as jasmine.Spy).and.callFake(() => {
+        expect(authErrorService.disabled).toBeTrue();
+        return throwError({ error: 'login_required' });
+      });
 
-      assertPassThruApiCallTo('https://my-api.com/api/orders', done);
+      assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
+        expect(authErrorService.disabled).toBeUndefined();
+      });
     }));
   });
 
@@ -264,13 +267,10 @@ describe('The Auth HTTP Interceptor', () => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
       assertAuthorizedApiCallTo('/api/contact', done, 'post');
 
-      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith(
-        {
-          audience: 'audience',
-          scope: 'scope',
-        },
-        jasmine.any(Function)
-      );
+      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
+        audience: 'audience',
+        scope: 'scope',
+      });
     }));
 
     it('does not attach the access token when the HTTP method does not match', fakeAsync((
