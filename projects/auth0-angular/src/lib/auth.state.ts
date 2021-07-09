@@ -110,7 +110,7 @@ export class AuthState {
 
   constructor(@Inject(Auth0ClientService) private auth0Client: Auth0Client) {}
 
-  public setIsLoading(isLoading: boolean) {
+  public setIsLoading(isLoading: boolean): void {
     this.isLoadingSubject$.next(isLoading);
   }
 
@@ -118,7 +118,7 @@ export class AuthState {
    * Refresh the state to ensure the `isAuthenticated`, `user$` and `idTokenClaims$`
    * reflect the most up-to-date values from  Auth0Client.
    */
-  public refresh() {
+  public refresh(): void {
     this.refresh$.next();
   }
 
@@ -126,7 +126,7 @@ export class AuthState {
    * Update the access token, doing so will also refresh the state.
    * @param accessToken The new Access Token
    */
-  public setAccessToken(accessToken: string) {
+  public setAccessToken(accessToken: string): void {
     this.accessToken$.next(accessToken);
   }
 
@@ -134,7 +134,7 @@ export class AuthState {
    * Emits the error in the `error$` observable.
    * @param error The new error
    */
-  public setError(error: any) {
+  public setError(error: any): void {
     this.errorSubject$.next(error);
   }
 }
