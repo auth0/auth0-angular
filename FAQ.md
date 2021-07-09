@@ -6,6 +6,7 @@
 2. [User is not logged in after successful sign in with redirect](#2-user-is-not-logged-in-after-successful-sign-in-with-redirect)
 3. [User is redirected to `/` after successful sign in with redirect](#3-user-is-redirected-to--after-successful-sign-in-with-redirect)
 4. [Getting an infinite redirect loop between my application and Auth0](#4-getting-an-infinite-redirect-loop-between-my-application-and-auth0)
+5. [Preserve application state through redirects](#5-preserve-application-state-through-redirects)
 
 ## 1. User is not logged in after page refresh
 
@@ -61,3 +62,55 @@ this.authService.loginWithRedirect({
 In situations where the `redirectUri` points to a _protected_ route, your application will end up in an infinite redirect loop between your application and Auth0.
 
 The `redirectUri` should always be a **public** route in your application (even if the entire application is secure, our SDK needs a public route to be redirected back to). This is because, when redirecting back to the application, there is no user information available yet. The SDK first needs to process the URL (`code` and `state` query parameters) and call Auth0's endpoints to exchange the code for a token. Once that is successful, the user is considered authenticated.
+
+## 5. Preserve application state through redirects
+
+To preserve application state through the redirect to Auth0 and the subsequent redirect back to your application (if the user authenticates successfully), you can pass in the state that you want preserved to the `loginWithRedirect` method:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {}
+
+  loginWithRedirect(): void {
+    this.auth.loginWithRedirect({
+      appState: {
+        myValue: 'My State to Preserve',
+      },
+    });
+  }
+}
+```
+
+After Auth0 redirects the user back to your application, you can access the stored state using the `appState$` observable on the `AuthService`:
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {}
+
+  ngOnInit() {
+    this.auth.appState$.subscribe((appState) => {
+      console.log(appState.myValue);
+    });
+  }
+}
+```
+
+> By default, this method of saving application state will store it in Session Storage; however, if `useCookiesForTransactions` is set, a Cookie will be used instead.
+
+> This information will be removed from storage once the user is redirected back to your application after a successful login attempt (although it will continue to be accessible on the `appState$` observable).

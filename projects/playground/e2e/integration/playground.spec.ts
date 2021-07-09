@@ -1,5 +1,11 @@
-const EMAIL = 'johnfoo+integration@gmail.com';
-const PASSWORD = Cypress.env('INTEGRATION_PASSWORD');
+const EMAIL = Cypress.env('USER_EMAIL');
+const PASSWORD = Cypress.env('USER_PASSWORD');
+
+if (!EMAIL || !PASSWORD) {
+  throw new Error(
+    'You must provide CYPRESS_USER_EMAIL and CYPRESS_USER_PASSWORD environment variables'
+  );
+}
 
 const loginToAuth0 = () => {
   cy.get('.auth0-lock-form')
@@ -42,8 +48,11 @@ describe('Smoke tests', () => {
     cy.get('#logout').should('be.visible').click();
   });
 
-  it('do redirect login and show user and access token', () => {
+  it('do redirect login and show user, access token and appState', () => {
+    const appState = 'Any Random String';
+
     cy.visit('/');
+    cy.get('[data-cy=app-state-input]').type(appState);
     cy.get('#login').should('be.visible').click();
     cy.url().should('include', 'https://brucke.auth0.com/login');
     loginToAuth0();
@@ -59,6 +68,8 @@ describe('Smoke tests', () => {
         cy.get('#accessToken').click();
         cy.get('[data-cy=accessToken]').should('have.text', token);
       });
+
+    cy.get('[data-cy=app-state-result]').should('have.value', appState);
 
     cy.get('#logout').should('be.visible').click();
     cy.get('#login').should('be.visible');

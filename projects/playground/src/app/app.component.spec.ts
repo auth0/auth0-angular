@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -26,6 +26,7 @@ describe('AppComponent', () => {
         user$: new BehaviorSubject(null),
         isLoading$: new BehaviorSubject(true),
         isAuthenticated$: new BehaviorSubject(false),
+        appState$: new ReplaySubject(),
       }
     ) as any;
 
@@ -291,15 +292,22 @@ describe('AppComponent', () => {
     });
 
     it('should login with redirect', () => {
+      const appStateValue = 'Value to Preserve';
+
       const wrapLogin = ne.querySelector('.login-wrapper');
       const form = component.loginOptionsForm.controls;
       form.usePopup.setValue(false);
+      form.appStateInput.setValue(appStateValue);
 
       const btnRefresh = wrapLogin?.querySelector('button');
       btnRefresh?.click();
       fixture.detectChanges();
 
-      expect(authMock.loginWithRedirect).toHaveBeenCalledWith({});
+      expect(authMock.loginWithRedirect).toHaveBeenCalledWith({
+        appState: {
+          myValue: appStateValue,
+        },
+      });
     });
 
     it('should login with popup', () => {
