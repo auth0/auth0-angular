@@ -253,7 +253,7 @@ describe('The Auth HTTP Interceptor', () => {
         throwError({ error: 'login_required' })
       );
 
-      assertPassThruApiCallTo('https://my-api.com//api/orders', done);
+      assertPassThruApiCallTo('https://my-api.com/api/orders', done);
     }));
 
     it('emit error when not able to retrieve a token but allowAnonymous is set to false', fakeAsync((
@@ -263,11 +263,11 @@ describe('The Auth HTTP Interceptor', () => {
         return Promise.reject({ error: 'login_required' });
       });
 
-      httpClient.request('get', '/api/calendar').subscribe({
+      httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
         error: (err) => expect(err).toEqual({ error: 'login_required' }),
       });
 
-      httpTestingController.expectNone('/api/calendar');
+      httpTestingController.expectNone('https://my-api.com/api/calendar');
       flush();
 
       expect(authState.setError).toHaveBeenCalled();
