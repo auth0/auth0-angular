@@ -245,11 +245,13 @@ export class AuthService implements OnDestroy {
    * @param options The logout options
    */
   logout(options?: LogoutOptions): void {
-    this.auth0Client.logout(options);
+    const logout = this.auth0Client.logout(options) || of(null);
 
-    if (options?.localOnly) {
-      this.refreshState$.next();
-    }
+    from(logout).subscribe(() => {
+      if (options?.localOnly) {
+        this.refreshState$.next();
+      }
+    });
   }
 
   /**
