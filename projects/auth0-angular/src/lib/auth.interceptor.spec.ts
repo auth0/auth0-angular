@@ -1,5 +1,5 @@
 import { AuthHttpInterceptor } from './auth.interceptor';
-import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   HttpClientTestingModule,
