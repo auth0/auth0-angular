@@ -1,5 +1,18 @@
 # Change Log
 
+## [v1.6.0](https://github.com/auth0/auth0-angular/tree/v1.6.0) (2021-07-14)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.0...v1.6.0)
+
+**Added**
+
+- [SDK-2603] Expose custom caching options from Auth0 SPA SDK [\#175](https://github.com/auth0/auth0-angular/pull/175) ([stevehobbsdev](https://github.com/stevehobbsdev))
+- App State Observable [\#168](https://github.com/auth0/auth0-angular/pull/168) ([fearnycompknowhow](https://github.com/fearnycompknowhow))
+
+**Fixed**
+
+- [SDK-2635] Avoid emitting error when calling endpoints using allowAnonymous [\#180](https://github.com/auth0/auth0-angular/pull/180) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.5.1](https://github.com/auth0/auth0-angular/tree/v1.5.1) (2021-05-25)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.5.0...v1.5.1)
