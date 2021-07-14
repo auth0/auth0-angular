@@ -13,16 +13,19 @@ import {
   AuthClientConfig,
   HttpInterceptorConfig,
 } from './auth.config';
-import { AuthService } from './auth.service';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
+import { Auth0Client } from '@auth0/auth0-spa-js';
+import { Auth0ClientService } from './auth.client';
+import { AuthState } from './auth.state';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
 describe('The Auth HTTP Interceptor', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let authService: Partial<AuthService>;
+  let auth0Client: Auth0Client;
   let req: TestRequest;
+  let authState: AuthState;
   const testData: Data = { message: 'Hello, world' };
 
   const assertAuthorizedApiCallTo = (
@@ -50,12 +53,13 @@ describe('The Auth HTTP Interceptor', () => {
 
   beforeEach(() => {
     req = undefined as any;
-    authService = jasmine.createSpyObj('AuthService', [
-      'getAccessTokenSilently',
-    ]);
-    (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
-      of('access-token')
-    );
+
+    auth0Client = new Auth0Client({
+      domain: '',
+      client_id: '',
+    });
+
+    spyOn(auth0Client, 'getTokenSilently').and.resolveTo('access-token');
 
     config = {
       httpInterceptor: {
@@ -102,7 +106,10 @@ describe('The Auth HTTP Interceptor', () => {
           useClass: AuthHttpInterceptor,
           multi: true,
         },
-        { provide: AuthService, useValue: authService },
+        {
+          provide: Auth0ClientService,
+          useValue: auth0Client,
+        },
         {
           provide: AuthClientConfig,
           useValue: { get: () => config },
@@ -112,6 +119,9 @@ describe('The Auth HTTP Interceptor', () => {
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
+    authState = TestBed.inject(AuthState);
+
+    spyOn(authState, 'setError').and.callThrough();
   });
 
   afterEach(() => {
@@ -191,7 +201,7 @@ describe('The Auth HTTP Interceptor', () => {
       // Testing { uri: /api/addresses } (exact match)
       assertAuthorizedApiCallTo('https://my-api.com/api/addresses', done);
 
-      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
+      expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
         audience: 'audience',
         scope: 'scope',
       });
@@ -224,7 +234,7 @@ describe('The Auth HTTP Interceptor', () => {
     it('does not execute HTTP call when not able to retrieve a token', fakeAsync((
       done: () => void
     ) => {
-      (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+      (auth0Client.getTokenSilently as jasmine.Spy).and.returnValue(
         throwError({ error: 'login_required' })
       );
 
@@ -239,11 +249,38 @@ describe('The Auth HTTP Interceptor', () => {
     it('does execute HTTP call when not able to retrieve a token but allowAnonymous is set to true', fakeAsync((
       done: () => void
     ) => {
-      (authService.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+      (auth0Client.getTokenSilently as jasmine.Spy).and.returnValue(
         throwError({ error: 'login_required' })
       );
 
       assertPassThruApiCallTo('https://my-api.com/api/orders', done);
+    }));
+
+    it('emit error when not able to retrieve a token but allowAnonymous is set to false', fakeAsync((
+      done: () => void
+    ) => {
+      (auth0Client.getTokenSilently as jasmine.Spy).and.callFake(() => {
+        return Promise.reject({ error: 'login_required' });
+      });
+
+      httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
+        error: (err) => expect(err).toEqual({ error: 'login_required' }),
+      });
+
+      httpTestingController.expectNone('https://my-api.com/api/calendar');
+      flush();
+
+      expect(authState.setError).toHaveBeenCalled();
+    }));
+
+    it('does not emit error when not able to retrieve a token but allowAnonymous is set to true', fakeAsync(() => {
+      (auth0Client.getTokenSilently as jasmine.Spy).and.callFake(() => {
+        return Promise.reject({ error: 'login_required' });
+      });
+
+      assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
+        expect(authState.setError).not.toHaveBeenCalled();
+      });
     }));
   });
 
@@ -261,7 +298,7 @@ describe('The Auth HTTP Interceptor', () => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
       assertAuthorizedApiCallTo('https://my-api.com/api/contact', done, 'post');
 
-      expect(authService.getAccessTokenSilently).toHaveBeenCalledWith({
+      expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
         audience: 'audience',
         scope: 'scope',
       });

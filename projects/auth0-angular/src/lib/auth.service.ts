@@ -15,13 +15,11 @@ import {
 import {
   of,
   from,
-  BehaviorSubject,
   Subject,
   Observable,
   iif,
   defer,
   ReplaySubject,
-  merge,
   throwError,
 } from 'rxjs';
 
@@ -29,13 +27,10 @@ import {
   concatMap,
   tap,
   map,
-  filter,
   takeUntil,
   distinctUntilChanged,
   catchError,
   switchMap,
-  mergeMap,
-  scan,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -43,15 +38,12 @@ import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { Location } from '@angular/common';
 import { AuthClientConfig } from './auth.config';
+import { AuthState } from './auth.state';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
-  private errorSubject$ = new ReplaySubject<Error>(1);
-  private refreshState$ = new Subject<void>();
-  private accessToken$ = new ReplaySubject<string>(1);
   private appStateSubject$ = new ReplaySubject<any>(1);
 
   // https://stackoverflow.com/a/41177163
@@ -59,84 +51,28 @@ export class AuthService implements OnDestroy {
   /**
    * Emits boolean values indicating the loading state of the SDK.
    */
-  readonly isLoading$ = this.isLoadingSubject$.asObservable();
-
-  /**
-   * Trigger used to pull User information from the Auth0Client.
-   * Triggers when the access token has changed.
-   */
-  private accessTokenTrigger$ = this.accessToken$.pipe(
-    scan(
-      (
-        acc: { current: string | null; previous: string | null },
-        current: string | null
-      ) => {
-        return {
-          previous: acc.current,
-          current,
-        };
-      },
-      { current: null, previous: null }
-    ),
-    filter(({ previous, current }) => previous !== current)
-  );
-
-  /**
-   * Trigger used to pull User information from the Auth0Client.
-   * Triggers when an event occurs that needs to retrigger the User Profile information.
-   * Events: Login, Access Token change and Logout
-   */
-  private isAuthenticatedTrigger$ = this.isLoading$.pipe(
-    filter((loading) => !loading),
-    distinctUntilChanged(),
-    switchMap(() =>
-      // To track the value of isAuthenticated over time, we need to merge:
-      //  - the current value
-      //  - the value whenever the access token changes. (this should always be true of there is an access token
-      //    but it is safer to pass this through this.auth0Client.isAuthenticated() nevertheless)
-      //  - the value whenever refreshState$ emits
-      merge(
-        defer(() => this.auth0Client.isAuthenticated()),
-        this.accessTokenTrigger$.pipe(
-          mergeMap(() => this.auth0Client.isAuthenticated())
-        ),
-        this.refreshState$.pipe(
-          mergeMap(() => this.auth0Client.isAuthenticated())
-        )
-      )
-    )
-  );
+  readonly isLoading$ = this.authState.isLoading$;
 
   /**
    * Emits boolean values indicating the authentication state of the user. If `true`, it means a user has authenticated.
    * This depends on the value of `isLoading$`, so there is no need to manually check the loading state of the SDK.
    */
-  readonly isAuthenticated$ = this.isAuthenticatedTrigger$.pipe(
-    distinctUntilChanged()
-  );
+  readonly isAuthenticated$ = this.authState.isAuthenticated$;
 
   /**
    * Emits details about the authenticated user, or null if not authenticated.
    */
-  readonly user$ = this.isAuthenticatedTrigger$.pipe(
-    concatMap((authenticated) =>
-      authenticated ? this.auth0Client.getUser() : of(null)
-    )
-  );
+  readonly user$ = this.authState.user$;
 
   /**
    * Emits ID token claims when authenticated, or null if not authenticated.
    */
-  readonly idTokenClaims$ = this.isAuthenticatedTrigger$.pipe(
-    concatMap((authenticated) =>
-      authenticated ? this.auth0Client.getIdTokenClaims() : of(null)
-    )
-  );
+  readonly idTokenClaims$ = this.authState.idTokenClaims$;
 
   /**
    * Emits errors that occur during login, or when checking for an active session on startup.
    */
-  readonly error$ = this.errorSubject$.asObservable();
+  readonly error$ = this.authState.error$;
 
   /**
    * Emits the value (if any) that was passed to the `loginWithRedirect` method call
@@ -148,7 +84,8 @@ export class AuthService implements OnDestroy {
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     private configFactory: AuthClientConfig,
     private location: Location,
-    private navigator: AbstractNavigator
+    private navigator: AbstractNavigator,
+    private authState: AuthState
   ) {
     const checkSessionOrCallback$ = (isCallback: boolean) =>
       iif(
@@ -163,14 +100,14 @@ export class AuthService implements OnDestroy {
           checkSessionOrCallback$(isCallback).pipe(
             catchError((error) => {
               const config = this.configFactory.get();
-              this.errorSubject$.next(error);
+              this.authState.setError(error);
               this.navigator.navigateByUrl(config.errorPath || '/');
               return of(undefined);
             })
           )
         ),
         tap(() => {
-          this.isLoadingSubject$.next(false);
+          this.authState.setIsLoading(false);
         }),
         takeUntil(this.ngUnsubscribe$)
       )
@@ -224,7 +161,7 @@ export class AuthService implements OnDestroy {
   ): Observable<void> {
     return from(
       this.auth0Client.loginWithPopup(options, config).then(() => {
-        this.refreshState$.next();
+        this.authState.refresh();
       })
     );
   }
@@ -245,11 +182,13 @@ export class AuthService implements OnDestroy {
    * @param options The logout options
    */
   logout(options?: LogoutOptions): void {
-    this.auth0Client.logout(options);
+    const logout = this.auth0Client.logout(options) || of(null);
 
-    if (options?.localOnly) {
-      this.refreshState$.next();
-    }
+    from(logout).subscribe(() => {
+      if (options?.localOnly) {
+        this.authState.refresh();
+      }
+    });
   }
 
   /**
@@ -284,10 +223,10 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options)),
-      tap((token) => this.accessToken$.next(token)),
+      tap((token) => this.authState.setAccessToken(token)),
       catchError((error) => {
-        this.errorSubject$.next(error);
-        this.refreshState$.next();
+        this.authState.setError(error);
+        this.authState.refresh();
         return throwError(error);
       })
     );
@@ -310,10 +249,10 @@ export class AuthService implements OnDestroy {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenWithPopup(options)),
-      tap((token) => this.accessToken$.next(token)),
+      tap((token) => this.authState.setAccessToken(token)),
       catchError((error) => {
-        this.errorSubject$.next(error);
-        this.refreshState$.next();
+        this.authState.setError(error);
+        this.authState.refresh();
         return throwError(error);
       })
     );
@@ -335,10 +274,10 @@ export class AuthService implements OnDestroy {
    */
   handleRedirectCallback(url?: string): Observable<RedirectLoginResult> {
     return defer(() => this.auth0Client.handleRedirectCallback(url)).pipe(
-      withLatestFrom(this.isLoadingSubject$),
+      withLatestFrom(this.authState.isLoading$),
       tap(([result, isLoading]) => {
         if (!isLoading) {
-          this.refreshState$.next();
+          this.authState.refresh();
         }
         const appState = result?.appState;
         const target = appState?.target ?? '/';

@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 
 import { Observable, from, of, iif, throwError } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 import {
   ApiRouteDefinition,
@@ -15,15 +15,24 @@ import {
   HttpInterceptorConfig,
 } from './auth.config';
 
-import { switchMap, first, concatMap, pluck, catchError } from 'rxjs/operators';
-import { AuthService } from './auth.service';
-import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
+import {
+  switchMap,
+  first,
+  concatMap,
+  pluck,
+  catchError,
+  tap,
+} from 'rxjs/operators';
+import { Auth0Client, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
+import { Auth0ClientService } from './auth.client';
+import { AuthState } from './auth.state';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
   constructor(
     private configFactory: AuthClientConfig,
-    private authService: AuthService
+    @Inject(Auth0ClientService) private auth0Client: Auth0Client,
+    private authState: AuthState
   ) {}
 
   intercept(
@@ -44,16 +53,19 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           // outgoing request
           of(route).pipe(
             pluck('tokenOptions'),
-            concatMap<GetTokenSilentlyOptions, Observable<string>>((options) =>
-              this.authService.getAccessTokenSilently(options).pipe(
-                catchError((err) => {
-                  if (this.allowAnonymous(route, err)) {
-                    return of('');
-                  }
+            concatMap<GetTokenSilentlyOptions, Observable<string>>(
+              (options) => {
+                return this.getAccessTokenSilently(options).pipe(
+                  catchError((err) => {
+                    if (this.allowAnonymous(route, err)) {
+                      return of('');
+                    }
 
-                  return throwError(err);
-                })
-              )
+                    this.authState.setError(err);
+                    return throwError(err);
+                  })
+                );
+              }
             ),
             switchMap((token: string) => {
               // Clone the request and attach the bearer token
@@ -74,6 +86,24 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           next.handle(req)
         )
       )
+    );
+  }
+
+  /**
+   * Duplicate of AuthService.getAccessTokenSilently, but with a slightly different error handling.
+   * Only used internally in the interceptor.
+   * @param options The options for configuring the token fetch.
+   */
+  private getAccessTokenSilently(
+    options?: GetTokenSilentlyOptions
+  ): Observable<string> {
+    return of(this.auth0Client).pipe(
+      concatMap((client) => client.getTokenSilently(options)),
+      tap((token) => this.authState.setAccessToken(token)),
+      catchError((error) => {
+        this.authState.refresh();
+        return throwError(error);
+      })
     );
   }
 
