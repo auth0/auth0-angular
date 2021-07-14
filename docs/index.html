@@ -659,7 +659,7 @@
             </p>
             <pre><code><span style="color: #795E26">ngOnInit</span><span style="color: #000000">() {</span>
 <span style="color: #000000">  </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">authService</span><span style="color: #000000">.</span><span style="color: #001080">error$</span><span style="color: #000000">.</span><span style="color: #795E26">pipe</span><span style="color: #000000">(</span>
-<span style="color: #000000">    </span><span style="color: #795E26">filter</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">e</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;login_required&#039;</span><span style="color: #000000">),</span>
+<span style="color: #000000">    </span><span style="color: #795E26">filter</span><span style="color: #000000">((</span><span style="color: #001080">e</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">e</span><span style="color: #000000"> </span><span style="color: #0000FF">instanceof</span><span style="color: #000000"> </span><span style="color: #267F99">GenericError</span><span style="color: #000000"> &amp;&amp; </span><span style="color: #001080">e</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;login_required&#039;</span><span style="color: #000000">),</span>
 <span style="color: #000000">    </span><span style="color: #795E26">mergeMap</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">authService</span><span style="color: #000000">.</span><span style="color: #795E26">loginWithRedirect</span><span style="color: #000000">())</span>
 <span style="color: #000000">  ).</span><span style="color: #795E26">subscribe</span><span style="color: #000000">();</span>
 <span style="color: #000000">}</span>
@@ -1135,6 +1135,9 @@
               </li>
               <li class="tsd-kind-module">
                 <a href="modules/auth_service.html">auth.service</a>
+              </li>
+              <li class="tsd-kind-module">
+                <a href="modules/auth_state.html">auth.state</a>
               </li>
             </ul>
           </nav>
