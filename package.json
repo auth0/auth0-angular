@@ -40,9 +40,9 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^12.0.0",
     "@angular-devkit/build-ng-packagr": "^0.1000.8",
-    "@angular/cli": "^12.0.0",
-    "@angular/compiler-cli": "^12.0.0",
-    "@angular/forms": "^12.0.0",
+    "@angular/cli": "^12.1.0",
+    "@angular/compiler-cli": "^12.1.0",
+    "@angular/forms": "^12.1.0",
     "@briebug/cypress-schematic": "^4.4.0",
     "@types/jasmine": "^3.6.2",
     "@types/jasminewd2": "~2.0.3",
