@@ -1,0 +1,14 @@
+{
+  "clientId": "testing",
+  "domain": "http://127.0.0.1:4200",
+  "audience": "test",
+  "errorPath": "/error",
+  "httpInterceptor": {
+    "allowedList": [
+      {
+        "uri": "http://localhost:3001/api/external"
+      }
+    ]
+  },
+  "useFormData": true
+}
