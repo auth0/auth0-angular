@@ -6,7 +6,11 @@ policy.add(
   new Prompt(
     { name: 'noop', requestable: false },
     new Check('foo', 'bar', (ctx) => {
-      if (ctx.query?.scope?.includes('offline_access')) {
+      if (
+        ctx.query &&
+        ctx.query.scope &&
+        ctx.query.scope.includes('offline_access')
+      ) {
         ctx.oidc.params.scope = `${ctx.oidc.params.scope} offline_access`;
       }
       return Check.NO_NEED_TO_PROMPT;
@@ -51,7 +55,7 @@ function createApp() {
   provider.use(async (ctx, next) => {
     await next();
 
-    if (ctx.oidc?.route === 'end_session_success') {
+    if (ctx.oidc && ctx.oidc.route === 'end_session_success') {
       ctx.redirect('http://127.0.0.1:4200');
     }
   });
