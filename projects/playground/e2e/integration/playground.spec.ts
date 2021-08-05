@@ -18,7 +18,21 @@ const loginToAuth0 = () => {
     });
 };
 
+const fixCookies = () => {
+  // Temporary fix for https://github.com/cypress-io/cypress/issues/6375
+  if (Cypress.isBrowser('firefox')) {
+    cy.getCookies({ log: false }).then((cookies) =>
+      cookies.forEach((cookie) => cy.clearCookie(cookie.name, { log: false }))
+    );
+    cy.log('clearCookies');
+  } else {
+    cy.clearCookies();
+  }
+};
+
 describe('Smoke tests', () => {
+  afterEach(fixCookies);
+
   it('shows default logged out options', () => {
     cy.visit('/');
     cy.get('#login').should('be.visible');

@@ -17,6 +17,7 @@ jobs:
       - run: npm run build:prod
       - run: npm run test:ci
       - run: npm run e2e:ci
+      - run: npx concurrently --raw --kill-others --success first "npm:start:local" "wait-on http://127.0.0.1:4200/ && browserstack-cypress run --build-name $CIRCLE_BRANCH"
       - run:
           name: Upload coverage
           command: ./node_modules/.bin/codecov
