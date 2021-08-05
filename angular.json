@@ -58,7 +58,12 @@
             "tsConfig": "projects/playground/tsconfig.app.json",
             "assets": [
               "projects/playground/src/favicon.ico",
-              "projects/playground/src/assets"
+              "projects/playground/src/assets",
+              {
+                "input": "projects/playground/src/config",
+                "output": "assets/",
+                "glob": "config.json"
+              }
             ],
             "styles": ["projects/playground/src/styles.css"],
             "scripts": [],
@@ -70,6 +75,17 @@
             "namedChunks": true
           },
           "configurations": {
+            "local": {
+              "assets": [
+                "projects/playground/src/favicon.ico",
+                "projects/playground/src/assets",
+                {
+                  "input": "projects/playground/src/config/local",
+                  "output": "assets/",
+                  "glob": "config.json"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -107,7 +123,11 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "playground:build:production"
+              "browserTarget": "playground:build"
+            },
+            "local": {
+              "browserTarget": "playground:build:local",
+              "proxyConfig": "projects/playground/src/proxy.conf.json"
             }
           }
         },
@@ -148,7 +168,8 @@
           "options": {
             "devServerTarget": "playground:serve",
             "watch": true,
-            "headless": false
+            "headless": false,
+            "proxyConfig": "projects/playground/src/proxy.conf.json"
           },
           "configurations": {
             "production": {

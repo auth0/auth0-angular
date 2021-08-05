@@ -1,0 +1,18 @@
+{
+  "/interaction": {
+    "target": "http://127.0.0.1:3000",
+    "secure": false
+  },
+  "/authorize": {
+    "target": "http://127.0.0.1:3000",
+    "secure": false
+  },
+  "/oauth/token": {
+    "target": "http://127.0.0.1:3000",
+    "secure": false
+  },
+  "/v2/logout": {
+    "target": "http://127.0.0.1:3000",
+    "secure": false
+  }
+}
