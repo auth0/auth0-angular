@@ -166,10 +166,9 @@
         "e2e": {
           "builder": "@briebug/cypress-schematic:cypress",
           "options": {
-            "devServerTarget": "playground:serve",
+            "devServerTarget": "playground:serve:local",
             "watch": true,
-            "headless": false,
-            "proxyConfig": "projects/playground/src/proxy.conf.json"
+            "headless": false
           },
           "configurations": {
             "production": {
