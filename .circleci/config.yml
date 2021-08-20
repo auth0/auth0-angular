@@ -48,3 +48,5 @@ workflows:
       - browserstack:
           requires:
             - build
+          context:
+            - browserstack-env
