@@ -27,14 +27,14 @@ In this case, when your users are not *remembering this device for 30 days*, Sil
 - On page load, catch this error and redirect the user to Auth0 by calling `loginWithRedirect`, prompting the user with MFA.
 - Ensure you can renew access tokens without relying on Silent Authentication by using [Rotating Refresh Tokens](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation).
 
-Because our SDK, by default, does not persist any of the tokens, refreshing the page relies on Auth0 side to restore our session. If you combine [Rotating Refresh Tokens](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation) with [localstorage](https://github.com/auth0/auth0-spa-js#user-content-data-caching-options), calling `loginWithRedirect` on page load should not be necessary.
+Because our SDK persists tokens in memory by default, refreshing the page relies on Auth0 side to restore our session. If you combine [Rotating Refresh Tokens](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation) with [localstorage](https://github.com/auth0/auth0-spa-js#user-content-data-caching-options), calling `loginWithRedirect` on page load should not be necessary.
 
 ```ts
 AuthModule.forRoot({
   domain: 'YOUR_AUTH0_DOMAIN',
   clientId: 'YOUR_AUTH0_CLIENT_ID',
   useRefreshTokens: true,
-  cacheLocation: 'localstorae'
+  cacheLocation: 'localstorage'
 }),
 ```
 
