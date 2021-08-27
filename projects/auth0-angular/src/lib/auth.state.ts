@@ -19,7 +19,7 @@ import {
 import { Auth0ClientService } from './auth.client';
 
 /**
- * @ignore
+ * Tracks the Authentication State for the SDK
  */
 @Injectable({ providedIn: 'root' })
 export class AuthState {
@@ -110,6 +110,10 @@ export class AuthState {
 
   constructor(@Inject(Auth0ClientService) private auth0Client: Auth0Client) {}
 
+  /**
+   * Update the isLoading state using the provided value
+   * @param isLoading The new value for isLoading
+   */
   public setIsLoading(isLoading: boolean): void {
     this.isLoadingSubject$.next(isLoading);
   }
