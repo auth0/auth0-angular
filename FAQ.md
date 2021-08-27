@@ -10,7 +10,7 @@
 
 ## 1. User is not logged in after page refresh
 
-There are usually 2 reasons for this:
+There are usually 3 reasons for this:
 
 **1. The user logged in with a Social Provider (like Google) and you are using the Auth0 Developer Keys**
 
@@ -19,6 +19,26 @@ If you are using the [Classic Universal Login](https://auth0.com/docs/universal-
 **2. You are using a browser like Safari or Brave that has Intelligent Tracking Prevention turned on by default**
 
 In this case Silent Authentication will not work because it relies on a hidden iframe being logged in to a different domain (usually `auth0.com`) and browsers with ITP do not allow third-party (eg iframed) cookies. There are 2 workarounds for this using [Rotating Refresh Tokens](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation) or [Custom Domains](https://auth0.com/docs/custom-domains)
+
+**3. You are using Multifactor Authentication**
+
+In this case, when your users are not *remembering this device for 30 days*, Silent Authentication will not work because it can not get past the MFA step without the user's interaction. The consequence of it is that on both a page refresh as well as when trying to renew an expired Access Token, our SDK will throw a `Multifactor authentication required` error.
+
+- On page load, catch this error and redirect the user to Auth0 by calling `loginWithRedirect`, prompting the user with MFA.
+- Ensure you can renew access tokens without relying on Silent Authentication by using [Rotating Refresh Tokens](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation).
+
+Because our SDK, by default, does not persist any of the tokens, refreshing the page relies on Auth0 side to restore our session. If you combine [Rotating Refresh Tokens](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation) with [localstorage](https://github.com/auth0/auth0-spa-js#user-content-data-caching-options), calling `loginWithRedirect` on page load should not be necessary.
+
+```ts
+AuthModule.forRoot({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  useRefreshTokens: true,
+  cacheLocation: 'localstorae'
+}),
+```
+
+**Important**: This feature will allow the caching of data such as ID and access tokens to be stored in local storage. Exercising this option changes the security characteristics of your application and should not be used lightly. Extra care should be taken to mitigate against XSS attacks and minimize the risk of tokens being stolen from local storage.
 
 ## 2. User is not logged in after successful sign in with redirect
 
