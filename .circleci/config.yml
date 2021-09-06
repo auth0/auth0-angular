@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  ship: auth0/ship@0.1.0
 parameters:
   docker_image:
     type: string
@@ -50,3 +52,13 @@ workflows:
             - build
           context:
             - browserstack-env
+      - ship/node-publish:
+          requires:
+            - browserstack
+          context:
+            - publish-npm
+            - publish-gh
+          filters:
+            branches:
+              only:
+                - master
