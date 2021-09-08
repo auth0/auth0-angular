@@ -21,9 +21,7 @@
     "lint": "ng lint",
     "docs": "typedoc",
     "pretty-quick": "pretty-quick",
-    "release": "node scripts/release.js",
     "release:publish": "node scripts/publish.js",
-    "release:clean": "node scripts/cleanup.js",
     "update-useragent": "node projects/auth0-angular/scripts/update-useragent.js",
     "server:api": "node api-server.js"
   },
