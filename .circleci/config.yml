@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  ship: auth0/ship@0.2.0
+  ship: auth0/ship@0.3.0
 parameters:
   docker_image:
     type: string
@@ -45,6 +45,7 @@ workflows:
             - browserstack-env
       - ship/node-publish:
           publish-command: npm run build:prod && cp README.md ./dist/auth0-angular/ && npm publish ./dist/auth0-angular
+          app-directory: "projects/auth0-angular"
           requires:
             - browserstack
           context:
