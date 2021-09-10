@@ -1,5 +1,14 @@
 # Change Log
 
+## [v1.6.1](https://github.com/auth0/auth0-angular/tree/v1.6.1) (2021-09-10)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.0...v1.6.1)
+
+**Fixed**
+
+- Do not redirect AuthGuard when user is already authenticated [\#209](https://github.com/auth0/auth0-angular/pull/209) ([frederikprijck](https://github.com/frederikprijck))
+- Expose internal classes and Injection Tokens [\#190](https://github.com/auth0/auth0-angular/pull/190) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.6.0](https://github.com/auth0/auth0-angular/tree/v1.6.0) (2021-07-14)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.0...v1.6.0)
