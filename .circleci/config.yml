@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  ship: auth0/ship@0.3.0
+  ship: auth0/ship@0.3.1
 parameters:
   docker_image:
     type: string
