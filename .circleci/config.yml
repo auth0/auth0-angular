@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  ship: auth0/ship@0.3.0
 parameters:
   docker_image:
     type: string
@@ -9,14 +11,7 @@ jobs:
       - image: << pipeline.parameters.docker_image >>
     steps:
       - checkout
-      - restore_cache:
-          key: dependencies-{{ checksum "package-lock.json" }}
-      - run: npm ci
-      - save_cache:
-          key: dependencies-{{ checksum "package-lock.json" }}
-          paths:
-            - ~/.npm
-            - ~/.cache
+      - ship/node-install-packages
       - run: npm run lint
       - run: npm run build:prod
       - run: npm run test:ci
@@ -37,9 +32,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: npm ci
-      - restore_cache:
-          key: dependencies-{{ checksum "package-lock.json" }}
+      - ship/node-install-packages
       - run: npx concurrently --raw --kill-others --success first "npm:start:local" "wait-on http://127.0.0.1:4200/ && browserstack-cypress run --build-name $CIRCLE_BRANCH"
 workflows:
   build_and_test:
@@ -50,3 +43,15 @@ workflows:
             - build
           context:
             - browserstack-env
+      - ship/node-publish:
+          publish-command: npm run build:prod && cp README.md ./dist/auth0-angular/ && npm publish ./dist/auth0-angular
+          app-directory: "projects/auth0-angular"
+          requires:
+            - browserstack
+          context:
+            - publish-npm
+            - publish-gh
+          filters:
+            branches:
+              only:
+                - master

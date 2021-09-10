@@ -1,4 +1,4 @@
-const ALLOWED = !!process.env.ALLOWED;
+const ALLOWED = !!process.env.ALLOWED || !!process.env.CI;
 
 if (!ALLOWED) {
   console.log('Run `npm run release:publish` to publish the package');

@@ -14,6 +14,7 @@ import {
   filter,
   mergeMap,
   scan,
+  shareReplay,
   switchMap,
 } from 'rxjs/operators';
 import { Auth0ClientService } from './auth.client';
@@ -82,7 +83,8 @@ export class AuthState {
    * This depends on the value of `isLoading$`, so there is no need to manually check the loading state of the SDK.
    */
   readonly isAuthenticated$ = this.isAuthenticatedTrigger$.pipe(
-    distinctUntilChanged()
+    distinctUntilChanged(),
+    shareReplay(1)
   );
 
   /**

@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
 import {
@@ -8,9 +8,17 @@ import {
   RedirectLoginOptions,
 } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
-import { bufferCount, bufferTime, filter, mergeMap, tap } from 'rxjs/operators';
+import {
+  bufferCount,
+  bufferTime,
+  filter,
+  mergeMap,
+  take,
+  tap,
+} from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
+import { AuthState } from './auth.state';
 
 /**
  * Wraps service.isLoading$ so that assertions can be made
@@ -26,6 +34,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let locationSpy: jasmine.SpyObj<Location>;
   let authConfig: Partial<AuthConfig>;
+  let authState: AuthState;
 
   const createService = () => {
     return TestBed.inject(AuthService);
@@ -73,6 +82,7 @@ describe('AuthService', () => {
 
     TestBed.configureTestingModule(moduleSetup);
     service = createService();
+    authState = TestBed.inject(AuthState);
   });
 
   describe('constructor', () => {
@@ -151,6 +161,26 @@ describe('AuthService', () => {
         service.getAccessTokenSilently().subscribe();
       }, 0);
     });
+
+    it('should still return true when the token is expired', fakeAsync((
+      done: any
+    ) => {
+      authState.setIsLoading(false);
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+
+      service.isAuthenticated$.pipe(take(1)).subscribe((value) => {
+        expect(value).toBe(true);
+      });
+
+      // When the token is expired, auth0Client.isAuthenticated is resolving to false.
+      // This is unexpected but known behavior in Auth0-SPA-JS, so we shouldnt rely on it apart from initially.
+      // Once this is resolved, we should be able to rely on `auth0Client.isAuthenticated`, even when the Access Token is expired.
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+
+      service.isAuthenticated$.pipe(take(1)).subscribe((value) => {
+        expect(value).toBe(true);
+      });
+    }));
   });
 
   describe('The `user` observable', () => {
