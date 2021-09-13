@@ -64,8 +64,6 @@ describe('AuthService', () => {
 
     window.history.replaceState(null, '', '');
 
-    // window.location.search = '';
-
     moduleSetup = {
       providers: [
         AbstractNavigator,
