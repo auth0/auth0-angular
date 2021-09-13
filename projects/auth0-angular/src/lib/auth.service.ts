@@ -28,7 +28,6 @@ import {
   tap,
   map,
   takeUntil,
-  distinctUntilChanged,
   catchError,
   switchMap,
   withLatestFrom,
@@ -36,7 +35,6 @@ import {
 
 import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
-import { Location } from '@angular/common';
 import { AuthClientConfig } from './auth.config';
 import { AuthState } from './auth.state';
 
@@ -83,7 +81,6 @@ export class AuthService implements OnDestroy {
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     private configFactory: AuthClientConfig,
-    private location: Location,
     private navigator: AbstractNavigator,
     private authState: AuthState
   ) {
@@ -321,7 +318,7 @@ export class AuthService implements OnDestroy {
   }
 
   private shouldHandleCallback(): Observable<boolean> {
-    return of(this.location.path()).pipe(
+    return of(location.search).pipe(
       map((search) => {
         return (
           (search.includes('code=') || search.includes('error=')) &&
