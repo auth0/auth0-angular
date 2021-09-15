@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.6.2](https://github.com/auth0/auth0-angular/tree/v1.6.2) (2021-09-15)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.1...v1.6.2)
+
+**Fixed**
+
+- [SDK-2786] Ensure SDK works when useHash is true [\#215](https://github.com/auth0/auth0-angular/pull/215) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.6.1](https://github.com/auth0/auth0-angular/tree/v1.6.1) (2021-09-10)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.0...v1.6.1)
