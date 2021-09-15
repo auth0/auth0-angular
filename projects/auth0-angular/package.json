@@ -1,6 +1,6 @@
 {
   "name": "@auth0/auth0-angular",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Auth0 SDK for Angular Single Page Applications (SPA)",
   "keywords": [
     "auth0",
