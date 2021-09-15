@@ -32,7 +32,6 @@ describe('AuthService', () => {
   let auth0Client: Auth0Client;
   let moduleSetup: any;
   let service: AuthService;
-  let locationSpy: jasmine.SpyObj<Location>;
   let authConfig: Partial<AuthConfig>;
   let authState: AuthState;
 
@@ -63,8 +62,7 @@ describe('AuthService', () => {
       '__access_token_from_popup__'
     );
 
-    locationSpy = jasmine.createSpyObj('Location', ['path']);
-    locationSpy.path.and.returnValue('');
+    window.history.replaceState(null, '', '');
 
     moduleSetup = {
       providers: [
@@ -72,10 +70,6 @@ describe('AuthService', () => {
         {
           provide: Auth0ClientService,
           useValue: auth0Client,
-        },
-        {
-          provide: Location,
-          useValue: locationSpy,
         },
       ],
     };
@@ -349,17 +343,13 @@ describe('AuthService', () => {
             useValue: auth0Client,
           },
           {
-            provide: Location,
-            useValue: locationSpy,
-          },
-          {
             provide: AuthConfigService,
             useValue: authConfig,
           },
         ],
       });
 
-      locationSpy.path.and.returnValue('?code=123&state=456');
+      window.history.replaceState(null, '', '?code=123&state=456');
     });
 
     it('should handle the callback when code and state are available', (done) => {
@@ -482,7 +472,9 @@ describe('AuthService', () => {
     });
 
     it('should process the callback when an error appears in the query string', (done) => {
-      locationSpy.path.and.returnValue(
+      window.history.replaceState(
+        null,
+        '',
         `?error=${encodeURIComponent('This is an error')}&state=456`
       );
 
@@ -686,10 +678,6 @@ describe('AuthService', () => {
             useValue: auth0Client,
           },
           {
-            provide: Location,
-            useValue: locationSpy,
-          },
-          {
             provide: AuthConfigService,
             useValue: {
               ...authConfig,
@@ -699,7 +687,7 @@ describe('AuthService', () => {
         ],
       });
 
-      locationSpy.path.and.returnValue('');
+      window.history.replaceState(null, '', '');
     });
 
     it('should call the underlying SDK', (done) => {
