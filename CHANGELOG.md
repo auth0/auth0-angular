@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.7.0](https://github.com/auth0/auth0-angular/tree/v1.7.0) (2021-09-20)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.2...v1.7.0)
+
+**Added**
+
+- Bump Auth0-SPA-JS to 1.18.0 [\#218](https://github.com/auth0/auth0-angular/pull/218) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.6.2](https://github.com/auth0/auth0-angular/tree/v1.6.2) (2021-09-15)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.1...v1.6.2)
