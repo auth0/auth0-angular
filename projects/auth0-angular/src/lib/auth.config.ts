@@ -243,6 +243,13 @@ export interface AuthConfig {
   invitation?: string;
 
   /**
+   * The name of the connection configured for your application.
+   * If null, it will redirect to the Auth0 Login Page and show
+   * the Login Widget.
+   */
+  connection?: string;
+
+  /**
    * If you need to send custom parameters to the Authorization Server,
    * make sure to use the original parameter name.
    */
