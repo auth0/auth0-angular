@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.7.1](https://github.com/auth0/auth0-angular/tree/v1.7.1) (2021-10-01)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.7.0...v1.7.1)
+
+**Fixed**
+
+- Add connection property to auth.config.ts [\#223](https://github.com/auth0/auth0-angular/pull/223) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
 ## [v1.7.0](https://github.com/auth0/auth0-angular/tree/v1.7.0) (2021-09-20)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.2...v1.7.0)
