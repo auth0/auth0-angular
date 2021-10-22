@@ -10,6 +10,7 @@ import {
   GetTokenWithPopupOptions,
   RedirectLoginResult,
   LogoutUrlOptions,
+  GetTokenSilentlyVerboseResponse,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -189,6 +190,22 @@ export class AuthService implements OnDestroy {
   }
 
   /**
+   * Fetches a new access token and returns the response from the /oauth/token endpoint, omitting the refresh token.
+   *
+   * @param options
+   */
+  getAccessTokenSilently(
+    options: GetTokenSilentlyOptions & { detailedResponse: true }
+  ): Observable<GetTokenSilentlyVerboseResponse>;
+
+  /**
+   * Fetches a new access token and returns it.
+   *
+   * @param options
+   */
+  getAccessTokenSilently(options?: GetTokenSilentlyOptions): Observable<string>;
+
+  /**
    * ```js
    * getAccessTokenSilently(options).subscribe(token => ...)
    * ```
@@ -216,11 +233,19 @@ export class AuthService implements OnDestroy {
    * @param options The options for configuring the token fetch.
    */
   getAccessTokenSilently(
-    options?: GetTokenSilentlyOptions
-  ): Observable<string> {
+    options: GetTokenSilentlyOptions = {}
+  ): Observable<string | GetTokenSilentlyVerboseResponse> {
     return of(this.auth0Client).pipe(
-      concatMap((client) => client.getTokenSilently(options)),
-      tap((token) => this.authState.setAccessToken(token)),
+      concatMap((client) =>
+        options.detailedResponse === true
+          ? client.getTokenSilently({ ...options, detailedResponse: true })
+          : client.getTokenSilently(options)
+      ),
+      tap((token) =>
+        this.authState.setAccessToken(
+          typeof token === 'string' ? token : token.access_token
+        )
+      ),
       catchError((error) => {
         this.authState.setError(error);
         this.authState.refresh();

@@ -580,6 +580,24 @@ describe('AuthService', () => {
       });
     });
 
+    it('should get the full token response when detailedResponse is true', (done) => {
+      const tokenResponse = {
+        access_token: '123',
+        id_token: '456',
+        expires_in: 2,
+      };
+      (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo(
+        tokenResponse
+      );
+
+      service
+        .getAccessTokenSilently({ detailedResponse: true })
+        .subscribe((token) => {
+          expect(token).toEqual(tokenResponse);
+          done();
+        });
+    });
+
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
