@@ -192,7 +192,7 @@ export class AuthService implements OnDestroy {
   /**
    * Fetches a new access token and returns the response from the /oauth/token endpoint, omitting the refresh token.
    *
-   * @param options
+   * @param options The options for configuring the token fetch.
    */
   getAccessTokenSilently(
     options: GetTokenSilentlyOptions & { detailedResponse: true }
@@ -201,7 +201,7 @@ export class AuthService implements OnDestroy {
   /**
    * Fetches a new access token and returns it.
    *
-   * @param options
+   * @param options The options for configuring the token fetch.
    */
   getAccessTokenSilently(options?: GetTokenSilentlyOptions): Observable<string>;
 
