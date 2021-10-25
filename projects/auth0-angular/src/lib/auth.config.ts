@@ -250,6 +250,13 @@ export interface AuthConfig {
   connection?: string;
 
   /**
+   * Modify the value used as the current time during the token validation.
+   *
+   * **Note**: Using this improperly can potentially compromise the token validation.
+   */
+  nowProvider?: () => Promise<number> | number;
+
+  /**
    * If you need to send custom parameters to the Authorization Server,
    * make sure to use the original parameter name.
    */
