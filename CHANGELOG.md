@@ -1,5 +1,14 @@
 # Change Log
 
+## [v1.8.0](https://github.com/auth0/auth0-angular/tree/v1.8.0) (2021-10-27)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.7.0...v1.8.0)
+
+**Added**
+
+- Bump SPA to 1.19.2 and implement detailed token response [\#231](https://github.com/auth0/auth0-angular/pull/231) ([frederikprijck](https://github.com/frederikprijck))
+- Add connection property to auth.config.ts [\#223](https://github.com/auth0/auth0-angular/pull/223) ([stevehobbsdev](https://github.com/stevehobbsdev))
+
 ## [v1.7.0](https://github.com/auth0/auth0-angular/tree/v1.7.0) (2021-09-20)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.6.2...v1.7.0)
