@@ -15,4 +15,6 @@ export {
   Cacheable,
   LocalStorageCache,
   InMemoryCache,
+  IdToken,
+  User
 } from '@auth0/auth0-spa-js';
