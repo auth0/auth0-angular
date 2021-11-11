@@ -1,12 +1,7 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import {
-  Auth0Client,
-  IdToken,
-  LogoutUrlOptions,
-  RedirectLoginOptions,
-} from '@auth0/auth0-spa-js';
+import { Auth0Client, IdToken, LogoutUrlOptions } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import {
   bufferCount,
@@ -17,7 +12,11 @@ import {
   tap,
 } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import { AuthConfig, AuthConfigService } from './auth.config';
+import {
+  AuthConfig,
+  AuthConfigService,
+  NgRedirectLoginOptions,
+} from './auth.config';
 import { AuthState } from './auth.state';
 
 /**
@@ -770,7 +769,7 @@ describe('AuthService', () => {
 
   describe('buildAuthorizeUrl', () => {
     it('should call the underlying SDK', (done) => {
-      const options: RedirectLoginOptions = {};
+      const options: NgRedirectLoginOptions = {};
 
       service.buildAuthorizeUrl(options).subscribe((url) => {
         expect(url).toBeTruthy();

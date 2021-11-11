@@ -2,7 +2,6 @@ import { Injectable, Inject, OnDestroy } from '@angular/core';
 
 import {
   Auth0Client,
-  RedirectLoginOptions,
   PopupLoginOptions,
   PopupConfigOptions,
   LogoutOptions,
@@ -36,14 +35,18 @@ import {
 
 import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
-import { AuthClientConfig } from './auth.config';
+import {
+  AuthClientConfig,
+  NgAppState,
+  NgRedirectLoginOptions,
+} from './auth.config';
 import { AuthState } from './auth.state';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private appStateSubject$ = new ReplaySubject<any>(1);
+  private appStateSubject$ = new ReplaySubject<NgAppState>(1);
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject<void>();
@@ -132,7 +135,7 @@ export class AuthService implements OnDestroy {
    *
    * @param options The login options
    */
-  loginWithRedirect(options?: RedirectLoginOptions): Observable<void> {
+  loginWithRedirect(options?: NgRedirectLoginOptions): Observable<void> {
     return from(this.auth0Client.loginWithRedirect(options));
   }
 
@@ -301,7 +304,7 @@ export class AuthService implements OnDestroy {
         if (!isLoading) {
           this.authState.refresh();
         }
-        const appState = result?.appState;
+        const appState: NgAppState = result?.appState;
         const target = appState?.target ?? '/';
 
         if (appState) {
@@ -325,7 +328,7 @@ export class AuthService implements OnDestroy {
    * @param options The options
    * @returns A URL to the authorize endpoint
    */
-  buildAuthorizeUrl(options?: RedirectLoginOptions): Observable<string> {
+  buildAuthorizeUrl(options?: NgRedirectLoginOptions): Observable<string> {
     return defer(() => this.auth0Client.buildAuthorizeUrl(options));
   }
 

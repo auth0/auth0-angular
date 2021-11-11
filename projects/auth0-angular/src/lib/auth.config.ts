@@ -2,6 +2,7 @@ import {
   CacheLocation,
   GetTokenSilentlyOptions,
   ICache,
+  RedirectLoginOptions,
 } from '@auth0/auth0-spa-js';
 
 import { InjectionToken, Injectable, Optional, Inject } from '@angular/core';
@@ -259,6 +260,30 @@ export interface AuthConfig {
   /**
    * If you need to send custom parameters to the Authorization Server,
    * make sure to use the original parameter name.
+   */
+  [key: string]: any;
+}
+
+/**
+ * Extends auth0-spa-js RedirectLoginOptions narrowing
+ * appState property type to NgAppState
+ */
+export interface NgRedirectLoginOptions extends RedirectLoginOptions {
+  appState?: NgAppState;
+}
+
+/**
+ * Angular specific state to be stored before redirect
+ */
+export interface NgAppState {
+  /**
+   * Target path the app gets routed to after
+   * callback from login (defaults to '/')
+   */
+  target?: string;
+
+  /**
+   * For any custom parameter the user would store in appState
    */
   [key: string]: any;
 }
