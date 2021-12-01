@@ -265,14 +265,6 @@ export interface AuthConfig {
 }
 
 /**
- * Extends auth0-spa-js RedirectLoginOptions narrowing
- * appState property type to NgAppState
- */
-export interface NgRedirectLoginOptions extends RedirectLoginOptions {
-  appState?: NgAppState;
-}
-
-/**
  * Angular specific state to be stored before redirect
  */
 export interface NgAppState {
