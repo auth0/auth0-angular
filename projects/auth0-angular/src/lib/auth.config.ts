@@ -264,6 +264,22 @@ export interface AuthConfig {
 }
 
 /**
+ * Angular specific state to be stored before redirect
+ */
+export interface AppState {
+  /**
+   * Target path the app gets routed to after
+   * handling the callback from Auth0 (defaults to '/')
+   */
+  target?: string;
+
+  /**
+   * Any custom parameter to be stored in appState
+   */
+  [key: string]: any;
+}
+
+/**
  * Gets and sets configuration for the internal Auth0 client. This can be
  * used to provide configuration outside of using AuthModule.forRoot, i.e. from
  * a factory provided by APP_INITIALIZER.
