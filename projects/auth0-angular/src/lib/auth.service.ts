@@ -38,15 +38,15 @@ import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import {
   AuthClientConfig,
-  NgAppState,
+  AppState,
 } from './auth.config';
 import { AuthState } from './auth.state';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService<TAppState extends NgAppState = NgAppState> implements OnDestroy {
-  private appStateSubject$ = new ReplaySubject<NgAppState>(1);
+export class AuthService<TAppState extends AppState = AppState> implements OnDestroy {
+  private appStateSubject$ = new ReplaySubject<TAppState>(1);
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject<void>();

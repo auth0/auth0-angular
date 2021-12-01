@@ -266,15 +266,15 @@ export interface AuthConfig {
 /**
  * Angular specific state to be stored before redirect
  */
-export interface NgAppState {
+export interface AppState {
   /**
    * Target path the app gets routed to after
-   * callback from login (defaults to '/')
+   * handling the callback from Auth0 (defaults to '/')
    */
   target?: string;
 
   /**
-   * For any custom parameter the user would store in appState
+   * Any custom parameter to be stored in appState
    */
   [key: string]: any;
 }
