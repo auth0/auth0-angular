@@ -1,7 +1,12 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import { Auth0Client, IdToken, LogoutUrlOptions, RedirectLoginOptions } from '@auth0/auth0-spa-js';
+import {
+  Auth0Client,
+  IdToken,
+  LogoutUrlOptions,
+  RedirectLoginOptions,
+} from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import {
   bufferCount,
@@ -12,10 +17,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import { Location } from '@angular/common';
-import {
-  AuthConfig,
-  AuthConfigService,
-} from './auth.config';
+import { AuthConfig, AuthConfigService } from './auth.config';
 import { AuthState } from './auth.state';
 
 /**

@@ -2,6 +2,7 @@ import { Injectable, Inject, OnDestroy } from '@angular/core';
 
 import {
   Auth0Client,
+  RedirectLoginOptions,
   PopupLoginOptions,
   PopupConfigOptions,
   LogoutOptions,
@@ -10,7 +11,6 @@ import {
   RedirectLoginResult,
   LogoutUrlOptions,
   GetTokenSilentlyVerboseResponse,
-  RedirectLoginOptions
 } from '@auth0/auth0-spa-js';
 
 import {

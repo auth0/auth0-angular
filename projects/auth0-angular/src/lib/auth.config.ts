@@ -2,7 +2,6 @@ import {
   CacheLocation,
   GetTokenSilentlyOptions,
   ICache,
-  RedirectLoginOptions,
 } from '@auth0/auth0-spa-js';
 
 import { InjectionToken, Injectable, Optional, Inject } from '@angular/core';
