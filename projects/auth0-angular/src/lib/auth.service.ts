@@ -36,14 +36,17 @@ import {
 
 import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
-import { AuthClientConfig } from './auth.config';
+import {
+  AuthClientConfig,
+  AppState,
+} from './auth.config';
 import { AuthState } from './auth.state';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnDestroy {
-  private appStateSubject$ = new ReplaySubject<any>(1);
+export class AuthService<TAppState extends AppState = AppState> implements OnDestroy {
+  private appStateSubject$ = new ReplaySubject<TAppState>(1);
 
   // https://stackoverflow.com/a/41177163
   private ngUnsubscribe$ = new Subject<void>();
@@ -132,7 +135,7 @@ export class AuthService implements OnDestroy {
    *
    * @param options The login options
    */
-  loginWithRedirect(options?: RedirectLoginOptions): Observable<void> {
+  loginWithRedirect(options?: RedirectLoginOptions<TAppState>): Observable<void> {
     return from(this.auth0Client.loginWithRedirect(options));
   }
 
@@ -294,8 +297,8 @@ export class AuthService implements OnDestroy {
    *
    * @param url The URL to that should be used to retrieve the `state` and `code` values. Defaults to `window.location.href` if not given.
    */
-  handleRedirectCallback(url?: string): Observable<RedirectLoginResult> {
-    return defer(() => this.auth0Client.handleRedirectCallback(url)).pipe(
+  handleRedirectCallback(url?: string): Observable<RedirectLoginResult<TAppState>> {
+    return defer(() => this.auth0Client.handleRedirectCallback<TAppState>(url)).pipe(
       withLatestFrom(this.authState.isLoading$),
       tap(([result, isLoading]) => {
         if (!isLoading) {
