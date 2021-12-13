@@ -1,5 +1,19 @@
 # Change Log
 
+## [v1.8.1](https://github.com/auth0/auth0-angular/tree/v1.8.1) (2021-12-07)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.8.0...v1.8.1)
+
+**Changed**
+
+- App state interface [\#240](https://github.com/auth0/auth0-angular/pull/240) ([4javier](https://github.com/4javier))
+- Update peerDependencies to support Angular 13 [\#243](https://github.com/auth0/auth0-angular/pull/243) ([frederikprijck](https://github.com/frederikprijck))
+- Export IdToken and User types [\#237](https://github.com/auth0/auth0-angular/pull/237) ([4javier](https://github.com/4javier))
+
+**Fixed**
+
+- Add missing angular/router to peerDependencies [\#242](https://github.com/auth0/auth0-angular/pull/242) ([klaascuvelier](https://github.com/klaascuvelier))
+
 ## [v1.8.0](https://github.com/auth0/auth0-angular/tree/v1.8.0) (2021-10-27)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.7.0...v1.8.0)

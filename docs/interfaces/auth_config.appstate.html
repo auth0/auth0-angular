@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>HttpInterceptorConfig | @auth0/auth0-angular</title>
+    <title>AppState | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/css/main.css" />
@@ -74,12 +74,10 @@
               <a href="../modules/auth_config.html">auth.config</a>
             </li>
             <li>
-              <a href="auth_config.httpinterceptorconfig.html"
-                >HttpInterceptorConfig</a
-              >
+              <a href="auth_config.appstate.html">AppState</a>
             </li>
           </ul>
-          <h1>Interface HttpInterceptorConfig</h1>
+          <h1>Interface AppState</h1>
         </div>
       </div>
     </header>
@@ -89,7 +87,7 @@
           <section class="tsd-panel tsd-comment">
             <div class="tsd-comment tsd-typography">
               <div class="lead">
-                <p>Configuration for the HttpInterceptor</p>
+                <p>Angular specific state to be stored before redirect</p>
               </div>
             </div>
           </section>
@@ -97,9 +95,23 @@
             <h3>Hierarchy</h3>
             <ul class="tsd-hierarchy">
               <li>
-                <span class="target">HttpInterceptorConfig</span>
+                <span class="target">AppState</span>
               </li>
             </ul>
+          </section>
+          <section class="tsd-panel tsd-kind-interface tsd-parent-kind-module">
+            <h3 class="tsd-before-signature">Indexable</h3>
+            <div class="tsd-signature tsd-kind-icon">
+              <span class="tsd-signature-symbol">[</span>key:
+              <span class="tsd-signature-type">string</span
+              ><span class="tsd-signature-symbol">]: </span
+              ><span class="tsd-signature-type">any</span>
+            </div>
+            <div class="tsd-comment tsd-typography">
+              <div class="lead">
+                <p>Any custom parameter to be stored in appState</p>
+              </div>
+            </div>
           </section>
           <section class="tsd-panel-group tsd-index-group">
             <h2>Index</h2>
@@ -110,9 +122,9 @@
                   <ul class="tsd-index-list">
                     <li class="tsd-kind-property tsd-parent-kind-interface">
                       <a
-                        href="auth_config.httpinterceptorconfig.html#allowedlist"
+                        href="auth_config.appstate.html#target"
                         class="tsd-kind-icon"
-                        >allowed<wbr />List</a
+                        >target</a
                       >
                     </li>
                   </ul>
@@ -125,28 +137,33 @@
             <section
               class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"
             >
-              <a name="allowedlist" class="tsd-anchor"></a>
-              <h3>allowed<wbr />List</h3>
+              <a name="target" class="tsd-anchor"></a>
+              <h3>
+                <span class="tsd-flag ts-flagOptional">Optional</span> target
+              </h3>
               <div class="tsd-signature tsd-kind-icon">
-                allowed<wbr />List<span class="tsd-signature-symbol">:</span>
-                <a
-                  href="../modules/auth_config.html#apiroutedefinition"
-                  class="tsd-signature-type"
-                  data-tsd-kind="Type alias"
-                  >ApiRouteDefinition</a
-                ><span class="tsd-signature-symbol">[]</span>
+                target<span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span>
               </div>
               <aside class="tsd-sources">
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/4cbe9e9/projects/auth0-angular/src/lib/auth.config.ts#L43"
-                      >auth.config.ts:43</a
+                      href="https://github.com/auth0/auth0-angular/blob/4cbe9e9/projects/auth0-angular/src/lib/auth.config.ts#L274"
+                      >auth.config.ts:274</a
                     >
                   </li>
                 </ul>
               </aside>
+              <div class="tsd-comment tsd-typography">
+                <div class="lead">
+                  <p>
+                    Target path the app gets routed to after handling the
+                    callback from Auth0 (defaults to &#39;/&#39;)
+                  </p>
+                </div>
+              </div>
             </section>
           </section>
         </div>
@@ -200,36 +217,36 @@
                   >Auth<wbr />Client<wbr />Config</a
                 >
               </li>
-              <li class="tsd-kind-interface tsd-parent-kind-module">
-                <a href="auth_config.appstate.html" class="tsd-kind-icon"
-                  >App<wbr />State</a
-                >
-              </li>
-              <li class="tsd-kind-interface tsd-parent-kind-module">
-                <a href="auth_config.authconfig.html" class="tsd-kind-icon"
-                  >Auth<wbr />Config</a
-                >
-              </li>
             </ul>
             <ul class="current">
               <li class="current tsd-kind-interface tsd-parent-kind-module">
-                <a
-                  href="auth_config.httpinterceptorconfig.html"
-                  class="tsd-kind-icon"
-                  >Http<wbr />Interceptor<wbr />Config</a
+                <a href="auth_config.appstate.html" class="tsd-kind-icon"
+                  >App<wbr />State</a
                 >
                 <ul>
                   <li class="tsd-kind-property tsd-parent-kind-interface">
                     <a
-                      href="auth_config.httpinterceptorconfig.html#allowedlist"
+                      href="auth_config.appstate.html#target"
                       class="tsd-kind-icon"
-                      >allowed<wbr />List</a
+                      >target</a
                     >
                   </li>
                 </ul>
               </li>
             </ul>
             <ul class="after-current">
+              <li class="tsd-kind-interface tsd-parent-kind-module">
+                <a href="auth_config.authconfig.html" class="tsd-kind-icon"
+                  >Auth<wbr />Config</a
+                >
+              </li>
+              <li class="tsd-kind-interface tsd-parent-kind-module">
+                <a
+                  href="auth_config.httpinterceptorconfig.html"
+                  class="tsd-kind-icon"
+                  >Http<wbr />Interceptor<wbr />Config</a
+                >
+              </li>
               <li class="tsd-kind-interface tsd-parent-kind-module">
                 <a
                   href="auth_config.httpinterceptorrouteconfig.html"
