@@ -304,7 +304,7 @@ export class AuthService<TAppState extends AppState = AppState>
    * The returned observable will emit once and then complete.
    *
    * @typeparam TUser The type to return, has to extend {@link User}.
-   * @param options
+   * @param options The options to get the user
    */
   getUser(options?: GetUserOptions): Observable<User | undefined> {
     return defer(() => this.auth0Client.getUser(options));
@@ -325,7 +325,7 @@ export class AuthService<TAppState extends AppState = AppState>
    *
    * The returned observable will emit once and then complete.
    *
-   * @param options
+   * @param options The options to get the Id token claims
    */
   getIdTokenClaims(
     options?: GetIdTokenClaimsOptions
