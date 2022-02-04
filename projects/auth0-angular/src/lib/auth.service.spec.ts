@@ -674,6 +674,52 @@ describe('AuthService', () => {
     });
   });
 
+  describe('getUser', () => {
+    it('should call `getUser`', async () => {
+      await service.getUser().toPromise();
+      expect(auth0Client.getUser).toHaveBeenCalled();
+    });
+
+    it('should call `getUser` and pass options', async () => {
+      const options = { audience: 'http://localhost:3001' };
+
+      await service.getUser(options).toPromise();
+      expect(auth0Client.getUser).toHaveBeenCalledWith(options);
+    });
+
+    it('should return the user from `getUser`', async () => {
+      const options = { audience: 'http://localhost:3001' };
+      const expected = { name: 'John Doe' };
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo(expected);
+
+      const user = await service.getUser(options).toPromise();
+      expect(user).toBe(expected);
+    });
+  });
+
+  describe('getIdTokenClaims', () => {
+    it('should call `getIdTokenClaims`', async () => {
+      await service.getIdTokenClaims().toPromise();
+      expect(auth0Client.getIdTokenClaims).toHaveBeenCalled();
+    });
+
+    it('should call `getIdTokenClaims` and pass options', async () => {
+      const options = { audience: 'http://localhost:3001' };
+
+      await service.getIdTokenClaims(options).toPromise();
+      expect(auth0Client.getIdTokenClaims).toHaveBeenCalledWith(options);
+    });
+
+    it('should return the claims from `getIdTokenClaims`', async () => {
+      const options = { audience: 'http://localhost:3001' };
+      const expected = { __raw: '', name: 'John Doe' };
+      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(expected);
+
+      const claims = await service.getIdTokenClaims(options).toPromise();
+      expect(claims).toBe(expected);
+    });
+  });
+
   describe('handleRedirectCallback', () => {
     let navigator: AbstractNavigator;
 
