@@ -306,8 +306,10 @@ export class AuthService<TAppState extends AppState = AppState>
    * @typeparam TUser The type to return, has to extend {@link User}.
    * @param options The options to get the user
    */
-  getUser(options?: GetUserOptions): Observable<User | undefined> {
-    return defer(() => this.auth0Client.getUser(options));
+  getUser<TUser extends User>(
+    options?: GetUserOptions
+  ): Observable<TUser | undefined> {
+    return defer(() => this.auth0Client.getUser<TUser>(options));
   }
 
   /**
