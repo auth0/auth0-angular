@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.9.0](https://github.com/auth0/auth0-angular/tree/v1.9.0) (2022-02-14)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.8.2...v1.9.0)
+
+**Added**
+
+- [SDK-3101] Support user and claims for non-default audiences [\#276](https://github.com/auth0/auth0-angular/pull/276) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.8.2](https://github.com/auth0/auth0-angular/tree/v1.8.2) (2022-01-11)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.8.1...v1.8.2)
