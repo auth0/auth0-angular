@@ -11,6 +11,10 @@ import {
   RedirectLoginResult,
   LogoutUrlOptions,
   GetTokenSilentlyVerboseResponse,
+  GetUserOptions,
+  User,
+  GetIdTokenClaimsOptions,
+  IdToken,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -36,16 +40,14 @@ import {
 
 import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
-import {
-  AuthClientConfig,
-  AppState,
-} from './auth.config';
+import { AuthClientConfig, AppState } from './auth.config';
 import { AuthState } from './auth.state';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService<TAppState extends AppState = AppState> implements OnDestroy {
+export class AuthService<TAppState extends AppState = AppState>
+  implements OnDestroy {
   private appStateSubject$ = new ReplaySubject<TAppState>(1);
 
   // https://stackoverflow.com/a/41177163
@@ -135,7 +137,9 @@ export class AuthService<TAppState extends AppState = AppState> implements OnDes
    *
    * @param options The login options
    */
-  loginWithRedirect(options?: RedirectLoginOptions<TAppState>): Observable<void> {
+  loginWithRedirect(
+    options?: RedirectLoginOptions<TAppState>
+  ): Observable<void> {
     return from(this.auth0Client.loginWithRedirect(options));
   }
 
@@ -285,6 +289,54 @@ export class AuthService<TAppState extends AppState = AppState> implements OnDes
 
   /**
    * ```js
+   * getUser(options).subscribe(user => ...);
+   * ```
+   *
+   * Returns the user information if available (decoded
+   * from the `id_token`).
+   *
+   * If you provide an audience or scope, they should match an existing Access Token
+   * (the SDK stores a corresponding ID Token with every Access Token, and uses the
+   * scope and audience to look up the ID Token)
+   *
+   * @remarks
+   *
+   * The returned observable will emit once and then complete.
+   *
+   * @typeparam TUser The type to return, has to extend {@link User}.
+   * @param options The options to get the user
+   */
+  getUser<TUser extends User>(
+    options?: GetUserOptions
+  ): Observable<TUser | undefined> {
+    return defer(() => this.auth0Client.getUser<TUser>(options));
+  }
+
+  /**
+   * ```js
+   * getIdTokenClaims(options).subscribe(claims => ...);
+   * ```
+   *
+   * Returns all claims from the id_token if available.
+   *
+   * If you provide an audience or scope, they should match an existing Access Token
+   * (the SDK stores a corresponding ID Token with every Access Token, and uses the
+   * scope and audience to look up the ID Token)
+   *
+   * @remarks
+   *
+   * The returned observable will emit once and then complete.
+   *
+   * @param options The options to get the Id token claims
+   */
+  getIdTokenClaims(
+    options?: GetIdTokenClaimsOptions
+  ): Observable<IdToken | undefined> {
+    return defer(() => this.auth0Client.getIdTokenClaims(options));
+  }
+
+  /**
+   * ```js
    * handleRedirectCallback(url).subscribe(result => ...)
    * ```
    *
@@ -297,8 +349,12 @@ export class AuthService<TAppState extends AppState = AppState> implements OnDes
    *
    * @param url The URL to that should be used to retrieve the `state` and `code` values. Defaults to `window.location.href` if not given.
    */
-  handleRedirectCallback(url?: string): Observable<RedirectLoginResult<TAppState>> {
-    return defer(() => this.auth0Client.handleRedirectCallback<TAppState>(url)).pipe(
+  handleRedirectCallback(
+    url?: string
+  ): Observable<RedirectLoginResult<TAppState>> {
+    return defer(() =>
+      this.auth0Client.handleRedirectCallback<TAppState>(url)
+    ).pipe(
       withLatestFrom(this.authState.isLoading$),
       tap(([result, isLoading]) => {
         if (!isLoading) {
