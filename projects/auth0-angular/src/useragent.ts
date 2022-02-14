@@ -1,1 +1,1 @@
-export default { name: '@auth0/auth0-angular', version: '1.8.2' };
+export default { name: '@auth0/auth0-angular', version: '1.9.0' };
