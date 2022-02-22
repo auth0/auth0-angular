@@ -208,6 +208,36 @@ export class AppRoutingModule {}
 
 The SDK provides an `HttpInterceptor` that automatically attaches access tokens to outgoing requests when using the built-in `HttpClient`. However, you must provide configuration that tells the interceptor which requests to attach access tokens to.
 
+#### Specify the Audience
+In order for Auth0 to be able to issue tokens for a specific API, we need to configure the Audience to inform Auth0 about the API in question.
+Set the Audience to the `API Identifier` of the API from within your Auth0 dashboard.
+
+```js
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+
+// Import the module from the SDK
+import { AuthModule } from '@auth0/auth0-angular';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+
+    // Import the module into the application, with configuration
+    AuthModule.forRoot({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      audience: 'YOUR_AUTH0_API_IDENTIFIER',
+    }),
+  ],
+
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
 #### Register AuthHttpInterceptor
 
 First, register the interceptor with your application module, along with the `HttpClientModule`.
@@ -252,10 +282,7 @@ import { HttpMethod } from '@auth0/auth0-angular';
 
 // Modify your existing SDK configuration to include the httpInterceptor config
 AuthModule.forRoot({
-  domain: 'YOUR_AUTH0_DOMAIN',
-  clientId: 'YOUR_AUTH0_CLIENT_ID',
-  redirectUri: window.location.origin,
-
+  ...
   // The AuthHttpInterceptor configuration
   httpInterceptor: {
     allowedList: [
