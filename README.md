@@ -210,7 +210,7 @@ The SDK provides an `HttpInterceptor` that automatically attaches access tokens 
 
 #### Specify the Audience
 In order for Auth0 to be able to issue tokens for a specific API, we need to configure the Audience to inform Auth0 about the API in question.
-Set the Audience to the `API Identifier` of the API from within your Auth0 dashboard.
+Set the `audience`, when calling `AuthModule.forRoot()`, to the **API Identifier** of the API from within your Auth0 dashboard.
 
 ```js
 import { BrowserModule } from '@angular/platform-browser';
