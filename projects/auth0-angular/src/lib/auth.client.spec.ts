@@ -41,7 +41,7 @@ describe('Auth0ClientFactory', () => {
       expect((client as any).options.useRefreshTokensFallback).toEqual(false);
     });
 
-    it('creates a new instance of Auth0Client with the correct properties without specifying any value for useRefreshTokensFallback', () => {
+    it('creates a new instance of Auth0Client with the correct properties without any value for useRefreshTokensFallback', () => {
       const config: AuthConfig = {
         domain: 'test.domain.com',
         clientId: 'abc123',
