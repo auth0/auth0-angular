@@ -180,6 +180,5 @@
         }
       }
     }
-  },
-  "defaultProject": "auth0-angular"
+  }
 }
