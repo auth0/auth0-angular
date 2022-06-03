@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, VERSION } from '@angular/core';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { AuthClientConfig } from './auth.config';
 import useragent from '../useragent';
@@ -23,7 +23,10 @@ export class Auth0ClientFactory {
       auth0Client: {
         name: useragent.name,
         version: useragent.version,
-      },
+        env: {
+          'angular/core': VERSION.full
+        }
+      } as any,
     });
   }
 }
