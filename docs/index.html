@@ -433,6 +433,45 @@
               attach access tokens to.
             </p>
             <a
+              href="#specify-the-audience"
+              id="specify-the-audience"
+              style="color: inherit; text-decoration: none"
+            >
+              <h4>Specify the Audience</h4>
+            </a>
+            <p>
+              In order for Auth0 to be able to issue tokens for a specific API,
+              we need to configure the Audience to inform Auth0 about the API in
+              question. Set the <code>audience</code>, when calling
+              <code>AuthModule.forRoot()</code>, to the
+              <strong>API Identifier</strong> of the API from within your Auth0
+              dashboard.
+            </p>
+            <pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">BrowserModule</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@angular/platform-browser&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">NgModule</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@angular/core&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">AppComponent</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./app.component&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #008000">// Import the module from the SDK</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">AuthModule</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@auth0/auth0-angular&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">@</span><span style="color: #795E26">NgModule</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">declarations:</span><span style="color: #000000"> [</span><span style="color: #001080">AppComponent</span><span style="color: #000000">],</span>
+<span style="color: #000000">  </span><span style="color: #001080">imports:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">    </span><span style="color: #001080">BrowserModule</span><span style="color: #000000">,</span>
+
+<span style="color: #000000">    </span><span style="color: #008000">// Import the module into the application, with configuration</span>
+<span style="color: #000000">    </span><span style="color: #001080">AuthModule</span><span style="color: #000000">.</span><span style="color: #795E26">forRoot</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #001080">domain:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;YOUR_AUTH0_DOMAIN&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">clientId:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;YOUR_AUTH0_CLIENT_ID&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">audience:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;YOUR_AUTH0_API_IDENTIFIER&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    }),</span>
+<span style="color: #000000">  ],</span>
+
+<span style="color: #000000">  </span><span style="color: #001080">bootstrap:</span><span style="color: #000000"> [</span><span style="color: #001080">AppComponent</span><span style="color: #000000">],</span>
+<span style="color: #000000">})</span>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">AppModule</span><span style="color: #000000"> {}</span>
+</code></pre>
+            <a
               href="#register-authhttpinterceptor"
               id="register-authhttpinterceptor"
               style="color: inherit; text-decoration: none"
@@ -507,12 +546,9 @@
 
 <span style="color: #008000">// Modify your existing SDK configuration to include the httpInterceptor config</span>
 <span style="color: #001080">AuthModule</span><span style="color: #000000">.</span><span style="color: #795E26">forRoot</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">domain:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;YOUR_AUTH0_DOMAIN&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">clientId:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;YOUR_AUTH0_CLIENT_ID&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">redirectUri:</span><span style="color: #000000"> </span><span style="color: #001080">window</span><span style="color: #000000">.</span><span style="color: #001080">location</span><span style="color: #000000">.</span><span style="color: #001080">origin</span><span style="color: #000000">,</span>
-
+<span style="color: #000000">  ...</span>
 <span style="color: #000000">  </span><span style="color: #008000">// The AuthHttpInterceptor configuration</span>
-<span style="color: #000000">  </span><span style="color: #001080">httpInterceptor:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">httpInterceptor</span><span style="color: #000000">: {</span>
 <span style="color: #000000">    </span><span style="color: #001080">allowedList:</span><span style="color: #000000"> [</span>
 <span style="color: #000000">      </span><span style="color: #008000">// Attach access tokens to any calls to &#039;/api&#039; (exact match)</span>
 <span style="color: #000000">      </span><span style="color: #A31515">&#039;/api&#039;</span><span style="color: #000000">,</span>
