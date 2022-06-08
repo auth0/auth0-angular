@@ -1,5 +1,18 @@
 # Change Log
 
+## [v1.10.0](https://github.com/auth0/auth0-angular/tree/v1.10.0) (2022-06-08)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.9.0...v1.10.0)
+
+**Added**
+
+- [SDK-3415] Allow to disable the use of silent auth when using Refresh Tokens [\#308](https://github.com/auth0/auth0-angular/pull/308) ([frederikprijck](https://github.com/frederikprijck))
+- Add support for Angular 14 [\#315](https://github.com/auth0/auth0-angular/pull/315) ([frederikprijck](https://github.com/frederikprijck))
+
+**Changed**
+
+- Send Angular Version as part of auth0Client header [\#309](https://github.com/auth0/auth0-angular/pull/309) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.9.0](https://github.com/auth0/auth0-angular/tree/v1.9.0) (2022-02-14)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.8.2...v1.9.0)
