@@ -24,9 +24,9 @@ export class Auth0ClientFactory {
         name: useragent.name,
         version: useragent.version,
         env: {
-          'angular/core': VERSION.full
-        }
-      } as any,
+          'angular/core': VERSION.full,
+        },
+      },
     });
   }
 }
