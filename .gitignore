@@ -57,3 +57,7 @@ Thumbs.db
 
 # Tests
 test-results
+
+# Coverage
+projects/auth0-angular/coverage
+projects/playground/coverage

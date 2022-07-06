@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.appState$.subscribe((appState) => {
-      this.appStateResult = appState.myValue;
+      this.appStateResult = appState['myValue'];
     });
   }
 

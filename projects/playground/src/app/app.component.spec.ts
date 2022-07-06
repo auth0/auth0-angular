@@ -110,8 +110,8 @@ describe('AppComponent', () => {
 
     it('should logout with default options', () => {
       const form = component.logoutOptionsForm.controls;
-      form.localOnly.setValue(false);
-      form.federated.setValue(false);
+      form['localOnly'].setValue(false);
+      form['federated'].setValue(false);
 
       const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
@@ -126,8 +126,8 @@ describe('AppComponent', () => {
 
     it('should logout with federated', () => {
       const form = component.logoutOptionsForm.controls;
-      form.localOnly.setValue(false);
-      form.federated.setValue(true);
+      form['localOnly'].setValue(false);
+      form['federated'].setValue(true);
 
       const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
@@ -142,8 +142,8 @@ describe('AppComponent', () => {
 
     it('should logout with localOnly', () => {
       const form = component.logoutOptionsForm.controls;
-      form.localOnly.setValue(true);
-      form.federated.setValue(false);
+      form['localOnly'].setValue(true);
+      form['federated'].setValue(false);
 
       const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
@@ -182,7 +182,7 @@ describe('AppComponent', () => {
         'Access Token'
       );
       const form = component.accessTokenOptionsForm.controls;
-      form.usePopup.setValue(false);
+      form['usePopup'].setValue(false);
       (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
         of('access token silently')
       );
@@ -205,8 +205,8 @@ describe('AppComponent', () => {
         'Access Token'
       );
       const form = component.accessTokenOptionsForm.controls;
-      form.usePopup.setValue(false);
-      form.ignoreCache.setValue(false);
+      form['usePopup'].setValue(false);
+      form['ignoreCache'].setValue(false);
       (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
         of('access token silently')
       );
@@ -229,8 +229,8 @@ describe('AppComponent', () => {
         'Access Token'
       );
       const form = component.accessTokenOptionsForm.controls;
-      form.usePopup.setValue(false);
-      form.ignoreCache.setValue(true);
+      form['usePopup'].setValue(false);
+      form['ignoreCache'].setValue(true);
       (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
         of('access token silently')
       );
@@ -253,7 +253,7 @@ describe('AppComponent', () => {
         'Access Token'
       );
       const form = component.accessTokenOptionsForm.controls;
-      form.usePopup.setValue(true);
+      form['usePopup'].setValue(true);
       (authMock.getAccessTokenWithPopup as jasmine.Spy).and.returnValue(
         of('access token popup')
       );
@@ -296,8 +296,8 @@ describe('AppComponent', () => {
 
       const wrapLogin = ne.querySelector('.login-wrapper');
       const form = component.loginOptionsForm.controls;
-      form.usePopup.setValue(false);
-      form.appStateInput.setValue(appStateValue);
+      form['usePopup'].setValue(false);
+      form['appStateInput'].setValue(appStateValue);
 
       const btnRefresh = wrapLogin?.querySelector('button');
       btnRefresh?.click();
@@ -313,7 +313,7 @@ describe('AppComponent', () => {
     it('should login with popup', () => {
       const wrapLogin = ne.querySelector('.login-wrapper');
       const form = component.loginOptionsForm.controls;
-      form.usePopup.setValue(true);
+      form['usePopup'].setValue(true);
 
       const btnRefresh = wrapLogin?.querySelector('button');
       btnRefresh?.click();
