@@ -3,8 +3,11 @@
   "exclude": ["**/*.spec.ts"],
   "tsconfig": "./projects/auth0-angular/tsconfig.lib.json",
   "out": "docs",
+  "pretty": true,
   "excludeExternals": true,
   "excludePrivate": true,
   "hideGenerator": true,
-  "readme": "./README.md"
+  "readme": "./README.md",
+  "entryPointStrategy": "expand",
+  "theme": "default"
 }
