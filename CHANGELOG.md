@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.10.1](https://github.com/auth0/auth0-angular/tree/v1.10.1) (2022-07-26)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.10.0...v1.10.1)
+
+**Fixed**
+
+- Emit error after navigation when error occurs [\#329](https://github.com/auth0/auth0-angular/pull/329) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.10.0](https://github.com/auth0/auth0-angular/tree/v1.10.0) (2022-06-08)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.9.0...v1.10.0)
