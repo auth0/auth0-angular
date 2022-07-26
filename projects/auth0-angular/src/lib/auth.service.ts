@@ -103,8 +103,8 @@ export class AuthService<TAppState extends AppState = AppState>
           checkSessionOrCallback$(isCallback).pipe(
             catchError((error) => {
               const config = this.configFactory.get();
-              this.authState.setError(error);
               this.navigator.navigateByUrl(config.errorPath || '/');
+              this.authState.setError(error);
               return of(undefined);
             })
           )
