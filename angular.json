@@ -16,9 +16,7 @@
             "project": "projects/auth0-angular/ng-package.json"
           },
           "configurations": {
-            "production": {
-              "tsConfig": "projects/auth0-angular/tsconfig.lib.prod.json"
-            }
+            "production": {}
           }
         },
         "lint": {
