@@ -26,6 +26,8 @@ A library for integrating [Auth0](https://auth0.com) into an Angular 9+ applicat
 - [API Reference](https://auth0.github.io/auth0-angular/)
 - [Quickstart Guide](https://auth0.com/docs/quickstart/spa/angular-next)
 
+## Angular support
+Our SDK follows [Angular's support policy](https://angular.io/guide/releases#support-policy-and-schedule), and therefore will officially support only the version listed in this policy.
 ## Installation
 
 Using npm:
