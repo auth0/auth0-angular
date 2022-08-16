@@ -108,7 +108,7 @@ describe('AuthService', () => {
     it('should not set isLoading when service destroyed before checkSession finished', (done) => {
       const localService = createService();
 
-      localService.isLoading$.pipe(bufferTime(500)).subscribe((loading) => {
+      localService.isLoading$.pipe(bufferTime(500), take(1)).subscribe((loading) => {
         expect(loading.length).toEqual(1);
         expect(loading).toEqual([true]);
         done();

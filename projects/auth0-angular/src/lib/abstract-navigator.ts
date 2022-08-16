@@ -20,7 +20,7 @@ export class AbstractNavigator {
    * @param url The url to navigate to
    */
   navigateByUrl(url: string): void {
-    if (this.router) {
+    if (this.router && this.router.config?.length) {
       this.router.navigateByUrl(url);
 
       return;
