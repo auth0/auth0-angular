@@ -404,9 +404,10 @@ export class AuthService<TAppState extends AppState = AppState>
   private shouldHandleCallback(): Observable<boolean> {
     return of(location.search).pipe(
       map((search) => {
+        const searchParams = new URLSearchParams(search);
         return (
-          (search.includes('code=') || search.includes('error=')) &&
-          search.includes('state=') &&
+          (!!searchParams.get('code') || !!searchParams.get('error')) &&
+          !!searchParams.get('state') &&
           !this.configFactory.get().skipRedirectCallback
         );
       })
