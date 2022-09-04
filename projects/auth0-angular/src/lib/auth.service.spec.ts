@@ -485,6 +485,17 @@ describe('AuthService', () => {
         done();
       });
     });
+
+    it('should not process the callback when query string is a sub string', (done) => {
+      window.history.replaceState(null, '', '?abccode=123&xyzstate=456');
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalled();
+        done();
+      });
+    });
   });
 
   it('should call `loginWithRedirect`', async () => {
