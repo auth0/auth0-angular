@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.11.0](https://github.com/auth0/auth0-angular/tree/v1.11.0) (2022-10-03)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.10.1...v1.11.0)
+
+**Changed**
+
+- Do not disable Ivy but use compilationMode partial [\#345](https://github.com/auth0/auth0-angular/pull/345) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v1.10.1](https://github.com/auth0/auth0-angular/tree/v1.10.1) (2022-07-26)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.10.0...v1.10.1)
