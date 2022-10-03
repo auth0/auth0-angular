@@ -6,11 +6,12 @@
 
 # Auth0 Angular SDK
 
-A library for integrating [Auth0](https://auth0.com) into an Angular 9+ application.
+A library for integrating [Auth0](https://auth0.com) into an Angular application.
 
 ## Table of Contents
 
 - [Documentation](#documentation)
+- [Supported Angular versions](#supported-angular-versions)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Angular Universal](#angular-universal)
@@ -25,6 +26,9 @@ A library for integrating [Auth0](https://auth0.com) into an Angular 9+ applicat
 
 - [API Reference](https://auth0.github.io/auth0-angular/)
 - [Quickstart Guide](https://auth0.com/docs/quickstart/spa/angular-next)
+
+## Supported Angular versions
+This project only supports the [actively supported versions of Angular as stated in the Angular documentation](https://angular.io/guide/releases#actively-supported-versions). Whilst other versions might be compatible they are not actively supported.
 
 ## Installation
 
