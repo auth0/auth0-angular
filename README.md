@@ -18,7 +18,7 @@ A library for integrating [Auth0](https://auth0.com) into an Angular application
 - [Examples](./EXAMPLES.md) - code samples for common Angular authentication scenario's.
 - [Docs site](https://www.auth0.com/docs) - explore our docs site and learn more about Auth0.
 
-## Getting Started
+## Getting started
 
 ### Requirements
 
