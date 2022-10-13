@@ -122,8 +122,6 @@ export class AppModule {
 }
 ```
 
-For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, have a look at our [examples](./EXAMPLES.md).
-
 ### Add login to your application
 
 To log the user into the application, inject the `AuthService` and call its `loginWithRedirect` method.
@@ -146,6 +144,8 @@ export class AppComponent {
 ```
 
 By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html#redirecturi) option.
+
+For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, have a look at our [examples](./EXAMPLES.md).
 
 ## Feedback
 
