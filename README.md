@@ -122,7 +122,7 @@ export class AppModule {
 }
 ```
 
-For more code samples on how to integrate the auth0-angular SDK in your Angular application, have a look at our [examples](./EXAMPLES.md).
+For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, have a look at our [examples](./EXAMPLES.md).
 
 ## Feedback
 
