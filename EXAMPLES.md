@@ -9,7 +9,7 @@
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
 
-### Add login to your application
+## Add login to your application
 
 To log the user into the application, inject the `AuthService` and call its `loginWithRedirect` method.
 
@@ -32,7 +32,7 @@ export class AppComponent {
 
 By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html#redirecturi) option.
 
-### Add logout to your application
+## Add logout to your application
 
 To log the user out of your application, call the `logout` method on `AuthService` from anywhere inside your application, such as a component:
 
@@ -53,7 +53,7 @@ export class AppComponent {
   }
 ```
 
-### Checking if a user is authenticated
+## Checking if a user is authenticated
 
 The `isAuthenticated$` observable on `AuthService` emits true or false based on the current authentication state. You can use this observable to make any decisions based on whether or not the user is authenticated, such as only showing the login button when the user is not logged in yet, and the logout button only when the user is logged in.
 
@@ -75,7 +75,7 @@ The `isAuthenticated$` observable on `AuthService` emits true or false based on 
 </ng-template>
 ```
 
-### Display the user profile
+## Display the user profile
 
 Access the `user$` observable on the `AuthService` instance to retrieve the user profile. This observable already heeds the `isAuthenticated$` observable, so you do not need to check if the user is authenticated before using it:
 
@@ -103,7 +103,7 @@ You can then access the component's `user$` observable from within your template
 </ul>
 ```
 
-### Protect a route
+## Protect a route
 
 To ensure that a route can only be visited by authenticated users, add the built-in `AuthGuard` type to the `canActivate` property on the route you wish to protect.
 
@@ -136,11 +136,11 @@ const routes: Routes = [
 export class AppRoutingModule {}
 ```
 
-### Call an API
+## Call an API
 
 The SDK provides an `HttpInterceptor` that automatically attaches access tokens to outgoing requests when using the built-in `HttpClient`. However, you must provide configuration that tells the interceptor which requests to attach access tokens to.
 
-#### Specify the audience
+### Specify the audience
 
 In order for Auth0 to be able to issue tokens for a specific API, we need to configure the Audience to inform Auth0 about the API in question. Set the `audience`, when calling `AuthModule.forRoot()`, to the **API Identifier** of the API from within your Auth0 dashboard.
 
@@ -162,7 +162,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 export class AppModule {}
 ```
 
-#### Register AuthHttpInterceptor
+### Register AuthHttpInterceptor
 
 First, register the interceptor with your application module, along with the `HttpClientModule`.
 
@@ -185,7 +185,7 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 
 Note: We do not do this automatically for you as we want you to be explicit about including this interceptor. Also, you may want to chain this interceptor with others, making it hard for us to place it accurately.
 
-#### Configure AuthHttpInterceptor to attach access tokens
+### Configure AuthHttpInterceptor to attach access tokens
 
 Next, tell the SDK which requests to attach access tokens to in the SDK configuration. These are matched on the URL by using a string, a regex, or more complex object that also allows you to specify the configuration for fetching tokens by setting the `tokenOptions` property.
 
@@ -277,7 +277,7 @@ AuthModule.forRoot({
 
 You might want to do this in scenarios where you need the token on multiple endpoints, but want to exclude it from only a few other endpoints. Instead of explicitly listing all endpoints that do need a token, a uriMatcher can be used to include all but the few endpoints that do not need a token attached to its requests.
 
-### Handling errors
+## Handling errors
 
 Whenever the SDK fails to retrieve an Access Token, either as part of the above interceptor or when manually calling `AuthService.getAccessTokenSilently` and `AuthService.getAccessTokenWithPopup`, it will emit the corresponding error in the `AuthService.error$` observable.
 
@@ -302,7 +302,7 @@ ngOnInit() {
 }
 ```
 
-### Organizations
+## Organizations
 
 [Organizations](https://auth0.com/docs/organizations) is a set of features that provide better support for developers who build and maintain SaaS and Business-to-Business (B2B) applications.
 
@@ -320,7 +320,7 @@ Using Organizations, you can:
 
 Note that Organizations is currently only available to customers on our Enterprise and Startup subscription plans.
 
-#### Log in to an organization
+### Log in to an organization
 
 Log in to an organization by specifying the `organization` parameter importing the `AuthModule`:
 
@@ -346,7 +346,7 @@ this.auth.loginWithPopup({
 });
 ```
 
-#### Accept user invitations
+### Accept user invitations
 
 Accept a user invitation through the SDK by creating a route within your application that can handle the user invitation URL, and log the user in by passing the `organization` and `invitation` parameters from this URL. You can either use `loginWithRedirect` or `loginWithPopup` as needed.
 
