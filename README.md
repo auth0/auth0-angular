@@ -2,7 +2,7 @@
 
 A library for integrating [Auth0](https://auth0.com) into an Angular application.
 
-![Release](https://img.shields.io/github/v/release/auth0/auth0-angular)
+![Release](https://img.shields.io/npm/v/@auth0/auth0-angular)
 [![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-angular)](https://codecov.io/gh/auth0/auth0-angular)
 ![Downloads](https://img.shields.io/npm/dw/@auth0/auth0-angular)
 [![License](https://img.shields.io/:license-MIT-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
