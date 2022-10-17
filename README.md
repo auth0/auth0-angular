@@ -1,4 +1,4 @@
-# Auth0 Angular SDK
+<img src="./banner.svg">
 
 A library for integrating [Auth0](https://auth0.com) into an Angular application.
 
