@@ -20,6 +20,7 @@
     "e2e:ci": "concurrently --raw --kill-others --success first npm:start:local:oidc npm:e2e:headless",
     "lint": "ng lint",
     "docs": "typedoc",
+    "postdocs": "cp ./banner.png docs && cp ./auth0_dark_mode.png docs && cp ./auth0_light_mode.png docs",
     "pretty-quick": "pretty-quick",
     "release:publish": "node scripts/publish.js",
     "update-useragent": "node projects/auth0-angular/scripts/update-useragent.js",
