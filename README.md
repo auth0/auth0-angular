@@ -14,8 +14,8 @@ A library for integrating [Auth0](https://auth0.com) into an Angular application
 
 - [Quickstart](https://auth0.com/docs/quickstart/spa/angular) - our interactive guide for quickly adding login, logout and user information to an Angular app using Auth0.
 - [Sample App](https://github.com/auth0-samples/auth0-angular-samples/tree/master/Sample-01) - a full-fledged Angular application integrated with Auth0.
-- [FAQs](./FAQ.md) - frequently asked questions about the auth0-angular SDK.
-- [Examples](./EXAMPLES.md) - code samples for common Angular authentication scenario's.
+- [FAQs](https://github.com/auth0/auth0-angular/tree/master/FAQ.md) - frequently asked questions about the auth0-angular SDK.
+- [Examples](https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md) - code samples for common Angular authentication scenario's.
 - [Docs site](https://www.auth0.com/docs) - explore our docs site and learn more about Auth0.
 
 ## Getting started
@@ -148,7 +148,7 @@ export class AppComponent {
 
 By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html#redirecturi) option.
 
-For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, have a look at our [examples](./EXAMPLES.md).
+For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, have a look at our [examples](https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md).
 
 ## API reference
 
