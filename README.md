@@ -1,4 +1,4 @@
-<img src="./banner.svg">
+![Release](./banner.png)
 
 A library for integrating [Auth0](https://auth0.com) into an Angular application.
 
