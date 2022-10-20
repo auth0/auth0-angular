@@ -1,4 +1,4 @@
-![Release](https://cdn.auth0.com/website/sdks/banners/auth0-angular-banner.png)
+![Auth0 SDK for Angular applications](https://cdn.auth0.com/website/sdks/banners/auth0-angular-banner.png)
 
 A library for integrating [Auth0](https://auth0.com) into an Angular application.
 
