@@ -54,11 +54,15 @@ export class AppComponent implements OnInit {
     const usePopup = this.loginOptionsForm.value.usePopup === true;
     if (usePopup) {
       this.auth.loginWithPopup({
-        ...(this.organization ? { organization: this.organization } : null),
+        authorizationParams: {
+          ...(this.organization ? { organization: this.organization } : null),
+        },
       });
     } else {
       this.auth.loginWithRedirect({
-        ...(this.organization ? { organization: this.organization } : null),
+        authorizationParams: {
+          ...(this.organization ? { organization: this.organization } : null),
+        },
         appState: {
           myValue: this.loginOptionsForm.value.appStateInput,
         },
@@ -75,12 +79,16 @@ export class AppComponent implements OnInit {
 
       if (orgMatches && inviteMatches) {
         this.auth.loginWithRedirect({
-          organization: orgMatches[1],
-          invitation: inviteMatches[1],
+          authorizationParams: {
+            organization: orgMatches[1],
+            invitation: inviteMatches[1],
+          },
         });
       } else if (orgMatches) {
         this.auth.loginWithRedirect({
-          organization: orgMatches[1],
+          authorizationParams: {
+            organization: orgMatches[1],
+          },
         });
       }
     }
@@ -89,9 +97,11 @@ export class AppComponent implements OnInit {
   launchLogout(): void {
     const formOptions = this.logoutOptionsForm.value;
     const options: LogoutOptions = {
-      localOnly: formOptions.localOnly === true,
-      federated: formOptions.federated === true,
-      returnTo: this.doc.location.origin,
+      onRedirect: formOptions.localOnly === true ? async () => {} : undefined,
+      logoutParams: {
+        federated: formOptions.federated === true,
+        returnTo: this.doc.location.origin,
+      },
     };
 
     this.auth.logout(options);
@@ -103,11 +113,15 @@ export class AppComponent implements OnInit {
     iif(
       () => usePopup,
       this.auth.getAccessTokenWithPopup(),
-      this.auth.getAccessTokenSilently({ ignoreCache })
+      this.auth.getAccessTokenSilently({
+        cacheMode: ignoreCache ? 'off' : 'on',
+      })
     )
       .pipe(first())
       .subscribe((token) => {
-        this.accessToken = token;
+        if (token) {
+          this.accessToken = token;
+        }
       });
   }
 
