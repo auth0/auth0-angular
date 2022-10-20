@@ -56,7 +56,7 @@ describe('The Auth HTTP Interceptor', () => {
 
     auth0Client = new Auth0Client({
       domain: '',
-      client_id: '',
+      clientId: '',
     });
 
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('access-token');
@@ -75,8 +75,10 @@ describe('The Auth HTTP Interceptor', () => {
           {
             uri: 'https://my-api.com/api/addresses',
             tokenOptions: {
-              audience: 'audience',
-              scope: 'scope',
+              authorizationParams: {
+                audience: 'audience',
+                scope: 'scope',
+              },
             },
           },
           {
@@ -90,8 +92,10 @@ describe('The Auth HTTP Interceptor', () => {
             uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1,
             httpMethod: HttpMethod.Post,
             tokenOptions: {
-              audience: 'audience',
-              scope: 'scope',
+              authorizationParams: {
+                audience: 'audience',
+                scope: 'scope',
+              },
             },
           },
         ],
@@ -202,8 +206,10 @@ describe('The Auth HTTP Interceptor', () => {
       assertAuthorizedApiCallTo('https://my-api.com/api/addresses', done);
 
       expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
-        audience: 'audience',
-        scope: 'scope',
+        authorizationParams: {
+          audience: 'audience',
+          scope: 'scope',
+        },
       });
     }));
 
@@ -299,8 +305,10 @@ describe('The Auth HTTP Interceptor', () => {
       assertAuthorizedApiCallTo('https://my-api.com/api/contact', done, 'post');
 
       expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
-        audience: 'audience',
-        scope: 'scope',
+        authorizationParams: {
+          audience: 'audience',
+          scope: 'scope',
+        },
       });
     }));
 

@@ -36,7 +36,7 @@ describe('Auth0ClientFactory', () => {
 
       expect(client).not.toBeUndefined();
       expect((client as any).options.domain).toEqual('test.domain.com');
-      expect((client as any).options.client_id).toEqual('abc123');
+      expect((client as any).options.clientId).toEqual('abc123');
       expect((client as any).options.useRefreshTokens).toEqual(true);
       expect((client as any).options.useRefreshTokensFallback).toEqual(false);
     });
@@ -53,11 +53,9 @@ describe('Auth0ClientFactory', () => {
 
       expect(client).not.toBeUndefined();
       expect((client as any).options.domain).toEqual('test.domain.com');
-      expect((client as any).options.client_id).toEqual('abc123');
+      expect((client as any).options.clientId).toEqual('abc123');
       expect((client as any).options.useRefreshTokens).toEqual(true);
-      expect(
-        (client as any).options.useRefreshTokensFallback
-      ).not.toBeDefined();
+      expect((client as any).options.useRefreshTokensFallback).toEqual(false);
     });
   });
 });
