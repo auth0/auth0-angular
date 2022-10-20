@@ -17,10 +17,7 @@ import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
 import { ErrorComponent } from './components/error.component';
 
-import {
-  AuthClientConfig,
-  AuthConfig,
-} from 'projects/auth0-angular/src/lib/auth.config';
+import { AuthClientConfig } from 'projects/auth0-angular/src/lib/auth.config';
 
 /**
  * Provides configuration to the application
