@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html class="default no-js">
+<html class="default">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
     <title>AbstractNavigator | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../assets/css/main.css" />
-    <script async src="../assets/js/search.js" id="search-script"></script>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <link rel="stylesheet" href="../assets/highlight.css" />
+    <script async src="../assets/search.js" id="search-script"></script>
   </head>
   <body>
+    <script>
+      document.body.classList.add(localStorage.getItem('tsd-theme') || 'os');
+    </script>
     <header>
       <div class="tsd-page-toolbar">
         <div class="container">
           <div class="table-wrap">
-            <div
-              class="table-cell"
-              id="tsd-search"
-              data-index="../assets/js/search.json"
-              data-base=".."
-            >
+            <div class="table-cell" id="tsd-search" data-base="..">
               <div class="field">
                 <label
                   for="tsd-search-field"
                   class="tsd-widget search no-caption"
                   >Search</label
-                >
-                <input id="tsd-search-field" type="text" />
+                ><input type="text" id="tsd-search-field" />
               </div>
               <ul class="results">
                 <li class="state loading">Preparing search index...</li>
@@ -51,8 +49,11 @@
                       <li data-value="private" class="selected">All</li>
                     </ul>
                   </div>
-                  <input type="checkbox" id="tsd-filter-inherited" checked />
-                  <label class="tsd-widget" for="tsd-filter-inherited"
+                  <input
+                    type="checkbox"
+                    id="tsd-filter-inherited"
+                    checked
+                  /><label class="tsd-widget" for="tsd-filter-inherited"
                     >Inherited</label
                   >
                 </div>
@@ -67,16 +68,14 @@
       <div class="tsd-page-title">
         <div class="container">
           <ul class="tsd-breadcrumb">
-            <li>
-              <a href="../modules.html">@auth0/auth0-angular</a>
-            </li>
+            <li><a href="../modules.html">@auth0/auth0-angular</a></li>
             <li>
               <a href="../modules/abstract_navigator.html"
                 >abstract-navigator</a
               >
             </li>
             <li>
-              <a href="abstract_navigator.abstractnavigator.html"
+              <a href="abstract_navigator.AbstractNavigator.html"
                 >AbstractNavigator</a
               >
             </li>
@@ -91,9 +90,7 @@
           <section class="tsd-panel tsd-hierarchy">
             <h3>Hierarchy</h3>
             <ul class="tsd-hierarchy">
-              <li>
-                <span class="target">AbstractNavigator</span>
-              </li>
+              <li><span class="target">AbstractNavigator</span></li>
             </ul>
           </section>
           <section class="tsd-panel-group tsd-index-group">
@@ -105,7 +102,7 @@
                   <ul class="tsd-index-list">
                     <li class="tsd-kind-constructor tsd-parent-kind-class">
                       <a
-                        href="abstract_navigator.abstractnavigator.html#constructor"
+                        href="abstract_navigator.AbstractNavigator.html#constructor"
                         class="tsd-kind-icon"
                         >constructor</a
                       >
@@ -117,9 +114,9 @@
                   <ul class="tsd-index-list">
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="abstract_navigator.abstractnavigator.html#navigatebyurl"
+                        href="abstract_navigator.AbstractNavigator.html#navigateByUrl"
                         class="tsd-kind-icon"
-                        >navigate<wbr />ByUrl</a
+                        >navigate<wbr />By<wbr />Url</a
                       >
                     </li>
                   </ul>
@@ -132,8 +129,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"
             >
-              <a name="constructor" class="tsd-anchor"></a>
-              <h3>constructor</h3>
+              <a id="constructor" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                constructor<a
+                  href="#constructor"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul
                 class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class"
               >
@@ -148,7 +168,7 @@
                   ><span class="tsd-signature-symbol">)</span
                   ><span class="tsd-signature-symbol">: </span
                   ><a
-                    href="abstract_navigator.abstractnavigator.html"
+                    href="abstract_navigator.AbstractNavigator.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Class"
                     >AbstractNavigator</a
@@ -162,8 +182,8 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/abstract-navigator.ts#L9"
-                          >abstract-navigator.ts:9</a
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/abstract-navigator.ts#L11"
+                          >abstract-navigator.ts:11</a
                         >
                       </li>
                     </ul>
@@ -186,7 +206,7 @@
                   <h4 class="tsd-returns-title">
                     Returns
                     <a
-                      href="abstract_navigator.abstractnavigator.html"
+                      href="abstract_navigator.AbstractNavigator.html"
                       class="tsd-signature-type"
                       data-tsd-kind="Class"
                       >AbstractNavigator</a
@@ -201,11 +221,35 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="navigatebyurl" class="tsd-anchor"></a>
-              <h3>navigate<wbr />ByUrl</h3>
+              <a id="navigateByUrl" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                navigate<wbr />By<wbr />Url<a
+                  href="#navigateByUrl"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
-                  navigate<wbr />ByUrl<span class="tsd-signature-symbol">(</span
+                  navigate<wbr />By<wbr />Url<span class="tsd-signature-symbol"
+                    >(</span
                   >url<span class="tsd-signature-symbol">: </span
                   ><span class="tsd-signature-type">string</span
                   ><span class="tsd-signature-symbol">)</span
@@ -220,7 +264,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/abstract-navigator.ts#L22"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/abstract-navigator.ts#L22"
                           >abstract-navigator.ts:22</a
                         >
                       </li>
@@ -242,7 +286,9 @@
                         url: <span class="tsd-signature-type">string</span>
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The url to navigate to</p>
+                        <div class="lead">
+                          <p>The url to navigate to</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -257,9 +303,7 @@
         <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
           <nav class="tsd-navigation primary">
             <ul>
-              <li class=" ">
-                <a href="../modules.html">Exports</a>
-              </li>
+              <li class=""><a href="../modules.html">Modules</a></li>
               <li class="current tsd-kind-module">
                 <a href="../modules/abstract_navigator.html"
                   >abstract-<wbr />navigator</a
@@ -289,38 +333,36 @@
             </ul>
           </nav>
           <nav class="tsd-navigation secondary menu-sticky">
-            <ul class="before-current"></ul>
-            <ul class="current">
+            <ul>
               <li class="current tsd-kind-class tsd-parent-kind-module">
                 <a
-                  href="abstract_navigator.abstractnavigator.html"
+                  href="abstract_navigator.AbstractNavigator.html"
                   class="tsd-kind-icon"
                   >Abstract<wbr />Navigator</a
                 >
                 <ul>
                   <li class="tsd-kind-constructor tsd-parent-kind-class">
                     <a
-                      href="abstract_navigator.abstractnavigator.html#constructor"
+                      href="abstract_navigator.AbstractNavigator.html#constructor"
                       class="tsd-kind-icon"
                       >constructor</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="abstract_navigator.abstractnavigator.html#navigatebyurl"
+                      href="abstract_navigator.AbstractNavigator.html#navigateByUrl"
                       class="tsd-kind-icon"
-                      >navigate<wbr />ByUrl</a
+                      >navigate<wbr />By<wbr />Url</a
                     >
                   </li>
                 </ul>
               </li>
             </ul>
-            <ul class="after-current"></ul>
           </nav>
         </div>
       </div>
     </div>
-    <footer>
+    <footer class="">
       <div class="container">
         <h2>Legend</h2>
         <div class="tsd-legend-group">
@@ -360,9 +402,18 @@
             </li>
           </ul>
         </div>
+        <h2>Settings</h2>
+        <p>
+          Theme
+          <select id="theme">
+            <option value="os">OS</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </p>
       </div>
     </footer>
     <div class="overlay"></div>
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/main.js"></script>
   </body>
 </html>

@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html class="default no-js">
+<html class="default">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
     <title>AuthService | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../assets/css/main.css" />
-    <script async src="../assets/js/search.js" id="search-script"></script>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <link rel="stylesheet" href="../assets/highlight.css" />
+    <script async src="../assets/search.js" id="search-script"></script>
   </head>
   <body>
+    <script>
+      document.body.classList.add(localStorage.getItem('tsd-theme') || 'os');
+    </script>
     <header>
       <div class="tsd-page-toolbar">
         <div class="container">
           <div class="table-wrap">
-            <div
-              class="table-cell"
-              id="tsd-search"
-              data-index="../assets/js/search.json"
-              data-base=".."
-            >
+            <div class="table-cell" id="tsd-search" data-base="..">
               <div class="field">
                 <label
                   for="tsd-search-field"
                   class="tsd-widget search no-caption"
                   >Search</label
-                >
-                <input id="tsd-search-field" type="text" />
+                ><input type="text" id="tsd-search-field" />
               </div>
               <ul class="results">
                 <li class="state loading">Preparing search index...</li>
@@ -51,8 +49,11 @@
                       <li data-value="private" class="selected">All</li>
                     </ul>
                   </div>
-                  <input type="checkbox" id="tsd-filter-inherited" checked />
-                  <label class="tsd-widget" for="tsd-filter-inherited"
+                  <input
+                    type="checkbox"
+                    id="tsd-filter-inherited"
+                    checked
+                  /><label class="tsd-widget" for="tsd-filter-inherited"
                     >Inherited</label
                   >
                 </div>
@@ -67,15 +68,9 @@
       <div class="tsd-page-title">
         <div class="container">
           <ul class="tsd-breadcrumb">
-            <li>
-              <a href="../modules.html">@auth0/auth0-angular</a>
-            </li>
-            <li>
-              <a href="../modules/auth_service.html">auth.service</a>
-            </li>
-            <li>
-              <a href="auth_service.authservice.html">AuthService</a>
-            </li>
+            <li><a href="../modules.html">@auth0/auth0-angular</a></li>
+            <li><a href="../modules/auth_service.html">auth.service</a></li>
+            <li><a href="auth_service.AuthService.html">AuthService</a></li>
           </ul>
           <h1>Class AuthService&lt;TAppState&gt;</h1>
         </div>
@@ -85,20 +80,20 @@
       <div class="row">
         <div class="col-8 col-content">
           <section class="tsd-panel tsd-type-parameters">
-            <h3>Type parameters</h3>
+            <h3>Type Parameters</h3>
             <ul class="tsd-type-parameters">
               <li>
                 <h4>
-                  TAppState<span class="tsd-signature-symbol">: </span
+                  TAppState<span class="tsd-signature-symbol"> extends </span
                   ><a
-                    href="../interfaces/auth_config.appstate.html"
+                    href="../interfaces/auth_config.AppState.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Interface"
                     >AppState</a
                   >
                   =
                   <a
-                    href="../interfaces/auth_config.appstate.html"
+                    href="../interfaces/auth_config.AppState.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Interface"
                     >AppState</a
@@ -110,9 +105,7 @@
           <section class="tsd-panel tsd-hierarchy">
             <h3>Hierarchy</h3>
             <ul class="tsd-hierarchy">
-              <li>
-                <span class="target">AuthService</span>
-              </li>
+              <li><span class="target">AuthService</span></li>
             </ul>
           </section>
           <section class="tsd-panel">
@@ -132,7 +125,7 @@
                       class="tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"
                     >
                       <a
-                        href="auth_service.authservice.html#constructor"
+                        href="auth_service.AuthService.html#constructor"
                         class="tsd-kind-icon"
                         >constructor</a
                       >
@@ -144,42 +137,42 @@
                   <ul class="tsd-index-list">
                     <li class="tsd-kind-property tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#appstate_"
+                        href="auth_service.AuthService.html#appState_"
                         class="tsd-kind-icon"
                         >app<wbr />State$</a
                       >
                     </li>
                     <li class="tsd-kind-property tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#error_"
+                        href="auth_service.AuthService.html#error_"
                         class="tsd-kind-icon"
                         >error$</a
                       >
                     </li>
                     <li class="tsd-kind-property tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#idtokenclaims_"
+                        href="auth_service.AuthService.html#idTokenClaims_"
                         class="tsd-kind-icon"
                         >id<wbr />Token<wbr />Claims$</a
                       >
                     </li>
                     <li class="tsd-kind-property tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#isauthenticated_"
+                        href="auth_service.AuthService.html#isAuthenticated_"
                         class="tsd-kind-icon"
                         >is<wbr />Authenticated$</a
                       >
                     </li>
                     <li class="tsd-kind-property tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#isloading_"
+                        href="auth_service.AuthService.html#isLoading_"
                         class="tsd-kind-icon"
                         >is<wbr />Loading$</a
                       >
                     </li>
                     <li class="tsd-kind-property tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#user_"
+                        href="auth_service.AuthService.html#user_"
                         class="tsd-kind-icon"
                         >user$</a
                       >
@@ -191,81 +184,81 @@
                   <ul class="tsd-index-list">
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#buildauthorizeurl"
+                        href="auth_service.AuthService.html#buildAuthorizeUrl"
                         class="tsd-kind-icon"
                         >build<wbr />Authorize<wbr />Url</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#buildlogouturl"
+                        href="auth_service.AuthService.html#buildLogoutUrl"
                         class="tsd-kind-icon"
                         >build<wbr />Logout<wbr />Url</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#getaccesstokensilently"
+                        href="auth_service.AuthService.html#getAccessTokenSilently"
                         class="tsd-kind-icon"
                         >get<wbr />Access<wbr />Token<wbr />Silently</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#getaccesstokenwithpopup"
+                        href="auth_service.AuthService.html#getAccessTokenWithPopup"
                         class="tsd-kind-icon"
                         >get<wbr />Access<wbr />Token<wbr />With<wbr />Popup</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#getidtokenclaims"
+                        href="auth_service.AuthService.html#getIdTokenClaims"
                         class="tsd-kind-icon"
-                        >get<wbr />IdToken<wbr />Claims</a
+                        >get<wbr />Id<wbr />Token<wbr />Claims</a
                       >
                     </li>
                     <li
                       class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"
                     >
                       <a
-                        href="auth_service.authservice.html#getuser"
+                        href="auth_service.AuthService.html#getUser"
                         class="tsd-kind-icon"
                         >get<wbr />User</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#handleredirectcallback"
+                        href="auth_service.AuthService.html#handleRedirectCallback"
                         class="tsd-kind-icon"
                         >handle<wbr />Redirect<wbr />Callback</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#loginwithpopup"
+                        href="auth_service.AuthService.html#loginWithPopup"
                         class="tsd-kind-icon"
                         >login<wbr />With<wbr />Popup</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#loginwithredirect"
+                        href="auth_service.AuthService.html#loginWithRedirect"
                         class="tsd-kind-icon"
                         >login<wbr />With<wbr />Redirect</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#logout"
+                        href="auth_service.AuthService.html#logout"
                         class="tsd-kind-icon"
                         >logout</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_service.authservice.html#ngondestroy"
+                        href="auth_service.AuthService.html#ngOnDestroy"
                         class="tsd-kind-icon"
-                        >ng<wbr />OnDestroy</a
+                        >ng<wbr />On<wbr />Destroy</a
                       >
                     </li>
                   </ul>
@@ -278,44 +271,77 @@
             <section
               class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"
             >
-              <a name="constructor" class="tsd-anchor"></a>
-              <h3>constructor</h3>
+              <a id="constructor" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                constructor<a
+                  href="#constructor"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul
                 class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"
               >
                 <li class="tsd-signature tsd-kind-icon">
-                  new <wbr />Auth<wbr />Service&lt;TAppState&gt;<span
+                  new <wbr />Auth<wbr />Service<span
                     class="tsd-signature-symbol"
-                    >(</span
-                  >auth0Client<span class="tsd-signature-symbol">: </span
+                    >&lt;</span
+                  ><span
+                    class="tsd-signature-type"
+                    data-tsd-kind="Type parameter"
+                    >TAppState</span
+                  ><span class="tsd-signature-symbol">&gt;</span
+                  ><span class="tsd-signature-symbol">(</span>auth0Client<span
+                    class="tsd-signature-symbol"
+                    >: </span
                   ><span class="tsd-signature-type">default</span>,
                   configFactory<span class="tsd-signature-symbol">: </span
                   ><a
-                    href="auth_config.authclientconfig.html"
+                    href="auth_config.AuthClientConfig.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Class"
                     >AuthClientConfig</a
                   >, navigator<span class="tsd-signature-symbol">: </span
                   ><a
-                    href="abstract_navigator.abstractnavigator.html"
+                    href="abstract_navigator.AbstractNavigator.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Class"
                     >AbstractNavigator</a
                   >, authState<span class="tsd-signature-symbol">: </span
                   ><a
-                    href="auth_state.authstate.html"
+                    href="auth_state.AuthState.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Class"
                     >AuthState</a
                   ><span class="tsd-signature-symbol">)</span
                   ><span class="tsd-signature-symbol">: </span
                   ><a
-                    href="auth_service.authservice.html"
+                    href="auth_service.AuthService.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Class"
                     >AuthService</a
                   ><span class="tsd-signature-symbol">&lt;</span
-                  ><span class="tsd-signature-type">TAppState</span
+                  ><span
+                    class="tsd-signature-type"
+                    data-tsd-kind="Type parameter"
+                    >TAppState</span
                   ><span class="tsd-signature-symbol">&gt;</span>
                 </li>
               </ul>
@@ -326,26 +352,27 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L85"
-                          >auth.service.ts:85</a
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L87"
+                          >auth.service.ts:87</a
                         >
                       </li>
                     </ul>
                   </aside>
-                  <h4 class="tsd-type-parameters-title">Type parameters</h4>
+                  <h4 class="tsd-type-parameters-title">Type Parameters</h4>
                   <ul class="tsd-type-parameters">
                     <li>
                       <h4>
-                        TAppState<span class="tsd-signature-symbol">: </span
+                        TAppState<span class="tsd-signature-symbol">
+                          extends </span
                         ><a
-                          href="../interfaces/auth_config.appstate.html"
+                          href="../interfaces/auth_config.AppState.html"
                           class="tsd-signature-type"
                           data-tsd-kind="Interface"
                           >AppState</a
                         >
                         =
                         <a
-                          href="../interfaces/auth_config.appstate.html"
+                          href="../interfaces/auth_config.AppState.html"
                           class="tsd-signature-type"
                           data-tsd-kind="Interface"
                           >AppState</a
@@ -365,7 +392,7 @@
                       <h5>
                         configFactory:
                         <a
-                          href="auth_config.authclientconfig.html"
+                          href="auth_config.AuthClientConfig.html"
                           class="tsd-signature-type"
                           data-tsd-kind="Class"
                           >AuthClientConfig</a
@@ -376,7 +403,7 @@
                       <h5>
                         navigator:
                         <a
-                          href="abstract_navigator.abstractnavigator.html"
+                          href="abstract_navigator.AbstractNavigator.html"
                           class="tsd-signature-type"
                           data-tsd-kind="Class"
                           >AbstractNavigator</a
@@ -387,7 +414,7 @@
                       <h5>
                         authState:
                         <a
-                          href="auth_state.authstate.html"
+                          href="auth_state.AuthState.html"
                           class="tsd-signature-type"
                           data-tsd-kind="Class"
                           >AuthState</a
@@ -398,12 +425,15 @@
                   <h4 class="tsd-returns-title">
                     Returns
                     <a
-                      href="auth_service.authservice.html"
+                      href="auth_service.AuthService.html"
                       class="tsd-signature-type"
                       data-tsd-kind="Class"
                       >AuthService</a
                     ><span class="tsd-signature-symbol">&lt;</span
-                    ><span class="tsd-signature-type">TAppState</span
+                    ><span
+                      class="tsd-signature-type"
+                      data-tsd-kind="Type parameter"
+                      >TAppState</span
                     ><span class="tsd-signature-symbol">&gt;</span>
                   </h4>
                 </li>
@@ -415,16 +445,38 @@
             <section
               class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
             >
-              <a name="appstate_" class="tsd-anchor"></a>
-              <h3>
+              <a id="appState_" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
                 <span class="tsd-flag ts-flagReadonly">Readonly</span>
-                app<wbr />State$
+                app<wbr />State$<a
+                  href="#appState_"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
               </h3>
               <div class="tsd-signature tsd-kind-icon">
                 app<wbr />State$<span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">Observable</span
                 ><span class="tsd-signature-symbol">&lt;</span
-                ><span class="tsd-signature-type">TAppState</span
+                ><span class="tsd-signature-type" data-tsd-kind="Type parameter"
+                  >TAppState</span
                 ><span class="tsd-signature-symbol">&gt;</span
                 ><span class="tsd-signature-symbol"> = ...</span>
               </div>
@@ -433,7 +485,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L85"
+                      href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L85"
                       >auth.service.ts:85</a
                     >
                   </li>
@@ -453,9 +505,30 @@
             <section
               class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
             >
-              <a name="error_" class="tsd-anchor"></a>
-              <h3>
-                <span class="tsd-flag ts-flagReadonly">Readonly</span> error$
+              <a id="error_" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                <span class="tsd-flag ts-flagReadonly">Readonly</span> error$<a
+                  href="#error_"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
               </h3>
               <div class="tsd-signature tsd-kind-icon">
                 error$<span class="tsd-signature-symbol">:</span>
@@ -470,7 +543,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L79"
+                      href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L79"
                       >auth.service.ts:79</a
                     >
                   </li>
@@ -488,10 +561,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
             >
-              <a name="idtokenclaims_" class="tsd-anchor"></a>
-              <h3>
+              <a id="idTokenClaims_" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
                 <span class="tsd-flag ts-flagReadonly">Readonly</span>
-                id<wbr />Token<wbr />Claims$
+                id<wbr />Token<wbr />Claims$<a
+                  href="#idTokenClaims_"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
               </h3>
               <div class="tsd-signature tsd-kind-icon">
                 id<wbr />Token<wbr />Claims$<span class="tsd-signature-symbol"
@@ -512,7 +606,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L74"
+                      href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L74"
                       >auth.service.ts:74</a
                     >
                   </li>
@@ -530,10 +624,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
             >
-              <a name="isauthenticated_" class="tsd-anchor"></a>
-              <h3>
+              <a id="isAuthenticated_" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
                 <span class="tsd-flag ts-flagReadonly">Readonly</span>
-                is<wbr />Authenticated$
+                is<wbr />Authenticated$<a
+                  href="#isAuthenticated_"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
               </h3>
               <div class="tsd-signature tsd-kind-icon">
                 is<wbr />Authenticated$<span class="tsd-signature-symbol"
@@ -550,7 +665,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L64"
+                      href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L64"
                       >auth.service.ts:64</a
                     >
                   </li>
@@ -571,10 +686,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
             >
-              <a name="isloading_" class="tsd-anchor"></a>
-              <h3>
+              <a id="isLoading_" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
                 <span class="tsd-flag ts-flagReadonly">Readonly</span>
-                is<wbr />Loading$
+                is<wbr />Loading$<a
+                  href="#isLoading_"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
               </h3>
               <div class="tsd-signature tsd-kind-icon">
                 is<wbr />Loading$<span class="tsd-signature-symbol">:</span>
@@ -589,7 +725,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L58"
+                      href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L58"
                       >auth.service.ts:58</a
                     >
                   </li>
@@ -607,9 +743,30 @@
             <section
               class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
             >
-              <a name="user_" class="tsd-anchor"></a>
-              <h3>
-                <span class="tsd-flag ts-flagReadonly">Readonly</span> user$
+              <a id="user_" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                <span class="tsd-flag ts-flagReadonly">Readonly</span> user$<a
+                  href="#user_"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
               </h3>
               <div class="tsd-signature tsd-kind-icon">
                 user$<span class="tsd-signature-symbol">:</span>
@@ -628,7 +785,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L69"
+                      href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L69"
                       >auth.service.ts:69</a
                     >
                   </li>
@@ -649,8 +806,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="buildauthorizeurl" class="tsd-anchor"></a>
-              <h3>build<wbr />Authorize<wbr />Url</h3>
+              <a id="buildAuthorizeUrl" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                build<wbr />Authorize<wbr />Url<a
+                  href="#buildAuthorizeUrl"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   build<wbr />Authorize<wbr />Url<span
@@ -676,7 +856,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L387"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L387"
                           >auth.service.ts:387</a
                         >
                       </li>
@@ -684,15 +864,17 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #795E26">buildAuthorizeUrl</span><span style="color: #000000">().</span><span style="color: #795E26">subscribe</span><span style="color: #000000">(</span><span style="color: #001080">url</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ...)</span>
+                      <pre><code class="language-js"><span class="hl-4">buildAuthorizeUrl</span><span class="hl-0">().</span><span class="hl-4">subscribe</span><span class="hl-0">(</span><span class="hl-2">url</span><span class="hl-0"> </span><span class="hl-6">=&gt;</span><span class="hl-0"> ...)</span>
 </code></pre>
                     </div>
-                    <p>
-                      Builds an <code>/authorize</code> URL for
-                      loginWithRedirect using the parameters provided as
-                      arguments. Random and secure <code>state</code> and
-                      <code>nonce</code> parameters will be auto-generated.
-                    </p>
+                    <div>
+                      <p>
+                        Builds an <code>/authorize</code> URL for
+                        loginWithRedirect using the parameters provided as
+                        arguments. Random and secure <code>state</code> and
+                        <code>nonce</code> parameters will be auto-generated.
+                      </p>
+                    </div>
                   </div>
                   <h4 class="tsd-parameters-title">Parameters</h4>
                   <ul class="tsd-parameters">
@@ -707,7 +889,9 @@
                         ><span class="tsd-signature-symbol">&gt;</span>
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The options</p>
+                        <div class="lead">
+                          <p>The options</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -717,15 +901,38 @@
                     ><span class="tsd-signature-type">string</span
                     ><span class="tsd-signature-symbol">&gt;</span>
                   </h4>
-                  <p>A URL to the authorize endpoint</p>
+                  <div><p>A URL to the authorize endpoint</p></div>
                 </li>
               </ul>
             </section>
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="buildlogouturl" class="tsd-anchor"></a>
-              <h3>build<wbr />Logout<wbr />Url</h3>
+              <a id="buildLogoutUrl" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                build<wbr />Logout<wbr />Url<a
+                  href="#buildLogoutUrl"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   build<wbr />Logout<wbr />Url<span class="tsd-signature-symbol"
@@ -747,7 +954,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L400"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L400"
                           >auth.service.ts:400</a
                         >
                       </li>
@@ -755,7 +962,7 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #795E26">buildLogoutUrl</span><span style="color: #000000">().</span><span style="color: #795E26">subscribe</span><span style="color: #000000">(</span><span style="color: #001080">url</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ...)</span>
+                      <pre><code class="language-js"><span class="hl-4">buildLogoutUrl</span><span class="hl-0">().</span><span class="hl-4">subscribe</span><span class="hl-0">(</span><span class="hl-2">url</span><span class="hl-0"> </span><span class="hl-6">=&gt;</span><span class="hl-0"> ...)</span>
 </code></pre>
                       <p>Builds a URL to the logout endpoint.</p>
                     </div>
@@ -769,10 +976,12 @@
                         <span class="tsd-signature-type">LogoutUrlOptions</span>
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>
-                          The options used to configure the parameters that
-                          appear in the logout endpoint URL.
-                        </p>
+                        <div class="lead">
+                          <p>
+                            The options used to configure the parameters that
+                            appear in the logout endpoint URL.
+                          </p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -782,18 +991,43 @@
                     ><span class="tsd-signature-type">string</span
                     ><span class="tsd-signature-symbol">&gt;</span>
                   </h4>
-                  <p>
-                    a URL to the logout endpoint using the parameters provided
-                    as arguments.
-                  </p>
+                  <div>
+                    <p>
+                      a URL to the logout endpoint using the parameters provided
+                      as arguments.
+                    </p>
+                  </div>
                 </li>
               </ul>
             </section>
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="getaccesstokensilently" class="tsd-anchor"></a>
-              <h3>get<wbr />Access<wbr />Token<wbr />Silently</h3>
+              <a id="getAccessTokenSilently" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                get<wbr />Access<wbr />Token<wbr />Silently<a
+                  href="#getAccessTokenSilently"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   get<wbr />Access<wbr />Token<wbr />Silently<span
@@ -837,7 +1071,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L204"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L204"
                           >auth.service.ts:204</a
                         >
                       </li>
@@ -848,6 +1082,40 @@
                       <p>
                         Fetches a new access token and returns the response from
                         the /oauth/token endpoint, omitting the refresh token.
+                      </p>
+                    </div>
+                    <div>
+                      <p>
+                        If there&#39;s a valid token stored, return it.
+                        Otherwise, opens an iframe with the
+                        <code>/authorize</code> URL using the parameters
+                        provided as arguments. Random and secure
+                        <code>state</code> and <code>nonce</code> parameters
+                        will be auto-generated. If the response is successful,
+                        results will be valid according to their expiration
+                        times.
+                      </p>
+                      <p>
+                        If refresh tokens are used, the token endpoint is called
+                        directly with the &#39;refresh_token&#39; grant. If no
+                        refresh token is available to make this call, the SDK
+                        falls back to using an iframe to the
+                        &#39;/authorize&#39; URL.
+                      </p>
+                      <p>
+                        This method may use a web worker to perform the token
+                        call if the in-memory cache is used.
+                      </p>
+                      <p>
+                        If an <code>audience</code> value is given to this
+                        function, the SDK always falls back to using an iframe
+                        to make the token exchange.
+                      </p>
+                      <p>
+                        Note that in all cases, falling back to an iframe
+                        requires access to the <code>auth0</code> cookie, and
+                        thus will not work in browsers that block third-party
+                        cookies by default (Safari, Brave, etc).
                       </p>
                     </div>
                   </div>
@@ -866,7 +1134,9 @@
                         ><span class="tsd-signature-symbol"> }</span>
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The options for configuring the token fetch.</p>
+                        <div class="lead">
+                          <p>The options for configuring the token fetch.</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -884,7 +1154,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L213"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L213"
                           >auth.service.ts:213</a
                         >
                       </li>
@@ -893,6 +1163,40 @@
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
                       <p>Fetches a new access token and returns it.</p>
+                    </div>
+                    <div>
+                      <p>
+                        If there&#39;s a valid token stored, return it.
+                        Otherwise, opens an iframe with the
+                        <code>/authorize</code> URL using the parameters
+                        provided as arguments. Random and secure
+                        <code>state</code> and <code>nonce</code> parameters
+                        will be auto-generated. If the response is successful,
+                        results will be valid according to their expiration
+                        times.
+                      </p>
+                      <p>
+                        If refresh tokens are used, the token endpoint is called
+                        directly with the &#39;refresh_token&#39; grant. If no
+                        refresh token is available to make this call, the SDK
+                        falls back to using an iframe to the
+                        &#39;/authorize&#39; URL.
+                      </p>
+                      <p>
+                        This method may use a web worker to perform the token
+                        call if the in-memory cache is used.
+                      </p>
+                      <p>
+                        If an <code>audience</code> value is given to this
+                        function, the SDK always falls back to using an iframe
+                        to make the token exchange.
+                      </p>
+                      <p>
+                        Note that in all cases, falling back to an iframe
+                        requires access to the <code>auth0</code> cookie, and
+                        thus will not work in browsers that block third-party
+                        cookies by default (Safari, Brave, etc).
+                      </p>
                     </div>
                   </div>
                   <h4 class="tsd-parameters-title">Parameters</h4>
@@ -906,7 +1210,9 @@
                         >
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The options for configuring the token fetch.</p>
+                        <div class="lead">
+                          <p>The options for configuring the token fetch.</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -922,8 +1228,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="getaccesstokenwithpopup" class="tsd-anchor"></a>
-              <h3>get<wbr />Access<wbr />Token<wbr />With<wbr />Popup</h3>
+              <a id="getAccessTokenWithPopup" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                get<wbr />Access<wbr />Token<wbr />With<wbr />Popup<a
+                  href="#getAccessTokenWithPopup"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   get<wbr />Access<wbr />Token<wbr />With<wbr />Popup<span
@@ -947,7 +1276,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L276"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L276"
                           >auth.service.ts:276</a
                         >
                       </li>
@@ -955,17 +1284,20 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #795E26">getTokenWithPopup</span><span style="color: #000000">(</span><span style="color: #001080">options</span><span style="color: #000000">).</span><span style="color: #795E26">subscribe</span><span style="color: #000000">(</span><span style="color: #001080">token</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ...)</span>
+                      <pre><code class="language-js"><span class="hl-4">getTokenWithPopup</span><span class="hl-0">(</span><span class="hl-2">options</span><span class="hl-0">).</span><span class="hl-4">subscribe</span><span class="hl-0">(</span><span class="hl-2">token</span><span class="hl-0"> </span><span class="hl-6">=&gt;</span><span class="hl-0"> ...)</span>
 </code></pre>
                     </div>
-                    <p>Get an access token interactively.</p>
-                    <p>
-                      Opens a popup with the <code>/authorize</code> URL using
-                      the parameters provided as arguments. Random and secure
-                      <code>state</code> and <code>nonce</code> parameters will
-                      be auto-generated. If the response is successful, results
-                      will be valid according to their expiration times.
-                    </p>
+                    <div>
+                      <p>Get an access token interactively.</p>
+                      <p>
+                        Opens a popup with the <code>/authorize</code> URL using
+                        the parameters provided as arguments. Random and secure
+                        <code>state</code> and <code>nonce</code> parameters
+                        will be auto-generated. If the response is successful,
+                        results will be valid according to their expiration
+                        times.
+                      </p>
+                    </div>
                   </div>
                   <h4 class="tsd-parameters-title">Parameters</h4>
                   <ul class="tsd-parameters">
@@ -991,11 +1323,34 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="getidtokenclaims" class="tsd-anchor"></a>
-              <h3>get<wbr />IdToken<wbr />Claims</h3>
+              <a id="getIdTokenClaims" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                get<wbr />Id<wbr />Token<wbr />Claims<a
+                  href="#getIdTokenClaims"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
-                  get<wbr />IdToken<wbr />Claims<span
+                  get<wbr />Id<wbr />Token<wbr />Claims<span
                     class="tsd-signature-symbol"
                     >(</span
                   >options<span class="tsd-signature-symbol">?: </span
@@ -1018,7 +1373,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L332"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L332"
                           >auth.service.ts:332</a
                         >
                       </li>
@@ -1026,16 +1381,18 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #795E26">getIdTokenClaims</span><span style="color: #000000">(</span><span style="color: #001080">options</span><span style="color: #000000">).</span><span style="color: #795E26">subscribe</span><span style="color: #000000">(</span><span style="color: #001080">claims</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ...);</span>
+                      <pre><code class="language-js"><span class="hl-4">getIdTokenClaims</span><span class="hl-0">(</span><span class="hl-2">options</span><span class="hl-0">).</span><span class="hl-4">subscribe</span><span class="hl-0">(</span><span class="hl-2">claims</span><span class="hl-0"> </span><span class="hl-6">=&gt;</span><span class="hl-0"> ...);</span>
 </code></pre>
                     </div>
-                    <p>Returns all claims from the id_token if available.</p>
-                    <p>
-                      If you provide an audience or scope, they should match an
-                      existing Access Token (the SDK stores a corresponding ID
-                      Token with every Access Token, and uses the scope and
-                      audience to look up the ID Token)
-                    </p>
+                    <div>
+                      <p>Returns all claims from the id_token if available.</p>
+                      <p>
+                        If you provide an audience or scope, they should match
+                        an existing Access Token (the SDK stores a corresponding
+                        ID Token with every Access Token, and uses the scope and
+                        audience to look up the ID Token)
+                      </p>
+                    </div>
                     <dl class="tsd-comment-tags">
                       <dt>remarks</dt>
                       <dd>
@@ -1057,7 +1414,9 @@
                         >
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The options to get the Id token claims</p>
+                        <div class="lead">
+                          <p>The options to get the Id token claims</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -1075,15 +1434,44 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"
             >
-              <a name="getuser" class="tsd-anchor"></a>
-              <h3>get<wbr />User</h3>
+              <a id="getUser" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                get<wbr />User<a
+                  href="#getUser"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul
                 class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"
               >
                 <li class="tsd-signature tsd-kind-icon">
-                  get<wbr />User&lt;TUser&gt;<span class="tsd-signature-symbol"
-                    >(</span
-                  >options<span class="tsd-signature-symbol">?: </span
+                  get<wbr />User<span class="tsd-signature-symbol">&lt;</span
+                  ><span
+                    class="tsd-signature-type"
+                    data-tsd-kind="Type parameter"
+                    >TUser</span
+                  ><span class="tsd-signature-symbol">&gt;</span
+                  ><span class="tsd-signature-symbol">(</span>options<span
+                    class="tsd-signature-symbol"
+                    >?: </span
                   ><span class="tsd-signature-type">GetUserOptions</span
                   ><span class="tsd-signature-symbol">)</span
                   ><span class="tsd-signature-symbol">: </span
@@ -1091,7 +1479,10 @@
                   ><span class="tsd-signature-symbol">&lt;</span
                   ><span class="tsd-signature-type">undefined</span
                   ><span class="tsd-signature-symbol"> | </span
-                  ><span class="tsd-signature-type">TUser</span
+                  ><span
+                    class="tsd-signature-type"
+                    data-tsd-kind="Type parameter"
+                    >TUser</span
                   ><span class="tsd-signature-symbol">&gt;</span>
                 </li>
               </ul>
@@ -1102,7 +1493,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L309"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L309"
                           >auth.service.ts:309</a
                         >
                       </li>
@@ -1110,19 +1501,21 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #795E26">getUser</span><span style="color: #000000">(</span><span style="color: #001080">options</span><span style="color: #000000">).</span><span style="color: #795E26">subscribe</span><span style="color: #000000">(</span><span style="color: #001080">user</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ...);</span>
+                      <pre><code class="language-js"><span class="hl-4">getUser</span><span class="hl-0">(</span><span class="hl-2">options</span><span class="hl-0">).</span><span class="hl-4">subscribe</span><span class="hl-0">(</span><span class="hl-2">user</span><span class="hl-0"> </span><span class="hl-6">=&gt;</span><span class="hl-0"> ...);</span>
 </code></pre>
                     </div>
-                    <p>
-                      Returns the user information if available (decoded from
-                      the <code>id_token</code>).
-                    </p>
-                    <p>
-                      If you provide an audience or scope, they should match an
-                      existing Access Token (the SDK stores a corresponding ID
-                      Token with every Access Token, and uses the scope and
-                      audience to look up the ID Token)
-                    </p>
+                    <div>
+                      <p>
+                        Returns the user information if available (decoded from
+                        the <code>id_token</code>).
+                      </p>
+                      <p>
+                        If you provide an audience or scope, they should match
+                        an existing Access Token (the SDK stores a corresponding
+                        ID Token with every Access Token, and uses the scope and
+                        audience to look up the ID Token)
+                      </p>
+                    </div>
                     <dl class="tsd-comment-tags">
                       <dt>remarks</dt>
                       <dd>
@@ -1133,18 +1526,23 @@
                       </dd>
                     </dl>
                   </div>
-                  <h4 class="tsd-type-parameters-title">Type parameters</h4>
+                  <h4 class="tsd-type-parameters-title">Type Parameters</h4>
                   <ul class="tsd-type-parameters">
                     <li>
                       <h4>
-                        TUser<span class="tsd-signature-symbol">: </span
+                        TUser<span class="tsd-signature-symbol"> extends </span
                         ><span class="tsd-signature-type">User</span
                         ><span class="tsd-signature-symbol">&lt;</span
-                        ><span class="tsd-signature-type">TUser</span
+                        ><span
+                          class="tsd-signature-type"
+                          data-tsd-kind="Type parameter"
+                          >TUser</span
                         ><span class="tsd-signature-symbol">&gt;</span>
                       </h4>
                       <div class="tsd-comment tsd-typography">
-                        <p>The type to return, has to extend {@link User}.</p>
+                        <div class="lead">
+                          <p>The type to return, has to extend {@link User}.</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -1157,7 +1555,9 @@
                         <span class="tsd-signature-type">GetUserOptions</span>
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The options to get the user</p>
+                        <div class="lead">
+                          <p>The options to get the user</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -1166,7 +1566,10 @@
                     ><span class="tsd-signature-symbol">&lt;</span
                     ><span class="tsd-signature-type">undefined</span
                     ><span class="tsd-signature-symbol"> | </span
-                    ><span class="tsd-signature-type">TUser</span
+                    ><span
+                      class="tsd-signature-type"
+                      data-tsd-kind="Type parameter"
+                      >TUser</span
                     ><span class="tsd-signature-symbol">&gt;</span>
                   </h4>
                 </li>
@@ -1175,8 +1578,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="handleredirectcallback" class="tsd-anchor"></a>
-              <h3>handle<wbr />Redirect<wbr />Callback</h3>
+              <a id="handleRedirectCallback" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                handle<wbr />Redirect<wbr />Callback<a
+                  href="#handleRedirectCallback"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   handle<wbr />Redirect<wbr />Callback<span
@@ -1190,7 +1616,10 @@
                   ><span class="tsd-signature-symbol">&lt;</span
                   ><span class="tsd-signature-type">RedirectLoginResult</span
                   ><span class="tsd-signature-symbol">&lt;</span
-                  ><span class="tsd-signature-type">TAppState</span
+                  ><span
+                    class="tsd-signature-type"
+                    data-tsd-kind="Type parameter"
+                    >TAppState</span
                   ><span class="tsd-signature-symbol">&gt;</span
                   ><span class="tsd-signature-symbol">&gt;</span>
                 </li>
@@ -1202,7 +1631,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L352"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L352"
                           >auth.service.ts:352</a
                         >
                       </li>
@@ -1210,20 +1639,22 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #795E26">handleRedirectCallback</span><span style="color: #000000">(</span><span style="color: #001080">url</span><span style="color: #000000">).</span><span style="color: #795E26">subscribe</span><span style="color: #000000">(</span><span style="color: #001080">result</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ...)</span>
+                      <pre><code class="language-js"><span class="hl-4">handleRedirectCallback</span><span class="hl-0">(</span><span class="hl-2">url</span><span class="hl-0">).</span><span class="hl-4">subscribe</span><span class="hl-0">(</span><span class="hl-2">result</span><span class="hl-0"> </span><span class="hl-6">=&gt;</span><span class="hl-0"> ...)</span>
 </code></pre>
                     </div>
-                    <p>
-                      After the browser redirects back to the callback page,
-                      call <code>handleRedirectCallback</code> to handle success
-                      and error responses from Auth0. If the response is
-                      successful, results will be valid according to their
-                      expiration times.
-                    </p>
-                    <p>
-                      Calling this method also refreshes the authentication and
-                      user states.
-                    </p>
+                    <div>
+                      <p>
+                        After the browser redirects back to the callback page,
+                        call <code>handleRedirectCallback</code> to handle
+                        success and error responses from Auth0. If the response
+                        is successful, results will be valid according to their
+                        expiration times.
+                      </p>
+                      <p>
+                        Calling this method also refreshes the authentication
+                        and user states.
+                      </p>
+                    </div>
                   </div>
                   <h4 class="tsd-parameters-title">Parameters</h4>
                   <ul class="tsd-parameters">
@@ -1233,12 +1664,14 @@
                         url: <span class="tsd-signature-type">string</span>
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>
-                          The URL to that should be used to retrieve the
-                          <code>state</code> and <code>code</code> values.
-                          Defaults to <code>window.location.href</code> if not
-                          given.
-                        </p>
+                        <div class="lead">
+                          <p>
+                            The URL to that should be used to retrieve the
+                            <code>state</code> and <code>code</code> values.
+                            Defaults to <code>window.location.href</code> if not
+                            given.
+                          </p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -1247,7 +1680,10 @@
                     ><span class="tsd-signature-symbol">&lt;</span
                     ><span class="tsd-signature-type">RedirectLoginResult</span
                     ><span class="tsd-signature-symbol">&lt;</span
-                    ><span class="tsd-signature-type">TAppState</span
+                    ><span
+                      class="tsd-signature-type"
+                      data-tsd-kind="Type parameter"
+                      >TAppState</span
                     ><span class="tsd-signature-symbol">&gt;</span
                     ><span class="tsd-signature-symbol">&gt;</span>
                   </h4>
@@ -1257,8 +1693,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="loginwithpopup" class="tsd-anchor"></a>
-              <h3>login<wbr />With<wbr />Popup</h3>
+              <a id="loginWithPopup" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                login<wbr />With<wbr />Popup<a
+                  href="#loginWithPopup"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   login<wbr />With<wbr />Popup<span class="tsd-signature-symbol"
@@ -1282,7 +1741,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L163"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L163"
                           >auth.service.ts:163</a
                         >
                       </li>
@@ -1290,22 +1749,25 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #795E26">loginWithPopup</span><span style="color: #000000">(</span><span style="color: #001080">options</span><span style="color: #000000">);</span>
+                      <pre><code class="language-js"><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-4">loginWithPopup</span><span class="hl-0">(</span><span class="hl-2">options</span><span class="hl-0">);</span>
 </code></pre>
                     </div>
-                    <p>
-                      Opens a popup with the <code>/authorize</code> URL using
-                      the parameters provided as arguments. Random and secure
-                      <code>state</code> and <code>nonce</code> parameters will
-                      be auto-generated. If the response is successful, results
-                      will be valid according to their expiration times.
-                    </p>
-                    <p>
-                      IMPORTANT: This method has to be called from an event
-                      handler that was started by the user like a button click,
-                      for example, otherwise the popup will be blocked in most
-                      browsers.
-                    </p>
+                    <div>
+                      <p>
+                        Opens a popup with the <code>/authorize</code> URL using
+                        the parameters provided as arguments. Random and secure
+                        <code>state</code> and <code>nonce</code> parameters
+                        will be auto-generated. If the response is successful,
+                        results will be valid according to their expiration
+                        times.
+                      </p>
+                      <p>
+                        IMPORTANT: This method has to be called from an event
+                        handler that was started by the user like a button
+                        click, for example, otherwise the popup will be blocked
+                        in most browsers.
+                      </p>
+                    </div>
                   </div>
                   <h4 class="tsd-parameters-title">Parameters</h4>
                   <ul class="tsd-parameters">
@@ -1318,7 +1780,9 @@
                         >
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The login options</p>
+                        <div class="lead">
+                          <p>The login options</p>
+                        </div>
                       </div>
                     </li>
                     <li>
@@ -1330,7 +1794,9 @@
                         >
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>Configuration for the popup window</p>
+                        <div class="lead">
+                          <p>Configuration for the popup window</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -1346,8 +1812,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="loginwithredirect" class="tsd-anchor"></a>
-              <h3>login<wbr />With<wbr />Redirect</h3>
+              <a id="loginWithRedirect" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                login<wbr />With<wbr />Redirect<a
+                  href="#loginWithRedirect"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   login<wbr />With<wbr />Redirect<span
@@ -1356,7 +1845,10 @@
                   >options<span class="tsd-signature-symbol">?: </span
                   ><span class="tsd-signature-type">RedirectLoginOptions</span
                   ><span class="tsd-signature-symbol">&lt;</span
-                  ><span class="tsd-signature-type">TAppState</span
+                  ><span
+                    class="tsd-signature-type"
+                    data-tsd-kind="Type parameter"
+                    >TAppState</span
                   ><span class="tsd-signature-symbol">&gt;</span
                   ><span class="tsd-signature-symbol">)</span
                   ><span class="tsd-signature-symbol">: </span
@@ -1373,7 +1865,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L140"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L140"
                           >auth.service.ts:140</a
                         >
                       </li>
@@ -1381,15 +1873,17 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #795E26">loginWithRedirect</span><span style="color: #000000">(</span><span style="color: #001080">options</span><span style="color: #000000">);</span>
+                      <pre><code class="language-js"><span class="hl-4">loginWithRedirect</span><span class="hl-0">(</span><span class="hl-2">options</span><span class="hl-0">);</span>
 </code></pre>
                     </div>
-                    <p>
-                      Performs a redirect to <code>/authorize</code> using the
-                      parameters provided as arguments. Random and secure
-                      <code>state</code> and <code>nonce</code> parameters will
-                      be auto-generated.
-                    </p>
+                    <div>
+                      <p>
+                        Performs a redirect to <code>/authorize</code> using the
+                        parameters provided as arguments. Random and secure
+                        <code>state</code> and <code>nonce</code> parameters
+                        will be auto-generated.
+                      </p>
+                    </div>
                   </div>
                   <h4 class="tsd-parameters-title">Parameters</h4>
                   <ul class="tsd-parameters">
@@ -1400,11 +1894,16 @@
                         <span class="tsd-signature-type"
                           >RedirectLoginOptions</span
                         ><span class="tsd-signature-symbol">&lt;</span
-                        ><span class="tsd-signature-type">TAppState</span
+                        ><span
+                          class="tsd-signature-type"
+                          data-tsd-kind="Type parameter"
+                          >TAppState</span
                         ><span class="tsd-signature-symbol">&gt;</span>
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The login options</p>
+                        <div class="lead">
+                          <p>The login options</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -1420,8 +1919,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="logout" class="tsd-anchor"></a>
-              <h3>logout</h3>
+              <a id="logout" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                logout<a
+                  href="#logout"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   logout<span class="tsd-signature-symbol">(</span>options<span
@@ -1440,7 +1962,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L189"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L189"
                           >auth.service.ts:189</a
                         >
                       </li>
@@ -1448,24 +1970,26 @@
                   </aside>
                   <div class="tsd-comment tsd-typography">
                     <div class="lead">
-                      <pre><code class="language-js"><span style="color: #795E26">logout</span><span style="color: #000000">();</span>
+                      <pre><code class="language-js"><span class="hl-4">logout</span><span class="hl-0">();</span>
 </code></pre>
                     </div>
-                    <p>
-                      Clears the application session and performs a redirect to
-                      <code>/v2/logout</code>, using the parameters provided as
-                      arguments, to clear the Auth0 session. If the
-                      <code>federated</code> option is specified it also clears
-                      the Identity Provider session. If the
-                      <code>localOnly</code> option is specified, it only clears
-                      the application session. It is invalid to set both the
-                      <code>federated</code> and <code>localOnly</code> options
-                      to <code>true</code>, and an error will be thrown if you
-                      do.
-                      <a href="https://auth0.com/docs/logout"
-                        >Read more about how Logout works at Auth0</a
-                      >.
-                    </p>
+                    <div>
+                      <p>
+                        Clears the application session and performs a redirect
+                        to <code>/v2/logout</code>, using the parameters
+                        provided as arguments, to clear the Auth0 session. If
+                        the <code>federated</code> option is specified it also
+                        clears the Identity Provider session. If the
+                        <code>localOnly</code> option is specified, it only
+                        clears the application session. It is invalid to set
+                        both the <code>federated</code> and
+                        <code>localOnly</code> options to <code>true</code>, and
+                        an error will be thrown if you do.
+                        <a href="https://auth0.com/docs/logout"
+                          >Read more about how Logout works at Auth0</a
+                        >.
+                      </p>
+                    </div>
                   </div>
                   <h4 class="tsd-parameters-title">Parameters</h4>
                   <ul class="tsd-parameters">
@@ -1476,7 +2000,9 @@
                         <span class="tsd-signature-type">LogoutOptions</span>
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The logout options</p>
+                        <div class="lead">
+                          <p>The logout options</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -1489,11 +2015,35 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="ngondestroy" class="tsd-anchor"></a>
-              <h3>ng<wbr />OnDestroy</h3>
+              <a id="ngOnDestroy" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                ng<wbr />On<wbr />Destroy<a
+                  href="#ngOnDestroy"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
-                  ng<wbr />OnDestroy<span class="tsd-signature-symbol">(</span
+                  ng<wbr />On<wbr />Destroy<span class="tsd-signature-symbol"
+                    >(</span
                   ><span class="tsd-signature-symbol">)</span
                   ><span class="tsd-signature-symbol">: </span
                   ><span class="tsd-signature-type">void</span>
@@ -1507,7 +2057,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.service.ts#L123"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.service.ts#L123"
                           >auth.service.ts:123</a
                         >
                       </li>
@@ -1529,9 +2079,7 @@
         <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
           <nav class="tsd-navigation primary">
             <ul>
-              <li class=" ">
-                <a href="../modules.html">Exports</a>
-              </li>
+              <li class=""><a href="../modules.html">Modules</a></li>
               <li class="tsd-kind-module">
                 <a href="../modules/abstract_navigator.html"
                   >abstract-<wbr />navigator</a
@@ -1561,12 +2109,11 @@
             </ul>
           </nav>
           <nav class="tsd-navigation secondary menu-sticky">
-            <ul class="before-current"></ul>
-            <ul class="current">
+            <ul>
               <li
                 class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"
               >
-                <a href="auth_service.authservice.html" class="tsd-kind-icon"
+                <a href="auth_service.AuthService.html" class="tsd-kind-icon"
                   >Auth<wbr />Service</a
                 >
                 <ul>
@@ -1574,141 +2121,140 @@
                     class="tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"
                   >
                     <a
-                      href="auth_service.authservice.html#constructor"
+                      href="auth_service.AuthService.html#constructor"
                       class="tsd-kind-icon"
                       >constructor</a
                     >
                   </li>
                   <li class="tsd-kind-property tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#appstate_"
+                      href="auth_service.AuthService.html#appState_"
                       class="tsd-kind-icon"
                       >app<wbr />State$</a
                     >
                   </li>
                   <li class="tsd-kind-property tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#error_"
+                      href="auth_service.AuthService.html#error_"
                       class="tsd-kind-icon"
                       >error$</a
                     >
                   </li>
                   <li class="tsd-kind-property tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#idtokenclaims_"
+                      href="auth_service.AuthService.html#idTokenClaims_"
                       class="tsd-kind-icon"
                       >id<wbr />Token<wbr />Claims$</a
                     >
                   </li>
                   <li class="tsd-kind-property tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#isauthenticated_"
+                      href="auth_service.AuthService.html#isAuthenticated_"
                       class="tsd-kind-icon"
                       >is<wbr />Authenticated$</a
                     >
                   </li>
                   <li class="tsd-kind-property tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#isloading_"
+                      href="auth_service.AuthService.html#isLoading_"
                       class="tsd-kind-icon"
                       >is<wbr />Loading$</a
                     >
                   </li>
                   <li class="tsd-kind-property tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#user_"
+                      href="auth_service.AuthService.html#user_"
                       class="tsd-kind-icon"
                       >user$</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#buildauthorizeurl"
+                      href="auth_service.AuthService.html#buildAuthorizeUrl"
                       class="tsd-kind-icon"
                       >build<wbr />Authorize<wbr />Url</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#buildlogouturl"
+                      href="auth_service.AuthService.html#buildLogoutUrl"
                       class="tsd-kind-icon"
                       >build<wbr />Logout<wbr />Url</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#getaccesstokensilently"
+                      href="auth_service.AuthService.html#getAccessTokenSilently"
                       class="tsd-kind-icon"
                       >get<wbr />Access<wbr />Token<wbr />Silently</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#getaccesstokenwithpopup"
+                      href="auth_service.AuthService.html#getAccessTokenWithPopup"
                       class="tsd-kind-icon"
                       >get<wbr />Access<wbr />Token<wbr />With<wbr />Popup</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#getidtokenclaims"
+                      href="auth_service.AuthService.html#getIdTokenClaims"
                       class="tsd-kind-icon"
-                      >get<wbr />IdToken<wbr />Claims</a
+                      >get<wbr />Id<wbr />Token<wbr />Claims</a
                     >
                   </li>
                   <li
                     class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"
                   >
                     <a
-                      href="auth_service.authservice.html#getuser"
+                      href="auth_service.AuthService.html#getUser"
                       class="tsd-kind-icon"
                       >get<wbr />User</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#handleredirectcallback"
+                      href="auth_service.AuthService.html#handleRedirectCallback"
                       class="tsd-kind-icon"
                       >handle<wbr />Redirect<wbr />Callback</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#loginwithpopup"
+                      href="auth_service.AuthService.html#loginWithPopup"
                       class="tsd-kind-icon"
                       >login<wbr />With<wbr />Popup</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#loginwithredirect"
+                      href="auth_service.AuthService.html#loginWithRedirect"
                       class="tsd-kind-icon"
                       >login<wbr />With<wbr />Redirect</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#logout"
+                      href="auth_service.AuthService.html#logout"
                       class="tsd-kind-icon"
                       >logout</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_service.authservice.html#ngondestroy"
+                      href="auth_service.AuthService.html#ngOnDestroy"
                       class="tsd-kind-icon"
-                      >ng<wbr />OnDestroy</a
+                      >ng<wbr />On<wbr />Destroy</a
                     >
                   </li>
                 </ul>
               </li>
             </ul>
-            <ul class="after-current"></ul>
           </nav>
         </div>
       </div>
     </div>
-    <footer>
+    <footer class="">
       <div class="container">
         <h2>Legend</h2>
         <div class="tsd-legend-group">
@@ -1748,9 +2294,18 @@
             </li>
           </ul>
         </div>
+        <h2>Settings</h2>
+        <p>
+          Theme
+          <select id="theme">
+            <option value="os">OS</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </p>
       </div>
     </footer>
     <div class="overlay"></div>
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/main.js"></script>
   </body>
 </html>

@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html class="default no-js">
+<html class="default">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
     <title>AuthClientConfig | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../assets/css/main.css" />
-    <script async src="../assets/js/search.js" id="search-script"></script>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <link rel="stylesheet" href="../assets/highlight.css" />
+    <script async src="../assets/search.js" id="search-script"></script>
   </head>
   <body>
+    <script>
+      document.body.classList.add(localStorage.getItem('tsd-theme') || 'os');
+    </script>
     <header>
       <div class="tsd-page-toolbar">
         <div class="container">
           <div class="table-wrap">
-            <div
-              class="table-cell"
-              id="tsd-search"
-              data-index="../assets/js/search.json"
-              data-base=".."
-            >
+            <div class="table-cell" id="tsd-search" data-base="..">
               <div class="field">
                 <label
                   for="tsd-search-field"
                   class="tsd-widget search no-caption"
                   >Search</label
-                >
-                <input id="tsd-search-field" type="text" />
+                ><input type="text" id="tsd-search-field" />
               </div>
               <ul class="results">
                 <li class="state loading">Preparing search index...</li>
@@ -51,8 +49,11 @@
                       <li data-value="private" class="selected">All</li>
                     </ul>
                   </div>
-                  <input type="checkbox" id="tsd-filter-inherited" checked />
-                  <label class="tsd-widget" for="tsd-filter-inherited"
+                  <input
+                    type="checkbox"
+                    id="tsd-filter-inherited"
+                    checked
+                  /><label class="tsd-widget" for="tsd-filter-inherited"
                     >Inherited</label
                   >
                 </div>
@@ -67,14 +68,10 @@
       <div class="tsd-page-title">
         <div class="container">
           <ul class="tsd-breadcrumb">
+            <li><a href="../modules.html">@auth0/auth0-angular</a></li>
+            <li><a href="../modules/auth_config.html">auth.config</a></li>
             <li>
-              <a href="../modules.html">@auth0/auth0-angular</a>
-            </li>
-            <li>
-              <a href="../modules/auth_config.html">auth.config</a>
-            </li>
-            <li>
-              <a href="auth_config.authclientconfig.html">AuthClientConfig</a>
+              <a href="auth_config.AuthClientConfig.html">AuthClientConfig</a>
             </li>
           </ul>
           <h1>Class AuthClientConfig</h1>
@@ -97,37 +94,7 @@
               <dl class="tsd-comment-tags">
                 <dt>usage</dt>
                 <dd>
-                  <pre><code class="language-js"><span style="color: #008000">// app.module.ts</span>
-<span style="color: #008000">// ---------------------------</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">AuthModule</span><span style="color: #000000">, </span><span style="color: #001080">AuthClientConfig</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@auth0/auth0-angular&#039;</span><span style="color: #000000">;</span>
-
-<span style="color: #008000">// Provide an initializer function that returns a Promise</span>
-<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">configInitializer</span><span style="color: #000000">(</span>
-<span style="color: #000000">  </span><span style="color: #001080">http</span><span style="color: #000000">: </span><span style="color: #267F99">HttpClient</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">config</span><span style="color: #000000">: </span><span style="color: #267F99">AuthClientConfig</span>
-<span style="color: #000000">) {</span>
-<span style="color: #000000">  </span><span style="color: #AF00DB">return</span><span style="color: #000000"> () </span><span style="color: #0000FF">=&gt;</span>
-<span style="color: #000000">    </span><span style="color: #001080">http</span>
-<span style="color: #000000">      .</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;/config&#039;</span><span style="color: #000000">)</span>
-<span style="color: #000000">      .</span><span style="color: #795E26">toPromise</span><span style="color: #000000">()</span>
-<span style="color: #000000">      .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">loadedConfig</span><span style="color: #000000">: </span><span style="color: #267F99">any</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">config</span><span style="color: #000000">.</span><span style="color: #795E26">set</span><span style="color: #000000">(</span><span style="color: #001080">loadedConfig</span><span style="color: #000000">));   </span><span style="color: #008000">// Set the config that was loaded asynchronously here</span>
-<span style="color: #000000">}</span>
-
-<span style="color: #008000">// Provide APP_INITIALIZER with this function. Note that there is no config passed to AuthModule.forRoot</span>
-<span style="color: #000000">imports: [</span>
-<span style="color: #000000">  </span><span style="color: #008000">// other imports..</span>
-
-<span style="color: #000000">  </span><span style="color: #001080">HttpClientModule</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">AuthModule</span><span style="color: #000000">.</span><span style="color: #795E26">forRoot</span><span style="color: #000000">(),   </span><span style="color: #008000">//&lt;- don&#039;t pass any config here</span>
-<span style="color: #000000">],</span>
-<span style="color: #000000">providers: [</span>
-<span style="color: #000000">  {</span>
-<span style="color: #000000">    </span><span style="color: #001080">provide:</span><span style="color: #000000"> </span><span style="color: #0070C1">APP_INITIALIZER</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">useFactory:</span><span style="color: #000000"> </span><span style="color: #001080">configInitializer</span><span style="color: #000000">,    </span><span style="color: #008000">// &lt;- pass your initializer function here</span>
-<span style="color: #000000">    </span><span style="color: #001080">deps:</span><span style="color: #000000"> [</span><span style="color: #001080">HttpClient</span><span style="color: #000000">, </span><span style="color: #001080">AuthClientConfig</span><span style="color: #000000">],</span>
-<span style="color: #000000">    </span><span style="color: #001080">multi:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
-<span style="color: #000000">  },</span>
-<span style="color: #000000">],</span>
+                  <pre><code class="language-js"><span class="hl-5">// app.module.ts</span><br/><span class="hl-5">// ---------------------------</span><br/><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">AuthModule</span><span class="hl-0">, </span><span class="hl-2">AuthClientConfig</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;@auth0/auth0-angular&#39;</span><span class="hl-0">;</span><br/><br/><span class="hl-5">// Provide an initializer function that returns a Promise</span><br/><span class="hl-6">function</span><span class="hl-0"> </span><span class="hl-4">configInitializer</span><span class="hl-0">(</span><br/><span class="hl-0">  </span><span class="hl-2">http</span><span class="hl-0">: </span><span class="hl-7">HttpClient</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">config</span><span class="hl-0">: </span><span class="hl-7">AuthClientConfig</span><br/><span class="hl-0">) {</span><br/><span class="hl-0">  </span><span class="hl-1">return</span><span class="hl-0"> () </span><span class="hl-6">=&gt;</span><br/><span class="hl-0">    </span><span class="hl-2">http</span><br/><span class="hl-0">      .</span><span class="hl-4">get</span><span class="hl-0">(</span><span class="hl-3">&#39;/config&#39;</span><span class="hl-0">)</span><br/><span class="hl-0">      .</span><span class="hl-4">toPromise</span><span class="hl-0">()</span><br/><span class="hl-0">      .</span><span class="hl-4">then</span><span class="hl-0">((</span><span class="hl-2">loadedConfig</span><span class="hl-0">: </span><span class="hl-7">any</span><span class="hl-0">) </span><span class="hl-6">=&gt;</span><span class="hl-0"> </span><span class="hl-2">config</span><span class="hl-0">.</span><span class="hl-4">set</span><span class="hl-0">(</span><span class="hl-2">loadedConfig</span><span class="hl-0">));   </span><span class="hl-5">// Set the config that was loaded asynchronously here</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-5">// Provide APP_INITIALIZER with this function. Note that there is no config passed to AuthModule.forRoot</span><br/><span class="hl-8">imports</span><span class="hl-0">: [</span><br/><span class="hl-0">  </span><span class="hl-5">// other imports..</span><br/><br/><span class="hl-0">  </span><span class="hl-2">HttpClientModule</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">AuthModule</span><span class="hl-0">.</span><span class="hl-4">forRoot</span><span class="hl-0">(),   </span><span class="hl-5">//&lt;- don&#39;t pass any config here</span><br/><span class="hl-0">],</span><br/><span class="hl-8">providers</span><span class="hl-0">: [</span><br/><span class="hl-0">  {</span><br/><span class="hl-0">    </span><span class="hl-2">provide:</span><span class="hl-0"> </span><span class="hl-9">APP_INITIALIZER</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-2">useFactory:</span><span class="hl-0"> </span><span class="hl-2">configInitializer</span><span class="hl-0">,    </span><span class="hl-5">// &lt;- pass your initializer function here</span><br/><span class="hl-0">    </span><span class="hl-2">deps:</span><span class="hl-0"> [</span><span class="hl-2">HttpClient</span><span class="hl-0">, </span><span class="hl-2">AuthClientConfig</span><span class="hl-0">],</span><br/><span class="hl-0">    </span><span class="hl-2">multi:</span><span class="hl-0"> </span><span class="hl-6">true</span><span class="hl-0">,</span><br/><span class="hl-0">  },</span><br/><span class="hl-0">],</span>
 </code></pre>
                 </dd>
               </dl>
@@ -136,9 +103,7 @@
           <section class="tsd-panel tsd-hierarchy">
             <h3>Hierarchy</h3>
             <ul class="tsd-hierarchy">
-              <li>
-                <span class="target">AuthClientConfig</span>
-              </li>
+              <li><span class="target">AuthClientConfig</span></li>
             </ul>
           </section>
           <section class="tsd-panel-group tsd-index-group">
@@ -150,7 +115,7 @@
                   <ul class="tsd-index-list">
                     <li class="tsd-kind-constructor tsd-parent-kind-class">
                       <a
-                        href="auth_config.authclientconfig.html#constructor"
+                        href="auth_config.AuthClientConfig.html#constructor"
                         class="tsd-kind-icon"
                         >constructor</a
                       >
@@ -162,14 +127,14 @@
                   <ul class="tsd-index-list">
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_config.authclientconfig.html#get"
+                        href="auth_config.AuthClientConfig.html#get"
                         class="tsd-kind-icon"
                         >get</a
                       >
                     </li>
                     <li class="tsd-kind-method tsd-parent-kind-class">
                       <a
-                        href="auth_config.authclientconfig.html#set"
+                        href="auth_config.AuthClientConfig.html#set"
                         class="tsd-kind-icon"
                         >set</a
                       >
@@ -184,8 +149,31 @@
             <section
               class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"
             >
-              <a name="constructor" class="tsd-anchor"></a>
-              <h3>constructor</h3>
+              <a id="constructor" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                constructor<a
+                  href="#constructor"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul
                 class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class"
               >
@@ -195,14 +183,14 @@
                     >(</span
                   >config<span class="tsd-signature-symbol">?: </span
                   ><a
-                    href="../interfaces/auth_config.authconfig.html"
+                    href="../interfaces/auth_config.AuthConfig.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Interface"
                     >AuthConfig</a
                   ><span class="tsd-signature-symbol">)</span
                   ><span class="tsd-signature-symbol">: </span
                   ><a
-                    href="auth_config.authclientconfig.html"
+                    href="auth_config.AuthClientConfig.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Class"
                     >AuthClientConfig</a
@@ -216,8 +204,8 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.config.ts#L348"
-                          >auth.config.ts:348</a
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.config.ts#L350"
+                          >auth.config.ts:350</a
                         >
                       </li>
                     </ul>
@@ -229,7 +217,7 @@
                         <span class="tsd-flag ts-flagOptional">Optional</span>
                         config:
                         <a
-                          href="../interfaces/auth_config.authconfig.html"
+                          href="../interfaces/auth_config.AuthConfig.html"
                           class="tsd-signature-type"
                           data-tsd-kind="Interface"
                           >AuthConfig</a
@@ -240,7 +228,7 @@
                   <h4 class="tsd-returns-title">
                     Returns
                     <a
-                      href="auth_config.authclientconfig.html"
+                      href="auth_config.AuthClientConfig.html"
                       class="tsd-signature-type"
                       data-tsd-kind="Class"
                       >AuthClientConfig</a
@@ -255,15 +243,35 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="get" class="tsd-anchor"></a>
-              <h3>get</h3>
+              <a id="get" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                get<a href="#get" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   get<span class="tsd-signature-symbol">(</span
                   ><span class="tsd-signature-symbol">)</span
                   ><span class="tsd-signature-symbol">: </span
                   ><a
-                    href="../interfaces/auth_config.authconfig.html"
+                    href="../interfaces/auth_config.AuthConfig.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Interface"
                     >AuthConfig</a
@@ -277,7 +285,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.config.ts#L367"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.config.ts#L367"
                           >auth.config.ts:367</a
                         >
                       </li>
@@ -294,7 +302,7 @@
                   <h4 class="tsd-returns-title">
                     Returns
                     <a
-                      href="../interfaces/auth_config.authconfig.html"
+                      href="../interfaces/auth_config.AuthConfig.html"
                       class="tsd-signature-type"
                       data-tsd-kind="Interface"
                       >AuthConfig</a
@@ -306,15 +314,35 @@
             <section
               class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
             >
-              <a name="set" class="tsd-anchor"></a>
-              <h3>set</h3>
+              <a id="set" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                set<a href="#set" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-link"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"
+                    ></path>
+                    <path
+                      d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"
+                    ></path></svg
+                ></a>
+              </h3>
               <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                 <li class="tsd-signature tsd-kind-icon">
                   set<span class="tsd-signature-symbol">(</span>config<span
                     class="tsd-signature-symbol"
                     >: </span
                   ><a
-                    href="../interfaces/auth_config.authconfig.html"
+                    href="../interfaces/auth_config.AuthConfig.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Interface"
                     >AuthConfig</a
@@ -330,7 +358,7 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/auth0/auth0-angular/blob/3dd7aa7/projects/auth0-angular/src/lib/auth.config.ts#L360"
+                          href="https://github.com/auth0/auth0-angular/blob/f69ec60/projects/auth0-angular/src/lib/auth.config.ts#L360"
                           >auth.config.ts:360</a
                         >
                       </li>
@@ -350,14 +378,16 @@
                       <h5>
                         config:
                         <a
-                          href="../interfaces/auth_config.authconfig.html"
+                          href="../interfaces/auth_config.AuthConfig.html"
                           class="tsd-signature-type"
                           data-tsd-kind="Interface"
                           >AuthConfig</a
                         >
                       </h5>
                       <div class="tsd-comment tsd-typography">
-                        <p>The configuration to set</p>
+                        <div class="lead">
+                          <p>The configuration to set</p>
+                        </div>
                       </div>
                     </li>
                   </ul>
@@ -372,9 +402,7 @@
         <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
           <nav class="tsd-navigation primary">
             <ul>
-              <li class=" ">
-                <a href="../modules.html">Exports</a>
-              </li>
+              <li class=""><a href="../modules.html">Modules</a></li>
               <li class="tsd-kind-module">
                 <a href="../modules/abstract_navigator.html"
                   >abstract-<wbr />navigator</a
@@ -404,40 +432,31 @@
             </ul>
           </nav>
           <nav class="tsd-navigation secondary menu-sticky">
-            <ul class="before-current">
-              <li class="tsd-kind-enum tsd-parent-kind-module">
-                <a
-                  href="../enums/auth_config.httpmethod.html"
-                  class="tsd-kind-icon"
-                  >Http<wbr />Method</a
-                >
-              </li>
-            </ul>
-            <ul class="current">
+            <ul>
               <li class="current tsd-kind-class tsd-parent-kind-module">
                 <a
-                  href="auth_config.authclientconfig.html"
+                  href="auth_config.AuthClientConfig.html"
                   class="tsd-kind-icon"
                   >Auth<wbr />Client<wbr />Config</a
                 >
                 <ul>
                   <li class="tsd-kind-constructor tsd-parent-kind-class">
                     <a
-                      href="auth_config.authclientconfig.html#constructor"
+                      href="auth_config.AuthClientConfig.html#constructor"
                       class="tsd-kind-icon"
                       >constructor</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_config.authclientconfig.html#get"
+                      href="auth_config.AuthClientConfig.html#get"
                       class="tsd-kind-icon"
                       >get</a
                     >
                   </li>
                   <li class="tsd-kind-method tsd-parent-kind-class">
                     <a
-                      href="auth_config.authclientconfig.html#set"
+                      href="auth_config.AuthClientConfig.html#set"
                       class="tsd-kind-icon"
                       >set</a
                     >
@@ -445,62 +464,11 @@
                 </ul>
               </li>
             </ul>
-            <ul class="after-current">
-              <li class="tsd-kind-interface tsd-parent-kind-module">
-                <a
-                  href="../interfaces/auth_config.appstate.html"
-                  class="tsd-kind-icon"
-                  >App<wbr />State</a
-                >
-              </li>
-              <li class="tsd-kind-interface tsd-parent-kind-module">
-                <a
-                  href="../interfaces/auth_config.authconfig.html"
-                  class="tsd-kind-icon"
-                  >Auth<wbr />Config</a
-                >
-              </li>
-              <li class="tsd-kind-interface tsd-parent-kind-module">
-                <a
-                  href="../interfaces/auth_config.httpinterceptorconfig.html"
-                  class="tsd-kind-icon"
-                  >Http<wbr />Interceptor<wbr />Config</a
-                >
-              </li>
-              <li class="tsd-kind-interface tsd-parent-kind-module">
-                <a
-                  href="../interfaces/auth_config.httpinterceptorrouteconfig.html"
-                  class="tsd-kind-icon"
-                  >Http<wbr />Interceptor<wbr />Route<wbr />Config</a
-                >
-              </li>
-              <li class="tsd-kind-type-alias tsd-parent-kind-module">
-                <a
-                  href="../modules/auth_config.html#apiroutedefinition"
-                  class="tsd-kind-icon"
-                  >Api<wbr />Route<wbr />Definition</a
-                >
-              </li>
-              <li class="tsd-kind-variable tsd-parent-kind-module">
-                <a
-                  href="../modules/auth_config.html#authconfigservice"
-                  class="tsd-kind-icon"
-                  >Auth<wbr />Config<wbr />Service</a
-                >
-              </li>
-              <li class="tsd-kind-function tsd-parent-kind-module">
-                <a
-                  href="../modules/auth_config.html#ishttpinterceptorrouteconfig"
-                  class="tsd-kind-icon"
-                  >is<wbr />Http<wbr />Interceptor<wbr />Route<wbr />Config</a
-                >
-              </li>
-            </ul>
           </nav>
         </div>
       </div>
     </div>
-    <footer>
+    <footer class="">
       <div class="container">
         <h2>Legend</h2>
         <div class="tsd-legend-group">
@@ -540,9 +508,18 @@
             </li>
           </ul>
         </div>
+        <h2>Settings</h2>
+        <p>
+          Theme
+          <select id="theme">
+            <option value="os">OS</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </p>
       </div>
     </footer>
     <div class="overlay"></div>
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/main.js"></script>
   </body>
 </html>
