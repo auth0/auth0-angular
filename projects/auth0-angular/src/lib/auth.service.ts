@@ -406,8 +406,8 @@ export class AuthService<TAppState extends AppState = AppState>
       map((search) => {
         const searchParams = new URLSearchParams(search);
         return (
-          (!!searchParams.get('code') || !!searchParams.get('error')) &&
-          !!searchParams.get('state') &&
+          (searchParams.has('code') || searchParams.has('error')) &&
+          searchParams.has('state') &&
           !this.configFactory.get().skipRedirectCallback
         );
       })
