@@ -163,7 +163,7 @@ Access tokens are used to add to the `Authorization` header when calling a prote
 We recommend relying on our SDK as explained in [our examples on calling an API](https://github.com/auth0/auth0-angular/blob/master/EXAMPLES.md#call-an-api).
 Our SDK will store the tokens internally, and refresh any token when needed. This means you don't have to worry about refreshing any of those tokens manually when you are using our `AuthHttpInterceptor`.
 
-If you have the need to retrieve or refresh the token manually, you can do so by calling `client.getTokenSilently()`. Doing so will automatically try and refresh the token if it couldn't find a valid one in our internal cache.
+If you have the need to retrieve or refresh the token manually, you can do so by calling `getAccessTokenSilently()`. Doing so will automatically try and refresh the token if it couldn't find a valid one in our internal cache.
 
 ```ts
 import { Component, OnInit } from '@angular/core';
@@ -185,7 +185,7 @@ export class AppComponent {
 }
 ```
 
-To force refreshing the token, you can bypass our internal cache by setting `ignoreCache` to true when calling `getTokenSilently`:
+To force refreshing the token, you can bypass our internal cache by setting `ignoreCache` to true when calling `getAccessTokenSilently`:
 
 ```ts
 import { Component, OnInit } from '@angular/core';
