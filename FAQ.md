@@ -9,6 +9,7 @@
 5. [Preserve application state through redirects](#5-preserve-application-state-through-redirects)
 6. [Using multiple oauth providers](#6-using-multiple-oauth-providers)
 7. [Using the SDK with Angular Universal](#7-using-the-sdk-with-angular-universal)
+8. [Retrieving and refreshing a token](#retrieving-and-refreshing-a-token)
 
 ## 1. User is not logged in after page refresh
 
@@ -155,3 +156,55 @@ AuthModule.forRoot({
 This library makes use of the `window` object in a couple of places during initialization, as well as `sessionStorage` in the underlying Auth0 SPA SDK, and thus [will have problems](https://github.com/angular/universal/blob/master/docs/gotchas.md#window-is-not-defined) when being used in an Angular Universal project. The recommendation currently is to only import this library into a module that is to be used in the browser, and omit it from any module that is to participate in a server-side environment.
 
 See [Guards, and creating separate modules](https://github.com/angular/universal/blob/master/docs/gotchas.md#strategy-2-guards) in the Angular Universal "Gotchas" document.
+
+## 8. Retrieving and refreshing a token
+
+Access tokens are used to add to the `Authorization` header when calling a protected API. You can do this manually, or rely on our SDK to do this for you.
+We recommend relying on our SDK as explained in [our examples on calling an API](https://github.com/auth0/auth0-angular/blob/master/EXAMPLES.md#call-an-api).
+Our SDK will store the tokens internally, and refresh any token when needed. This means you don't have to worry about refreshing any of those tokens manually when you are using our `AuthHttpInterceptor`.
+
+If you have the need to retrieve or refresh the token manually, you can do so by calling `client.getTokenSilently()`. Doing so will automatically try and refresh the token if it couldn't find a valid one in our internal cache.
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {}
+
+  getToken() {
+    this.auth.getAccessTokenSilently().subscribe((token) => {
+      console.log(token);
+    });
+  }
+}
+```
+
+To force refreshing the token, you can bypass our internal cache by setting `ignoreCache` to true when calling `getTokenSilently`:
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {}
+
+  getToken() {
+    this.auth
+      .getAccessTokenSilently({ ignoreCache: true })
+      .subscribe((token) => {
+        console.log(token);
+      });
+  }
+}
+```
