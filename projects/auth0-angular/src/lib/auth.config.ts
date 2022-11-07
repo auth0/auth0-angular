@@ -29,6 +29,7 @@ export type ApiRouteDefinition = HttpInterceptorRouteConfig | string;
 
 /**
  * A custom type guard to help identify route definitions that are actually HttpInterceptorRouteConfig types.
+ *
  * @param def The route definition type
  */
 export function isHttpInterceptorRouteConfig(
@@ -205,6 +206,7 @@ export class AuthClientConfig {
 
   /**
    * Sets configuration to be read by other consumers of the service (see usage notes)
+   *
    * @param config The configuration to set
    */
   set(config: AuthConfig): void {

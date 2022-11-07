@@ -17,6 +17,7 @@ export class AbstractNavigator {
   /**
    * Navigates to the specified url. The router will be used if one is available, otherwise it falls back
    * to `window.history.replaceState`.
+   *
    * @param url The url to navigate to
    */
   navigateByUrl(url: string): void {
