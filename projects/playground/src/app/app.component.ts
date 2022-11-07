@@ -38,17 +38,17 @@ export class AppComponent implements OnInit {
     ignoreCache: new FormControl(false),
   });
 
-  ngOnInit(): void {
-    this.auth.appState$.subscribe((appState) => {
-      this.appStateResult = appState.myValue;
-    });
-  }
-
   constructor(
     public auth: AuthService,
     @Inject(DOCUMENT) private doc: Document,
     private httpClient: HttpClient
   ) {}
+
+  ngOnInit(): void {
+    this.auth.appState$.subscribe((appState) => {
+      this.appStateResult = appState.myValue;
+    });
+  }
 
   launchLogin(): void {
     const usePopup = this.loginOptionsForm.value.usePopup === true;

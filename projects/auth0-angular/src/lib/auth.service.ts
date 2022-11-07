@@ -373,8 +373,7 @@ export class AuthService<TAppState extends AppState = AppState>
           (searchParams.has('code') || searchParams.has('error')) &&
           searchParams.has('state') &&
           !this.configFactory.get().skipRedirectCallback
-        );
-      })
+      )
     );
   }
 }
