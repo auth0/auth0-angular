@@ -7,6 +7,8 @@
 3. [User is redirected to `/` after successful sign in with redirect](#3-user-is-redirected-to--after-successful-sign-in-with-redirect)
 4. [Getting an infinite redirect loop between my application and Auth0](#4-getting-an-infinite-redirect-loop-between-my-application-and-auth0)
 5. [Preserve application state through redirects](#5-preserve-application-state-through-redirects)
+6. [Using multiple oauth providers](#6-using-multiple-oauth-providers)
+7. [Using the SDK with Angular Universal](#7-using-the-sdk-with-angular-universal)
 
 ## 1. User is not logged in after page refresh
 
@@ -22,7 +24,7 @@ In this case Silent Authentication will not work because it relies on a hidden i
 
 **3. You are using Multifactor Authentication**
 
-In this case, when your users are not *remembering this device for 30 days*, Silent Authentication will not work because it can not get past the MFA step without the user's interaction. The consequence of it is that on both a page refresh as well as when trying to renew an expired Access Token, our SDK will throw a `Multifactor authentication required` error.
+In this case, when your users are not _remembering this device for 30 days_, Silent Authentication will not work because it can not get past the MFA step without the user's interaction. The consequence of it is that on both a page refresh as well as when trying to renew an expired Access Token, our SDK will throw a `Multifactor authentication required` error.
 
 - On page load, catch this error and redirect the user to Auth0 by calling `loginWithRedirect`, prompting the user with MFA.
 - Ensure you can renew access tokens without relying on Silent Authentication by using [Rotating Refresh Tokens](https://auth0.com/docs/tokens/refresh-tokens/refresh-token-rotation).
@@ -134,3 +136,22 @@ export class AppComponent {
 > By default, this method of saving application state will store it in Session Storage; however, if `useCookiesForTransactions` is set, a Cookie will be used instead.
 
 > This information will be removed from storage once the user is redirected back to your application after a successful login attempt (although it will continue to be accessible on the `appState$` observable).
+
+## 6. Using multiple OAuth providers
+
+If your application uses multiple OAuth providers, you may need to use multiple callback paths as well, one for each OAuth provider.
+To ensure the SDK does not process the callback for any provider other than Auth0, configure the AuthModule by setting the `skipRedirectCallback` property as follows:
+
+```js
+AuthModule.forRoot({
+  skipRedirectCallback: window.location.pathname === '/other-callback',
+});
+```
+
+**Note**: In the above example, `/other-callback` is an existing route that will be called by any other OAuth provider with a `code` (or `error` in case something went wrong) and `state`.
+
+## 7. Using the SDK with Angular Universal
+
+This library makes use of the `window` object in a couple of places during initialization, as well as `sessionStorage` in the underlying Auth0 SPA SDK, and thus [will have problems](https://github.com/angular/universal/blob/master/docs/gotchas.md#window-is-not-defined) when being used in an Angular Universal project. The recommendation currently is to only import this library into a module that is to be used in the browser, and omit it from any module that is to participate in a server-side environment.
+
+See [Guards, and creating separate modules](https://github.com/angular/universal/blob/master/docs/gotchas.md#strategy-2-guards) in the Angular Universal "Gotchas" document.

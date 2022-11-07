@@ -1,7 +1,10 @@
 {
   "clientId": "wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp",
   "domain": "brucke.auth0.com",
-  "audience": "http://localhost/",
+  "authorizationParams": {
+    "audience": "http://localhost/",
+    "redirect_uri": "http://localhost:4200"
+  },
   "errorPath": "/error",
   "httpInterceptor": {
     "allowedList": [

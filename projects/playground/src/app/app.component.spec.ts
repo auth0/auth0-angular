@@ -118,9 +118,11 @@ describe('AppComponent', () => {
       fixture.detectChanges();
 
       expect(authMock.logout).toHaveBeenCalledWith({
-        localOnly: false,
-        federated: false,
-        returnTo: 'http://localhost:9876',
+        onRedirect: undefined,
+        logoutParams: {
+          federated: false,
+          returnTo: 'http://localhost:9876',
+        },
       });
     });
 
@@ -134,9 +136,11 @@ describe('AppComponent', () => {
       fixture.detectChanges();
 
       expect(authMock.logout).toHaveBeenCalledWith({
-        localOnly: false,
-        federated: true,
-        returnTo: 'http://localhost:9876',
+        onRedirect: undefined,
+        logoutParams: {
+          federated: true,
+          returnTo: 'http://localhost:9876',
+        },
       });
     });
 
@@ -149,11 +153,15 @@ describe('AppComponent', () => {
       btnLogout.click();
       fixture.detectChanges();
 
-      expect(authMock.logout).toHaveBeenCalledWith({
-        localOnly: true,
-        federated: false,
-        returnTo: 'http://localhost:9876',
-      });
+      expect(authMock.logout).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          onRedirect: jasmine.any(Function),
+          logoutParams: {
+            federated: false,
+            returnTo: 'http://localhost:9876',
+          },
+        })
+      );
     });
 
     it('should show user profile', () => {
@@ -192,7 +200,7 @@ describe('AppComponent', () => {
       fixture.detectChanges();
 
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
-        ignoreCache: false,
+        cacheMode: 'on',
       });
       console.log(divToken.querySelector('textarea'));
       const tokenContent = divToken.querySelector('textarea')?.textContent;
@@ -216,7 +224,7 @@ describe('AppComponent', () => {
       fixture.detectChanges();
 
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
-        ignoreCache: false,
+        cacheMode: 'on',
       });
       console.log(divToken.querySelector('textarea'));
       const tokenContent = divToken.querySelector('textarea')?.textContent;
@@ -240,7 +248,7 @@ describe('AppComponent', () => {
       fixture.detectChanges();
 
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
-        ignoreCache: true,
+        cacheMode: 'off',
       });
       console.log(divToken.querySelector('textarea'));
       const tokenContent = divToken.querySelector('textarea')?.textContent;
@@ -307,6 +315,7 @@ describe('AppComponent', () => {
         appState: {
           myValue: appStateValue,
         },
+        authorizationParams: {},
       });
     });
 
@@ -319,7 +328,9 @@ describe('AppComponent', () => {
       btnRefresh?.click();
       fixture.detectChanges();
 
-      expect(authMock.loginWithPopup).toHaveBeenCalledWith({});
+      expect(authMock.loginWithPopup).toHaveBeenCalledWith({
+        authorizationParams: {},
+      });
     });
   });
 });

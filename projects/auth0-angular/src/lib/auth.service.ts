@@ -9,11 +9,8 @@ import {
   GetTokenSilentlyOptions,
   GetTokenWithPopupOptions,
   RedirectLoginResult,
-  LogoutUrlOptions,
   GetTokenSilentlyVerboseResponse,
-  GetUserOptions,
   User,
-  GetIdTokenClaimsOptions,
   IdToken,
 } from '@auth0/auth0-spa-js';
 
@@ -186,14 +183,12 @@ export class AuthService<TAppState extends AppState = AppState>
    *
    * @param options The logout options
    */
-  logout(options?: LogoutOptions): void {
-    const logout = this.auth0Client.logout(options) || of(null);
+  async logout(options?: LogoutOptions): Promise<void> {
+    await this.auth0Client.logout(options);
 
-    from(logout).subscribe(() => {
-      if (options?.localOnly) {
-        this.authState.refresh();
-      }
-    });
+    if (options?.onRedirect) {
+      this.authState.refresh();
+    }
   }
 
   /**
@@ -275,10 +270,14 @@ export class AuthService<TAppState extends AppState = AppState>
    */
   getAccessTokenWithPopup(
     options?: GetTokenWithPopupOptions
-  ): Observable<string> {
+  ): Observable<string | undefined> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenWithPopup(options)),
-      tap((token) => this.authState.setAccessToken(token)),
+      tap((token) => {
+        if (token) {
+          this.authState.setAccessToken(token);
+        }
+      }),
       catchError((error) => {
         this.authState.setError(error);
         this.authState.refresh();
@@ -289,7 +288,7 @@ export class AuthService<TAppState extends AppState = AppState>
 
   /**
    * ```js
-   * getUser(options).subscribe(user => ...);
+   * getUser().subscribe(user => ...);
    * ```
    *
    * Returns the user information if available (decoded
@@ -304,17 +303,14 @@ export class AuthService<TAppState extends AppState = AppState>
    * The returned observable will emit once and then complete.
    *
    * @typeparam TUser The type to return, has to extend {@link User}.
-   * @param options The options to get the user
    */
-  getUser<TUser extends User>(
-    options?: GetUserOptions
-  ): Observable<TUser | undefined> {
-    return defer(() => this.auth0Client.getUser<TUser>(options));
+  getUser<TUser extends User>(): Observable<TUser | undefined> {
+    return defer(() => this.auth0Client.getUser<TUser>());
   }
 
   /**
    * ```js
-   * getIdTokenClaims(options).subscribe(claims => ...);
+   * getIdTokenClaims().subscribe(claims => ...);
    * ```
    *
    * Returns all claims from the id_token if available.
@@ -326,13 +322,9 @@ export class AuthService<TAppState extends AppState = AppState>
    * @remarks
    *
    * The returned observable will emit once and then complete.
-   *
-   * @param options The options to get the Id token claims
    */
-  getIdTokenClaims(
-    options?: GetIdTokenClaimsOptions
-  ): Observable<IdToken | undefined> {
-    return defer(() => this.auth0Client.getIdTokenClaims(options));
+  getIdTokenClaims(): Observable<IdToken | undefined> {
+    return defer(() => this.auth0Client.getIdTokenClaims());
   }
 
   /**
@@ -371,34 +363,6 @@ export class AuthService<TAppState extends AppState = AppState>
       }),
       map(([result]) => result)
     );
-  }
-
-  /**
-   * ```js
-   * buildAuthorizeUrl().subscribe(url => ...)
-   * ```
-   *
-   * Builds an `/authorize` URL for loginWithRedirect using the parameters
-   * provided as arguments. Random and secure `state` and `nonce`
-   * parameters will be auto-generated.
-   * @param options The options
-   * @returns A URL to the authorize endpoint
-   */
-  buildAuthorizeUrl(options?: RedirectLoginOptions): Observable<string> {
-    return defer(() => this.auth0Client.buildAuthorizeUrl(options));
-  }
-
-  /**
-   * ```js
-   * buildLogoutUrl().subscribe(url => ...)
-   * ```
-   * Builds a URL to the logout endpoint.
-   *
-   * @param options The options used to configure the parameters that appear in the logout endpoint URL.
-   * @returns a URL to the logout endpoint using the parameters provided as arguments.
-   */
-  buildLogoutUrl(options?: LogoutUrlOptions): Observable<string> {
-    return of(this.auth0Client.buildLogoutUrl(options));
   }
 
   private shouldHandleCallback(): Observable<boolean> {

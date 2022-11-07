@@ -43,7 +43,7 @@ describe('AuthService', () => {
     authConfig = {};
     auth0Client = new Auth0Client({
       domain: '',
-      client_id: '',
+      clientId: '',
     });
 
     spyOn(auth0Client, 'handleRedirectCallback').and.resolveTo({});
@@ -55,8 +55,6 @@ describe('AuthService', () => {
     spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(undefined);
     spyOn(auth0Client, 'logout');
     spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
-    spyOn(auth0Client, 'buildAuthorizeUrl').and.resolveTo('/authorize');
-    spyOn(auth0Client, 'buildLogoutUrl').and.returnValue('/v2/logout');
 
     spyOn(auth0Client, 'getTokenWithPopup').and.resolveTo(
       '__access_token_from_popup__'
@@ -237,7 +235,7 @@ describe('AuthService', () => {
       service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
         (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
         service.logout({
-          localOnly: true,
+          onRedirect: async () => {},
         });
       });
     });
@@ -315,7 +313,7 @@ describe('AuthService', () => {
       service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
         (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
         service.logout({
-          localOnly: true,
+          onRedirect: async () => {},
         });
       });
     });
@@ -504,7 +502,9 @@ describe('AuthService', () => {
   });
 
   it('should call `loginWithRedirect` and pass options', async () => {
-    const options = { redirect_uri: 'http://localhost:3001' };
+    const options = {
+      authorizationParams: { redirect_uri: 'http://localhost:3001' },
+    };
 
     await service.loginWithRedirect(options).toPromise();
     expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
@@ -557,13 +557,13 @@ describe('AuthService', () => {
   });
 
   it('should call `logout` with options', () => {
-    const options = { returnTo: 'http://localhost' };
+    const options = { logoutParams: { returnTo: 'http://localhost' } };
     service.logout(options);
     expect(auth0Client.logout).toHaveBeenCalledWith(options);
   });
 
   it('should reset the authentication state when passing `localOnly` to logout', (done) => {
-    const options = { localOnly: true };
+    const options = { logoutParams: { localOnly: true } };
 
     service.isAuthenticated$.subscribe((authenticated) => {
       expect(authenticated).toBeFalse();
@@ -691,19 +691,11 @@ describe('AuthService', () => {
       expect(auth0Client.getUser).toHaveBeenCalled();
     });
 
-    it('should call `getUser` and pass options', async () => {
-      const options = { audience: 'http://localhost:3001' };
-
-      await service.getUser(options).toPromise();
-      expect(auth0Client.getUser).toHaveBeenCalledWith(options);
-    });
-
     it('should return the user from `getUser`', async () => {
-      const options = { audience: 'http://localhost:3001' };
       const expected = { name: 'John Doe' };
       (auth0Client.getUser as jasmine.Spy).and.resolveTo(expected);
 
-      const user = await service.getUser(options).toPromise();
+      const user = await service.getUser().toPromise();
       expect(user).toBe(expected);
     });
   });
@@ -714,19 +706,11 @@ describe('AuthService', () => {
       expect(auth0Client.getIdTokenClaims).toHaveBeenCalled();
     });
 
-    it('should call `getIdTokenClaims` and pass options', async () => {
-      const options = { audience: 'http://localhost:3001' };
-
-      await service.getIdTokenClaims(options).toPromise();
-      expect(auth0Client.getIdTokenClaims).toHaveBeenCalledWith(options);
-    });
-
     it('should return the claims from `getIdTokenClaims`', async () => {
-      const options = { audience: 'http://localhost:3001' };
       const expected = { __raw: '', name: 'John Doe' };
       (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(expected);
 
-      const claims = await service.getIdTokenClaims(options).toPromise();
+      const claims = await service.getIdTokenClaims().toPromise();
       expect(claims).toBe(expected);
     });
   });
@@ -821,30 +805,6 @@ describe('AuthService', () => {
           expect(recievedState).toEqual(appState);
           done();
         });
-      });
-    });
-  });
-
-  describe('buildAuthorizeUrl', () => {
-    it('should call the underlying SDK', (done) => {
-      const options: RedirectLoginOptions = {};
-
-      service.buildAuthorizeUrl(options).subscribe((url) => {
-        expect(url).toBeTruthy();
-        expect(auth0Client.buildAuthorizeUrl).toHaveBeenCalledWith(options);
-        done();
-      });
-    });
-  });
-
-  describe('buildLogoutUrl', () => {
-    it('should call the underlying SDK', (done) => {
-      const options: LogoutUrlOptions = {};
-
-      service.buildLogoutUrl(options).subscribe((url) => {
-        expect(url).toBeTruthy();
-        expect(auth0Client.buildLogoutUrl).toHaveBeenCalledWith(options);
-        done();
       });
     });
   });

@@ -1,4 +1,5 @@
 import {
+  Auth0ClientOptions,
   CacheLocation,
   GetTokenSilentlyOptions,
   ICache,
@@ -102,33 +103,7 @@ export interface HttpInterceptorRouteConfig {
 /**
  * Configuration for the authentication service
  */
-export interface AuthConfig {
-  /**
-   * Your Auth0 account domain such as `'example.auth0.com'`,
-   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
-   * (when using [custom domains](https://auth0.com/docs/custom-domains))
-   */
-  domain: string;
-
-  /**
-   * The issuer to be used for validation of JWTs, optionally defaults to the domain above
-   */
-  issuer?: string;
-
-  /**
-   * The Client ID found on your Application settings page
-   */
-  clientId: string;
-
-  /**
-   * The default URL where Auth0 will redirect your browser to with
-   * the authentication result. It must be added to the
-   * "Allowed Callback URLs" field in your Auth0 Application's
-   * settings. If not provided here, it should be provided in the other
-   * methods that provide authentication.
-   */
-  redirectUri?: string;
-
+export interface AuthConfig extends Auth0ClientOptions {
   /**
    * By default, if the page URL has code and state parameters, the SDK will assume they are for
    * an Auth0 application and attempt to exchange the code for a token.
@@ -148,96 +123,6 @@ export interface AuthConfig {
   skipRedirectCallback?: boolean;
 
   /**
-   * The value in seconds used to account for clock skew in JWT expirations.
-   * Typically, this value is no more than a minute or two at maximum.
-   * Defaults to 60s.
-   */
-  leeway?: number;
-
-  /**
-   * The location to use when storing cache data. Valid values are `memory` or `localstorage`.
-   * The default setting is `memory`.
-   */
-  cacheLocation?: CacheLocation;
-
-  /**
-   * Specify a custom cache implementation to use for token storage and retrieval.
-   * This setting takes precedence over `cacheLocation` if they are both specified.
-   *
-   * Read more about [creating a custom cache](https://github.com/auth0/auth0-spa-js#creating-a-custom-cache)
-   */
-  cache?: ICache;
-
-  /**
-   * If true, refresh tokens are used to fetch new access tokens from the Auth0 server.
-   * If false, the legacy technique of using a hidden iframe and the `authorization_code` grant with `prompt=none` is used.
-   * The default setting is `false`.
-   *
-   * **Note**: Use of refresh tokens must be enabled by an administrator on your Auth0 client application.
-   */
-  useRefreshTokens?: boolean;
-
-  /**
-   * If true, fallback to the technique of using a hidden iframe and the `authorization_code` grant with `prompt=none`
-   * when unable to use refresh tokens.
-   * The default setting is `true`.
-   *
-   * **Note**: There might be situations where doing silent auth with a Web Message response from an iframe is not possible,
-   * like when you're serving your application from the file system or a custom protocol (like in a Desktop or Native app).
-   * In situations like this you can disable the iframe fallback and handle the failed Refresh Grant and prompt
-   * the user to login interactively with `loginWithRedirect` or `loginWithPopup`."
-   *
-   * E.g. Using the `file:` protocol in an Electron application does not support that legacy technique.
-   *
-   *  this.authService.getAccessTokenSilently().subscribe({
-   *    error: (e) => {
-   *      if (e.error === 'missing_refresh_token' || e.error === 'invalid_grant') {
-   *        this.authService.loginWithRedirect();
-   *      }
-   *    }
-   *  });
-   */
-  useRefreshTokensFallback?: boolean;
-
-  /**
-   * A maximum number of seconds to wait before declaring background calls to /authorize as failed for timeout
-   * Defaults to 60s.
-   */
-  authorizeTimeoutInSeconds?: number;
-
-  /**
-   * Changes to recommended defaults, like defaultScope
-   */
-  advancedOptions?: {
-    /**
-     * The default scope to be included with all requests.
-     * If not provided, 'openid profile email' is used. This can be set to `null` in order to effectively remove the default scopes.
-     *
-     * Note: The `openid` scope is **always applied** regardless of this setting.
-     */
-    defaultScope?: string;
-  };
-
-  /**
-   * Maximum allowable elapsed time (in seconds) since authentication.
-   * If the last time the user authenticated is greater than this value,
-   * the user must be reauthenticated.
-   */
-  maxAge?: string | number;
-
-  /**
-   * The default scope to be used on authentication requests.
-   * The defaultScope defined in the Auth0Client is included
-   * along with this scope
-   */
-  scope?: string;
-
-  /**
-   * The default audience to be used for requesting API access.
-   */
-  audience?: string;
-
-  /**
    * Configuration for the built-in Http Interceptor, used for
    * automatically attaching access tokens.
    */
@@ -248,41 +133,6 @@ export interface AuthConfig {
    * returns an error. Defaults to `/`
    */
   errorPath?: string;
-
-  /**
-   * The Id of an organization to log in to
-   *
-   * This will specify an `organization` parameter in your user's login request and will add a step to validate
-   * the `org_id` claim in your user's ID Token.
-   */
-  organization?: string;
-
-  /**
-   * The Id of an invitation to accept.
-   *
-   * This is available from the user invitation URL that is given when participating in a user invitation flow.
-   */
-  invitation?: string;
-
-  /**
-   * The name of the connection configured for your application.
-   * If null, it will redirect to the Auth0 Login Page and show
-   * the Login Widget.
-   */
-  connection?: string;
-
-  /**
-   * Modify the value used as the current time during the token validation.
-   *
-   * **Note**: Using this improperly can potentially compromise the token validation.
-   */
-  nowProvider?: () => Promise<number> | number;
-
-  /**
-   * If you need to send custom parameters to the Authorization Server,
-   * make sure to use the original parameter name.
-   */
-  [key: string]: any;
 }
 
 /**
