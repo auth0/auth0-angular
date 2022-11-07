@@ -28,6 +28,15 @@
             "tsConfig": "projects/auth0-angular/tsconfig.spec.json",
             "karmaConfig": "projects/auth0-angular/karma.conf.js"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/auth0-angular/**/*.ts",
+              "projects/auth0-angular/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -177,9 +186,21 @@
               "devServerTarget": "playground:serve:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/playground/**/*.ts",
+              "projects/playground/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "auth0-angular"
+  "defaultProject": "auth0-angular",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
