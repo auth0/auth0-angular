@@ -43,12 +43,10 @@ export class AuthState {
       (
         acc: { current: string | null; previous: string | null },
         current: string | null
-      ) => {
-        return {
-          previous: acc.current,
-          current,
-        };
-      },
+      ) => ({
+        previous: acc.current,
+        current,
+      }),
       { current: null, previous: null }
     ),
     filter(({ previous, current }) => previous !== current)
@@ -114,6 +112,7 @@ export class AuthState {
 
   /**
    * Update the isLoading state using the provided value
+   *
    * @param isLoading The new value for isLoading
    */
   public setIsLoading(isLoading: boolean): void {
@@ -130,6 +129,7 @@ export class AuthState {
 
   /**
    * Update the access token, doing so will also refresh the state.
+   *
    * @param accessToken The new Access Token
    */
   public setAccessToken(accessToken: string): void {
@@ -138,6 +138,7 @@ export class AuthState {
 
   /**
    * Emits the error in the `error$` observable.
+   *
    * @param error The new error
    */
   public setError(error: any): void {

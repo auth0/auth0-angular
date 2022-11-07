@@ -23,6 +23,7 @@ import { AuthState } from './auth.state';
 /**
  * Wraps service.isLoading$ so that assertions can be made
  * only when the SDK has finished loading.
+ *
  * @param service The service instance under test
  */
 const loaded = (service: AuthService) =>
@@ -35,9 +36,7 @@ describe('AuthService', () => {
   let authConfig: Partial<AuthConfig>;
   let authState: AuthState;
 
-  const createService = () => {
-    return TestBed.inject(AuthService);
-  };
+  const createService = () => TestBed.inject(AuthService);
 
   beforeEach(() => {
     authConfig = {};

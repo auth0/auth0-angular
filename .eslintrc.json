@@ -13,7 +13,11 @@
         "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/member-ordering": 0,
+        "@typescript-eslint/naming-convention": 0,
+        "prefer-arrow/prefer-arrow-functions": 0
+      }
     },
     {
       "files": ["*.html"],
