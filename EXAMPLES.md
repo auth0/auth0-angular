@@ -251,7 +251,7 @@ AuthModule.forRoot({
 });
 ```
 
-**Note:** Under the hood, tokenOptions is passed as-is to [the getTokenSilently method](https://auth0.github.io/auth0-spa-js/classes/auth0client.html#gettokensilently) on the underlying SDK, so all the same options apply here.
+**Note:** Under the hood, tokenOptions is passed as-is to [the getTokenSilently method](https://auth0.github.io/auth0-spa-js/classes/Auth0Client.html#getTokenSilently) on the underlying SDK, so all the same options apply here.
 
 **Uri matching**
 
