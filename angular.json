@@ -28,16 +28,6 @@
             "tsConfig": "projects/auth0-angular/tsconfig.spec.json",
             "karmaConfig": "projects/auth0-angular/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/auth0-angular/tsconfig.lib.json",
-              "projects/auth0-angular/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     },
@@ -96,7 +86,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -150,17 +139,6 @@
             ],
             "styles": ["projects/playground/src/styles.css"],
             "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/playground/tsconfig.app.json",
-              "projects/playground/tsconfig.spec.json",
-              "projects/playground/e2e/tsconfig.json"
-            ],
-            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
