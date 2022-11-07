@@ -16,7 +16,7 @@ module.exports = function (config) {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './../../coverage/auth0-angular'),
+      dir: require('path').join(__dirname, './../../coverage/playground'),
       subdir: '.',
       reporters: [
         { type: 'html' },
