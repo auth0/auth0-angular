@@ -1,22 +1,17 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import {
-  Auth0Client,
-  IdToken,
-  LogoutUrlOptions,
-  RedirectLoginOptions,
-} from '@auth0/auth0-spa-js';
+import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import {
   bufferCount,
   bufferTime,
+  delay,
   filter,
   mergeMap,
   take,
   tap,
 } from 'rxjs/operators';
-import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
 import { AuthState } from './auth.state';
 
@@ -237,6 +232,38 @@ describe('AuthService', () => {
           onRedirect: async () => {},
         });
       });
+    });
+
+    it('should not emit when state is updated that doesnt change the user', (done) => {
+      const user = {
+        name: 'Test User',
+      };
+
+      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo('AT1');
+      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
+
+      let userEmissions = 0;
+      service.user$.subscribe(() => userEmissions++);
+
+      service
+        .getAccessTokenSilently()
+        .pipe(
+          tap(() =>
+            (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo('AT2')
+          ),
+          mergeMap(() => service.getAccessTokenSilently()),
+          tap(() =>
+            (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo('AT3')
+          ),
+          mergeMap(() => service.getAccessTokenSilently()),
+          // Allow user emissions to come through
+          delay(0)
+        )
+        .subscribe(() => {
+          expect(userEmissions).toBe(1);
+          done();
+        });
     });
   });
 

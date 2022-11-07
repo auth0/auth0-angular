@@ -91,7 +91,8 @@ export class AuthState {
   readonly user$ = this.isAuthenticatedTrigger$.pipe(
     concatMap((authenticated) =>
       authenticated ? this.auth0Client.getUser() : of(null)
-    )
+    ),
+    distinctUntilChanged()
   );
 
   /**
