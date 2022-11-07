@@ -367,13 +367,12 @@ export class AuthService<TAppState extends AppState = AppState>
 
   private shouldHandleCallback(): Observable<boolean> {
     return of(location.search).pipe(
-      map((search) => {
-        return (
+      map(
+        (search) =>
           (search.includes('code=') || search.includes('error=')) &&
           search.includes('state=') &&
           !this.configFactory.get().skipRedirectCallback
-        );
-      })
+      )
     );
   }
 }

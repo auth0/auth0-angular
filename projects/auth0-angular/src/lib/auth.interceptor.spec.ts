@@ -265,9 +265,9 @@ describe('The Auth HTTP Interceptor', () => {
     it('emit error when not able to retrieve a token but allowAnonymous is set to false', fakeAsync((
       done: () => void
     ) => {
-      (auth0Client.getTokenSilently as jasmine.Spy).and.callFake(() => {
-        return Promise.reject({ error: 'login_required' });
-      });
+      (auth0Client.getTokenSilently as jasmine.Spy).and.callFake(() =>
+        Promise.reject({ error: 'login_required' })
+      );
 
       httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
         error: (err) => expect(err).toEqual({ error: 'login_required' }),
@@ -280,9 +280,9 @@ describe('The Auth HTTP Interceptor', () => {
     }));
 
     it('does not emit error when not able to retrieve a token but allowAnonymous is set to true', fakeAsync(() => {
-      (auth0Client.getTokenSilently as jasmine.Spy).and.callFake(() => {
-        return Promise.reject({ error: 'login_required' });
-      });
+      (auth0Client.getTokenSilently as jasmine.Spy).and.callFake(() =>
+        Promise.reject({ error: 'login_required' })
+      );
 
       assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
         expect(authState.setError).not.toHaveBeenCalled();
