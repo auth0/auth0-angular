@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html class="default">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <title>@auth0/auth0-angular</title>
+    <meta name="description" content="Documentation for @auth0/auth0-angular" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/highlight.css" />
+    <script async src="assets/search.js" id="search-script"></script>
+  </head>
+  <body>
+    <script>
+      document.body.classList.add(localStorage.getItem('tsd-theme') || 'os');
+    </script>
+    <header>
+      <div class="tsd-page-toolbar">
+        <div class="container">
+          <div class="table-wrap">
+            <div class="table-cell" id="tsd-search" data-base=".">
+              <div class="field">
+                <label
+                  for="tsd-search-field"
+                  class="tsd-widget search no-caption"
+                  >Search</label
+                ><input type="text" id="tsd-search-field" />
+              </div>
+              <ul class="results">
+                <li class="state loading">Preparing search index...</li>
+                <li class="state failure">The search index is not available</li>
+              </ul>
+              <a href="index.html" class="title">@auth0/auth0-angular</a>
+            </div>
+            <div class="table-cell" id="tsd-widgets">
+              <div id="tsd-filter">
+                <a
+                  href="#"
+                  class="tsd-widget options no-caption"
+                  data-toggle="options"
+                  >Options</a
+                >
+                <div class="tsd-filter-group">
+                  <div class="tsd-select" id="tsd-filter-visibility">
+                    <span class="tsd-select-label">All</span>
+                    <ul class="tsd-select-list">
+                      <li data-value="public">Public</li>
+                      <li data-value="protected">Public/Protected</li>
+                      <li data-value="private" class="selected">All</li>
+                    </ul>
+                  </div>
+                  <input
+                    type="checkbox"
+                    id="tsd-filter-inherited"
+                    checked
+                  /><label class="tsd-widget" for="tsd-filter-inherited"
+                    >Inherited</label
+                  >
+                </div>
+              </div>
+              <a href="#" class="tsd-widget menu no-caption" data-toggle="menu"
+                >Menu</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tsd-page-title">
+        <div class="container"><h1>@auth0/auth0-angular</h1></div>
+      </div>
+    </header>
+    <div class="container container-main">
+      <div class="row">
+        <div class="col-8 col-content">
+          <div class="tsd-panel tsd-typography">
+            <p>
+              <img
+                src="https://cdn.auth0.com/website/sdks/banners/auth0-angular-banner.png"
+                alt="Auth0 SDK for Angular Single Page Applications"
+              />
+            </p>
+            <p>
+              A library for integrating
+              <a href="https://auth0.com">Auth0</a> into an Angular application.
+            </p>
+            <p>
+              <img
+                src="https://img.shields.io/npm/v/@auth0/auth0-angular"
+                alt="Release"
+              />
+              <a href="https://codecov.io/gh/auth0/auth0-angular"
+                ><img
+                  src="https://img.shields.io/codecov/c/github/auth0/auth0-angular"
+                  alt="Codecov"
+              /></a>
+              <img
+                src="https://img.shields.io/npm/dw/@auth0/auth0-angular"
+                alt="Downloads"
+              />
+              <a href="https://opensource.org/licenses/MIT"
+                ><img
+                  src="https://img.shields.io/:license-MIT-blue.svg?style=flat"
+                  alt="License"
+              /></a>
+              <a href="https://circleci.com/gh/auth0/auth0-angular"
+                ><img
+                  src="https://img.shields.io/circleci/build/github/auth0/auth0-angular"
+                  alt="CircleCI"
+              /></a>
+            </p>
+            <p>
+              📚 <a href="#documentation">Documentation</a> - 🚀
+              <a href="#getting-started">Getting Started</a> - 💻
+              <a href="#api-reference">API Reference</a> - 💬
+              <a href="#feedback">Feedback</a>
+            </p>
+
+            <a
+              href="#documentation"
+              id="documentation"
+              style="color: inherit; text-decoration: none"
+            >
+              <h2>Documentation</h2>
+            </a>
+            <ul>
+              <li>
+                <a href="https://auth0.com/docs/quickstart/spa/angular"
+                  >Quickstart</a
+                >
+                - our interactive guide for quickly adding login, logout and
+                user information to an Angular app using Auth0.
+              </li>
+              <li>
+                <a
+                  href="https://github.com/auth0-samples/auth0-angular-samples/tree/master/Sample-01"
+                  >Sample App</a
+                >
+                - a full-fledged Angular application integrated with Auth0.
+              </li>
+              <li>
+                <a
+                  href="https://github.com/auth0/auth0-angular/tree/master/FAQ.md"
+                  >FAQs</a
+                >
+                - frequently asked questions about the auth0-angular SDK.
+              </li>
+              <li>
+                <a
+                  href="https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md"
+                  >Examples</a
+                >
+                - code samples for common Angular authentication scenario&#39;s.
+              </li>
+              <li>
+                <a href="https://www.auth0.com/docs">Docs site</a> - explore our
+                docs site and learn more about Auth0.
+              </li>
+            </ul>
+
+            <a
+              href="#getting-started"
+              id="getting-started"
+              style="color: inherit; text-decoration: none"
+            >
+              <h2>Getting started</h2>
+            </a>
+
+            <a
+              href="#requirements"
+              id="requirements"
+              style="color: inherit; text-decoration: none"
+            >
+              <h3>Requirements</h3>
+            </a>
+            <p>
+              This project only supports the
+              <a
+                href="https://angular.io/guide/releases#actively-supported-versions"
+                >actively supported versions of Angular as stated in the Angular
+                documentation</a
+              >. Whilst other versions might be compatible they are not actively
+              supported.
+            </p>
+
+            <a
+              href="#installation"
+              id="installation"
+              style="color: inherit; text-decoration: none"
+            >
+              <h3>Installation</h3>
+            </a>
+            <p>Using npm:</p>
+            <pre><code class="language-sh"><span class="hl-0">npm install @auth0/auth0-angular</span>
+</code></pre>
+            <p>
+              We also have <code>ng-add</code> support, so the library can also
+              be installed using the Angular CLI:
+            </p>
+            <pre><code class="language-sh"><span class="hl-0">ng add @auth0/auth0-angular</span>
+</code></pre>
+
+            <a
+              href="#configure-auth0"
+              id="configure-auth0"
+              style="color: inherit; text-decoration: none"
+            >
+              <h3>Configure Auth0</h3>
+            </a>
+            <p>
+              Create a <strong>Single Page Application</strong> in the
+              <a href="https://manage.auth0.com/#/applications"
+                >Auth0 Dashboard</a
+              >.
+            </p>
+            <blockquote>
+              <p>
+                <strong>If you&#39;re using an existing application</strong>,
+                verify that you have configured the following settings in your
+                Single Page Application:
+              </p>
+              <ul>
+                <li>
+                  Click on the &quot;Settings&quot; tab of your
+                  application&#39;s page.
+                </li>
+                <li>
+                  Ensure that &quot;Token Endpoint Authentication Method&quot;
+                  under &quot;Application Properties&quot; is set to
+                  &quot;None&quot;
+                </li>
+                <li>
+                  Scroll down and click on the &quot;Show Advanced
+                  Settings&quot; link.
+                </li>
+                <li>
+                  Under &quot;Advanced Settings&quot;, click on the
+                  &quot;OAuth&quot; tab.
+                </li>
+                <li>
+                  Ensure that &quot;JsonWebToken Signature Algorithm&quot; is
+                  set to <code>RS256</code> and that &quot;OIDC Conformant&quot;
+                  is enabled.
+                </li>
+              </ul>
+            </blockquote>
+            <p>
+              Next, configure the following URLs for your application under the
+              &quot;Application URIs&quot; section of the &quot;Settings&quot;
+              page:
+            </p>
+            <ul>
+              <li>
+                <strong>Allowed Callback URLs</strong>:
+                <code>http://localhost:4200</code>
+              </li>
+              <li>
+                <strong>Allowed Logout URLs</strong>:
+                <code>http://localhost:4200</code>
+              </li>
+              <li>
+                <strong>Allowed Web Origins</strong>:
+                <code>http://localhost:4200</code>
+              </li>
+            </ul>
+            <blockquote>
+              <p>
+                These URLs should reflect the origins that your application is
+                running on. <strong>Allowed Callback URLs</strong> may also
+                include a path, depending on where you&#39;re handling the
+                callback.
+              </p>
+            </blockquote>
+            <p>
+              Take note of the <strong>Client ID</strong> and
+              <strong>Domain</strong> values under the &quot;Basic
+              Information&quot; section. You&#39;ll need these values in the
+              next step.
+            </p>
+
+            <a
+              href="#configure-the-sdk"
+              id="configure-the-sdk"
+              style="color: inherit; text-decoration: none"
+            >
+              <h3>Configure the SDK</h3>
+            </a>
+
+            <a
+              href="#static-configuration"
+              id="static-configuration"
+              style="color: inherit; text-decoration: none"
+            >
+              <h4>Static configuration</h4>
+            </a>
+            <p>
+              Install the SDK into your application by importing
+              <code>AuthModule.forRoot()</code> and configuring with your Auth0
+              domain and client id:
+            </p>
+            <pre><code class="language-ts"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">NgModule</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;@angular/core&#39;</span><span class="hl-0">;</span><br/><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">AuthModule</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;@auth0/auth0-angular&#39;</span><span class="hl-0">;</span><br/><br/><span class="hl-0">@</span><span class="hl-4">NgModule</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-5">// ...</span><br/><span class="hl-0">  </span><span class="hl-2">imports:</span><span class="hl-0"> [</span><br/><span class="hl-0">    </span><span class="hl-2">AuthModule</span><span class="hl-0">.</span><span class="hl-4">forRoot</span><span class="hl-0">({</span><br/><span class="hl-0">      </span><span class="hl-2">domain:</span><span class="hl-0"> </span><span class="hl-3">&#39;YOUR_AUTH0_DOMAIN&#39;</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-2">clientId:</span><span class="hl-0"> </span><span class="hl-3">&#39;YOUR_AUTH0_CLIENT_ID&#39;</span><span class="hl-0">,</span><br/><span class="hl-0">    }),</span><br/><span class="hl-0">  ],</span><br/><span class="hl-0">  </span><span class="hl-5">// ...</span><br/><span class="hl-0">})</span><br/><span class="hl-1">export</span><span class="hl-0"> </span><span class="hl-6">class</span><span class="hl-0"> </span><span class="hl-7">AppModule</span><span class="hl-0"> {}</span>
+</code></pre>
+
+            <a
+              href="#dynamic-configuration"
+              id="dynamic-configuration"
+              style="color: inherit; text-decoration: none"
+            >
+              <h4>Dynamic configuration</h4>
+            </a>
+            <p>
+              Instead of using <code>AuthModule.forRoot</code> to specify auth
+              configuration, you can provide a factory function using
+              <code>APP_INITIALIZER</code> to load your config from an external
+              source before the auth module is loaded, and provide your
+              configuration using <code>AuthClientConfig.set</code>.
+            </p>
+            <p>
+              The configuration will only be used initially when the SDK is
+              instantiated. Any changes made to the configuration at a later
+              moment in time will have no effect on the default options used
+              when calling the SDK&#39;s methods. This is also the reason why
+              the dynamic configuration should be set using an
+              <code>APP_INITIALIZER</code>, because doing so ensures the
+              configuration is available prior to instantiating the SDK.
+            </p>
+            <blockquote>
+              <p>
+                :information_source: Any request made through an instance of
+                <code>HttpClient</code> that got instantiated by Angular, will
+                use all of the configured interceptors, including our
+                <code>AuthHttpInterceptor</code>. Because the
+                <code>AuthHttpInterceptor</code> requires the existence of
+                configuration settings, the request for retrieving those dynamic
+                configuration settings should ensure it&#39;s not using any of
+                those interceptors. In Angular, this can be done by manually
+                instantiating <code>HttpClient</code> using an injected
+                <code>HttpBackend</code> instance.
+              </p>
+            </blockquote>
+            <pre><code class="language-js"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">AuthModule</span><span class="hl-0">, </span><span class="hl-2">AuthClientConfig</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;@auth0/auth0-angular&#39;</span><span class="hl-0">;</span><br/><br/><span class="hl-5">// Provide an initializer function that returns a Promise</span><br/><span class="hl-6">function</span><span class="hl-0"> </span><span class="hl-4">configInitializer</span><span class="hl-0">(</span><br/><span class="hl-0">  </span><span class="hl-2">handler</span><span class="hl-0">: </span><span class="hl-7">HttpBackend</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">config</span><span class="hl-0">: </span><span class="hl-7">AuthClientConfig</span><br/><span class="hl-0">) {</span><br/><span class="hl-0">  </span><span class="hl-1">return</span><span class="hl-0"> () </span><span class="hl-6">=&gt;</span><br/><span class="hl-0">    </span><span class="hl-6">new</span><span class="hl-0"> </span><span class="hl-4">HttpClient</span><span class="hl-0">(</span><span class="hl-2">handler</span><span class="hl-0">)</span><br/><span class="hl-0">      .</span><span class="hl-4">get</span><span class="hl-0">(</span><span class="hl-3">&#39;/config&#39;</span><span class="hl-0">)</span><br/><span class="hl-0">      .</span><span class="hl-4">toPromise</span><span class="hl-0">()</span><br/><span class="hl-0">      </span><span class="hl-5">// Set the config that was loaded asynchronously here</span><br/><span class="hl-0">      .</span><span class="hl-4">then</span><span class="hl-0">((</span><span class="hl-2">loadedConfig</span><span class="hl-0">: </span><span class="hl-7">any</span><span class="hl-0">) </span><span class="hl-6">=&gt;</span><span class="hl-0"> </span><span class="hl-2">config</span><span class="hl-0">.</span><span class="hl-4">set</span><span class="hl-0">(</span><span class="hl-2">loadedConfig</span><span class="hl-0">));</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-1">export</span><span class="hl-0"> </span><span class="hl-6">class</span><span class="hl-0"> </span><span class="hl-7">AppModule</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-5">// ...</span><br/><span class="hl-0">  </span><span class="hl-2">imports</span><span class="hl-0">: [</span><br/><span class="hl-0">    </span><span class="hl-7">HttpClientModule</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-7">AuthModule</span><span class="hl-0">.</span><span class="hl-7">forRoot</span><span class="hl-0">(), </span><span class="hl-5">// &lt;- don&#39;t pass any config here</span><br/><span class="hl-0">  ],</span><br/><span class="hl-0">  </span><span class="hl-2">providers</span><span class="hl-0">: [</span><br/><span class="hl-0">    {</span><br/><span class="hl-0">      </span><span class="hl-2">provide</span><span class="hl-0">: </span><span class="hl-7">APP_INITIALIZER</span><span class="hl-0">,</span><br/><span class="hl-0">      </span><span class="hl-2">useFactory</span><span class="hl-0">: </span><span class="hl-7">configInitializer</span><span class="hl-0">, </span><span class="hl-5">// &lt;- pass your initializer function here</span><br/><span class="hl-0">      </span><span class="hl-2">deps</span><span class="hl-0">: [</span><span class="hl-7">HttpBackend</span><span class="hl-0">, </span><span class="hl-7">AuthClientConfig</span><span class="hl-0">],</span><br/><span class="hl-0">      </span><span class="hl-2">multi</span><span class="hl-0">: </span><span class="hl-7">true</span><span class="hl-0">,</span><br/><span class="hl-0">    },</span><br/><span class="hl-0">  ],</span><br/><span class="hl-0">  </span><span class="hl-5">// ...</span><br/><span class="hl-0">}</span>
+</code></pre>
+
+            <a
+              href="#add-login-to-your-application"
+              id="add-login-to-your-application"
+              style="color: inherit; text-decoration: none"
+            >
+              <h3>Add login to your application</h3>
+            </a>
+            <p>
+              To log the user into the application, inject the
+              <code>AuthService</code> and call its
+              <code>loginWithRedirect</code> method.
+            </p>
+            <pre><code class="language-ts"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">Component</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;@angular/core&#39;</span><span class="hl-0">;</span><br/><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">AuthService</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;@auth0/auth0-angular&#39;</span><span class="hl-0">;</span><br/><br/><span class="hl-0">@</span><span class="hl-4">Component</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-2">selector:</span><span class="hl-0"> </span><span class="hl-3">&#39;app-root&#39;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">templateUrl:</span><span class="hl-0"> </span><span class="hl-3">&#39;./app.component.html&#39;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-2">styleUrls:</span><span class="hl-0"> [</span><span class="hl-3">&#39;./app.component.css&#39;</span><span class="hl-0">],</span><br/><span class="hl-0">})</span><br/><span class="hl-1">export</span><span class="hl-0"> </span><span class="hl-6">class</span><span class="hl-0"> </span><span class="hl-7">AppComponent</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-6">constructor</span><span class="hl-0">(</span><span class="hl-6">public</span><span class="hl-0"> </span><span class="hl-2">auth</span><span class="hl-0">: </span><span class="hl-7">AuthService</span><span class="hl-0">) {}</span><br/><br/><span class="hl-0">  </span><span class="hl-4">loginWithRedirect</span><span class="hl-0">() {</span><br/><span class="hl-0">    </span><span class="hl-6">this</span><span class="hl-0">.</span><span class="hl-2">auth</span><span class="hl-0">.</span><span class="hl-4">loginWithRedirect</span><span class="hl-0">();</span><br/><span class="hl-0">  }</span>
+</code></pre>
+            <p>
+              By default the application will ask Auth0 to redirect back to the
+              root URL of your application after authentication. This can be
+              configured by setting the
+              <a
+                href="https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html#redirecturi"
+                >redirectUri</a
+              >
+              option.
+            </p>
+            <p>
+              For more code samples on how to integrate the
+              <strong>auth0-angular</strong> SDK in your
+              <strong>Angular</strong> application, have a look at our
+              <a
+                href="https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md"
+                >examples</a
+              >.
+            </p>
+
+            <a
+              href="#api-reference"
+              id="api-reference"
+              style="color: inherit; text-decoration: none"
+            >
+              <h2>API reference</h2>
+            </a>
+            <p>Explore public API&#39;s available in auth0-angular.</p>
+            <ul>
+              <li>
+                <a
+                  href="https://auth0.github.io/auth0-angular/classes/auth_service.authservice.html"
+                  >AuthService</a
+                >
+                - service used to interact with the SDK.
+              </li>
+              <li>
+                <a
+                  href="https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html"
+                  >AuthConfig</a
+                >
+                - used to configure the SDK.
+              </li>
+            </ul>
+
+            <a
+              href="#feedback"
+              id="feedback"
+              style="color: inherit; text-decoration: none"
+            >
+              <h2>Feedback</h2>
+            </a>
+
+            <a
+              href="#contributing"
+              id="contributing"
+              style="color: inherit; text-decoration: none"
+            >
+              <h3>Contributing</h3>
+            </a>
+            <p>
+              We appreciate feedback and contribution to this repo! Before you
+              get started, please see the following:
+            </p>
+            <ul>
+              <li>
+                <a
+                  href="https://github.com/auth0/open-source-template/blob/master/GENERAL-CONTRIBUTING.md"
+                  >Auth0&#39;s general contribution guidelines</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/auth0/open-source-template/blob/master/CODE-OF-CONDUCT.md"
+                  >Auth0&#39;s code of conduct guidelines</a
+                >
+              </li>
+            </ul>
+
+            <a
+              href="#raise-an-issue"
+              id="raise-an-issue"
+              style="color: inherit; text-decoration: none"
+            >
+              <h3>Raise an issue</h3>
+            </a>
+            <p>
+              To provide feedback or report a bug, please
+              <a href="https://github.com/auth0/auth0-angular/issues"
+                >raise an issue on our issue tracker</a
+              >.
+            </p>
+
+            <a
+              href="#vulnerability-reporting"
+              id="vulnerability-reporting"
+              style="color: inherit; text-decoration: none"
+            >
+              <h3>Vulnerability Reporting</h3>
+            </a>
+            <p>
+              Please do not report security vulnerabilities on the public GitHub
+              issue tracker. The <a
+                href="https://auth0.com/responsible-disclosure-policy"
+                >Responsible Disclosure Program</a
+              > details the procedure for disclosing security issues.
+            </p>
+            <hr />
+            <p align="center">
+              <picture>
+                <source
+                  media="(prefers-color-scheme: light)"
+                  srcset="
+                    https://cdn.auth0.com/website/sdks/logos/auth0_light_mode.png
+                  "
+                  width="150"
+                />
+                <source
+                  media="(prefers-color-scheme: dark)"
+                  srcset="
+                    https://cdn.auth0.com/website/sdks/logos/auth0_dark_mode.png
+                  "
+                  width="150"
+                />
+                <img
+                  alt="Auth0 Logo"
+                  src="https://cdn.auth0.com/website/sdks/logos/auth0_light_mode.png"
+                  width="150"
+                />
+              </picture>
+            </p>
+            <p align="center">
+              Auth0 is an easy to implement, adaptable authentication and
+              authorization platform. To learn more checkout
+              <a href="https://auth0.com/why-auth0">Why Auth0?</a>
+            </p>
+            <p align="center">
+              This project is licensed under the MIT license. See the
+              <a
+                href="https://github.com/auth0/auth0-angular/tree/master/LICENSE"
+              >
+                LICENSE</a
+              >
+              file for more info.
+            </p>
+          </div>
+        </div>
+        <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+          <nav class="tsd-navigation primary">
+            <ul>
+              <li class="current"><a href="modules.html">Modules</a></li>
+              <li class="tsd-kind-module">
+                <a href="modules/abstract_navigator.html"
+                  >abstract-<wbr />navigator</a
+                >
+              </li>
+              <li class="tsd-kind-module">
+                <a href="modules/auth_client.html">auth.client</a>
+              </li>
+              <li class="tsd-kind-module">
+                <a href="modules/auth_config.html">auth.config</a>
+              </li>
+              <li class="tsd-kind-module">
+                <a href="modules/auth_guard.html">auth.guard</a>
+              </li>
+              <li class="tsd-kind-module">
+                <a href="modules/auth_interceptor.html">auth.interceptor</a>
+              </li>
+              <li class="tsd-kind-module">
+                <a href="modules/auth_module.html">auth.module</a>
+              </li>
+              <li class="tsd-kind-module">
+                <a href="modules/auth_service.html">auth.service</a>
+              </li>
+              <li class="tsd-kind-module">
+                <a href="modules/auth_state.html">auth.state</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <footer class="">
+      <div class="container">
+        <h2>Legend</h2>
+        <div class="tsd-legend-group">
+          <ul class="tsd-legend">
+            <li class="tsd-kind-variable">
+              <span class="tsd-kind-icon">Variable</span>
+            </li>
+            <li class="tsd-kind-function">
+              <span class="tsd-kind-icon">Function</span>
+            </li>
+            <li class="tsd-kind-type-alias">
+              <span class="tsd-kind-icon">Type alias</span>
+            </li>
+          </ul>
+          <ul class="tsd-legend">
+            <li class="tsd-kind-class">
+              <span class="tsd-kind-icon">Class</span>
+            </li>
+            <li class="tsd-kind-class tsd-has-type-parameter">
+              <span class="tsd-kind-icon">Class with type parameter</span>
+            </li>
+          </ul>
+          <ul class="tsd-legend">
+            <li class="tsd-kind-enum">
+              <span class="tsd-kind-icon">Enumeration</span>
+            </li>
+          </ul>
+          <ul class="tsd-legend">
+            <li class="tsd-kind-interface">
+              <span class="tsd-kind-icon">Interface</span>
+            </li>
+          </ul>
+        </div>
+        <h2>Settings</h2>
+        <p>
+          Theme
+          <select id="theme">
+            <option value="os">OS</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </p>
+      </div>
+    </footer>
+    <div class="overlay"></div>
+    <script src="assets/main.js"></script>
+  </body>
+</html>
