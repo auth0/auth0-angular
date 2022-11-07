@@ -53,19 +53,17 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           // outgoing request
           of(route).pipe(
             pluck('tokenOptions'),
-            concatMap<GetTokenSilentlyOptions, Observable<string>>(
-              (options) => {
-                return this.getAccessTokenSilently(options).pipe(
-                  catchError((err) => {
-                    if (this.allowAnonymous(route, err)) {
-                      return of('');
-                    }
+            concatMap<GetTokenSilentlyOptions, Observable<string>>((options) =>
+              this.getAccessTokenSilently(options).pipe(
+                catchError((err) => {
+                  if (this.allowAnonymous(route, err)) {
+                    return of('');
+                  }
 
-                    this.authState.setError(err);
-                    return throwError(err);
-                  })
-                );
-              }
+                  this.authState.setError(err);
+                  return throwError(err);
+                })
+              )
             ),
             switchMap((token: string) => {
               // Clone the request and attach the bearer token
@@ -92,6 +90,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   /**
    * Duplicate of AuthService.getAccessTokenSilently, but with a slightly different error handling.
    * Only used internally in the interceptor.
+   *
    * @param options The options for configuring the token fetch.
    */
   private getAccessTokenSilently(
@@ -109,6 +108,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
 
   /**
    * Strips the query and fragment from the given uri
+   *
    * @param uri The uri to remove the query and fragment from
    */
   private stripQueryFrom(uri: string): string {
@@ -126,6 +126,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   /**
    * Determines whether the specified route can have an access token attached to it, based on matching the HTTP request against
    * the interceptor route configuration.
+   *
    * @param route The route to test
    * @param request The HTTP request
    */
@@ -174,6 +175,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   /**
    * Tries to match a route from the SDK configuration to the HTTP request.
    * If a match is found, the route configuration is returned.
+   *
    * @param request The Http request
    * @param config HttpInterceptorConfig
    */
