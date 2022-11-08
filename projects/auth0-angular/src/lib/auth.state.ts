@@ -4,6 +4,7 @@ import {
   BehaviorSubject,
   defer,
   merge,
+  Observable,
   of,
   ReplaySubject,
   Subject,
@@ -17,7 +18,7 @@ import {
   shareReplay,
   switchMap,
 } from 'rxjs/operators';
-import { Auth0ClientService } from './auth.client';
+import { AuthClient } from './auth.client';
 
 /**
  * Tracks the Authentication State for the SDK
@@ -109,7 +110,11 @@ export class AuthState {
    */
   public readonly error$ = this.errorSubject$.asObservable();
 
-  constructor(@Inject(Auth0ClientService) private auth0Client: Auth0Client) {}
+  constructor(private authClient: AuthClient) {}
+
+  get auth0Client(): Auth0Client {
+    return this.authClient.get();
+  }
 
   /**
    * Update the isLoading state using the provided value

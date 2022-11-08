@@ -23,15 +23,15 @@ import {
   catchError,
   tap,
 } from 'rxjs/operators';
-import { Auth0Client, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
-import { Auth0ClientService } from './auth.client';
+import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
+import { AuthClient } from './auth.client';
 import { AuthState } from './auth.state';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
   constructor(
     private configFactory: AuthClientConfig,
-    @Inject(Auth0ClientService) private auth0Client: Auth0Client,
+    private authClient: AuthClient,
     private authState: AuthState
   ) {}
 
@@ -96,7 +96,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   private getAccessTokenSilently(
     options?: GetTokenSilentlyOptions
   ): Observable<string> {
-    return of(this.auth0Client).pipe(
+    return of(this.authClient.get()).pipe(
       concatMap((client) => client.getTokenSilently(options)),
       tap((token) => this.authState.setAccessToken(token)),
       catchError((error) => {

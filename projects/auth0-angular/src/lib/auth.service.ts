@@ -35,7 +35,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { Auth0ClientService } from './auth.client';
+import { Auth0ClientService, AuthClient } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { AuthClientConfig, AppState } from './auth.config';
 import { AuthState } from './auth.state';
@@ -82,7 +82,7 @@ export class AuthService<TAppState extends AppState = AppState>
   readonly appState$ = this.appStateSubject$.asObservable();
 
   constructor(
-    @Inject(Auth0ClientService) private auth0Client: Auth0Client,
+    private authClient: AuthClient,
     private configFactory: AuthClientConfig,
     private navigator: AbstractNavigator,
     private authState: AuthState
@@ -112,6 +112,10 @@ export class AuthService<TAppState extends AppState = AppState>
         takeUntil(this.ngUnsubscribe$)
       )
       .subscribe();
+  }
+
+  get auth0Client(): Auth0Client {
+    return this.authClient.get();
   }
 
   /**
