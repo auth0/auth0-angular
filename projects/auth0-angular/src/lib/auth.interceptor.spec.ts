@@ -17,6 +17,9 @@ import { throwError } from 'rxjs';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { Auth0ClientService } from './auth.client';
 import { AuthState } from './auth.state';
+import { AuthClient } from './auth.client';
+// See: https://github.com/jasmine/jasmine/issues/1414
+import * as client from './auth.client';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -26,20 +29,20 @@ describe('The Auth HTTP Interceptor', () => {
   let auth0Client: Auth0Client;
   let req: TestRequest;
   let authState: AuthState;
+  let authClient: AuthClient;
   const testData: Data = { message: 'Hello, world' };
 
   const assertAuthorizedApiCallTo = (
     url: string,
     done: () => void,
-    method = 'get'
+    method = 'get',
+    token = 'access-token'
   ) => {
     httpClient.request(method, url).subscribe(done);
     flush();
     req = httpTestingController.expectOne(url);
 
-    expect(req.request.headers.get('Authorization')).toBe(
-      'Bearer access-token'
-    );
+    expect(req.request.headers.get('Authorization')).toBe(`Bearer ${token}`);
   };
 
   const assertPassThruApiCallTo = (url: string, done: () => void) => {
@@ -124,6 +127,7 @@ describe('The Auth HTTP Interceptor', () => {
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     authState = TestBed.inject(AuthState);
+    authClient = TestBed.inject(AuthClient);
 
     spyOn(authState, 'setError').and.callThrough();
   });
@@ -320,4 +324,29 @@ describe('The Auth HTTP Interceptor', () => {
       assertPassThruApiCallTo('https://my-api.com/api/contact', done);
     }));
   });
+
+  it('should use the latest Auth0Client', fakeAsync((done: () => void) => {
+    const auth0Client2 = new Auth0Client({
+      domain: 'TEST_DOMAIN_2',
+      clientId: 'TEST_CLIENT_ID_2',
+    });
+
+    spyOn(auth0Client2, 'getTokenSilently').and.resolveTo('access-token2');
+    spyOn(client, 'createClient').and.returnValue(auth0Client2);
+
+    authClient.createClient({
+      domain: 'TEST_DOMAIN_2',
+      clientId: 'TEST_CLIENT_ID_2',
+    });
+
+    assertAuthorizedApiCallTo(
+      'https://my-api.com/api/photos',
+      done,
+      'GET',
+      'access-token2'
+    );
+
+    expect(auth0Client.getTokenSilently).not.toHaveBeenCalled();
+    expect(auth0Client2.getTokenSilently).toHaveBeenCalled();
+  }));
 });

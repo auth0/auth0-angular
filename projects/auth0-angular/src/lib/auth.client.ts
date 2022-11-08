@@ -3,7 +3,7 @@ import { Auth0Client } from '@auth0/auth0-spa-js';
 import { AuthClientConfig, AuthConfig } from './auth.config';
 import useragent from '../useragent';
 
-const createClient = (config: AuthConfig) =>
+export const createClient = (config: AuthConfig) =>
   new Auth0Client({
     ...config,
     auth0Client: {

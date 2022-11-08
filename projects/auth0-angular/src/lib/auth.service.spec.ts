@@ -1,6 +1,6 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
-import { Auth0ClientService } from './auth.client';
+import { Auth0ClientService, AuthClient } from './auth.client';
 import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import {
@@ -14,6 +14,8 @@ import {
 } from 'rxjs/operators';
 import { AuthConfig, AuthConfigService } from './auth.config';
 import { AuthState } from './auth.state';
+// See: https://github.com/jasmine/jasmine/issues/1414
+import * as client from './auth.client';
 
 /**
  * Wraps service.isLoading$ so that assertions can be made
@@ -30,6 +32,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let authConfig: Partial<AuthConfig>;
   let authState: AuthState;
+  let authClient: AuthClient;
 
   const createService = () => TestBed.inject(AuthService);
 
@@ -69,6 +72,7 @@ describe('AuthService', () => {
     TestBed.configureTestingModule(moduleSetup);
     service = createService();
     authState = TestBed.inject(AuthState);
+    authClient = TestBed.inject(AuthClient);
   });
 
   describe('constructor', () => {
@@ -597,6 +601,24 @@ describe('AuthService', () => {
     });
 
     service.logout(options);
+  });
+
+  it('should use the latest Auth0Client', () => {
+    const auth0Client2 = new Auth0Client({
+      domain: 'TEST_DOMAIN_2',
+      clientId: 'TEST_CLIENT_ID_2',
+    });
+
+    spyOn(client, 'createClient').and.returnValue(auth0Client2);
+
+    expect((service as any).auth0Client).toBe(auth0Client);
+
+    authClient.createClient({
+      domain: 'TEST_DOMAIN_2',
+      clientId: 'TEST_CLIENT_ID_2',
+    });
+
+    expect((service as any).auth0Client).toBe(auth0Client2);
   });
 
   describe('getAccessTokenSilently', () => {

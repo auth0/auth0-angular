@@ -114,7 +114,7 @@ export class AuthService<TAppState extends AppState = AppState>
       .subscribe();
   }
 
-  get auth0Client(): Auth0Client {
+  private get auth0Client(): Auth0Client {
     return this.authClient.get();
   }
 
