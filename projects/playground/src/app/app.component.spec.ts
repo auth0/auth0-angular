@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
+import { AuthService } from '../../../auth0-angular/src/lib/auth.service';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { expect } from '@jest/globals';
 
 describe('AppComponent', () => {
   let authMock: AuthService;
@@ -13,22 +15,18 @@ describe('AppComponent', () => {
   let ne: HTMLElement;
 
   beforeEach(() => {
-    authMock = jasmine.createSpyObj(
-      'AuthService',
-      {
-        loginWithRedirect: jasmine.createSpy().and.returnValue(null),
-        loginWithPopup: jasmine.createSpy().and.returnValue(null),
-        logout: jasmine.createSpy().and.returnValue(null),
-        getAccessTokenSilently: jasmine.createSpy().and.returnValue(null),
-        getAccessTokenWithPopup: jasmine.createSpy().and.returnValue(null),
-      },
-      {
-        user$: new BehaviorSubject(null),
-        isLoading$: new BehaviorSubject(true),
-        isAuthenticated$: new BehaviorSubject(false),
-        appState$: new ReplaySubject(),
-      }
-    ) as any;
+    authMock = {
+      loginWithRedirect: jest.fn().mockReturnValue(null),
+      loginWithPopup: jest.fn().mockReturnValue(null),
+      logout: jest.fn().mockReturnValue(null),
+      getAccessTokenSilently: jest.fn().mockReturnValue(null),
+      getAccessTokenWithPopup: jest.fn().mockReturnValue(null),
+
+      user$: new BehaviorSubject(null),
+      isLoading$: new BehaviorSubject(true),
+      isAuthenticated$: new BehaviorSubject(false),
+      appState$: new ReplaySubject(),
+    } as any;
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ReactiveFormsModule, HttpClientModule],
@@ -110,8 +108,8 @@ describe('AppComponent', () => {
 
     it('should logout with default options', () => {
       const form = component.logoutOptionsForm.controls;
-      form.localOnly.setValue(false);
-      form.federated.setValue(false);
+      form['localOnly'].setValue(false);
+      form['federated'].setValue(false);
 
       const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
@@ -121,15 +119,15 @@ describe('AppComponent', () => {
         onRedirect: undefined,
         logoutParams: {
           federated: false,
-          returnTo: 'http://localhost:9876',
+          returnTo: 'http://localhost',
         },
       });
     });
 
     it('should logout with federated', () => {
       const form = component.logoutOptionsForm.controls;
-      form.localOnly.setValue(false);
-      form.federated.setValue(true);
+      form['localOnly'].setValue(false);
+      form['federated'].setValue(true);
 
       const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
@@ -139,26 +137,26 @@ describe('AppComponent', () => {
         onRedirect: undefined,
         logoutParams: {
           federated: true,
-          returnTo: 'http://localhost:9876',
+          returnTo: 'http://localhost',
         },
       });
     });
 
     it('should logout with localOnly', () => {
       const form = component.logoutOptionsForm.controls;
-      form.localOnly.setValue(true);
-      form.federated.setValue(false);
+      form['localOnly'].setValue(true);
+      form['federated'].setValue(false);
 
       const btnLogout = ne.querySelector('#logout') as HTMLButtonElement;
       btnLogout.click();
       fixture.detectChanges();
 
       expect(authMock.logout).toHaveBeenCalledWith(
-        jasmine.objectContaining({
-          onRedirect: jasmine.any(Function),
+        expect.objectContaining({
+          onRedirect: expect.any(Function),
           logoutParams: {
             federated: false,
-            returnTo: 'http://localhost:9876',
+            returnTo: 'http://localhost',
           },
         })
       );
@@ -190,8 +188,8 @@ describe('AppComponent', () => {
         'Access Token'
       );
       const form = component.accessTokenOptionsForm.controls;
-      form.usePopup.setValue(false);
-      (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+      form['usePopup'].setValue(false);
+      ((authMock.getAccessTokenSilently as unknown) as jest.SpyInstance).mockReturnValue(
         of('access token silently')
       );
 
@@ -202,7 +200,6 @@ describe('AppComponent', () => {
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
         cacheMode: 'on',
       });
-      console.log(divToken.querySelector('textarea'));
       const tokenContent = divToken.querySelector('textarea')?.textContent;
       expect(tokenContent).toEqual('access token silently');
     });
@@ -213,9 +210,9 @@ describe('AppComponent', () => {
         'Access Token'
       );
       const form = component.accessTokenOptionsForm.controls;
-      form.usePopup.setValue(false);
-      form.ignoreCache.setValue(false);
-      (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+      form['usePopup'].setValue(false);
+      form['ignoreCache'].setValue(false);
+      ((authMock.getAccessTokenSilently as unknown) as jest.SpyInstance).mockReturnValue(
         of('access token silently')
       );
 
@@ -226,7 +223,6 @@ describe('AppComponent', () => {
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
         cacheMode: 'on',
       });
-      console.log(divToken.querySelector('textarea'));
       const tokenContent = divToken.querySelector('textarea')?.textContent;
       expect(tokenContent).toEqual('access token silently');
     });
@@ -237,9 +233,9 @@ describe('AppComponent', () => {
         'Access Token'
       );
       const form = component.accessTokenOptionsForm.controls;
-      form.usePopup.setValue(false);
-      form.ignoreCache.setValue(true);
-      (authMock.getAccessTokenSilently as jasmine.Spy).and.returnValue(
+      form['usePopup'].setValue(false);
+      form['ignoreCache'].setValue(true);
+      ((authMock.getAccessTokenSilently as unknown) as jest.SpyInstance).mockReturnValue(
         of('access token silently')
       );
 
@@ -250,7 +246,6 @@ describe('AppComponent', () => {
       expect(authMock.getAccessTokenSilently).toHaveBeenCalledWith({
         cacheMode: 'off',
       });
-      console.log(divToken.querySelector('textarea'));
       const tokenContent = divToken.querySelector('textarea')?.textContent;
       expect(tokenContent).toEqual('access token silently');
     });
@@ -261,8 +256,8 @@ describe('AppComponent', () => {
         'Access Token'
       );
       const form = component.accessTokenOptionsForm.controls;
-      form.usePopup.setValue(true);
-      (authMock.getAccessTokenWithPopup as jasmine.Spy).and.returnValue(
+      form['usePopup'].setValue(true);
+      ((authMock.getAccessTokenWithPopup as unknown) as jest.SpyInstance).mockReturnValue(
         of('access token popup')
       );
 
@@ -304,8 +299,8 @@ describe('AppComponent', () => {
 
       const wrapLogin = ne.querySelector('.login-wrapper');
       const form = component.loginOptionsForm.controls;
-      form.usePopup.setValue(false);
-      form.appStateInput.setValue(appStateValue);
+      form['usePopup'].setValue(false);
+      form['appStateInput'].setValue(appStateValue);
 
       const btnRefresh = wrapLogin?.querySelector('button');
       btnRefresh?.click();
@@ -322,7 +317,7 @@ describe('AppComponent', () => {
     it('should login with popup', () => {
       const wrapLogin = ne.querySelector('.login-wrapper');
       const form = component.loginOptionsForm.controls;
-      form.usePopup.setValue(true);
+      form['usePopup'].setValue(true);
 
       const btnRefresh = wrapLogin?.querySelector('button');
       btnRefresh?.click();

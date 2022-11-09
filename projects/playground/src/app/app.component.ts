@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
+import { AuthService } from '../../../auth0-angular/src/lib/auth.service';
 import { iif } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { LogoutOptions } from '@auth0/auth0-spa-js';
@@ -46,7 +47,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.appState$.subscribe((appState) => {
-      this.appStateResult = appState.myValue;
+      this.appStateResult = appState['myValue'];
     });
   }
 
