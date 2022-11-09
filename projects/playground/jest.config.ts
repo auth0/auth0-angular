@@ -9,7 +9,6 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/playground',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
@@ -20,4 +19,6 @@ export default {
     'jest-preset-angular/build/serializers/html-comment',
   ],
   testPathIgnorePatterns: ['<rootDir>/e2e'],
+  collectCoverage: false,
+  coveragePathIgnorePatterns: ['<rootDir>/src'],
 };

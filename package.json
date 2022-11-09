@@ -14,7 +14,7 @@
     "prepublishOnly": "node scripts/prepublish-stopper.js",
     "postbuild": "npm run docs",
     "test": "jest",
-    "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --code-coverage",
+    "test:ci": "jest --coverage --silent",
     "e2e": "ng e2e",
     "e2e:headless": "ng e2e --no-watch --headless",
     "e2e:ci": "concurrently --raw --kill-others --success first npm:start:local:oidc npm:e2e:headless",
