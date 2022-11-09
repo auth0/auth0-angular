@@ -1,4 +1,4 @@
-import { Injectable, Inject, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import {
   Auth0Client,
@@ -35,7 +35,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { Auth0ClientService, AuthClient } from './auth.client';
+import { AuthClient } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { AuthClientConfig, AppState } from './auth.config';
 import { AuthState } from './auth.state';
