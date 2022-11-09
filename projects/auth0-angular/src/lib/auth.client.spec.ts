@@ -1,6 +1,17 @@
 import { AuthConfig, AuthClientConfig } from './auth.config';
 import { Auth0ClientFactory } from './auth.client';
 
+const mockWindow = global as any;
+
+mockWindow.crypto = {
+  subtle: {
+    digest: () => 'foo',
+  },
+  getRandomValues() {
+    return '123';
+  },
+};
+
 describe('Auth0ClientFactory', () => {
   describe('createClient', () => {
     it('creates a new instance of Auth0Client', () => {

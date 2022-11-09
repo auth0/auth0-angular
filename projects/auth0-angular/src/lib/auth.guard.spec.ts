@@ -1,5 +1,6 @@
 import { of } from 'rxjs';
 import { AuthGuard } from './auth.guard';
+import { expect } from '@jest/globals';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -10,10 +11,10 @@ describe('AuthGuard', () => {
     it('should return true for a logged in user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(true),
-        loginWithRedirect: jasmine.createSpy('loginWithRedirect'),
+        loginWithRedirect: jest.fn(),
       };
       guard = new AuthGuard(authServiceMock);
-      const listener = jasmine.createSpy();
+      const listener = jest.fn();
       guard.canActivate(routeMock, routeStateMock).subscribe(listener);
       expect(authServiceMock.loginWithRedirect).not.toHaveBeenCalled();
       expect(listener).toHaveBeenCalledWith(true);
@@ -22,7 +23,7 @@ describe('AuthGuard', () => {
     it('should redirect a logged out user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(false),
-        loginWithRedirect: jasmine.createSpy('loginWithRedirect'),
+        loginWithRedirect: jest.fn(),
       };
       guard = new AuthGuard(authServiceMock);
       guard.canActivate(routeMock, routeStateMock).subscribe();
@@ -36,10 +37,10 @@ describe('AuthGuard', () => {
     it('should return true for a logged in user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(true),
-        loginWithRedirect: jasmine.createSpy('loginWithRedirect'),
+        loginWithRedirect: jest.fn(),
       };
       guard = new AuthGuard(authServiceMock);
-      const listener = jasmine.createSpy();
+      const listener = jest.fn();
       guard.canActivateChild(routeMock, routeStateMock).subscribe(listener);
       expect(authServiceMock.loginWithRedirect).not.toHaveBeenCalled();
       expect(listener).toHaveBeenCalledWith(true);
@@ -48,7 +49,7 @@ describe('AuthGuard', () => {
     it('should redirect a logged out user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(false),
-        loginWithRedirect: jasmine.createSpy('loginWithRedirect'),
+        loginWithRedirect: jest.fn(),
       };
       guard = new AuthGuard(authServiceMock);
       guard.canActivateChild(routeMock, routeStateMock).subscribe();
@@ -64,7 +65,7 @@ describe('AuthGuard', () => {
         isAuthenticated$: of(true),
       };
       guard = new AuthGuard(authServiceMock);
-      const listener = jasmine.createSpy();
+      const listener = jest.fn();
       guard.canLoad(routeMock, []).subscribe(listener);
       expect(listener).toHaveBeenCalledWith(true);
     });
@@ -74,7 +75,7 @@ describe('AuthGuard', () => {
         isAuthenticated$: of(false),
       };
       guard = new AuthGuard(authServiceMock);
-      const listener = jasmine.createSpy();
+      const listener = jest.fn();
       guard.canLoad(routeMock, []).subscribe(listener);
       expect(listener).toHaveBeenCalledWith(false);
     });
