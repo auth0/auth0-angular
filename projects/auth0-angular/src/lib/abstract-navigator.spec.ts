@@ -19,7 +19,7 @@ describe('RouteNavigator', () => {
       navigator = TestBed.inject(AbstractNavigator);
 
       const location = TestBed.inject(Location);
-      replaceStateSpy = spyOn(location, 'replaceState');
+      replaceStateSpy = jest.spyOn(location, 'replaceState');
     });
 
     it('should be created', () => {
@@ -49,7 +49,7 @@ describe('RouteNavigator', () => {
       navigator = TestBed.inject(AbstractNavigator);
 
       const location = TestBed.inject(Location);
-      replaceStateSpy = spyOn(location, 'replaceState');
+      replaceStateSpy = jest.spyOn(location, 'replaceState');
     });
 
     it('should use the router if available', fakeAsync(() => {
