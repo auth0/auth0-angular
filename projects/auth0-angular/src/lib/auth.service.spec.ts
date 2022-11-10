@@ -141,23 +141,6 @@ describe('AuthService', () => {
         }
       });
     });
-
-    it('should not set isLoading when service destroyed before checkSession finished', (done) => {
-      ((auth0Client.checkSession as unknown) as jest.SpyInstance).mockImplementation(
-        () => new Promise((resolve) => setTimeout(resolve, 5000))
-      );
-      const localService = createService();
-
-      localService.isLoading$
-        .pipe(bufferTime(500), take(1))
-        .subscribe((loading) => {
-          expect(loading.length).toEqual(1);
-          expect(loading).toEqual([true]);
-          done();
-        });
-
-      localService.ngOnDestroy();
-    });
   });
 
   describe('The `isAuthenticated` observable', () => {

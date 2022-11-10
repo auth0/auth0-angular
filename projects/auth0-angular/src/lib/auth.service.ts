@@ -1,4 +1,4 @@
-import { Injectable, Inject, OnDestroy } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 
 import {
   Auth0Client,
@@ -29,13 +29,10 @@ import {
   concatMap,
   tap,
   map,
-  takeUntil,
   catchError,
-  switchMap,
   withLatestFrom,
-  take,
-  ignoreElements,
-  exhaustMap,
+  mergeMap,
+  first,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -46,12 +43,9 @@ import { AuthState } from './auth.state';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService<TAppState extends AppState = AppState>
-  implements OnDestroy {
+export class AuthService<TAppState extends AppState = AppState> {
   private appStateSubject$ = new ReplaySubject<TAppState>(1);
 
-  // https://stackoverflow.com/a/41177163
-  private ngUnsubscribe$ = new Subject<void>();
   /**
    * Emits boolean values indicating the loading state of the SDK.
    */
@@ -101,8 +95,9 @@ export class AuthService<TAppState extends AppState = AppState>
 
     this.init$
       .pipe(
-        concatMap(() => this.shouldHandleCallback()),
-        exhaustMap((isCallback) =>
+        first(),
+        mergeMap(() => this.shouldHandleCallback()),
+        mergeMap((isCallback) =>
           checkSessionOrCallback$(isCallback).pipe(
             catchError((error) => {
               const config = this.configFactory.get();
@@ -115,7 +110,6 @@ export class AuthService<TAppState extends AppState = AppState>
         tap(() => {
           this.authState.setIsLoading(false);
         }),
-        takeUntil(this.ngUnsubscribe$)
       )
       .subscribe();
   }
@@ -126,15 +120,6 @@ export class AuthService<TAppState extends AppState = AppState>
    */
   init() {
     this.init$.next();
-  }
-
-  /**
-   * Called when the service is destroyed
-   */
-  ngOnDestroy(): void {
-    // https://stackoverflow.com/a/41177163
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -408,8 +393,8 @@ export class AuthService<TAppState extends AppState = AppState>
 
   private ensureIsLoaded<T>(cb: () => Observable<T>): Observable<T> {
     return this.isLoading$.pipe(
-      take(1),
-      switchMap((isLoading) =>
+      first(),
+      mergeMap((isLoading) =>
         iif(
           () => isLoading,
           throwError(
