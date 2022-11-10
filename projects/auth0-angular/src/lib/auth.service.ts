@@ -34,6 +34,8 @@ import {
   switchMap,
   withLatestFrom,
   take,
+  ignoreElements,
+  exhaustMap,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -82,18 +84,14 @@ export class AuthService<TAppState extends AppState = AppState>
    */
   readonly appState$ = this.appStateSubject$.asObservable();
 
+  private init$ = new Subject();
+
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     private configFactory: AuthClientConfig,
     private navigator: AbstractNavigator,
     private authState: AuthState
-  ) {}
-
-  /**
-   * Initialize the SDK.
-   * Call this method before interacting with any other method on the SDK.
-   */
-  init() {
+  ) {
     const checkSessionOrCallback$ = (isCallback: boolean) =>
       iif(
         () => isCallback,
@@ -101,9 +99,10 @@ export class AuthService<TAppState extends AppState = AppState>
         defer(() => this.auth0Client.checkSession())
       );
 
-    this.shouldHandleCallback()
+    this.init$
       .pipe(
-        switchMap((isCallback) =>
+        concatMap(() => this.shouldHandleCallback()),
+        exhaustMap((isCallback) =>
           checkSessionOrCallback$(isCallback).pipe(
             catchError((error) => {
               const config = this.configFactory.get();
@@ -119,6 +118,14 @@ export class AuthService<TAppState extends AppState = AppState>
         takeUntil(this.ngUnsubscribe$)
       )
       .subscribe();
+  }
+
+  /**
+   * Initialize the SDK.
+   * Call this method before interacting with any other method on the SDK.
+   */
+  init() {
+    this.init$.next();
   }
 
   /**
@@ -286,19 +293,21 @@ export class AuthService<TAppState extends AppState = AppState>
   getAccessTokenWithPopup(
     options?: GetTokenWithPopupOptions
   ): Observable<string | undefined> {
-    return this.ensureIsLoaded(() => of(this.auth0Client).pipe(
-      concatMap((client) => client.getTokenWithPopup(options)),
-      tap((token) => {
-        if (token) {
-          this.authState.setAccessToken(token);
-        }
-      }),
-      catchError((error) => {
-        this.authState.setError(error);
-        this.authState.refresh();
-        return throwError(error);
-      })
-    ));
+    return this.ensureIsLoaded(() =>
+      of(this.auth0Client).pipe(
+        concatMap((client) => client.getTokenWithPopup(options)),
+        tap((token) => {
+          if (token) {
+            this.authState.setAccessToken(token);
+          }
+        }),
+        catchError((error) => {
+          this.authState.setError(error);
+          this.authState.refresh();
+          return throwError(error);
+        })
+      )
+    );
   }
 
   /**
@@ -320,7 +329,9 @@ export class AuthService<TAppState extends AppState = AppState>
    * @typeparam TUser The type to return, has to extend {@link User}.
    */
   getUser<TUser extends User>(): Observable<TUser | undefined> {
-    return this.ensureIsLoaded(() => defer(() => this.auth0Client.getUser<TUser>()));
+    return this.ensureIsLoaded(() =>
+      defer(() => this.auth0Client.getUser<TUser>())
+    );
   }
 
   /**
@@ -339,7 +350,9 @@ export class AuthService<TAppState extends AppState = AppState>
    * The returned observable will emit once and then complete.
    */
   getIdTokenClaims(): Observable<IdToken | undefined> {
-    return this.ensureIsLoaded(() => defer(() => this.auth0Client.getIdTokenClaims()));
+    return this.ensureIsLoaded(() =>
+      defer(() => this.auth0Client.getIdTokenClaims())
+    );
   }
 
   /**
