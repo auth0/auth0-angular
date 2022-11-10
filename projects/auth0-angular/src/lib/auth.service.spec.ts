@@ -46,7 +46,24 @@ describe('AuthService', () => {
   let authConfig: Partial<AuthConfig>;
   let authState: AuthState;
 
-  const createService = () => TestBed.inject(AuthService);
+  const createService = () => {
+    const svc = TestBed.inject(AuthService);
+    svc.init();
+    return svc;
+  };
+
+  const createServiceAndWaitForLoaded = async () => {
+    const svc = TestBed.inject(AuthService);
+    svc.init();
+
+    await svc.isLoading$
+      .pipe(
+        filter((x) => !x),
+        take(1)
+      )
+      .toPromise();
+    return svc;
+  };
 
   beforeEach(() => {
     authConfig = {};
@@ -131,11 +148,13 @@ describe('AuthService', () => {
       );
       const localService = createService();
 
-      localService.isLoading$.pipe(bufferTime(500)).subscribe((loading) => {
-        expect(loading.length).toEqual(1);
-        expect(loading).toEqual([true]);
-        done();
-      });
+      localService.isLoading$
+        .pipe(bufferTime(500), take(1))
+        .subscribe((loading) => {
+          expect(loading.length).toEqual(1);
+          expect(loading).toEqual([true]);
+          done();
+        });
 
       localService.ngOnDestroy();
     });
@@ -322,23 +341,26 @@ describe('AuthService', () => {
       const service = createService();
       service.user$.subscribe(() => userEmissions++);
 
-      service
-        .getAccessTokenSilently()
+      loaded(service)
         .pipe(
-          tap(() =>
-            ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-              'AT2'
+          mergeMap(() =>
+            service.getAccessTokenSilently().pipe(
+              tap(() =>
+                ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+                  'AT2'
+                )
+              ),
+              mergeMap(() => service.getAccessTokenSilently()),
+              tap(() =>
+                ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+                  'AT3'
+                )
+              ),
+              mergeMap(() => service.getAccessTokenSilently()),
+              // Allow user emissions to come through
+              delay(0)
             )
-          ),
-          mergeMap(() => service.getAccessTokenSilently()),
-          tap(() =>
-            ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-              'AT3'
-            )
-          ),
-          mergeMap(() => service.getAccessTokenSilently()),
-          // Allow user emissions to come through
-          delay(0)
+          )
         )
         .subscribe(() => {
           expect(userEmissions).toBe(1);
@@ -542,6 +564,7 @@ describe('AuthService', () => {
       ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
         undefined
       );
+      window.location.search = '?code=123&state=456';
 
       const localService = createService();
 
@@ -636,7 +659,7 @@ describe('AuthService', () => {
   });
 
   it('should call `loginWithRedirect`', async () => {
-    const service = createService();
+    const service = await createServiceAndWaitForLoaded();
     await service.loginWithRedirect().toPromise();
     expect(auth0Client.loginWithRedirect).toHaveBeenCalled();
   });
@@ -646,9 +669,19 @@ describe('AuthService', () => {
       authorizationParams: { redirect_uri: 'http://localhost:3001' },
     };
 
-    const service = createService();
+    const service = await createServiceAndWaitForLoaded();
     await service.loginWithRedirect(options).toPromise();
     expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
+  });
+
+  it('calling `loginWithRedirect` should throw when init isnt called', () => {
+    const svc = TestBed.inject(AuthService);
+
+    expect.assertions(1);
+
+    svc.loginWithRedirect().subscribe({
+      error: (e) => expect(e).toBeDefined(),
+    });
   });
 
   it('should call `loginWithPopup`', (done) => {
@@ -659,7 +692,7 @@ describe('AuthService', () => {
         true
       );
 
-      service.loginWithPopup();
+      service.loginWithPopup().subscribe();
 
       service.isAuthenticated$.subscribe((authenticated) => {
         if (authenticated) {
@@ -684,7 +717,7 @@ describe('AuthService', () => {
         true
       );
 
-      service.loginWithPopup(options, config);
+      service.loginWithPopup(options, config).subscribe();
 
       service.isAuthenticated$.subscribe((authenticated) => {
         if (authenticated) {
@@ -698,15 +731,25 @@ describe('AuthService', () => {
     });
   });
 
-  it('should call `logout`', () => {
-    const service = createService();
+  it('calling `loginWithPopup` should throw when init isnt called', () => {
+    const svc = TestBed.inject(AuthService);
+
+    expect.assertions(1);
+
+    svc.loginWithPopup().subscribe({
+      error: (e) => expect(e).toBeDefined(),
+    });
+  });
+
+  it('should call `logout`', async () => {
+    const service = await createServiceAndWaitForLoaded();
     service.logout();
     expect(auth0Client.logout).toHaveBeenCalled();
   });
 
-  it('should call `logout` with options', () => {
+  it('should call `logout` with options', async () => {
     const options = { logoutParams: { returnTo: 'http://localhost' } };
-    const service = createService();
+    const service = await createServiceAndWaitForLoaded();
     service.logout(options);
     expect(auth0Client.logout).toHaveBeenCalledWith(options);
   });
@@ -737,13 +780,23 @@ describe('AuthService', () => {
     });
   });
 
+  it('calling `logout` should throw when init isnt called', () => {
+    const svc = TestBed.inject(AuthService);
+
+    expect.assertions(1);
+
+    svc.logout().catch((e) => expect(e).toBeDefined());
+  });
+
   describe('getAccessTokenSilently', () => {
     it('should call the underlying SDK', (done) => {
       const service = createService();
-      service.getAccessTokenSilently().subscribe((token) => {
-        expect(auth0Client.getTokenSilently).toHaveBeenCalled();
-        done();
-      });
+      loaded(service)
+        .pipe(mergeMap(() => service.getAccessTokenSilently()))
+        .subscribe((token) => {
+          expect(auth0Client.getTokenSilently).toHaveBeenCalled();
+          done();
+        });
     });
 
     it('should call the underlying SDK and pass along the options', (done) => {
@@ -751,10 +804,12 @@ describe('AuthService', () => {
       const options = {};
       const service = createService();
 
-      service.getAccessTokenSilently(options).subscribe((token) => {
-        expect(auth0Client.getTokenSilently).toHaveBeenCalledWith(options);
-        done();
-      });
+      loaded(service)
+        .pipe(mergeMap(() => service.getAccessTokenSilently(options)))
+        .subscribe((token) => {
+          expect(auth0Client.getTokenSilently).toHaveBeenCalledWith(options);
+          done();
+        });
     });
 
     it('should get the full token response when detailedResponse is true', (done) => {
@@ -768,8 +823,12 @@ describe('AuthService', () => {
       );
 
       const service = createService();
-      service
-        .getAccessTokenSilently({ detailedResponse: true })
+      loaded(service)
+        .pipe(
+          mergeMap(() =>
+            service.getAccessTokenSilently({ detailedResponse: true })
+          )
+        )
         .subscribe((token) => {
           expect(token).toEqual(tokenResponse);
           done();
@@ -784,9 +843,11 @@ describe('AuthService', () => {
       );
       const service = createService();
 
-      service.getAccessTokenSilently().subscribe({
-        error: () => {},
-      });
+      loaded(service)
+        .pipe(mergeMap(() => service.getAccessTokenSilently()))
+        .subscribe({
+          error: () => {},
+        });
 
       service.error$.subscribe((err: Error) => {
         expect(err).toBe(errorObj);
@@ -802,22 +863,36 @@ describe('AuthService', () => {
       );
       const service = createService();
 
-      service.getAccessTokenSilently().subscribe({
-        error: (err: Error) => {
-          expect(err).toBe(errorObj);
-          done();
-        },
-      });
+      loaded(service)
+        .pipe(mergeMap(() => service.getAccessTokenSilently()))
+        .subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+    });
+
+    it('should throw when init isnt called', () => {
+      const svc = TestBed.inject(AuthService);
+
+      expect.assertions(1);
+
+      svc
+        .getAccessTokenSilently()
+        .subscribe({ error: (e) => expect(e).toBeDefined() });
     });
   });
 
   describe('getAccessTokenWithPopup', () => {
     it('should call the underlying SDK', (done) => {
       const service = createService();
-      service.getAccessTokenWithPopup().subscribe((token) => {
-        expect(auth0Client.getTokenWithPopup).toHaveBeenCalled();
-        done();
-      });
+      loaded(service)
+        .pipe(mergeMap(() => service.getAccessTokenWithPopup()))
+        .subscribe((token) => {
+          expect(auth0Client.getTokenWithPopup).toHaveBeenCalled();
+          done();
+        });
     });
 
     it('should call the underlying SDK and pass along the options', (done) => {
@@ -825,10 +900,12 @@ describe('AuthService', () => {
       const options = {};
 
       const service = createService();
-      service.getAccessTokenWithPopup(options).subscribe((token) => {
-        expect(auth0Client.getTokenWithPopup).toHaveBeenCalledWith(options);
-        done();
-      });
+      loaded(service)
+        .pipe(mergeMap(() => service.getAccessTokenWithPopup(options)))
+        .subscribe((token) => {
+          expect(auth0Client.getTokenWithPopup).toHaveBeenCalledWith(options);
+          done();
+        });
     });
 
     it('should record errors in the error$ observable', (done) => {
@@ -839,9 +916,11 @@ describe('AuthService', () => {
       );
 
       const service = createService();
-      service.getAccessTokenWithPopup().subscribe({
-        error: () => {},
-      });
+      loaded(service)
+        .pipe(mergeMap(() => service.getAccessTokenWithPopup()))
+        .subscribe({
+          error: () => {},
+        });
 
       service.error$.subscribe((err: Error) => {
         expect(err).toBe(errorObj);
@@ -857,18 +936,30 @@ describe('AuthService', () => {
       );
 
       const service = createService();
-      service.getAccessTokenWithPopup().subscribe({
-        error: (err: Error) => {
-          expect(err).toBe(errorObj);
-          done();
-        },
-      });
+      loaded(service)
+        .pipe(mergeMap(() => service.getAccessTokenWithPopup()))
+        .subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+    });
+
+    it('should throw when init isnt called', () => {
+      const svc = TestBed.inject(AuthService);
+
+      expect.assertions(1);
+
+      svc
+        .getAccessTokenWithPopup()
+        .subscribe({ error: (e) => expect(e).toBeDefined() });
     });
   });
 
   describe('getUser', () => {
     it('should call `getUser`', async () => {
-      const service = createService();
+      const service = await createServiceAndWaitForLoaded();
       await service.getUser().toPromise();
       expect(auth0Client.getUser).toHaveBeenCalled();
     });
@@ -878,16 +969,26 @@ describe('AuthService', () => {
       ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
         expected
       );
-      const service = createService();
+      const service = await createServiceAndWaitForLoaded();
 
       const user = await service.getUser().toPromise();
       expect(user).toBe(expected);
+    });
+
+    it('should throw when init isnt called', () => {
+      const svc = TestBed.inject(AuthService);
+
+      expect.assertions(1);
+
+      svc
+        .getUser()
+        .subscribe({ error: (e) => expect(e).toBeDefined() });
     });
   });
 
   describe('getIdTokenClaims', () => {
     it('should call `getIdTokenClaims`', async () => {
-      const service = createService();
+      const service = await createServiceAndWaitForLoaded();
       await service.getIdTokenClaims().toPromise();
       expect(auth0Client.getIdTokenClaims).toHaveBeenCalled();
     });
@@ -897,10 +998,20 @@ describe('AuthService', () => {
       ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
         expected
       );
-      const service = createService();
+      const service = await createServiceAndWaitForLoaded();
 
       const claims = await service.getIdTokenClaims().toPromise();
       expect(claims).toBe(expected);
+    });
+
+    it('should throw when init isnt called', () => {
+      const svc = TestBed.inject(AuthService);
+
+      expect.assertions(1);
+
+      svc
+        .getIdTokenClaims()
+        .subscribe({ error: (e) => expect(e).toBeDefined() });
     });
   });
 

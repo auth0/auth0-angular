@@ -22,6 +22,8 @@ describe('AppComponent', () => {
       getAccessTokenSilently: jest.fn().mockReturnValue(null),
       getAccessTokenWithPopup: jest.fn().mockReturnValue(null),
 
+      init: jest.fn(),
+
       user$: new BehaviorSubject(null),
       isLoading$: new BehaviorSubject(true),
       isAuthenticated$: new BehaviorSubject(false),

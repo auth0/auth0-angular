@@ -33,6 +33,7 @@ import {
   catchError,
   switchMap,
   withLatestFrom,
+  take,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -86,7 +87,13 @@ export class AuthService<TAppState extends AppState = AppState>
     private configFactory: AuthClientConfig,
     private navigator: AbstractNavigator,
     private authState: AuthState
-  ) {
+  ) {}
+
+  /**
+   * Initialize the SDK.
+   * Call this method before interacting with any other method on the SDK.
+   */
+  init() {
     const checkSessionOrCallback$ = (isCallback: boolean) =>
       iif(
         () => isCallback,
@@ -137,7 +144,9 @@ export class AuthService<TAppState extends AppState = AppState>
   loginWithRedirect(
     options?: RedirectLoginOptions<TAppState>
   ): Observable<void> {
-    return from(this.auth0Client.loginWithRedirect(options));
+    return this.ensureIsLoaded(() =>
+      from(this.auth0Client.loginWithRedirect(options))
+    );
   }
 
   /**
@@ -161,10 +170,12 @@ export class AuthService<TAppState extends AppState = AppState>
     options?: PopupLoginOptions,
     config?: PopupConfigOptions
   ): Observable<void> {
-    return from(
-      this.auth0Client.loginWithPopup(options, config).then(() => {
-        this.authState.refresh();
-      })
+    return this.ensureIsLoaded(() =>
+      from(
+        this.auth0Client.loginWithPopup(options, config).then(() => {
+          this.authState.refresh();
+        })
+      )
     );
   }
 
@@ -184,7 +195,9 @@ export class AuthService<TAppState extends AppState = AppState>
    * @param options The logout options
    */
   async logout(options?: LogoutOptions): Promise<void> {
-    await this.auth0Client.logout(options);
+    await this.ensureIsLoaded(() =>
+      from(this.auth0Client.logout(options))
+    ).toPromise();
 
     if (options?.onRedirect) {
       this.authState.refresh();
@@ -237,22 +250,24 @@ export class AuthService<TAppState extends AppState = AppState>
   getAccessTokenSilently(
     options: GetTokenSilentlyOptions = {}
   ): Observable<string | GetTokenSilentlyVerboseResponse> {
-    return of(this.auth0Client).pipe(
-      concatMap((client) =>
-        options.detailedResponse === true
-          ? client.getTokenSilently({ ...options, detailedResponse: true })
-          : client.getTokenSilently(options)
-      ),
-      tap((token) =>
-        this.authState.setAccessToken(
-          typeof token === 'string' ? token : token.access_token
-        )
-      ),
-      catchError((error) => {
-        this.authState.setError(error);
-        this.authState.refresh();
-        return throwError(error);
-      })
+    return this.ensureIsLoaded(() =>
+      of(this.auth0Client).pipe(
+        concatMap((client) =>
+          options.detailedResponse === true
+            ? client.getTokenSilently({ ...options, detailedResponse: true })
+            : client.getTokenSilently(options)
+        ),
+        tap((token) =>
+          this.authState.setAccessToken(
+            typeof token === 'string' ? token : token.access_token
+          )
+        ),
+        catchError((error) => {
+          this.authState.setError(error);
+          this.authState.refresh();
+          return throwError(error);
+        })
+      )
     );
   }
 
@@ -271,7 +286,7 @@ export class AuthService<TAppState extends AppState = AppState>
   getAccessTokenWithPopup(
     options?: GetTokenWithPopupOptions
   ): Observable<string | undefined> {
-    return of(this.auth0Client).pipe(
+    return this.ensureIsLoaded(() => of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenWithPopup(options)),
       tap((token) => {
         if (token) {
@@ -283,7 +298,7 @@ export class AuthService<TAppState extends AppState = AppState>
         this.authState.refresh();
         return throwError(error);
       })
-    );
+    ));
   }
 
   /**
@@ -305,7 +320,7 @@ export class AuthService<TAppState extends AppState = AppState>
    * @typeparam TUser The type to return, has to extend {@link User}.
    */
   getUser<TUser extends User>(): Observable<TUser | undefined> {
-    return defer(() => this.auth0Client.getUser<TUser>());
+    return this.ensureIsLoaded(() => defer(() => this.auth0Client.getUser<TUser>()));
   }
 
   /**
@@ -324,7 +339,7 @@ export class AuthService<TAppState extends AppState = AppState>
    * The returned observable will emit once and then complete.
    */
   getIdTokenClaims(): Observable<IdToken | undefined> {
-    return defer(() => this.auth0Client.getIdTokenClaims());
+    return this.ensureIsLoaded(() => defer(() => this.auth0Client.getIdTokenClaims()));
   }
 
   /**
@@ -375,6 +390,22 @@ export class AuthService<TAppState extends AppState = AppState>
           !this.configFactory.get().skipRedirectCallback
         );
       })
+    );
+  }
+
+  private ensureIsLoaded<T>(cb: () => Observable<T>): Observable<T> {
+    return this.isLoading$.pipe(
+      take(1),
+      switchMap((isLoading) =>
+        iif(
+          () => isLoading,
+          throwError(
+            // eslint-disable-next-line max-len
+            'SDK needs to be initialized before interacting with it. Please call `AuthService.init()` and ensure `AuthService.isLoading$` emits `false`'
+          ),
+          cb()
+        )
+      )
     );
   }
 }
