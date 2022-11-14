@@ -288,47 +288,6 @@ export class AuthService<TAppState extends AppState = AppState>
 
   /**
    * ```js
-   * getUser().subscribe(user => ...);
-   * ```
-   *
-   * Returns the user information if available (decoded
-   * from the `id_token`).
-   *
-   * If you provide an audience or scope, they should match an existing Access Token
-   * (the SDK stores a corresponding ID Token with every Access Token, and uses the
-   * scope and audience to look up the ID Token)
-   *
-   * @remarks
-   *
-   * The returned observable will emit once and then complete.
-   *
-   * @typeparam TUser The type to return, has to extend {@link User}.
-   */
-  getUser<TUser extends User>(): Observable<TUser | undefined> {
-    return defer(() => this.auth0Client.getUser<TUser>());
-  }
-
-  /**
-   * ```js
-   * getIdTokenClaims().subscribe(claims => ...);
-   * ```
-   *
-   * Returns all claims from the id_token if available.
-   *
-   * If you provide an audience or scope, they should match an existing Access Token
-   * (the SDK stores a corresponding ID Token with every Access Token, and uses the
-   * scope and audience to look up the ID Token)
-   *
-   * @remarks
-   *
-   * The returned observable will emit once and then complete.
-   */
-  getIdTokenClaims(): Observable<IdToken | undefined> {
-    return defer(() => this.auth0Client.getIdTokenClaims());
-  }
-
-  /**
-   * ```js
    * handleRedirectCallback(url).subscribe(result => ...)
    * ```
    *
