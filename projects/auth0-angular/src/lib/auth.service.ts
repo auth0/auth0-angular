@@ -78,7 +78,7 @@ export class AuthService<TAppState extends AppState = AppState> {
    */
   readonly appState$ = this.appStateSubject$.asObservable();
 
-  private init$ = new Subject();
+  private initialize$ = new Subject();
 
   constructor(
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
@@ -93,7 +93,7 @@ export class AuthService<TAppState extends AppState = AppState> {
         defer(() => this.auth0Client.checkSession())
       );
 
-    this.init$
+    this.initialize$
       .pipe(
         first(),
         mergeMap(() => this.shouldHandleCallback()),
@@ -117,9 +117,12 @@ export class AuthService<TAppState extends AppState = AppState> {
   /**
    * Initialize the SDK.
    * Call this method before interacting with any other method on the SDK.
+   *
+   * @remarks
+   * Calling this method multiple times has no effect.
    */
-  init() {
-    this.init$.next();
+  initialize() {
+    this.initialize$.next();
   }
 
   /**
@@ -136,7 +139,7 @@ export class AuthService<TAppState extends AppState = AppState> {
   loginWithRedirect(
     options?: RedirectLoginOptions<TAppState>
   ): Observable<void> {
-    // TODO: Temportary using a Subject for backwards compatibility
+    // TODO: Temporary using a Subject for backwards compatibility
     // Will remove in a follow PR to have a dedicated PR for it as it's a breaking change on its own.
     const sub = new Subject<void>();
 
@@ -168,7 +171,7 @@ export class AuthService<TAppState extends AppState = AppState> {
     options?: PopupLoginOptions,
     config?: PopupConfigOptions
   ): Observable<void> {
-    // TODO: Temportary using a Subject for backwards compatibility
+    // TODO: Temporary using a Subject for backwards compatibility
     // Will remove in a follow PR to have a dedicated PR for it as it's a breaking change on its own.
     const sub = new Subject<void>();
 
@@ -410,8 +413,10 @@ export class AuthService<TAppState extends AppState = AppState> {
         iif(
           () => isLoading,
           throwError(
-            // eslint-disable-next-line max-len
-            'SDK needs to be initialized before interacting with it. Please call `AuthService.init()` and ensure `AuthService.isLoading$` emits `false`'
+            new Error(
+              // eslint-disable-next-line max-len
+              'The SDK needs to be initialized before interacting with it. Please call `AuthService.initialize()` and ensure `AuthService.isLoading$` emits `false`'
+            )
           ),
           cb()
         )

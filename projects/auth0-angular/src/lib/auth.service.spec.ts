@@ -48,13 +48,13 @@ describe('AuthService', () => {
 
   const createService = () => {
     const svc = TestBed.inject(AuthService);
-    svc.init();
+    svc.initialize();
     return svc;
   };
 
   const createServiceAndWaitForLoaded = async () => {
     const svc = TestBed.inject(AuthService);
-    svc.init();
+    svc.initialize();
 
     await svc.isLoading$
       .pipe(
