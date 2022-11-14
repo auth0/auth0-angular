@@ -675,7 +675,7 @@ describe('AuthService', () => {
         true
       );
 
-      service.loginWithPopup().subscribe();
+      service.loginWithPopup();
 
       service.isAuthenticated$.subscribe((authenticated) => {
         if (authenticated) {
@@ -700,7 +700,7 @@ describe('AuthService', () => {
         true
       );
 
-      service.loginWithPopup(options, config).subscribe();
+      service.loginWithPopup(options, config);
 
       service.isAuthenticated$.subscribe((authenticated) => {
         if (authenticated) {

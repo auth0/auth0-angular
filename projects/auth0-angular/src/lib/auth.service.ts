@@ -109,7 +109,7 @@ export class AuthService<TAppState extends AppState = AppState> {
         ),
         tap(() => {
           this.authState.setIsLoading(false);
-        }),
+        })
       )
       .subscribe();
   }
@@ -136,9 +136,15 @@ export class AuthService<TAppState extends AppState = AppState> {
   loginWithRedirect(
     options?: RedirectLoginOptions<TAppState>
   ): Observable<void> {
-    return this.ensureIsLoaded(() =>
+    // TODO: Temportary using a Subject for backwards compatibility
+    // Will remove in a follow PR to have a dedicated PR for it as it's a breaking change on its own.
+    const sub = new Subject<void>();
+
+    this.ensureIsLoaded(() =>
       from(this.auth0Client.loginWithRedirect(options))
-    );
+    ).subscribe(sub);
+
+    return sub.asObservable();
   }
 
   /**
@@ -162,13 +168,19 @@ export class AuthService<TAppState extends AppState = AppState> {
     options?: PopupLoginOptions,
     config?: PopupConfigOptions
   ): Observable<void> {
-    return this.ensureIsLoaded(() =>
+    // TODO: Temportary using a Subject for backwards compatibility
+    // Will remove in a follow PR to have a dedicated PR for it as it's a breaking change on its own.
+    const sub = new Subject<void>();
+
+    this.ensureIsLoaded(() =>
       from(
         this.auth0Client.loginWithPopup(options, config).then(() => {
           this.authState.refresh();
         })
       )
-    );
+    ).subscribe(sub);
+
+    return sub.asObservable();
   }
 
   /**
