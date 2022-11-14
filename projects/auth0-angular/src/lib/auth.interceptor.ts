@@ -19,20 +19,29 @@ import {
   switchMap,
   first,
   concatMap,
-  pluck,
   catchError,
   tap,
+  filter,
+  mergeMap,
+  mapTo,
+  pluck,
 } from 'rxjs/operators';
 import { Auth0Client, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
 import { Auth0ClientService } from './auth.client';
 import { AuthState } from './auth.state';
+import { AuthService } from './auth.service';
+
+const waitUntil = <TSignal>(signal$: Observable<TSignal>) => <TSource>(
+  source$: Observable<TSource>
+) => source$.pipe(mergeMap((value) => signal$.pipe(first(), mapTo(value))));
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
   constructor(
     private configFactory: AuthClientConfig,
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
-    private authState: AuthState
+    private authState: AuthState,
+    private authService: AuthService,
   ) {}
 
   intercept(
@@ -44,6 +53,10 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
+    const isLoaded$ = this.authService.isLoading$.pipe(
+      filter((isLoading) => !isLoading),
+    );
+
     return this.findMatchingRoute(req, config.httpInterceptor).pipe(
       concatMap((route) =>
         iif(
@@ -52,6 +65,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
           // If we have a matching route, call getTokenSilently and attach the token to the
           // outgoing request
           of(route).pipe(
+            waitUntil(isLoaded$),
             pluck('tokenOptions'),
             concatMap<GetTokenSilentlyOptions, Observable<string>>((options) =>
               this.getAccessTokenSilently(options).pipe(
