@@ -13,10 +13,11 @@ import {
   AuthClientConfig,
   HttpInterceptorConfig,
 } from './auth.config';
-import { throwError } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { Auth0ClientService } from './auth.client';
 import { AuthState } from './auth.state';
+import { AuthService } from './auth.service';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -38,6 +39,8 @@ describe('The Auth HTTP Interceptor', () => {
   let req: TestRequest;
   let authState: AuthState;
   const testData: Data = { message: 'Hello, world' };
+  let authService: AuthService;
+  let isLoading$: Subject<boolean>;
 
   const assertAuthorizedApiCallTo = async (
     url: string,
@@ -65,6 +68,7 @@ describe('The Auth HTTP Interceptor', () => {
   let config: Partial<AuthConfig>;
 
   beforeEach(() => {
+    isLoading$ = new BehaviorSubject<boolean>(false);
     req = undefined as any;
 
     auth0Client = new Auth0Client({
@@ -74,7 +78,7 @@ describe('The Auth HTTP Interceptor', () => {
 
     jest
       .spyOn(auth0Client, 'getTokenSilently')
-      .mockResolvedValue('access-token');
+      .mockImplementation(() => Promise.resolve('access-token'));
 
     config = {
       httpInterceptor: {
@@ -133,12 +137,19 @@ describe('The Auth HTTP Interceptor', () => {
           provide: AuthClientConfig,
           useValue: { get: () => config },
         },
+        {
+          provide: AuthService,
+          useValue: {
+            isLoading$,
+          },
+        },
       ],
     });
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     authState = TestBed.inject(AuthState);
+    authService = TestBed.inject(AuthService);
 
     jest.spyOn(authState, 'setError');
   });
@@ -168,6 +179,25 @@ describe('The Auth HTTP Interceptor', () => {
   });
 
   describe('Requests that are configured using a primitive', () => {
+    it('waits unil isLoading emits false', fakeAsync(async (
+      done: () => void
+    ) => {
+      const method = 'GET';
+      const url = 'https://my-api.com/api/photos';
+
+      isLoading$.next(true);
+
+      httpClient.request(method, url).subscribe(done);
+      flush();
+
+      httpTestingController.expectNone(url);
+
+      isLoading$.next(false);
+      flush();
+
+      httpTestingController.expectOne(url);
+    }));
+
     it('attach the access token when the configuration uri is a string', fakeAsync(async (
       done: () => void
     ) => {
@@ -210,6 +240,25 @@ describe('The Auth HTTP Interceptor', () => {
   });
 
   describe('Requests that are configured using a complex object', () => {
+    it('waits unil isLoading emits false', fakeAsync(async (
+      done: () => void
+    ) => {
+      const method = 'GET';
+      const url = 'https://my-api.com/api/orders';
+
+      isLoading$.next(true);
+
+      httpClient.request(method, url).subscribe(done);
+      flush();
+
+      httpTestingController.expectNone(url);
+
+      isLoading$.next(false);
+      flush();
+
+      httpTestingController.expectOne(url);
+    }));
+
     it('attach the access token when the uri is configured using a string', fakeAsync(async (
       done: () => void
     ) => {
@@ -316,6 +365,25 @@ describe('The Auth HTTP Interceptor', () => {
   });
 
   describe('Requests that are configured using an uri matcher', () => {
+    it('waits unil isLoading emits false', fakeAsync(async (
+      done: () => void
+    ) => {
+      const method = 'GET';
+      const url = 'https://my-api.com/api/orders';
+
+      isLoading$.next(true);
+
+      httpClient.request(method, url).subscribe(done);
+      flush();
+
+      httpTestingController.expectNone(url);
+
+      isLoading$.next(false);
+      flush();
+
+      httpTestingController.expectOne(url);
+    }));
+
     it('attach the access token when the matcher returns true', fakeAsync(async (
       done: () => void
     ) => {
