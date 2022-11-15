@@ -866,44 +866,6 @@ describe('AuthService', () => {
     });
   });
 
-  describe('getUser', () => {
-    it('should call `getUser`', async () => {
-      const service = createService();
-      await service.getUser().toPromise();
-      expect(auth0Client.getUser).toHaveBeenCalled();
-    });
-
-    it('should return the user from `getUser`', async () => {
-      const expected = { name: 'John Doe' };
-      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
-        expected
-      );
-      const service = createService();
-
-      const user = await service.getUser().toPromise();
-      expect(user).toBe(expected);
-    });
-  });
-
-  describe('getIdTokenClaims', () => {
-    it('should call `getIdTokenClaims`', async () => {
-      const service = createService();
-      await service.getIdTokenClaims().toPromise();
-      expect(auth0Client.getIdTokenClaims).toHaveBeenCalled();
-    });
-
-    it('should return the claims from `getIdTokenClaims`', async () => {
-      const expected = { __raw: '', name: 'John Doe' };
-      ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
-        expected
-      );
-      const service = createService();
-
-      const claims = await service.getIdTokenClaims().toPromise();
-      expect(claims).toBe(expected);
-    });
-  });
-
   describe('handleRedirectCallback', () => {
     let navigator: AbstractNavigator;
 
