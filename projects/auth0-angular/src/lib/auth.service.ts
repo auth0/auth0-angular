@@ -59,6 +59,7 @@ export class AuthService<TAppState extends AppState = AppState>
    * This depends on the value of `isLoading$`, so there is no need to manually check the loading state of the SDK.
    */
   readonly isAuthenticated$ = this.authState.isAuthenticated$;
+  readonly isAuthenticatedHint$ = this.authState.isAuthenticatedHint$;
 
   /**
    * Emits details about the authenticated user, or null if not authenticated.

@@ -9,7 +9,7 @@ import {
   CanActivateChild,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { tap, take } from 'rxjs/operators';
+import { tap, take, withLatestFrom, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -40,13 +40,18 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.auth.isAuthenticated$.pipe(
-      tap((loggedIn) => {
-        if (!loggedIn) {
+      withLatestFrom(this.auth.isAuthenticatedHint$),
+      tap(([loggedIn, isAuthenticatedHint]) => {
+        if (!loggedIn && isAuthenticatedHint) {
           this.auth.loginWithRedirect({
             appState: { target: state.url },
           });
+        } else if (!isAuthenticatedHint) {
+          // TODO: Remove logging.
+          console.log('Not sure if user is logged in, not doing anything automatically. Cancelling route.');
         }
-      })
+      }),
+      map(([loggedIn]) => loggedIn)
     );
   }
 }

@@ -19,6 +19,16 @@ import {
 } from 'rxjs/operators';
 import { Auth0ClientService } from './auth.client';
 
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift();
+  }
+
+  return null;
+}
+
 /**
  * Tracks the Authentication State for the SDK
  */
@@ -28,11 +38,22 @@ export class AuthState {
   private refresh$ = new Subject<void>();
   private accessToken$ = new ReplaySubject<string>(1);
   private errorSubject$ = new ReplaySubject<Error>(1);
-
+  private isAuthenticatedCookie$ = defer(() =>
+    of(
+      !!getCookie(
+        `auth0.${(this.auth0Client as any).options.clientId}.is.authenticated`
+      )
+    )
+  );
   /**
    * Emits boolean values indicating the loading state of the SDK.
    */
   public readonly isLoading$ = this.isLoadingSubject$.asObservable();
+
+  public readonly isAuthenticatedHint$ = merge(
+    this.isAuthenticatedCookie$,
+    this.refresh$.pipe(mergeMap(() => this.isAuthenticatedCookie$))
+  );
 
   /**
    * Trigger used to pull User information from the Auth0Client.
