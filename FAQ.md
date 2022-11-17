@@ -9,8 +9,8 @@
 5. [Preserve application state through redirects](#5-preserve-application-state-through-redirects)
 6. [Using multiple oauth providers](#6-using-multiple-oauth-providers)
 7. [Using the SDK with Angular Universal](#7-using-the-sdk-with-angular-universal)
-8. [Retrieving and refreshing a token](#retrieving-and-refreshing-a-token)
-9. [When using localOnly logout, the user is getting logged in again](#when-using-localonly-logout--the-user-is-getting-logged-in-again)
+8. [Retrieving and refreshing a token](#8-retrieving-and-refreshing-a-token)
+9. [When using localOnly logout, the user is getting logged in again](#9-when-using-localonly-logout-the-user-is-getting-logged-in-again)
 
 ## 1. User is not logged in after page refresh
 
