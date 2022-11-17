@@ -219,7 +219,7 @@ Even though it might not feel like it at first, this is expected, and a side-eff
 
 The key players that can result in the above behavior are the SDK's `AuthGuard` and `AuthHttpInterceptor`.
 
-**AuthGuard**
+### AuthGuard
 When you are making use of `localOnly` logout, you probably don't want to use our AuthGuard, whose sole purpose is to log the user in automatically if there currently is no user. This can happen automatically and without the user noticing much of it. It relies on an existing session with Auth0 and will always log the user in again as long as there is an active session with Auth0.
 
 Instead, you might want to use a guard that only blocks routing based on the `isAuthenticated` observable rather than doing anything to ensure the user is logged in automatically:
@@ -240,7 +240,7 @@ export class AuthGuard implements CanActivate {
 }
 ```
 
-**AuthHttpInterceptor**
+### AuthHttpInterceptor
 The purpose of the `AuthHttpInterceptor` is to attach a token to the request when making any calls using Angular's `HttpClient`. The convenience of this interceptor comes from the fact that it automatically refreshes any expired token. The side-effect of that is that it also fetches a new token if we cleared the local cache using `localOnly` logout.
 
 If this effect is not desired, you want to ensure you avoid doing any calls that trigger the interceptor when the user is not authenticated in the first place.
