@@ -9,7 +9,8 @@
 5. [Preserve application state through redirects](#5-preserve-application-state-through-redirects)
 6. [Using multiple oauth providers](#6-using-multiple-oauth-providers)
 7. [Using the SDK with Angular Universal](#7-using-the-sdk-with-angular-universal)
-8. [Retrieving and refreshing a token](#retrieving-and-refreshing-a-token)
+8. [Retrieving and refreshing a token](#8-retrieving-and-refreshing-a-token)
+9. [When using localOnly logout, the user is getting logged in again](#9-when-using-localonly-logout-the-user-is-getting-logged-in-again)
 
 ## 1. User is not logged in after page refresh
 
@@ -207,4 +208,79 @@ export class AppComponent {
       });
   }
 }
+```
+
+
+## 9. When using localOnly logout, the user is getting logged in again
+
+When only logging the user out of the SDK, and not from Auth0, you might stumble upon behavior that automatically logs the user in again.
+
+Even though it might not feel like it at first, this is expected, and a side-effect of the fact that our SDK focuses on logging in the user as soon as we can.
+
+The key players that can result in the above behavior are the SDK's `AuthGuard` and `AuthHttpInterceptor`.
+
+### AuthGuard
+When you are making use of `localOnly` logout, you probably don't want to use our AuthGuard, whose sole purpose is to log the user in automatically if there currently is no user. This can happen automatically and without the user noticing much of it. It relies on an existing session with Auth0 and will always log the user in again as long as there is an active session with Auth0.
+
+Instead, you might want to use a guard that only blocks routing based on the `isAuthenticated` observable rather than doing anything to ensure the user is logged in automatically:
+
+```ts
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthGuard implements CanActivate {
+  constructor(private auth: AuthService) {}
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.auth.isAuthenticated$;
+  }
+}
+```
+
+### AuthHttpInterceptor
+The purpose of the `AuthHttpInterceptor` is to attach a token to the request when making any calls using Angular's `HttpClient`. The convenience of this interceptor comes from the fact that it automatically refreshes any expired token. The side-effect of that is that it also fetches a new token if we cleared the local cache using `localOnly` logout.
+
+If this effect is not desired, you want to ensure you avoid doing any calls that trigger the interceptor when the user is not authenticated in the first place.
+
+An alternative could be to decorate the SDK's `AuthHttpInterceptor` to ensure it doesn't get triggered when the user isn't authenticated (or any other condition that with fit your use-case):
+
+```ts
+@Injectable()
+export class MyAuthHttpInterceptor implements HttpInterceptor {
+  constructor(
+    private authService: AuthService,
+    private authHttpInterceptor: AuthHttpInterceptor
+  ) {}
+
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    return this.authService.isAuthenticated$.pipe(
+      take(1),
+      mergeMap((isAuthenticated) =>
+        iif(
+          () => isAuthenticated,
+          this.authHttpInterceptor.intercept(req, next),
+          next.handle(req)
+        )
+      )
+    );
+  }
+}
+```
+Important is that the SDK's `AuthHttpInterceptor` is now to be registered as a service, and not as an interceptor. Instead, your custom interceptor should be configured as one of the interceptors, and it will make use of `AuthHttpInterceptor` internally.
+
+```ts
+providers: [
+    AuthHttpInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MyAuthHttpInterceptor,
+      multi: true,
+    }
+  ],
 ```
