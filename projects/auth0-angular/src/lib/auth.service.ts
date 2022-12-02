@@ -92,11 +92,11 @@ export class AuthService<TAppState extends AppState = AppState>
       iif(
         () => isCallback,
         this.handleRedirectCallback(),
-        this.withClient((client) => defer(() => client.checkSession()))
+        this.withClient((client) => client.checkSession())
       );
 
-    this.withClient(() =>
-      this.shouldHandleCallback().pipe(
+    this.withClient(() => this.shouldHandleCallback())
+      .pipe(
         switchMap((isCallback) =>
           checkSessionOrCallback$(isCallback).pipe(
             catchError((error) => {
@@ -112,7 +112,7 @@ export class AuthService<TAppState extends AppState = AppState>
         }),
         takeUntil(this.ngUnsubscribe$)
       )
-    ).subscribe();
+      .subscribe();
   }
 
   /**
