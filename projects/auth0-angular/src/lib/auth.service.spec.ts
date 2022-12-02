@@ -652,7 +652,7 @@ describe('AuthService', () => {
     expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
   });
 
-  it('should call loginWithPopup', (done) => {
+  it('should call `loginWithPopup`', (done) => {
     const service = createService();
     loaded(service).subscribe(() => {
       ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockReset();

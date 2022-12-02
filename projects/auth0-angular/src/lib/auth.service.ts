@@ -92,26 +92,19 @@ export class AuthService<TAppState extends AppState = AppState>
       iif(
         () => isCallback,
         this.handleRedirectCallback(),
-        this.authClient
-          .getInstance$()
-          .pipe(mergeMap((client) => client.checkSession()))
+        this.withClient((client) => defer(() => client.checkSession()))
       );
 
-    this.authClient
-      .getInstance$()
-      .pipe(
-        switchMap((client) =>
-          this.shouldHandleCallback().pipe(
-            switchMap((isCallback) =>
-              checkSessionOrCallback$(isCallback).pipe(
-                catchError((error) => {
-                  const config = this.configFactory.get();
-                  this.navigator.navigateByUrl(config.errorPath || '/');
-                  this.authState.setError(error);
-                  return of(undefined);
-                })
-              )
-            )
+    this.withClient(() =>
+      this.shouldHandleCallback().pipe(
+        switchMap((isCallback) =>
+          checkSessionOrCallback$(isCallback).pipe(
+            catchError((error) => {
+              const config = this.configFactory.get();
+              this.navigator.navigateByUrl(config.errorPath || '/');
+              this.authState.setError(error);
+              return of(undefined);
+            })
           )
         ),
         tap(() => {
@@ -119,7 +112,7 @@ export class AuthService<TAppState extends AppState = AppState>
         }),
         takeUntil(this.ngUnsubscribe$)
       )
-      .subscribe();
+    ).subscribe();
   }
 
   /**
@@ -146,10 +139,9 @@ export class AuthService<TAppState extends AppState = AppState>
     options?: RedirectLoginOptions<TAppState>
   ): Observable<void> {
     const sub = new Subject<void>();
-    this.authClient
-      .getInstance$()
-      .pipe(mergeMap((client) => client.loginWithRedirect(options)))
-      .subscribe(sub);
+    this.withClient((client) =>
+      defer(() => client.loginWithRedirect(options))
+    ).subscribe(sub);
 
     return sub.asObservable();
   }
@@ -176,16 +168,13 @@ export class AuthService<TAppState extends AppState = AppState>
     config?: PopupConfigOptions
   ): Observable<void> {
     const sub = new Subject<void>();
-    this.authClient
-      .getInstance$()
-      .pipe(
-        mergeMap((client) =>
-          client.loginWithPopup(options, config).then(() => {
-            this.authState.refresh();
-          })
-        )
+    this.withClient((client) =>
+      defer(() =>
+        client.loginWithPopup(options, config).then(() => {
+          this.authState.refresh();
+        })
       )
-      .subscribe(sub);
+    ).subscribe(sub);
 
     return sub.asObservable();
   }
@@ -206,10 +195,8 @@ export class AuthService<TAppState extends AppState = AppState>
    * @param options The logout options
    */
   async logout(options?: LogoutOptions): Promise<void> {
-    return this.authClient
-      .getInstance$()
+    return this.withClient((client) => defer(() => client.logout(options)))
       .pipe(
-        mergeMap((client) => client.logout(options)),
         tap(() => {
           if (options?.onRedirect) {
             this.authState.refresh();
@@ -265,22 +252,23 @@ export class AuthService<TAppState extends AppState = AppState>
   getAccessTokenSilently(
     options: GetTokenSilentlyOptions = {}
   ): Observable<string | GetTokenSilentlyVerboseResponse> {
-    return this.authClient.getInstance$().pipe(
-      concatMap((client) =>
+    return this.withClient((client) =>
+      defer(() =>
         options.detailedResponse === true
           ? client.getTokenSilently({ ...options, detailedResponse: true })
           : client.getTokenSilently(options)
-      ),
-      tap((token) =>
-        this.authState.setAccessToken(
-          typeof token === 'string' ? token : token.access_token
-        )
-      ),
-      catchError((error) => {
-        this.authState.setError(error);
-        this.authState.refresh();
-        return throwError(error);
-      })
+      ).pipe(
+        tap((token) =>
+          this.authState.setAccessToken(
+            typeof token === 'string' ? token : token.access_token
+          )
+        ),
+        catchError((error) => {
+          this.authState.setError(error);
+          this.authState.refresh();
+          return throwError(error);
+        })
+      )
     );
   }
 
@@ -299,8 +287,9 @@ export class AuthService<TAppState extends AppState = AppState>
   getAccessTokenWithPopup(
     options?: GetTokenWithPopupOptions
   ): Observable<string | undefined> {
-    return this.authClient.getInstance$().pipe(
-      concatMap((client) => client.getTokenWithPopup(options)),
+    return this.withClient((client) =>
+      defer(() => client.getTokenWithPopup(options))
+    ).pipe(
       tap((token) => {
         if (token) {
           this.authState.setAccessToken(token);
@@ -331,23 +320,24 @@ export class AuthService<TAppState extends AppState = AppState>
   handleRedirectCallback(
     url?: string
   ): Observable<RedirectLoginResult<TAppState>> {
-    return this.authClient.getInstance$().pipe(
-      mergeMap((client) => client.handleRedirectCallback<TAppState>(url)),
-      withLatestFrom(this.authState.isLoading$),
-      tap(([result, isLoading]) => {
-        if (!isLoading) {
-          this.authState.refresh();
-        }
-        const appState = result?.appState;
-        const target = appState?.target ?? '/';
+    return this.withClient((client) =>
+      defer(() => client.handleRedirectCallback<TAppState>(url)).pipe(
+        withLatestFrom(this.authState.isLoading$),
+        tap(([result, isLoading]) => {
+          if (!isLoading) {
+            this.authState.refresh();
+          }
+          const appState = result?.appState;
+          const target = appState?.target ?? '/';
 
-        if (appState) {
-          this.appStateSubject$.next(appState);
-        }
+          if (appState) {
+            this.appStateSubject$.next(appState);
+          }
 
-        this.navigator.navigateByUrl(target);
-      }),
-      map(([result]) => result)
+          this.navigator.navigateByUrl(target);
+        }),
+        map(([result]) => result)
+      )
     );
   }
 
@@ -362,5 +352,9 @@ export class AuthService<TAppState extends AppState = AppState>
         );
       })
     );
+  }
+
+  private withClient<T>(cb: (client: Auth0Client) => Observable<T>) {
+    return this.authClient.getInstance$().pipe(mergeMap(cb));
   }
 }
