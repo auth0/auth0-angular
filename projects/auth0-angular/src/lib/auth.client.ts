@@ -1,18 +1,35 @@
-import { InjectionToken, VERSION } from '@angular/core';
+import { Injectable, VERSION } from '@angular/core';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { AuthClientConfig } from './auth.config';
+import { AuthClientConfig, AuthConfig } from './auth.config';
 import useragent from '../useragent';
+import { Observable, race, throwError, timer } from 'rxjs';
+import { map, mergeMap, shareReplay, take } from 'rxjs/operators';
 
-export class Auth0ClientFactory {
-  static createClient(configFactory: AuthClientConfig): Auth0Client {
-    const config = configFactory.get();
+@Injectable()
+export class AuthClient {
+  private _instance$ = race(
+    this.config.config$.pipe(
+      map((config) => this.createClient(config)),
+      shareReplay(1)
+    ),
+    timer(30000).pipe(
+      mergeMap(() =>
+        throwError(
+          new Error(
+            'Configuration must be specified either through AuthModule.forRoot or through AuthClientConfig.set'
+          )
+        )
+      )
+    )
+  );
 
-    if (!config) {
-      throw new Error(
-        'Configuration must be specified either through AuthModule.forRoot or through AuthClientConfig.set'
-      );
-    }
+  constructor(private config: AuthClientConfig) {}
 
+  getInstance$(): Observable<Auth0Client> {
+    return this._instance$.pipe(take(1));
+  }
+
+  private createClient(config: AuthConfig): Auth0Client {
     return new Auth0Client({
       ...config,
       auth0Client: {
@@ -25,7 +42,3 @@ export class Auth0ClientFactory {
     });
   }
 }
-
-export const Auth0ClientService = new InjectionToken<Auth0Client>(
-  'auth0.client'
-);

@@ -1,11 +1,17 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { AuthService } from './auth.service';
-import { AuthConfig, AuthConfigService, AuthClientConfig } from './auth.config';
-import { Auth0ClientService, Auth0ClientFactory } from './auth.client';
+import { AuthConfig, AuthConfigService } from './auth.config';
+import { AuthClient } from './auth.client';
 import { AuthGuard } from './auth.guard';
 
 @NgModule()
 export class AuthModule {
+  constructor(
+    // Needs to be injected, but left unused
+    // Ideally we would ensure it's used, but that would change the public API which we decided not to do for now.
+    private authService: AuthService
+  ) {}
+
   /**
    * Initialize the authentication module system. Configuration can either be specified here,
    * or by calling AuthClientConfig.set (perhaps from an APP_INITIALIZER factory function).
@@ -22,11 +28,7 @@ export class AuthModule {
           provide: AuthConfigService,
           useValue: config,
         },
-        {
-          provide: Auth0ClientService,
-          useFactory: Auth0ClientFactory.createClient,
-          deps: [AuthClientConfig],
-        },
+        AuthClient,
       ],
     };
   }

@@ -13,11 +13,11 @@ import {
   AuthClientConfig,
   HttpInterceptorConfig,
 } from './auth.config';
-import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { Auth0ClientService } from './auth.client';
 import { AuthState } from './auth.state';
 import { AuthService } from './auth.service';
+import { AuthClient } from './auth.client';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
 
@@ -130,8 +130,8 @@ describe('The Auth HTTP Interceptor', () => {
           multi: true,
         },
         {
-          provide: Auth0ClientService,
-          useValue: auth0Client,
+          provide: AuthClient,
+          useValue: { getInstance$: () => of(auth0Client) },
         },
         {
           provide: AuthClientConfig,

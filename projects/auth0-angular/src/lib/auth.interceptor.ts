@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 
 import { Observable, from, of, iif, throwError } from 'rxjs';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import {
   ApiRouteDefinition,
@@ -26,8 +26,8 @@ import {
   mapTo,
   pluck,
 } from 'rxjs/operators';
-import { Auth0Client, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
-import { Auth0ClientService } from './auth.client';
+import { GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
+import { AuthClient } from './auth.client';
 import { AuthState } from './auth.state';
 import { AuthService } from './auth.service';
 
@@ -39,7 +39,7 @@ const waitUntil = <TSignal>(signal$: Observable<TSignal>) => <TSource>(
 export class AuthHttpInterceptor implements HttpInterceptor {
   constructor(
     private configFactory: AuthClientConfig,
-    @Inject(Auth0ClientService) private auth0Client: Auth0Client,
+    private authClient: AuthClient,
     private authState: AuthState,
     private authService: AuthService,
   ) {}
@@ -110,7 +110,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   private getAccessTokenSilently(
     options?: GetTokenSilentlyOptions
   ): Observable<string> {
-    return of(this.auth0Client).pipe(
+    return this.authClient.getInstance$().pipe(
       concatMap((client) => client.getTokenSilently(options)),
       tap((token) => this.authState.setAccessToken(token)),
       catchError((error) => {

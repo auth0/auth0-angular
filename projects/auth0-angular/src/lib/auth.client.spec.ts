@@ -1,5 +1,8 @@
 import { AuthConfig, AuthClientConfig } from './auth.config';
-import { Auth0ClientFactory } from './auth.client';
+import { AuthClient } from './auth.client';
+import { EMPTY, of, Subject } from 'rxjs';
+import { expect } from '@jest/globals';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 const mockWindow = global as any;
 
@@ -12,7 +15,7 @@ mockWindow.crypto = {
   },
 };
 
-describe('Auth0ClientFactory', () => {
+describe('AuthClient', () => {
   describe('createClient', () => {
     it('creates a new instance of Auth0Client', () => {
       const config: AuthConfig = {
@@ -20,19 +23,27 @@ describe('Auth0ClientFactory', () => {
         clientId: 'abc123',
       };
 
-      const configClient = new AuthClientConfig(config);
-      const client = Auth0ClientFactory.createClient(configClient);
+      const authClient = new AuthClient({ config$: of(config) } as any);
 
-      expect(client).not.toBeUndefined();
+      authClient
+        .getInstance$()
+        .subscribe((client) => expect(client).toBeDefined());
+
+      expect.assertions(1);
     });
 
-    it('throws an error when no config was supplied', () => {
-      const configClient = new AuthClientConfig();
+    it('throws an error when no config was supplied after timeout duration', fakeAsync(() => {
+      const authClient = new AuthClient({ config$: new Subject() } as any);
 
-      expect(() => Auth0ClientFactory.createClient(configClient)).toThrowError(
-        /^Configuration must be specified/
-      );
-    });
+      authClient.getInstance$().subscribe({
+        error: (error) =>
+          expect(error.message).toContain('Configuration must be specified'),
+      });
+
+      tick(30000);
+
+      expect.assertions(1);
+    }));
 
     it('creates a new instance of Auth0Client with the correct properties to skip the refreshtoken fallback', () => {
       const config: AuthConfig = {
@@ -42,14 +53,17 @@ describe('Auth0ClientFactory', () => {
         useRefreshTokensFallback: false,
       };
 
-      const configClient = new AuthClientConfig(config);
-      const client = Auth0ClientFactory.createClient(configClient);
+      const authClient = new AuthClient({ config$: of(config) } as any);
 
-      expect(client).not.toBeUndefined();
-      expect((client as any).options.domain).toEqual('test.domain.com');
-      expect((client as any).options.clientId).toEqual('abc123');
-      expect((client as any).options.useRefreshTokens).toEqual(true);
-      expect((client as any).options.useRefreshTokensFallback).toEqual(false);
+      authClient.getInstance$().subscribe((client) => {
+        expect(client).not.toBeUndefined();
+        expect((client as any).options.domain).toEqual('test.domain.com');
+        expect((client as any).options.clientId).toEqual('abc123');
+        expect((client as any).options.useRefreshTokens).toEqual(true);
+        expect((client as any).options.useRefreshTokensFallback).toEqual(false);
+      });
+
+      expect.assertions(5);
     });
 
     it('creates a new instance of Auth0Client with the correct properties without any value for useRefreshTokensFallback', () => {
@@ -59,14 +73,16 @@ describe('Auth0ClientFactory', () => {
         useRefreshTokens: true,
       };
 
-      const configClient = new AuthClientConfig(config);
-      const client = Auth0ClientFactory.createClient(configClient);
+      const authClient = new AuthClient({ config$: of(config) } as any);
 
-      expect(client).not.toBeUndefined();
-      expect((client as any).options.domain).toEqual('test.domain.com');
-      expect((client as any).options.clientId).toEqual('abc123');
-      expect((client as any).options.useRefreshTokens).toEqual(true);
-      expect((client as any).options.useRefreshTokensFallback).toEqual(false);
+      authClient.getInstance$().subscribe((client) => {
+        expect(client).not.toBeUndefined();
+        expect((client as any).options.domain).toEqual('test.domain.com');
+        expect((client as any).options.clientId).toEqual('abc123');
+        expect((client as any).options.useRefreshTokens).toEqual(true);
+        expect((client as any).options.useRefreshTokensFallback).toEqual(false);
+      });
+      expect.assertions(5);
     });
   });
 });

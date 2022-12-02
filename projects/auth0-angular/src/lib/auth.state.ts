@@ -17,7 +17,7 @@ import {
   shareReplay,
   switchMap,
 } from 'rxjs/operators';
-import { Auth0ClientService } from './auth.client';
+import { AuthClient } from './auth.client';
 
 /**
  * Tracks the Authentication State for the SDK
@@ -57,24 +57,30 @@ export class AuthState {
    * Triggers when an event occurs that needs to retrigger the User Profile information.
    * Events: Login, Access Token change and Logout
    */
-  private readonly isAuthenticatedTrigger$ = this.isLoading$.pipe(
-    filter((loading) => !loading),
-    distinctUntilChanged(),
-    switchMap(() =>
-      // To track the value of isAuthenticated over time, we need to merge:
-      //  - the current value
-      //  - the value whenever the access token changes. (this should always be true of there is an access token
-      //    but it is safer to pass this through this.auth0Client.isAuthenticated() nevertheless)
-      //  - the value whenever refreshState$ emits
-      merge(
-        defer(() => this.auth0Client.isAuthenticated()),
-        this.accessTokenTrigger$.pipe(
-          mergeMap(() => this.auth0Client.isAuthenticated())
-        ),
-        this.refresh$.pipe(mergeMap(() => this.auth0Client.isAuthenticated()))
+  private readonly isAuthenticatedTrigger$ = this.authClient
+    .getInstance$()
+    .pipe(
+      mergeMap((client) =>
+        this.isLoading$.pipe(
+          filter((loading) => !loading),
+          distinctUntilChanged(),
+          switchMap(() =>
+            // To track the value of isAuthenticated over time, we need to merge:
+            //  - the current value
+            //  - the value whenever the access token changes. (this should always be true of there is an access token
+            //    but it is safer to pass this through this.auth0Client.isAuthenticated() nevertheless)
+            //  - the value whenever refreshState$ emits
+            merge(
+              defer(() => client.isAuthenticated()),
+              this.accessTokenTrigger$.pipe(
+                mergeMap(() => client.isAuthenticated())
+              ),
+              this.refresh$.pipe(mergeMap(() => client.isAuthenticated()))
+            )
+          )
+        )
       )
-    )
-  );
+    );
 
   /**
    * Emits boolean values indicating the authentication state of the user. If `true`, it means a user has authenticated.
@@ -88,28 +94,38 @@ export class AuthState {
   /**
    * Emits details about the authenticated user, or null if not authenticated.
    */
-  readonly user$ = this.isAuthenticatedTrigger$.pipe(
-    concatMap((authenticated) =>
-      authenticated ? this.auth0Client.getUser() : of(null)
-    ),
-    distinctUntilChanged()
+  readonly user$ = this.authClient.getInstance$().pipe(
+    mergeMap((client) =>
+      this.isAuthenticatedTrigger$.pipe(
+        concatMap((authenticated) =>
+          authenticated ? client.getUser() : of(null)
+        ),
+        distinctUntilChanged()
+      )
+    )
   );
 
   /**
    * Emits ID token claims when authenticated, or null if not authenticated.
    */
-  readonly idTokenClaims$ = this.isAuthenticatedTrigger$.pipe(
-    concatMap((authenticated) =>
-      authenticated ? this.auth0Client.getIdTokenClaims() : of(null)
-    )
-  );
+  readonly idTokenClaims$ = this.authClient
+    .getInstance$()
+    .pipe(
+      mergeMap((client) =>
+        this.isAuthenticatedTrigger$.pipe(
+          concatMap((authenticated) =>
+            authenticated ? client.getIdTokenClaims() : of(null)
+          )
+        )
+      )
+    );
 
   /**
    * Emits errors that occur during login, or when checking for an active session on startup.
    */
   public readonly error$ = this.errorSubject$.asObservable();
 
-  constructor(@Inject(Auth0ClientService) private auth0Client: Auth0Client) {}
+  constructor(private authClient: AuthClient) {}
 
   /**
    * Update the isLoading state using the provided value

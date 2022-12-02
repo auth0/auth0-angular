@@ -6,6 +6,7 @@ import {
 } from '@auth0/auth0-spa-js';
 
 import { InjectionToken, Injectable, Optional, Inject } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 
 /**
  * Defines a common set of HTTP methods.
@@ -198,9 +199,13 @@ export interface AppState {
 export class AuthClientConfig {
   private config?: AuthConfig;
 
+  private _config$ = new ReplaySubject<AuthConfig>(1);
+  public config$ = this._config$.asObservable();
+
   constructor(@Optional() @Inject(AuthConfigService) config?: AuthConfig) {
     if (config) {
       this.set(config);
+      this._config$.next(config);
     }
   }
 
@@ -211,6 +216,7 @@ export class AuthClientConfig {
    */
   set(config: AuthConfig): void {
     this.config = config;
+    this._config$.next(config);
   }
 
   /**

@@ -1,6 +1,5 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
-import { Auth0ClientService } from './auth.client';
 import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import {
@@ -14,6 +13,8 @@ import {
 } from 'rxjs/operators';
 import { AuthConfig, AuthConfigService } from './auth.config';
 import { AuthState } from './auth.state';
+import { AuthClient } from './auth.client';
+import { of } from 'rxjs';
 
 const mockWindow = global as any;
 
@@ -77,8 +78,8 @@ describe('AuthService', () => {
       providers: [
         AbstractNavigator,
         {
-          provide: Auth0ClientService,
-          useValue: auth0Client,
+          provide: AuthClient,
+          useValue: { getInstance$: () => of(auth0Client) },
         },
         {
           provide: AuthConfigService,
@@ -464,8 +465,8 @@ describe('AuthService', () => {
             useValue: navigator,
           },
           {
-            provide: Auth0ClientService,
-            useValue: auth0Client,
+            provide: AuthClient,
+            useValue: { getInstance$: () => of(auth0Client) },
           },
           {
             provide: AuthConfigService,
@@ -651,7 +652,7 @@ describe('AuthService', () => {
     expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
   });
 
-  it('should call `loginWithPopup`', (done) => {
+  it('should call loginWithPopup', (done) => {
     const service = createService();
     loaded(service).subscribe(() => {
       ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockReset();
@@ -884,8 +885,8 @@ describe('AuthService', () => {
             useValue: navigator,
           },
           {
-            provide: Auth0ClientService,
-            useValue: auth0Client,
+            provide: AuthClient,
+            useValue: { getInstance$: () => of(auth0Client) },
           },
           {
             provide: AuthConfigService,

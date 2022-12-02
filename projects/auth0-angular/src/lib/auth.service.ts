@@ -33,9 +33,10 @@ import {
   catchError,
   switchMap,
   withLatestFrom,
+  mergeMap,
 } from 'rxjs/operators';
 
-import { Auth0ClientService } from './auth.client';
+import { AuthClient } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { AuthClientConfig, AppState } from './auth.config';
 import { AuthState } from './auth.state';
@@ -82,7 +83,7 @@ export class AuthService<TAppState extends AppState = AppState>
   readonly appState$ = this.appStateSubject$.asObservable();
 
   constructor(
-    @Inject(Auth0ClientService) private auth0Client: Auth0Client,
+    private authClient: AuthClient,
     private configFactory: AuthClientConfig,
     private navigator: AbstractNavigator,
     private authState: AuthState
@@ -91,19 +92,26 @@ export class AuthService<TAppState extends AppState = AppState>
       iif(
         () => isCallback,
         this.handleRedirectCallback(),
-        defer(() => this.auth0Client.checkSession())
+        this.authClient
+          .getInstance$()
+          .pipe(mergeMap((client) => client.checkSession()))
       );
 
-    this.shouldHandleCallback()
+    this.authClient
+      .getInstance$()
       .pipe(
-        switchMap((isCallback) =>
-          checkSessionOrCallback$(isCallback).pipe(
-            catchError((error) => {
-              const config = this.configFactory.get();
-              this.navigator.navigateByUrl(config.errorPath || '/');
-              this.authState.setError(error);
-              return of(undefined);
-            })
+        switchMap((client) =>
+          this.shouldHandleCallback().pipe(
+            switchMap((isCallback) =>
+              checkSessionOrCallback$(isCallback).pipe(
+                catchError((error) => {
+                  const config = this.configFactory.get();
+                  this.navigator.navigateByUrl(config.errorPath || '/');
+                  this.authState.setError(error);
+                  return of(undefined);
+                })
+              )
+            )
           )
         ),
         tap(() => {
@@ -137,7 +145,13 @@ export class AuthService<TAppState extends AppState = AppState>
   loginWithRedirect(
     options?: RedirectLoginOptions<TAppState>
   ): Observable<void> {
-    return from(this.auth0Client.loginWithRedirect(options));
+    const sub = new Subject<void>();
+    this.authClient
+      .getInstance$()
+      .pipe(mergeMap((client) => client.loginWithRedirect(options)))
+      .subscribe(sub);
+
+    return sub.asObservable();
   }
 
   /**
@@ -161,11 +175,19 @@ export class AuthService<TAppState extends AppState = AppState>
     options?: PopupLoginOptions,
     config?: PopupConfigOptions
   ): Observable<void> {
-    return from(
-      this.auth0Client.loginWithPopup(options, config).then(() => {
-        this.authState.refresh();
-      })
-    );
+    const sub = new Subject<void>();
+    this.authClient
+      .getInstance$()
+      .pipe(
+        mergeMap((client) =>
+          client.loginWithPopup(options, config).then(() => {
+            this.authState.refresh();
+          })
+        )
+      )
+      .subscribe(sub);
+
+    return sub.asObservable();
   }
 
   /**
@@ -184,11 +206,17 @@ export class AuthService<TAppState extends AppState = AppState>
    * @param options The logout options
    */
   async logout(options?: LogoutOptions): Promise<void> {
-    await this.auth0Client.logout(options);
-
-    if (options?.onRedirect) {
-      this.authState.refresh();
-    }
+    return this.authClient
+      .getInstance$()
+      .pipe(
+        mergeMap((client) => client.logout(options)),
+        tap(() => {
+          if (options?.onRedirect) {
+            this.authState.refresh();
+          }
+        })
+      )
+      .toPromise();
   }
 
   /**
@@ -237,7 +265,7 @@ export class AuthService<TAppState extends AppState = AppState>
   getAccessTokenSilently(
     options: GetTokenSilentlyOptions = {}
   ): Observable<string | GetTokenSilentlyVerboseResponse> {
-    return of(this.auth0Client).pipe(
+    return this.authClient.getInstance$().pipe(
       concatMap((client) =>
         options.detailedResponse === true
           ? client.getTokenSilently({ ...options, detailedResponse: true })
@@ -271,7 +299,7 @@ export class AuthService<TAppState extends AppState = AppState>
   getAccessTokenWithPopup(
     options?: GetTokenWithPopupOptions
   ): Observable<string | undefined> {
-    return of(this.auth0Client).pipe(
+    return this.authClient.getInstance$().pipe(
       concatMap((client) => client.getTokenWithPopup(options)),
       tap((token) => {
         if (token) {
@@ -303,9 +331,8 @@ export class AuthService<TAppState extends AppState = AppState>
   handleRedirectCallback(
     url?: string
   ): Observable<RedirectLoginResult<TAppState>> {
-    return defer(() =>
-      this.auth0Client.handleRedirectCallback<TAppState>(url)
-    ).pipe(
+    return this.authClient.getInstance$().pipe(
+      mergeMap((client) => client.handleRedirectCallback<TAppState>(url)),
       withLatestFrom(this.authState.isLoading$),
       tap(([result, isLoading]) => {
         if (!isLoading) {
