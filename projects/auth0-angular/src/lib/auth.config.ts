@@ -205,7 +205,6 @@ export class AuthClientConfig {
   constructor(@Optional() @Inject(AuthConfigService) config?: AuthConfig) {
     if (config) {
       this.set(config);
-      this.configSubject$.next(config);
     }
   }
 

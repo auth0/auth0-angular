@@ -5,7 +5,7 @@ import useragent from '../useragent';
 import { Observable, race, throwError, timer } from 'rxjs';
 import { map, mergeMap, shareReplay, take } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthClient {
   private instance$ = race(
     this.config.config$.pipe(
