@@ -40,7 +40,7 @@ describe('AuthClient', () => {
           expect(error.message).toContain('Configuration must be specified'),
       });
 
-      tick(30000);
+      tick(10000);
 
       expect.assertions(1);
     }));

@@ -12,7 +12,7 @@ export class AuthClient {
       map((config) => this.createClient(config)),
       shareReplay(1)
     ),
-    timer(30000).pipe(
+    timer(10000).pipe(
       mergeMap(() =>
         throwError(
           new Error(
