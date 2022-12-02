@@ -7,7 +7,7 @@ import { map, mergeMap, shareReplay, take } from 'rxjs/operators';
 
 @Injectable()
 export class AuthClient {
-  private _instance$ = race(
+  private instance$ = race(
     this.config.config$.pipe(
       map((config) => this.createClient(config)),
       shareReplay(1)
@@ -26,7 +26,7 @@ export class AuthClient {
   constructor(private config: AuthClientConfig) {}
 
   getInstance$(): Observable<Auth0Client> {
-    return this._instance$.pipe(take(1));
+    return this.instance$.pipe(take(1));
   }
 
   private createClient(config: AuthConfig): Auth0Client {

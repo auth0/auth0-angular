@@ -199,13 +199,13 @@ export interface AppState {
 export class AuthClientConfig {
   private config?: AuthConfig;
 
-  private _config$ = new ReplaySubject<AuthConfig>(1);
-  public config$ = this._config$.asObservable();
+  private configSubject$ = new ReplaySubject<AuthConfig>(1);
+  public config$ = this.configSubject$.asObservable();
 
   constructor(@Optional() @Inject(AuthConfigService) config?: AuthConfig) {
     if (config) {
       this.set(config);
-      this._config$.next(config);
+      this.configSubject$.next(config);
     }
   }
 
@@ -216,7 +216,7 @@ export class AuthClientConfig {
    */
   set(config: AuthConfig): void {
     this.config = config;
-    this._config$.next(config);
+    this.configSubject$.next(config);
   }
 
   /**
