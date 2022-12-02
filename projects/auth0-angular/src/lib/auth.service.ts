@@ -139,9 +139,10 @@ export class AuthService<TAppState extends AppState = AppState>
     options?: RedirectLoginOptions<TAppState>
   ): Observable<void> {
     const sub = new Subject<void>();
-    this.withClient((client) =>
-      defer(() => client.loginWithRedirect(options))
-    ).subscribe(sub);
+
+    this.withClient((client) => client.loginWithRedirect(options)).subscribe(
+      sub
+    );
 
     return sub.asObservable();
   }
@@ -168,13 +169,10 @@ export class AuthService<TAppState extends AppState = AppState>
     config?: PopupConfigOptions
   ): Observable<void> {
     const sub = new Subject<void>();
-    this.withClient((client) =>
-      defer(() =>
-        client.loginWithPopup(options, config).then(() => {
-          this.authState.refresh();
-        })
-      )
-    ).subscribe(sub);
+
+    this.withClient((client) => client.loginWithPopup(options, config))
+      .pipe(tap(() => this.authState.refresh()))
+      .subscribe(sub);
 
     return sub.asObservable();
   }
@@ -195,14 +193,8 @@ export class AuthService<TAppState extends AppState = AppState>
    * @param options The logout options
    */
   async logout(options?: LogoutOptions): Promise<void> {
-    return this.withClient((client) => defer(() => client.logout(options)))
-      .pipe(
-        tap(() => {
-          if (options?.onRedirect) {
-            this.authState.refresh();
-          }
-        })
-      )
+    return this.withClient((client) => client.logout(options))
+      .pipe(tap(() => options?.onRedirect && this.authState.refresh()))
       .toPromise();
   }
 
@@ -287,9 +279,7 @@ export class AuthService<TAppState extends AppState = AppState>
   getAccessTokenWithPopup(
     options?: GetTokenWithPopupOptions
   ): Observable<string | undefined> {
-    return this.withClient((client) =>
-      defer(() => client.getTokenWithPopup(options))
-    ).pipe(
+    return this.withClient((client) => client.getTokenWithPopup(options)).pipe(
       tap((token) => {
         if (token) {
           this.authState.setAccessToken(token);
@@ -321,23 +311,23 @@ export class AuthService<TAppState extends AppState = AppState>
     url?: string
   ): Observable<RedirectLoginResult<TAppState>> {
     return this.withClient((client) =>
-      defer(() => client.handleRedirectCallback<TAppState>(url)).pipe(
-        withLatestFrom(this.authState.isLoading$),
-        tap(([result, isLoading]) => {
-          if (!isLoading) {
-            this.authState.refresh();
-          }
-          const appState = result?.appState;
-          const target = appState?.target ?? '/';
+      client.handleRedirectCallback<TAppState>(url)
+    ).pipe(
+      withLatestFrom(this.authState.isLoading$),
+      tap(([result, isLoading]) => {
+        if (!isLoading) {
+          this.authState.refresh();
+        }
+        const appState = result?.appState;
+        const target = appState?.target ?? '/';
 
-          if (appState) {
-            this.appStateSubject$.next(appState);
-          }
+        if (appState) {
+          this.appStateSubject$.next(appState);
+        }
 
-          this.navigator.navigateByUrl(target);
-        }),
-        map(([result]) => result)
-      )
+        this.navigator.navigateByUrl(target);
+      }),
+      map(([result]) => result)
     );
   }
 
@@ -354,7 +344,9 @@ export class AuthService<TAppState extends AppState = AppState>
     );
   }
 
-  private withClient<T>(cb: (client: Auth0Client) => Observable<T>) {
+  private withClient<T>(
+    cb: (client: Auth0Client) => Observable<T> | Promise<T>
+  ) {
     return this.authClient.getInstance$().pipe(mergeMap(cb));
   }
 }
