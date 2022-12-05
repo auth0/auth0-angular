@@ -154,7 +154,9 @@ import { AuthModule } from '@auth0/auth0-angular';
     AuthModule.forRoot({
       domain: 'YOUR_AUTH0_DOMAIN',
       clientId: 'YOUR_AUTH0_CLIENT_ID',
-      audience: 'YOUR_AUTH0_API_IDENTIFIER',
+      authorizationParams: {
+        audience: 'YOUR_AUTH0_API_IDENTIFIER',
+      }
     }),
   ],
   // ...
@@ -223,8 +225,10 @@ AuthModule.forRoot({
       {
         uri: '/api/accounts/*',
         tokenOptions: {
-          audience: 'http://my-api/',
-          scope: 'read:accounts',
+          authorizationParams: {
+            audience: 'http://my-api/',
+            scope: 'read:accounts',
+          }
         },
       },
 
@@ -233,8 +237,10 @@ AuthModule.forRoot({
         uri: '/api/orders',
         httpMethod: HttpMethod.Post,
         tokenOptions: {
-          audience: 'http://my-api/',
-          scope: 'write:orders',
+          authorizationParams: {
+            audience: 'http://my-api/',
+            scope: 'write:orders',
+          }
         },
       },
 
@@ -242,8 +248,10 @@ AuthModule.forRoot({
       {
         uri: 'https://your-domain.auth0.com/api/v2/users',
         tokenOptions: {
-          audience: 'https://your-domain.com/api/v2/',
-          scope: 'read:users',
+          authorizationParams: {
+            audience: 'https://your-domain.com/api/v2/',
+            scope: 'read:users',
+          }
         },
       },
     ],
@@ -266,8 +274,10 @@ AuthModule.forRoot({
         uriMatcher: (uri) => uri.indexOf('/api/orders') > -1,
         httpMethod: HttpMethod.Post,
         tokenOptions: {
-          audience: 'http://my-api/',
-          scope: 'write:orders',
+          authorizationParams: {
+            audience: 'http://my-api/',
+            scope: 'write:orders',
+          }
         },
       },
     ],
@@ -316,7 +326,9 @@ Log in to an organization by specifying the `organization` parameter importing t
 AuthModule.forRoot({
   domain: 'YOUR_AUTH0_DOMAIN',
   clientId: 'YOUR_AUTH0_CLIENT_ID',
-  organization: 'YOUR_ORGANIZATION_ID'
+  authorizationParams: {
+    organization: 'YOUR_ORGANIZATION_ID'
+  }
 }),
 ```
 
@@ -325,12 +337,16 @@ You can also specify the organization when logging in:
 ```
 // Using a redirect
 this.auth.loginWithRedirect({
-  organization: 'YOUR_ORGANIZATION_ID'
+  authorizationParams: {
+    organization: 'YOUR_ORGANIZATION_ID'
+  }
 });
 
 // Using a popup window
 this.auth.loginWithPopup({
-  organization: 'YOUR_ORGANIZATION_ID'
+  authorizationParams: {
+    organization: 'YOUR_ORGANIZATION_ID'
+  }
 });
 ```
 
@@ -354,8 +370,10 @@ export class AppComponent {
     const { organization, invitation } = this.activatedRoute.snapshot.params;
 
     this.auth.loginWithRedirect({
-      organization,
-      invitation
+      authorizationParams: {
+        organization,
+        invitation
+      }
     });
   }
 }
