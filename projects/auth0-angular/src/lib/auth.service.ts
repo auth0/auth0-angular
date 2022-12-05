@@ -183,12 +183,14 @@ export class AuthService<TAppState extends AppState = AppState>
    *
    * @param options The logout options
    */
-  async logout(options?: LogoutOptions): Promise<void> {
-    await this.auth0Client.logout(options);
-
-    if (options?.onRedirect) {
-      this.authState.refresh();
-    }
+  logout(options?: LogoutOptions): Observable<void> {
+    return from(
+      this.auth0Client.logout(options).then(() => {
+        if (options?.onRedirect) {
+          this.authState.refresh();
+        }
+      })
+    );
   }
 
   /**
