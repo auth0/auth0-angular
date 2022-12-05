@@ -17,6 +17,7 @@ export class AuthModule {
     // If forceInitialization is set to true,
     // we need to instantiate the AuthService when the AuthModule is instantiated.
     if (forceInitialization) {
+      console.log('force')
       injector.get<AuthService>(AuthService);
     }
   }
@@ -44,7 +45,7 @@ export class AuthModule {
         AuthClient,
         {
           provide: FORCE_INITIALIZATION_TOKEN,
-          useValue: false,
+          useValue: config?.forceInitialization || false,
         },
       ],
     };
