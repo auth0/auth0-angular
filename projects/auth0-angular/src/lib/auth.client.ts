@@ -1,6 +1,6 @@
-import { Inject, Injectable, Optional, VERSION } from '@angular/core';
+import { Inject, Injectable, VERSION } from '@angular/core';
 import { Auth0Client } from '@auth0/auth0-spa-js';
-import { AuthClientConfig, AuthConfig, LAZY_LOAD_TOKEN } from './auth.config';
+import { AuthClientConfig, AuthConfig, FORCE_INITIALIZATION_TOKEN } from './auth.config';
 import useragent from '../useragent';
 import { Observable, race, throwError, timer } from 'rxjs';
 import { map, mergeMap, shareReplay, take } from 'rxjs/operators';
@@ -12,7 +12,7 @@ export class AuthClient {
       map((config) => this.createClient(config)),
       shareReplay(1)
     ),
-    timer(this.lazy ? 15000 : 0).pipe(
+    timer(this.forceInitialization ? 15000 : 0).pipe(
       mergeMap(() =>
         throwError(
           new Error(
@@ -25,7 +25,7 @@ export class AuthClient {
 
   constructor(
     private config: AuthClientConfig,
-    @Inject(LAZY_LOAD_TOKEN) private lazy: boolean
+    @Inject(FORCE_INITIALIZATION_TOKEN) private forceInitialization: boolean
   ) {}
 
   getInstance$(): Observable<Auth0Client> {

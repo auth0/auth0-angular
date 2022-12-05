@@ -136,13 +136,20 @@ export interface AuthConfig extends Auth0ClientOptions {
    */
   errorPath?: string;
 
-  lazy?: false;
+  /**
+   * Setting this to true will try and initialize the SDK as soon as AuthModule is instantiated,
+   * which happens at application load.
+   *
+   * This is mainly to support situations that involve specific setups together with Angular's lazy-loading.
+   * For more info, read [LINK TO EXAMPLE HERE]
+   */
+  forceInitialization?: false;
 }
 
 /**
  * Configuration for the authentication module's forRoot static method.
  */
-export type RootAuthConfig = AuthConfig | {lazy?: true};
+ export type RootAuthConfig = AuthConfig | {forceInitialization?: true};
 
 /**
  * Angular specific state to be stored before redirect
@@ -249,4 +256,7 @@ export const AuthConfigService = new InjectionToken<AuthConfig>(
 );
 
 
-export const LAZY_LOAD_TOKEN = new InjectionToken('LAZY_LOAD');
+/**
+ * Injection token for accessing force
+ */
+export const FORCE_INITIALIZATION_TOKEN = new InjectionToken('FORCE_INITIALIZATION');

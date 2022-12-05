@@ -1,20 +1,25 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, Injector, Inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { AuthClient } from './auth.client';
 import {
-  AuthConfigService,
-  LAZY_LOAD_TOKEN,
   RootAuthConfig,
+  AuthConfigService,
+  FORCE_INITIALIZATION_TOKEN,
 } from './auth.config';
 import { AuthGuard } from './auth.guard';
 
 @NgModule()
 export class AuthModule {
   constructor(
-    // Needs to be injected, but left unused
-    // Ideally we would ensure it's used, but that would change the public API which we decided not to do for now.
-    private authService: AuthService
-  ) {}
+    injector: Injector,
+    @Inject(FORCE_INITIALIZATION_TOKEN) forceInitialization: boolean
+  ) {
+    // If forceInitialization is set to true,
+    // we need to instantiate the AuthService when the AuthModule is instantiated.
+    if (forceInitialization) {
+      injector.get<AuthService>(AuthService);
+    }
+  }
 
   /**
    * Initialize the authentication module system. Configuration can either be specified here,
@@ -34,12 +39,12 @@ export class AuthModule {
         AuthGuard,
         {
           provide: AuthConfigService,
-          useValue: config,
+          useValue: config?.forceInitialization ? undefined : config,
         },
         AuthClient,
         {
-          provide: LAZY_LOAD_TOKEN,
-          useValue: config?.lazy || false,
+          provide: FORCE_INITIALIZATION_TOKEN,
+          useValue: false,
         },
       ],
     };

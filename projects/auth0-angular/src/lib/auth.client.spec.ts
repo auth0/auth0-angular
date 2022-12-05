@@ -45,7 +45,7 @@ describe('AuthClient', () => {
       expect.assertions(1);
     }));
 
-    it('throws an error when no config was supplied after timeout duration when lazy set to true', fakeAsync(() => {
+    it('throws an error when no config was supplied after timeout duration when forceInitialization set to true', fakeAsync(() => {
       const authClient = new AuthClient({ config$: new Subject() } as any, true);
 
       authClient.getInstance$().subscribe({
