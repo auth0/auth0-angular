@@ -11,6 +11,7 @@ Please review this guide thoroughly to understand the changes required to migrat
   - [buildLogoutUrl has been removed](#buildlogouturl-has-been-removed)
   - [redirectMethod has been removed from loginWithRedirect](#redirectmethod-has-been-removed-from-loginwithredirect)
   - [localOnly has been removed from logout](#localonly-has-been-removed-from-logout)
+  - [logout no longer returns a promise](#logout-no-longer-returns-a-promise)
   - [ignoreCache on getTokenSilentlyhas been replaced by cacheMode](#ignorecache-on-gettokensilentlyhas-been-replaced-by-cachemode)
   - [application/x-www-form-urlencoded is used by default instead of application/json](#applicationx-www-form-urlencoded-is-used-by-default-instead-of-applicationjson)
   - [No more iframe fallback by default when using refresh tokens](#no-more-iframe-fallback-by-default-when-using-refresh-tokens)
@@ -268,6 +269,9 @@ this.auth.logout({
   openUrl: false
 });
 ```
+
+### `logout` no longer returns a Promise
+All methods in the SDK return an Observable, while in v1 `logout` returned a `Promise`. With v2, we have reworked this so that the `logout` method aligns with the other methods in the SDK.
 
 ### `ignoreCache` on `getAccessTokenSilently` has been replaced by `cacheMode`
 
