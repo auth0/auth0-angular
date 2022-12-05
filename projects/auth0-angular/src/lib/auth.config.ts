@@ -147,11 +147,6 @@ export interface AuthConfig extends Auth0ClientOptions {
 }
 
 /**
- * Configuration for the authentication module's forRoot static method.
- */
- export type RootAuthConfig = AuthConfig | {forceInitialization?: true};
-
-/**
  * Angular specific state to be stored before redirect
  */
 export interface AppState {

@@ -2,9 +2,9 @@ import { NgModule, ModuleWithProviders, Injector, Inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { AuthClient } from './auth.client';
 import {
-  RootAuthConfig,
   AuthConfigService,
   FORCE_INITIALIZATION_TOKEN,
+  AuthConfig,
 } from './auth.config';
 import { AuthGuard } from './auth.guard';
 
@@ -28,11 +28,7 @@ export class AuthModule {
    *
    * @param config The optional configuration for the SDK.
    */
-  static forRoot(
-    config: RootAuthConfig & { lazy: true }
-  ): ModuleWithProviders<AuthModule>;
-  static forRoot(config?: RootAuthConfig): ModuleWithProviders<AuthModule>;
-  static forRoot(config?: RootAuthConfig): ModuleWithProviders<AuthModule> {
+  static forRoot(config?: AuthConfig | {forceInitialization?: true}): ModuleWithProviders<AuthModule> {
     return {
       ngModule: AuthModule,
       providers: [
