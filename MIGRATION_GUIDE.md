@@ -10,6 +10,7 @@ Please review this guide thoroughly to understand the changes required to migrat
   - [buildAuthorizeUrl has been removed](#buildauthorizeurl-has-been-removed)
   - [buildLogoutUrl has been removed](#buildlogouturl-has-been-removed)
   - [redirectMethod has been removed from loginWithRedirect](#redirectmethod-has-been-removed-from-loginwithredirect)
+  - [localOnly has been removed from logout](#localonly-has-been-removed-from-logout)
   - [ignoreCache on getTokenSilentlyhas been replaced by cacheMode](#ignorecache-on-gettokensilentlyhas-been-replaced-by-cachemode)
   - [application/x-www-form-urlencoded is used by default instead of application/json](#applicationx-www-form-urlencoded-is-used-by-default-instead-of-applicationjson)
   - [No more iframe fallback by default when using refresh tokens](#no-more-iframe-fallback-by-default-when-using-refresh-tokens)
@@ -169,7 +170,7 @@ export class LoginComponent {
 }
 ```
 
-With v2, we have removed `buildAuthorizeUrl`. This means that the snippet above will no longer work, and you should update your code by using `onRedirect` instead.
+With v2, we have removed `buildAuthorizeUrl`. This means that the snippet above will no longer work, and you should update your code by using `openUrl` instead.
 
 ```ts
 @Component({ /* ... */ })
@@ -179,9 +180,7 @@ export class LoginComponent {
   login() {
     this.auth
       .loginWithRedirect({
-        async onRedirect(url) {
-          await Browser.open({ url, windowName: '_self' });
-        }
+        openUrl: (url) => Browser.open({ url, windowName: '_self' })
       })
       .subscribe();
   }
@@ -213,7 +212,7 @@ export class LogoutComponent {
 }
 ```
 
-With v2, `buildLogoutUrl` has been removed and you should update any code that is not able to rely on `window.location.assign` to use `onRedirect` when calling `logout`:
+With v2, `buildLogoutUrl` has been removed and you should update any code that is not able to rely on `window.location.assign` to use `openUrl` when calling `logout`:
 
 ```ts
 @Component({ /* ... */ })
@@ -223,9 +222,7 @@ export class LogoutComponent {
    logout() {
     this.auth
       .logout({
-        async onRedirect(url) {
-          await Browser.open({ url });
-        }
+        openUrl: (url)=> Browser.open({ url })
       })
       .subscribe();
   }
@@ -248,9 +245,27 @@ With the release of v2, we have removed `redirectMethod`. If you want to use any
 
 ```ts
 this.auth.loginWithRedirect({
-  async onRedirect(url) {
-    window.location.replace(url);
+  openUrl: (url) => {
+    // Open url in the browser
   }
+});
+```
+
+### `localOnly` has been removed from `logout`
+
+In v1, `logout` took a `localOnly` option to prevent logging the user out of Auth0 when logging out from your application.
+
+```ts
+this.auth.logout({
+  localOnly: true
+});
+```
+
+With v2, we have removed the `localOnly` options, instead you should set `openUrl` to `false`:
+
+```ts
+this.auth.logout({
+  openUrl: false
 });
 ```
 
