@@ -135,7 +135,14 @@ export interface AuthConfig extends Auth0ClientOptions {
    * returns an error. Defaults to `/`
    */
   errorPath?: string;
+
+  lazy?: false;
 }
+
+/**
+ * Configuration for the authentication module's forRoot static method.
+ */
+export type RootAuthConfig = AuthConfig | {lazy?: true};
 
 /**
  * Angular specific state to be stored before redirect
@@ -240,3 +247,6 @@ export class AuthClientConfig {
 export const AuthConfigService = new InjectionToken<AuthConfig>(
   'auth0-angular.config'
 );
+
+
+export const LAZY_LOAD_TOKEN = new InjectionToken('LAZY_LOAD');

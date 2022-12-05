@@ -1,6 +1,6 @@
-import { AuthConfig, AuthClientConfig } from './auth.config';
+import { AuthConfig } from './auth.config';
 import { AuthClient } from './auth.client';
-import { EMPTY, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { expect } from '@jest/globals';
 import { fakeAsync, tick } from '@angular/core/testing';
 
@@ -23,7 +23,7 @@ describe('AuthClient', () => {
         clientId: 'abc123',
       };
 
-      const authClient = new AuthClient({ config$: of(config) } as any);
+      const authClient = new AuthClient({ config$: of(config) } as any, false);
 
       authClient
         .getInstance$()
@@ -32,15 +32,28 @@ describe('AuthClient', () => {
       expect.assertions(1);
     });
 
-    it('throws an error when no config was supplied after timeout duration', fakeAsync(() => {
-      const authClient = new AuthClient({ config$: new Subject() } as any);
+    it('throws an error instantly when no config was supplied', fakeAsync(() => {
+      const authClient = new AuthClient({ config$: new Subject() } as any, false);
 
       authClient.getInstance$().subscribe({
         error: (error) =>
           expect(error.message).toContain('Configuration must be specified'),
       });
 
-      tick(10000);
+      tick(0);
+
+      expect.assertions(1);
+    }));
+
+    it('throws an error when no config was supplied after timeout duration when lazy set to true', fakeAsync(() => {
+      const authClient = new AuthClient({ config$: new Subject() } as any, true);
+
+      authClient.getInstance$().subscribe({
+        error: (error) =>
+          expect(error.message).toContain('Configuration must be specified'),
+      });
+
+      tick(15000);
 
       expect.assertions(1);
     }));
@@ -53,7 +66,7 @@ describe('AuthClient', () => {
         useRefreshTokensFallback: false,
       };
 
-      const authClient = new AuthClient({ config$: of(config) } as any);
+      const authClient = new AuthClient({ config$: of(config) } as any, false);
 
       authClient.getInstance$().subscribe((client) => {
         expect(client).not.toBeUndefined();
@@ -73,7 +86,7 @@ describe('AuthClient', () => {
         useRefreshTokens: true,
       };
 
-      const authClient = new AuthClient({ config$: of(config) } as any);
+      const authClient = new AuthClient({ config$: of(config) } as any, false);
 
       authClient.getInstance$().subscribe((client) => {
         expect(client).not.toBeUndefined();

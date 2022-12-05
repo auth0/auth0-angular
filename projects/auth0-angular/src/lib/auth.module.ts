@@ -1,7 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { AuthService } from './auth.service';
-import { AuthConfig, AuthConfigService } from './auth.config';
 import { AuthClient } from './auth.client';
+import {
+  AuthConfigService,
+  LAZY_LOAD_TOKEN,
+  RootAuthConfig,
+} from './auth.config';
 import { AuthGuard } from './auth.guard';
 
 @NgModule()
@@ -18,7 +22,11 @@ export class AuthModule {
    *
    * @param config The optional configuration for the SDK.
    */
-  static forRoot(config?: AuthConfig): ModuleWithProviders<AuthModule> {
+  static forRoot(
+    config: RootAuthConfig & { lazy: true }
+  ): ModuleWithProviders<AuthModule>;
+  static forRoot(config?: RootAuthConfig): ModuleWithProviders<AuthModule>;
+  static forRoot(config?: RootAuthConfig): ModuleWithProviders<AuthModule> {
     return {
       ngModule: AuthModule,
       providers: [
@@ -29,6 +37,10 @@ export class AuthModule {
           useValue: config,
         },
         AuthClient,
+        {
+          provide: LAZY_LOAD_TOKEN,
+          useValue: config?.lazy || false,
+        },
       ],
     };
   }
