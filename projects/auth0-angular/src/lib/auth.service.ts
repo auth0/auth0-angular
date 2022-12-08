@@ -2,16 +2,12 @@ import { Injectable, Inject, OnDestroy } from '@angular/core';
 
 import {
   Auth0Client,
-  RedirectLoginOptions,
   PopupLoginOptions,
   PopupConfigOptions,
-  LogoutOptions,
   GetTokenSilentlyOptions,
   GetTokenWithPopupOptions,
   RedirectLoginResult,
   GetTokenSilentlyVerboseResponse,
-  User,
-  IdToken,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -39,6 +35,7 @@ import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { AuthClientConfig, AppState } from './auth.config';
 import { AuthState } from './auth.state';
+import { LogoutOptions, RedirectLoginOptions } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -176,8 +173,8 @@ export class AuthService<TAppState extends AppState = AppState>
    * Clears the application session and performs a redirect to `/v2/logout`, using
    * the parameters provided as arguments, to clear the Auth0 session.
    * If the `federated` option is specified it also clears the Identity Provider session.
-   * If the `localOnly` option is specified, it only clears the application session.
-   * It is invalid to set both the `federated` and `localOnly` options to `true`,
+   * If the `openUrl` option is set to false, it only clears the application session.
+   * It is invalid to set both the `federated` to true and `openUrl` to `false`,
    * and an error will be thrown if you do.
    * [Read more about how Logout works at Auth0](https://auth0.com/docs/logout).
    *
@@ -186,7 +183,7 @@ export class AuthService<TAppState extends AppState = AppState>
   logout(options?: LogoutOptions): Observable<void> {
     return from(
       this.auth0Client.logout(options).then(() => {
-        if (options?.onRedirect) {
+        if (options?.openUrl === false || options?.openUrl) {
           this.authState.refresh();
         }
       })

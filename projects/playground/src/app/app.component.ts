@@ -4,9 +4,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from '../../../auth0-angular/src/lib/auth.service';
 import { iif } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { LogoutOptions } from '@auth0/auth0-spa-js';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { LogoutOptions } from 'projects/auth0-angular/src/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
   launchLogout(): void {
     const formOptions = this.logoutOptionsForm.value;
     const options: LogoutOptions = {
-      onRedirect: formOptions.localOnly === true ? async () => {} : undefined,
+      openUrl: formOptions.localOnly === true ? false : undefined,
       logoutParams: {
         federated: formOptions.federated === true,
         returnTo: this.doc.location.origin,
