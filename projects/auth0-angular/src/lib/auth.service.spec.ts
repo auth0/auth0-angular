@@ -298,7 +298,7 @@ describe('AuthService', () => {
           false
         );
         service.logout({
-          onRedirect: async () => {},
+          openUrl: false,
         });
       });
     });
@@ -440,7 +440,7 @@ describe('AuthService', () => {
           false
         );
         service.logout({
-          onRedirect: async () => {},
+          openUrl: false,
         });
       });
     });
@@ -713,7 +713,7 @@ describe('AuthService', () => {
 
   it('should reset the authentication state when passing `localOnly` to logout', (done) => {
     const options = {
-      onRedirect: async () => {
+      openUrl: async () => {
         ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
           false
         );
