@@ -34,14 +34,13 @@
     "@angular/platform-browser": "^13.3.11",
     "@angular/platform-browser-dynamic": "^13.3.11",
     "@angular/router": "^13.3.11",
-    "@auth0/auth0-spa-js": "^2.0.1",
+    "@auth0/auth0-spa-js": "^2.0.0",
     "rxjs": "^6.6.7",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^13.3.9",
-    "@angular-devkit/build-ng-packagr": "^0.1000.8",
     "@angular-eslint/builder": "13.5.0",
     "@angular-eslint/eslint-plugin": "13.5.0",
     "@angular-eslint/eslint-plugin-template": "13.5.0",

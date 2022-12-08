@@ -116,7 +116,7 @@ describe('AppComponent', () => {
       fixture.detectChanges();
 
       expect(authMock.logout).toHaveBeenCalledWith({
-        onRedirect: undefined,
+        openUrl: undefined,
         logoutParams: {
           federated: false,
           returnTo: 'http://localhost',
@@ -134,7 +134,7 @@ describe('AppComponent', () => {
       fixture.detectChanges();
 
       expect(authMock.logout).toHaveBeenCalledWith({
-        onRedirect: undefined,
+        openUrl: undefined,
         logoutParams: {
           federated: true,
           returnTo: 'http://localhost',
@@ -153,7 +153,7 @@ describe('AppComponent', () => {
 
       expect(authMock.logout).toHaveBeenCalledWith(
         expect.objectContaining({
-          onRedirect: expect.any(Function),
+          openUrl: false,
           logoutParams: {
             federated: false,
             returnTo: 'http://localhost',
