@@ -132,7 +132,7 @@ If you are using any of the above methods in your application(s), ensure to upda
 
 In v1 of the SDK, `logout` can be called with an object containing a number of properties, both a mix between properties used to configure the SDK as well as those used to pass through to Auth0.
 
-With v2, logout now takes an object that can only contain three properties, `clientId`, `onRedirect` and `logoutParams`.
+With v2, logout now takes an object that can only contain three properties, `clientId`, `openUrl` and `logoutParams`.
 
 Any property, apart from clientId, that you used to set on the root of the object passed to `logout` should now be set on `logoutParams` instead.
 
@@ -242,7 +242,7 @@ this.auth.loginWithRedirect({
 });
 ```
 
-With the release of v2, we have removed `redirectMethod`. If you want to use anything but `window.location.assign` to handle the redirect to Auth0, you should implement `onRedirect`:
+With the release of v2, we have removed `redirectMethod`. If you want to use anything but `window.location.assign` to handle the redirect to Auth0, you should implement `openUrl`:
 
 ```ts
 this.auth.loginWithRedirect({
