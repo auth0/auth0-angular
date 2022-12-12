@@ -1,5 +1,26 @@
 # Change Log
 
+## [v2.0.0](https://github.com/auth0/auth0-angular/tree/v2.0.0) (2022-12-13)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.11.0...v2.0.0)
+
+Auth0-Angular v2 includes many significant changes compared to v1:
+
+- Remove polyfills from bundles
+- Introduce `authorizationParams` and `logoutParams` to hold properties sent to Auth0
+- Remove `buildAuthorizeUrl` and `buildLogoutUrl`
+- Remove `redirectMethod`, and replace by `openUrl`
+- Remove `localOnly` from `logout`
+- Ensure `logout` returns an Onservable instead of a Promise
+- Rework `ignoreCache` to `cacheMode` and introduce `cache-only` 
+- Use form-encoded data by default
+- Do not fallback to refreshing tokens via iframe method by default
+- `getUser` and `getIdTokenClaims` are removed 
+- Remove `advancedOptions.defaultScope` and replace with `scope` 
+
+As with any major version bump, v2 of Auth0-Angular contains a set of breaking changes. **Please review [the migration guide](./MIGRATION_GUIDE.md) thoroughly to understand the changes required to migrate your application to v2.**
+
+
 ## [v1.11.0](https://github.com/auth0/auth0-angular/tree/v1.11.0) (2022-10-03)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.10.1...v1.11.0)
