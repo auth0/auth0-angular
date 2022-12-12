@@ -1,6 +1,5 @@
 {
-  "entryPoints": ["./projects/auth0-angular/src/lib"],
-  "entryPointStrategy": "expand",
+  "entryPoints": ["./projects/auth0-angular/src/public-api.ts"],
   "exclude": ["**/*.spec.ts"],
   "tsconfig": "./projects/auth0-angular/tsconfig.lib.json",
   "out": "docs",
@@ -11,6 +10,6 @@
   "visibilityFilters": {
     "protected": false,
     "inherited": true,
-    "external": true,
+    "external": true
   }
 }
