@@ -1,8 +1,8 @@
 # Change Log
 
-## [v2.0.0](https://github.com/auth0/auth0-angular/tree/v2.0.0) (2022-12-13)
+## [v2.0.0-beta.0](https://github.com/auth0/auth0-angular/tree/v2.0.0-beta.0) (2022-12-13)
 
-[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.11.0...v2.0.0)
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.11.0...v2.0.0-beta.0)
 
 Auth0-Angular v2 includes many significant changes compared to v1:
 
@@ -19,7 +19,6 @@ Auth0-Angular v2 includes many significant changes compared to v1:
 - Remove `advancedOptions.defaultScope` and replace with `scope` 
 
 As with any major version bump, v2 of Auth0-Angular contains a set of breaking changes. **Please review [the migration guide](./MIGRATION_GUIDE.md) thoroughly to understand the changes required to migrate your application to v2.**
-
 
 ## [v1.11.0](https://github.com/auth0/auth0-angular/tree/v1.11.0) (2022-10-03)
 
