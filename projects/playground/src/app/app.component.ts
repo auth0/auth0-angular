@@ -6,7 +6,7 @@ import { iif } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { LogoutOptions } from 'projects/auth0-angular/src/interfaces';
+import { LogoutOptions } from 'projects/auth0-angular/src/lib/interfaces';
 
 @Component({
   selector: 'app-root',
