@@ -10,7 +10,7 @@ Auth0-Angular v2 includes many significant changes compared to v1:
 - Introduce `authorizationParams` and `logoutParams` to hold properties sent to Auth0
 - Remove `buildAuthorizeUrl` and `buildLogoutUrl`
 - Remove `redirectMethod`, and replace by `openUrl`
-- Remove `localOnly` from `logout`
+- Remove `localOnly` from `logout` in favor of `openUrl`
 - Ensure `logout` returns an Onservable instead of a Promise
 - Rework `ignoreCache` to `cacheMode` and introduce `cache-only` 
 - Use form-encoded data by default
