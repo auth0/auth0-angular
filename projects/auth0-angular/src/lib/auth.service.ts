@@ -35,7 +35,7 @@ import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { AuthClientConfig, AppState } from './auth.config';
 import { AuthState } from './auth.state';
-import { LogoutOptions, RedirectLoginOptions } from '../interfaces';
+import { LogoutOptions, RedirectLoginOptions } from './interfaces';
 
 @Injectable({
   providedIn: 'root',
