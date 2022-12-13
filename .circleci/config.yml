@@ -45,6 +45,7 @@ workflows:
       - ship/node-publish:
           publish-command: npm run build:prod && cp README.md ./dist/auth0-angular/ && npm publish ./dist/auth0-angular --tag beta
           app-directory: 'projects/auth0-angular'
+          node-version: 16.16.0
           requires:
             - browserstack
           context:
