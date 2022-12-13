@@ -9,6 +9,7 @@ export * from './lib/auth.interceptor';
 export * from './lib/auth.config';
 export * from './lib/auth.client';
 export * from './lib/auth.state';
+export * from './lib/interfaces';
 
 export {
   ICache,
