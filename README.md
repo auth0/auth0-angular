@@ -66,7 +66,7 @@ Take note of the **Client ID** and **Domain** values under the "Basic Informatio
 
 #### Static configuration
 
-Install the SDK into your application by importing `AuthModule.forRoot()` and configuring with your Auth0 domain and client id:
+Install the SDK into your application by importing `AuthModule.forRoot()` and configuring with your Auth0 domain and client id, as well as the URL to which Auth0 should redirect back after succesful authentication:
 
 ```ts
 import { NgModule } from '@angular/core';
@@ -78,6 +78,9 @@ import { AuthModule } from '@auth0/auth0-angular';
     AuthModule.forRoot({
       domain: 'YOUR_AUTH0_DOMAIN',
       clientId: 'YOUR_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
     }),
   ],
   // ...
