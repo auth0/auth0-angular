@@ -154,8 +154,8 @@ For more code samples on how to integrate the **auth0-angular** SDK in your **An
 
 Explore public API's available in auth0-angular.
 
-- [AuthService](https://auth0.github.io/auth0-angular/classes/auth_service.authservice.html) - service used to interact with the SDK.
-- [AuthConfig](https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html) - used to configure the SDK.
+- [AuthService](https://auth0.github.io/auth0-angular/classes/auth_service.AuthService.html) - service used to interact with the SDK.
+- [AuthConfig](https://auth0.github.io/auth0-angular/interfaces/auth_config.AuthConfig.html) - used to configure the SDK.
 
 ## Feedback
 
