@@ -30,7 +30,7 @@ export class AppComponent {
   }
 ```
 
-By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html#redirecturi) option.
+By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/auth_config.AuthConfig.html#redirectUri) option.
 
 ## Add logout to your application
 
