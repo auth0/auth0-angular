@@ -1,12 +1,12 @@
 :root {
   --light-hl-0: #000000;
   --dark-hl-0: #d4d4d4;
-  --light-hl-1: #af00db;
-  --dark-hl-1: #c586c0;
-  --light-hl-2: #001080;
-  --dark-hl-2: #9cdcfe;
-  --light-hl-3: #a31515;
-  --dark-hl-3: #ce9178;
+  --light-hl-1: #a31515;
+  --dark-hl-1: #ce9178;
+  --light-hl-2: #af00db;
+  --dark-hl-2: #c586c0;
+  --light-hl-3: #001080;
+  --dark-hl-3: #9cdcfe;
   --light-hl-4: #795e26;
   --dark-hl-4: #dcdcaa;
   --light-hl-5: #008000;
@@ -19,7 +19,7 @@
   --dark-hl-8: #c8c8c8;
   --light-hl-9: #0070c1;
   --dark-hl-9: #4fc1ff;
-  --light-code-background: #f5f5f5;
+  --light-code-background: #ffffff;
   --dark-code-background: #1e1e1e;
 }
 
@@ -55,7 +55,7 @@
   }
 }
 
-body.light {
+:root[data-theme='light'] {
   --hl-0: var(--light-hl-0);
   --hl-1: var(--light-hl-1);
   --hl-2: var(--light-hl-2);
@@ -69,7 +69,7 @@ body.light {
   --code-background: var(--light-code-background);
 }
 
-body.dark {
+:root[data-theme='dark'] {
   --hl-0: var(--dark-hl-0);
   --hl-1: var(--dark-hl-1);
   --hl-2: var(--dark-hl-2);
