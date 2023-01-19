@@ -1,7 +1,10 @@
 {
   "clientId": "testing",
   "domain": "http://127.0.0.1:4200",
-  "audience": "test",
+  "authorizationParams": {
+    "audience": "test",
+    "redirect_uri": "http://127.0.0.1:4200"
+  },
   "errorPath": "/error",
   "httpInterceptor": {
     "allowedList": [

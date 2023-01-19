@@ -49,7 +49,7 @@
     "@angular/cli": "^13.3.9",
     "@angular/compiler-cli": "^13.3.11",
     "@angular/forms": "^13.3.11",
-    "@briebug/cypress-schematic": "^4.4.0",
+    "@cypress/schematic": "^2.4.0",
     "@types/jasmine": "^3.6.2",
     "@types/jasminewd2": "~2.0.3",
     "@types/jest": "^29.2.2",
