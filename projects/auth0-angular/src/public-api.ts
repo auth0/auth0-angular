@@ -12,10 +12,15 @@ export * from './lib/auth.state';
 export * from './lib/interfaces';
 
 export {
+  AuthorizationParams,
+  PopupLoginOptions,
+  PopupConfigOptions,
+  GetTokenWithPopupOptions,
+  GetTokenSilentlyOptions,
   ICache,
   Cacheable,
   LocalStorageCache,
   InMemoryCache,
   IdToken,
-  User
+  User,
 } from '@auth0/auth0-spa-js';
