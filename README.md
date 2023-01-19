@@ -2,8 +2,6 @@
 
 A library for integrating [Auth0](https://auth0.com) into an Angular application.
 
-> :warning: Please be aware that v2 is currently in [**Beta**](https://auth0.com/docs/troubleshoot/product-lifecycle/product-release-stages). Whilst we encourage you to test the update within your applications, we do no recommend using this version in production yet. Please follow the [migration guide](./MIGRATION_GUIDE.md) when updating your application.
-
 ![Release](https://img.shields.io/npm/v/@auth0/auth0-angular)
 [![Codecov](https://img.shields.io/codecov/c/github/auth0/auth0-angular)](https://codecov.io/gh/auth0/auth0-angular)
 ![Downloads](https://img.shields.io/npm/dw/@auth0/auth0-angular)
@@ -31,13 +29,13 @@ This project only supports the [actively supported versions of Angular as stated
 Using npm:
 
 ```sh
-npm install @auth0/auth0-angular@beta
+npm install @auth0/auth0-angular
 ```
 
 We also have `ng-add` support, so the library can also be installed using the Angular CLI:
 
 ```sh
-ng add @auth0/auth0-angular@beta
+ng add @auth0/auth0-angular
 ```
 
 ### Configure Auth0
@@ -79,8 +77,8 @@ import { AuthModule } from '@auth0/auth0-angular';
       domain: 'YOUR_AUTH0_DOMAIN',
       clientId: 'YOUR_AUTH0_CLIENT_ID',
       authorizationParams: {
-        redirect_uri: window.location.origin
-      }
+        redirect_uri: window.location.origin,
+      },
     }),
   ],
   // ...
