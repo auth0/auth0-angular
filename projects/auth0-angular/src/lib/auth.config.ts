@@ -194,6 +194,22 @@ export interface AppState {
  * ```
  *
  */
+
+/**
+ * Injection token for accessing configuration.
+ *
+ * @usageNotes
+ *
+ * Use the `Inject` decorator to access the configuration from a service or component:
+ *
+ * ```
+ * class MyService(@Inject(AuthConfigService) config: AuthConfig) {}
+ * ```
+ */
+export const AuthConfigService = new InjectionToken<AuthConfig>(
+  'auth0-angular.config'
+);
+
 @Injectable({ providedIn: 'root' })
 export class AuthClientConfig {
   private config?: AuthConfig;
@@ -220,18 +236,3 @@ export class AuthClientConfig {
     return this.config as AuthConfig;
   }
 }
-
-/**
- * Injection token for accessing configuration.
- *
- * @usageNotes
- *
- * Use the `Inject` decorator to access the configuration from a service or component:
- *
- * ```
- * class MyService(@Inject(AuthConfigService) config: AuthConfig) {}
- * ```
- */
-export const AuthConfigService = new InjectionToken<AuthConfig>(
-  'auth0-angular.config'
-);
