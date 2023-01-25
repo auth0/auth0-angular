@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.0.1](https://github.com/auth0/auth0-angular/tree/v2.0.1) (2023-01-25)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.0...v2.0.1)
+
+**Fixed**
+
+- Ensure AuthConfigService is exported before AuthClientConfig [\#413](https://github.com/auth0/auth0-angular/pull/413) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v2.0.0](https://github.com/auth0/auth0-angular/tree/v2.0.0) (2023-01-19)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.11.0...v2.0.0)
