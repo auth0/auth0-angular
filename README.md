@@ -1,5 +1,7 @@
 ![Auth0 SDK for Angular Single Page Applications](https://cdn.auth0.com/website/sdks/banners/auth0-angular-banner.png)
 
+[DO NOT MERGE]
+
 A library for integrating [Auth0](https://auth0.com) into an Angular application.
 
 ![Release](https://img.shields.io/npm/v/@auth0/auth0-angular)
