@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout
       - ship/node-install-packages
-      - run: npx concurrently --kill-others --success first 'npm run start:local:oidc' 'npx wait-on tcp:127.0.0.1:3000 && npm run start:local:playground' 'npx wait-on tcp:127.0.0.1:4200 && npx browserstack-cypress run --build-name $CIRCLE_BRANCH'
+      - run: npx concurrently --kill-others --success first 'npm run start:local:oidc' 'npx wait-on tcp:127.0.0.1:3000 && npm run start:local:playground' 'npx wait-on tcp:127.0.0.1:4200 && npx browserstack-cypress-cli run --build-name $CIRCLE_BRANCH'
 workflows:
   build_and_test:
     jobs:
