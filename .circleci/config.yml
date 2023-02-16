@@ -32,9 +32,9 @@ jobs:
     steps:
       - checkout
       - ship/node-install-packages
-      - run: wget "https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip" -O browserstack.zip && unzip browserstack.zip
+      - run: npm install -g browserstack-cypress-cli
       - run: npx concurrently --raw --kill-others --success first "npm:start:local" "wait-on http://127.0.0.1:4200/"
-      - run: ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
+      - run: browserstack-cypress run
 workflows:
   build_and_test:
     jobs:
