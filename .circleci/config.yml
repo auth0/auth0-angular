@@ -5,7 +5,7 @@ orbs:
 parameters:
   docker_image:
     type: string
-    default: circleci/node:16-browsers
+    default: cimg/node:16.19-browsers
 jobs:
   build:
     docker:
@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout
       - ship/node-install-packages
-      - run: npx concurrently --raw --kill-others --success first "npm:start:local" "wait-on http://127.0.0.1:4200/ && browserstack-cypress run --build-name $CIRCLE_BRANCH"
+      - run: npx concurrently --kill-others --success first 'npm run start:local:oidc' 'npx wait-on tcp:127.0.0.1:3000 && npm run start:local:playground' 'npx wait-on tcp:127.0.0.1:4200 && npx browserstack-cypress-cli run --build-name $CIRCLE_BRANCH'
 workflows:
   build_and_test:
     jobs:
@@ -45,7 +45,7 @@ workflows:
       - ship/node-publish:
           publish-command: npm run build:prod && cp README.md ./dist/auth0-angular/ && npm publish ./dist/auth0-angular
           app-directory: 'projects/auth0-angular'
-          node-version: 16.16.0
+          node-version: 16.19.0
           requires:
             - browserstack
           context:
