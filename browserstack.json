@@ -22,7 +22,7 @@
     "cypress-version": "7",
     "project_name": "Auth0 Angular SDK",
     "exclude": [],
-    "parallels": "3",
+    "parallels": "5",
     "npm_dependencies": {
       "typescript": "~4.2.4",
       "qss": "2.0.3"
