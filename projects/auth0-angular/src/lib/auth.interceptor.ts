@@ -31,9 +31,10 @@ import { Auth0ClientService } from './auth.client';
 import { AuthState } from './auth.state';
 import { AuthService } from './auth.service';
 
-const waitUntil = <TSignal>(signal$: Observable<TSignal>) => <TSource>(
-  source$: Observable<TSource>
-) => source$.pipe(mergeMap((value) => signal$.pipe(first(), mapTo(value))));
+const waitUntil =
+  <TSignal>(signal$: Observable<TSignal>) =>
+  <TSource>(source$: Observable<TSource>) =>
+    source$.pipe(mergeMap((value) => signal$.pipe(first(), mapTo(value))));
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -41,7 +42,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     private configFactory: AuthClientConfig,
     @Inject(Auth0ClientService) private auth0Client: Auth0Client,
     private authState: AuthState,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   intercept(
@@ -54,7 +55,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     }
 
     const isLoaded$ = this.authService.isLoading$.pipe(
-      filter((isLoading) => !isLoading),
+      filter((isLoading) => !isLoading)
     );
 
     return this.findMatchingRoute(req, config.httpInterceptor).pipe(
@@ -207,7 +208,9 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       !!route &&
       isHttpInterceptorRouteConfig(route) &&
       !!route.allowAnonymous &&
-      ['login_required', 'consent_required'].includes(err.error)
+      ['login_required', 'consent_required', 'missing_refresh_token'].includes(
+        err.error
+      )
     );
   }
 }
