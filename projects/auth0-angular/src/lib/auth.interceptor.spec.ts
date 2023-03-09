@@ -165,7 +165,7 @@ describe('The Auth HTTP Interceptor', () => {
     it('pass through and do not have access tokens attached', fakeAsync(async (
       done: () => void
     ) => {
-      config.httpInterceptor = (null as unknown) as HttpInterceptorConfig;
+      config.httpInterceptor = null as unknown as HttpInterceptorConfig;
       await assertPassThruApiCallTo('https://my-api.com/api/public', done);
     }));
   });
@@ -310,9 +310,9 @@ describe('The Auth HTTP Interceptor', () => {
     it('does not execute HTTP call when not able to retrieve a token', fakeAsync(async (
       done: () => void
     ) => {
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockReturnValue(
-        throwError({ error: 'login_required' })
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(throwError({ error: 'login_required' }));
 
       httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
         error: (err) => expect(err).toEqual({ error: 'login_required' }),
@@ -327,9 +327,19 @@ describe('The Auth HTTP Interceptor', () => {
     it('does execute HTTP call when not able to retrieve a token but allowAnonymous is set to true', fakeAsync(async (
       done: () => void
     ) => {
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockReturnValue(
-        throwError({ error: 'login_required' })
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(throwError({ error: 'login_required' }));
+
+      await assertPassThruApiCallTo('https://my-api.com/api/orders', done);
+    }));
+
+    it('does execute HTTP call when missing_refresh_token but allowAnonymous is set to true', fakeAsync(async (
+      done: () => void
+    ) => {
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(throwError({ error: 'missing_refresh_token' }));
 
       await assertPassThruApiCallTo('https://my-api.com/api/orders', done);
     }));
@@ -337,9 +347,9 @@ describe('The Auth HTTP Interceptor', () => {
     it('emit error when not able to retrieve a token but allowAnonymous is set to false', fakeAsync(async (
       done: () => void
     ) => {
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockRejectedValue(
-        { error: 'login_required' }
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockRejectedValue({ error: 'login_required' });
 
       httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
         error: (err) => expect(err).toEqual({ error: 'login_required' }),
@@ -354,9 +364,19 @@ describe('The Auth HTTP Interceptor', () => {
     }));
 
     it('does not emit error when not able to retrieve a token but allowAnonymous is set to true', fakeAsync(async () => {
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockRejectedValue(
-        { error: 'login_required' }
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockRejectedValue({ error: 'login_required' });
+
+      await assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
+        expect(authState.setError).not.toHaveBeenCalled();
+      });
+    }));
+
+    it('does not emit error when missing_refresh_token but allowAnonymous is set to true', fakeAsync(async () => {
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockRejectedValue({ error: 'missing_refresh_token' });
 
       await assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
         expect(authState.setError).not.toHaveBeenCalled();
