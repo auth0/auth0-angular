@@ -23,4 +23,11 @@ export {
   InMemoryCache,
   IdToken,
   User,
+  GenericError,
+  TimeoutError,
+  MfaRequiredError,
+  PopupTimeoutError,
+  AuthenticationError,
+  PopupCancelledError,
+  MissingRefreshTokenError
 } from '@auth0/auth0-spa-js';
