@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>AuthState | @auth0/auth0-angular</title>
+    <title>MfaRequiredError | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/style.css" />
@@ -75,29 +75,39 @@
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb">
             <li><a href="../modules.html">@auth0/auth0-angular</a></li>
-            <li><a href="AuthState.html">AuthState</a></li>
+            <li><a href="MfaRequiredError.html">MfaRequiredError</a></li>
           </ul>
-          <h1>Class AuthState</h1>
+          <h1>Class MfaRequiredError</h1>
         </div>
         <section class="tsd-panel tsd-comment">
           <div class="tsd-comment tsd-typography">
-            <p>Tracks the Authentication State for the SDK</p>
+            <p>
+              Error thrown when the token exchange results in a
+              <code>mfa_required</code> error
+            </p>
           </div>
         </section>
         <section class="tsd-panel tsd-hierarchy">
           <h4>Hierarchy</h4>
           <ul class="tsd-hierarchy">
-            <li><span class="target">AuthState</span></li>
+            <li>
+              <a
+                href="GenericError.html"
+                class="tsd-signature-type"
+                data-tsd-kind="Class"
+                >GenericError</a
+              >
+              <ul class="tsd-hierarchy">
+                <li><span class="target">MfaRequiredError</span></li>
+              </ul>
+            </li>
           </ul>
         </section>
         <aside class="tsd-sources">
           <ul>
             <li>
               Defined in
-              <a
-                href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L26"
-                >projects/auth0-angular/src/lib/auth.state.ts:26</a
-              >
+              node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:43
             </li>
           </ul>
         </aside>
@@ -125,8 +135,8 @@
                   <h3 class="tsd-index-heading">Constructors</h3>
                   <div class="tsd-index-list">
                     <a
-                      href="AuthState.html#constructor"
-                      class="tsd-index-link tsd-kind-constructor tsd-parent-kind-class"
+                      href="MfaRequiredError.html#constructor"
+                      class="tsd-index-link tsd-kind-constructor tsd-parent-kind-class tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         width="24"
@@ -157,8 +167,8 @@
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
                     <a
-                      href="AuthState.html#error_"
-                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class"
+                      href="MfaRequiredError.html#error"
+                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         width="24"
@@ -181,11 +191,11 @@
                           fill="var(--color-text)"
                           id="icon-1024-text"
                         ></path></svg
-                      ><span>error$</span></a
+                      ><span>error</span></a
                     >
                     <a
-                      href="AuthState.html#idTokenClaims_"
-                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class"
+                      href="MfaRequiredError.html#error_description"
+                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         width="24"
@@ -194,11 +204,11 @@
                       >
                         <use href="#icon-1024-path"></use>
                         <use href="#icon-1024-text"></use></svg
-                      ><span>id<wbr />Token<wbr />Claims$</span></a
+                      ><span>error_<wbr />description</span></a
                     >
                     <a
-                      href="AuthState.html#isAuthenticated_"
-                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class"
+                      href="MfaRequiredError.html#message"
+                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         width="24"
@@ -207,11 +217,11 @@
                       >
                         <use href="#icon-1024-path"></use>
                         <use href="#icon-1024-text"></use></svg
-                      ><span>is<wbr />Authenticated$</span></a
+                      ><span>message</span></a
                     >
                     <a
-                      href="AuthState.html#isLoading_"
-                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class"
+                      href="MfaRequiredError.html#mfa_token"
+                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         width="24"
@@ -220,11 +230,11 @@
                       >
                         <use href="#icon-1024-path"></use>
                         <use href="#icon-1024-text"></use></svg
-                      ><span>is<wbr />Loading$</span></a
+                      ><span>mfa_<wbr />token</span></a
                     >
                     <a
-                      href="AuthState.html#user_"
-                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class"
+                      href="MfaRequiredError.html#name"
+                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         width="24"
@@ -233,7 +243,46 @@
                       >
                         <use href="#icon-1024-path"></use>
                         <use href="#icon-1024-text"></use></svg
-                      ><span>user$</span></a
+                      ><span>name</span></a
+                    >
+                    <a
+                      href="MfaRequiredError.html#stack"
+                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <use href="#icon-1024-path"></use>
+                        <use href="#icon-1024-text"></use></svg
+                      ><span>stack?</span></a
+                    >
+                    <a
+                      href="MfaRequiredError.html#prepareStackTrace"
+                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <use href="#icon-1024-path"></use>
+                        <use href="#icon-1024-text"></use></svg
+                      ><span>prepare<wbr />Stack<wbr />Trace?</span></a
+                    >
+                    <a
+                      href="MfaRequiredError.html#stackTraceLimit"
+                      class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <use href="#icon-1024-path"></use>
+                        <use href="#icon-1024-text"></use></svg
+                      ><span>stack<wbr />Trace<wbr />Limit</span></a
                     >
                   </div>
                 </section>
@@ -241,8 +290,8 @@
                   <h3 class="tsd-index-heading">Methods</h3>
                   <div class="tsd-index-list">
                     <a
-                      href="AuthState.html#refresh"
-                      class="tsd-index-link tsd-kind-method tsd-parent-kind-class"
+                      href="MfaRequiredError.html#captureStackTrace"
+                      class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         width="24"
@@ -265,11 +314,11 @@
                           fill="var(--color-text)"
                           id="icon-2048-text"
                         ></path></svg
-                      ><span>refresh</span></a
+                      ><span>capture<wbr />Stack<wbr />Trace</span></a
                     >
                     <a
-                      href="AuthState.html#setAccessToken"
-                      class="tsd-index-link tsd-kind-method tsd-parent-kind-class"
+                      href="MfaRequiredError.html#fromPayload"
+                      class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         width="24"
@@ -278,33 +327,7 @@
                       >
                         <use href="#icon-2048-path"></use>
                         <use href="#icon-2048-text"></use></svg
-                      ><span>set<wbr />Access<wbr />Token</span></a
-                    >
-                    <a
-                      href="AuthState.html#setError"
-                      class="tsd-index-link tsd-kind-method tsd-parent-kind-class"
-                      ><svg
-                        class="tsd-kind-icon"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                      >
-                        <use href="#icon-2048-path"></use>
-                        <use href="#icon-2048-text"></use></svg
-                      ><span>set<wbr />Error</span></a
-                    >
-                    <a
-                      href="AuthState.html#setIsLoading"
-                      class="tsd-index-link tsd-kind-method tsd-parent-kind-class"
-                      ><svg
-                        class="tsd-kind-icon"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                      >
-                        <use href="#icon-2048-path"></use>
-                        <use href="#icon-2048-text"></use></svg
-                      ><span>set<wbr />Is<wbr />Loading</span></a
+                      ><span>from<wbr />Payload</span></a
                     >
                   </div>
                 </section>
@@ -315,7 +338,7 @@
         <section class="tsd-panel-group tsd-member-group">
           <h2>Constructors</h2>
           <section
-            class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external"
           >
             <a id="constructor" class="tsd-anchor"></a>
             <h3 class="tsd-anchor-link">
@@ -350,25 +373,31 @@
               ></a>
             </h3>
             <ul
-              class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class"
+              class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external"
             >
               <li
                 class="tsd-signature tsd-anchor-link"
-                id="constructor.new_AuthState"
+                id="constructor.new_MfaRequiredError"
               >
-                new <wbr />Auth<wbr />State<span class="tsd-signature-symbol"
+                new <wbr />Mfa<wbr />Required<wbr />Error<span
+                  class="tsd-signature-symbol"
                   >(</span
-                >auth0Client<span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">Auth0Client</span
+                >error<span class="tsd-signature-symbol">: </span
+                ><span class="tsd-signature-type">string</span>,
+                error_description<span class="tsd-signature-symbol">: </span
+                ><span class="tsd-signature-type">string</span>, mfa_token<span
+                  class="tsd-signature-symbol"
+                  >: </span
+                ><span class="tsd-signature-type">string</span
                 ><span class="tsd-signature-symbol">)</span
                 ><span class="tsd-signature-symbol">: </span
                 ><a
-                  href="AuthState.html"
+                  href="MfaRequiredError.html"
                   class="tsd-signature-type"
                   data-tsd-kind="Class"
-                  >AuthState</a
+                  >MfaRequiredError</a
                 ><a
-                  href="#constructor.new_AuthState"
+                  href="#constructor.new_MfaRequiredError"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg
@@ -391,8 +420,19 @@
                   <ul class="tsd-parameter-list">
                     <li>
                       <h5>
-                        auth0Client:
-                        <span class="tsd-signature-type">Auth0Client</span>
+                        error: <span class="tsd-signature-type">string</span>
+                      </h5>
+                    </li>
+                    <li>
+                      <h5>
+                        error_description:
+                        <span class="tsd-signature-type">string</span>
+                      </h5>
+                    </li>
+                    <li>
+                      <h5>
+                        mfa_token:
+                        <span class="tsd-signature-type">string</span>
                       </h5>
                     </li>
                   </ul>
@@ -400,20 +440,23 @@
                 <h4 class="tsd-returns-title">
                   Returns
                   <a
-                    href="AuthState.html"
+                    href="MfaRequiredError.html"
                     class="tsd-signature-type"
                     data-tsd-kind="Class"
-                    >AuthState</a
+                    >MfaRequiredError</a
                   >
                 </h4>
                 <aside class="tsd-sources">
+                  <p>
+                    Overrides <a href="GenericError.html">GenericError</a>.<a
+                      href="GenericError.html#constructor"
+                      >constructor</a
+                    >
+                  </p>
                   <ul>
                     <li>
                       Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L112"
-                        >projects/auth0-angular/src/lib/auth.state.ts:112</a
-                      >
+                      node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:45
                     </li>
                   </ul>
                 </aside>
@@ -424,13 +467,12 @@
         <section class="tsd-panel-group tsd-member-group">
           <h2>Properties</h2>
           <section
-            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
           >
-            <a id="error_" class="tsd-anchor"></a>
+            <a id="error" class="tsd-anchor"></a>
             <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagReadonly">Readonly</code>
-              <span>error$</span
-              ><a href="#error_" aria-label="Permalink" class="tsd-anchor-icon"
+              <span>error</span
+              ><a href="#error" aria-label="Permalink" class="tsd-anchor-icon"
                 ><svg
                   class="icon icon-tabler icon-tabler-link"
                   viewBox="0 0 24 24"
@@ -446,40 +488,32 @@
               ></a>
             </h3>
             <div class="tsd-signature">
-              error$<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">Observable</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">Error</span
-              ><span class="tsd-signature-symbol">&gt;</span
-              ><span class="tsd-signature-symbol"> = ...</span>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                Emits errors that occur during login, or when checking for an
-                active session on startup.
-              </p>
+              error<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
+              <p>
+                Inherited from <a href="GenericError.html">GenericError</a>.<a
+                  href="GenericError.html#error"
+                  >error</a
+                >
+              </p>
               <ul>
                 <li>
                   Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L110"
-                    >projects/auth0-angular/src/lib/auth.state.ts:110</a
-                  >
+                  node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:5
                 </li>
               </ul>
             </aside>
           </section>
           <section
-            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
           >
-            <a id="idTokenClaims_" class="tsd-anchor"></a>
+            <a id="error_description" class="tsd-anchor"></a>
             <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagReadonly">Readonly</code>
-              <span>id<wbr />Token<wbr />Claims$</span
+              <span>error_<wbr />description</span
               ><a
-                href="#idTokenClaims_"
+                href="#error_description"
                 aria-label="Permalink"
                 class="tsd-anchor-icon"
                 ><svg
@@ -497,50 +531,73 @@
               ></a>
             </h3>
             <div class="tsd-signature">
-              id<wbr />Token<wbr />Claims$<span class="tsd-signature-symbol"
+              error_<wbr />description<span class="tsd-signature-symbol"
                 >:</span
               >
-              <span class="tsd-signature-type">Observable</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">undefined</span
-              ><span class="tsd-signature-symbol"> | </span
-              ><span class="tsd-signature-type">null</span
-              ><span class="tsd-signature-symbol"> | </span
-              ><a
-                href="../interfaces/IdToken.html"
-                class="tsd-signature-type"
-                data-tsd-kind="Interface"
-                >IdToken</a
-              ><span class="tsd-signature-symbol">&gt;</span
-              ><span class="tsd-signature-symbol"> = ...</span>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                Emits ID token claims when authenticated, or null if not
-                authenticated.
-              </p>
+              <span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
+              <p>
+                Inherited from <a href="GenericError.html">GenericError</a>.<a
+                  href="GenericError.html#error_description"
+                  >error_description</a
+                >
+              </p>
               <ul>
                 <li>
                   Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L101"
-                    >projects/auth0-angular/src/lib/auth.state.ts:101</a
-                  >
+                  node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:6
                 </li>
               </ul>
             </aside>
           </section>
           <section
-            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
           >
-            <a id="isAuthenticated_" class="tsd-anchor"></a>
+            <a id="message" class="tsd-anchor"></a>
             <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagReadonly">Readonly</code>
-              <span>is<wbr />Authenticated$</span
+              <span>message</span
+              ><a href="#message" aria-label="Permalink" class="tsd-anchor-icon"
+                ><svg
+                  class="icon icon-tabler icon-tabler-link"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="#icon-anchor-a"></use>
+                  <use href="#icon-anchor-b"></use>
+                  <use href="#icon-anchor-c"></use></svg
+              ></a>
+            </h3>
+            <div class="tsd-signature">
+              message<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">string</span>
+            </div>
+            <aside class="tsd-sources">
+              <p>
+                Inherited from <a href="GenericError.html">GenericError</a>.<a
+                  href="GenericError.html#message"
+                  >message</a
+                >
+              </p>
+              <ul>
+                <li>
+                  Defined in node_modules/typescript/lib/lib.es5.d.ts:1023
+                </li>
+              </ul>
+            </aside>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external"
+          >
+            <a id="mfa_token" class="tsd-anchor"></a>
+            <h3 class="tsd-anchor-link">
+              <span>mfa_<wbr />token</span
               ><a
-                href="#isAuthenticated_"
+                href="#mfa_token"
                 aria-label="Permalink"
                 class="tsd-anchor-icon"
                 ><svg
@@ -558,42 +615,108 @@
               ></a>
             </h3>
             <div class="tsd-signature">
-              is<wbr />Authenticated$<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">Observable</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">boolean</span
-              ><span class="tsd-signature-symbol">&gt;</span
-              ><span class="tsd-signature-symbol"> = ...</span>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                Emits boolean values indicating the authentication state of the
-                user. If <code>true</code>, it means a user has authenticated.
-                This depends on the value of <code>isLoading$</code>, so there
-                is no need to manually check the loading state of the SDK.
-              </p>
+              mfa_<wbr />token<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">string</span>
             </div>
             <aside class="tsd-sources">
               <ul>
                 <li>
                   Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L83"
-                    >projects/auth0-angular/src/lib/auth.state.ts:83</a
-                  >
+                  node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:44
                 </li>
               </ul>
             </aside>
           </section>
           <section
-            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
           >
-            <a id="isLoading_" class="tsd-anchor"></a>
+            <a id="name" class="tsd-anchor"></a>
             <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagReadonly">Readonly</code>
-              <span>is<wbr />Loading$</span
+              <span>name</span
+              ><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"
+                ><svg
+                  class="icon icon-tabler icon-tabler-link"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="#icon-anchor-a"></use>
+                  <use href="#icon-anchor-b"></use>
+                  <use href="#icon-anchor-c"></use></svg
+              ></a>
+            </h3>
+            <div class="tsd-signature">
+              name<span class="tsd-signature-symbol">:</span>
+              <span class="tsd-signature-type">string</span>
+            </div>
+            <aside class="tsd-sources">
+              <p>
+                Inherited from <a href="GenericError.html">GenericError</a>.<a
+                  href="GenericError.html#name"
+                  >name</a
+                >
+              </p>
+              <ul>
+                <li>
+                  Defined in node_modules/typescript/lib/lib.es5.d.ts:1022
+                </li>
+              </ul>
+            </aside>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+          >
+            <a id="stack" class="tsd-anchor"></a>
+            <h3 class="tsd-anchor-link">
+              <code class="tsd-tag ts-flagOptional">Optional</code>
+              <span>stack</span
+              ><a href="#stack" aria-label="Permalink" class="tsd-anchor-icon"
+                ><svg
+                  class="icon icon-tabler icon-tabler-link"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="#icon-anchor-a"></use>
+                  <use href="#icon-anchor-b"></use>
+                  <use href="#icon-anchor-c"></use></svg
+              ></a>
+            </h3>
+            <div class="tsd-signature">
+              stack<span class="tsd-signature-symbol">?:</span>
+              <span class="tsd-signature-type">string</span>
+            </div>
+            <aside class="tsd-sources">
+              <p>
+                Inherited from <a href="GenericError.html">GenericError</a>.<a
+                  href="GenericError.html#stack"
+                  >stack</a
+                >
+              </p>
+              <ul>
+                <li>
+                  Defined in node_modules/typescript/lib/lib.es5.d.ts:1024
+                </li>
+                <li>Defined in node_modules/@types/node/globals.d.ts:127</li>
+              </ul>
+            </aside>
+          </section>
+          <section
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+          >
+            <a id="prepareStackTrace" class="tsd-anchor"></a>
+            <h3 class="tsd-anchor-link">
+              <code class="tsd-tag ts-flagStatic">Static</code>
+              <code class="tsd-tag ts-flagOptional">Optional</code>
+              <span>prepare<wbr />Stack<wbr />Trace</span
               ><a
-                href="#isLoading_"
+                href="#prepareStackTrace"
                 aria-label="Permalink"
                 class="tsd-anchor-icon"
                 ><svg
@@ -611,38 +734,105 @@
               ></a>
             </h3>
             <div class="tsd-signature">
-              is<wbr />Loading$<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">Observable</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">boolean</span
-              ><span class="tsd-signature-symbol">&gt;</span
-              ><span class="tsd-signature-symbol"> = ...</span>
+              prepare<wbr />Stack<wbr />Trace<span class="tsd-signature-symbol"
+                >?:</span
+              >
+              <span class="tsd-signature-symbol">(</span
+              ><span class="tsd-signature-symbol">(</span>err<span
+                class="tsd-signature-symbol"
+                >: </span
+              ><span class="tsd-signature-type">Error</span>, stackTraces<span
+                class="tsd-signature-symbol"
+                >: </span
+              ><span class="tsd-signature-type">CallSite</span
+              ><span class="tsd-signature-symbol">[]</span
+              ><span class="tsd-signature-symbol">)</span
+              ><span class="tsd-signature-symbol"> =&gt; </span
+              ><span class="tsd-signature-type">any</span
+              ><span class="tsd-signature-symbol">)</span>
             </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                Emits boolean values indicating the loading state of the SDK.
-              </p>
+            <div class="tsd-type-declaration">
+              <h4>Type declaration</h4>
+              <ul class="tsd-parameters">
+                <li class="tsd-parameter-signature">
+                  <ul
+                    class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-external"
+                  >
+                    <li
+                      class="tsd-signature"
+                      id="prepareStackTrace.__type.__type-1"
+                    >
+                      <span class="tsd-signature-symbol">(</span>err<span
+                        class="tsd-signature-symbol"
+                        >: </span
+                      ><span class="tsd-signature-type">Error</span>,
+                      stackTraces<span class="tsd-signature-symbol">: </span
+                      ><span class="tsd-signature-type">CallSite</span
+                      ><span class="tsd-signature-symbol">[]</span
+                      ><span class="tsd-signature-symbol">)</span
+                      ><span class="tsd-signature-symbol">: </span
+                      ><span class="tsd-signature-type">any</span>
+                    </li>
+                    <li class="tsd-description">
+                      <div class="tsd-comment tsd-typography">
+                        <p>Optional override for formatting stack traces</p>
+
+                        <h3>See</h3>
+                        <p>
+                          <a
+                            href="https://github.com/v8/v8/wiki/Stack%20Trace%20API#customizing-stack-traces"
+                            >https://github.com/v8/v8/wiki/Stack%20Trace%20API#customizing-stack-traces</a
+                          >
+                        </p>
+                      </div>
+                      <div class="tsd-parameters">
+                        <h4 class="tsd-parameters-title">Parameters</h4>
+                        <ul class="tsd-parameter-list">
+                          <li>
+                            <h5>
+                              err: <span class="tsd-signature-type">Error</span>
+                            </h5>
+                          </li>
+                          <li>
+                            <h5>
+                              stackTraces:
+                              <span class="tsd-signature-type">CallSite</span
+                              ><span class="tsd-signature-symbol">[]</span>
+                            </h5>
+                          </li>
+                        </ul>
+                      </div>
+                      <h4 class="tsd-returns-title">
+                        Returns <span class="tsd-signature-type">any</span>
+                      </h4>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
             </div>
             <aside class="tsd-sources">
+              <p>
+                Inherited from <a href="GenericError.html">GenericError</a>.<a
+                  href="GenericError.html#prepareStackTrace"
+                  >prepareStackTrace</a
+                >
+              </p>
               <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L35"
-                    >projects/auth0-angular/src/lib/auth.state.ts:35</a
-                  >
-                </li>
+                <li>Defined in node_modules/@types/node/globals.d.ts:140</li>
               </ul>
             </aside>
           </section>
           <section
-            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
           >
-            <a id="user_" class="tsd-anchor"></a>
+            <a id="stackTraceLimit" class="tsd-anchor"></a>
             <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagReadonly">Readonly</code>
-              <span>user$</span
-              ><a href="#user_" aria-label="Permalink" class="tsd-anchor-icon"
+              <code class="tsd-tag ts-flagStatic">Static</code>
+              <span>stack<wbr />Trace<wbr />Limit</span
+              ><a
+                href="#stackTraceLimit"
+                aria-label="Permalink"
+                class="tsd-anchor-icon"
                 ><svg
                   class="icon icon-tabler icon-tabler-link"
                   viewBox="0 0 24 24"
@@ -658,36 +848,20 @@
               ></a>
             </h3>
             <div class="tsd-signature">
-              user$<span class="tsd-signature-symbol">:</span>
-              <span class="tsd-signature-type">Observable</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">undefined</span
-              ><span class="tsd-signature-symbol"> | </span
-              ><span class="tsd-signature-type">null</span
-              ><span class="tsd-signature-symbol"> | </span
-              ><a
-                href="User.html"
-                class="tsd-signature-type"
-                data-tsd-kind="Class"
-                >User</a
-              ><span class="tsd-signature-symbol">&gt;</span
-              ><span class="tsd-signature-symbol"> = ...</span>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                Emits details about the authenticated user, or null if not
-                authenticated.
-              </p>
+              stack<wbr />Trace<wbr />Limit<span class="tsd-signature-symbol"
+                >:</span
+              >
+              <span class="tsd-signature-type">number</span>
             </div>
             <aside class="tsd-sources">
+              <p>
+                Inherited from <a href="GenericError.html">GenericError</a>.<a
+                  href="GenericError.html#stackTraceLimit"
+                  >stackTraceLimit</a
+                >
+              </p>
               <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L91"
-                    >projects/auth0-angular/src/lib/auth.state.ts:91</a
-                  >
-                </li>
+                <li>Defined in node_modules/@types/node/globals.d.ts:142</li>
               </ul>
             </aside>
           </section>
@@ -695,84 +869,14 @@
         <section class="tsd-panel-group tsd-member-group">
           <h2>Methods</h2>
           <section
-            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"
           >
-            <a id="refresh" class="tsd-anchor"></a>
+            <a id="captureStackTrace" class="tsd-anchor"></a>
             <h3 class="tsd-anchor-link">
-              <span>refresh</span
-              ><a href="#refresh" aria-label="Permalink" class="tsd-anchor-icon"
-                ><svg
-                  class="icon icon-tabler icon-tabler-link"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <use href="#icon-anchor-a"></use>
-                  <use href="#icon-anchor-b"></use>
-                  <use href="#icon-anchor-c"></use></svg
-              ></a>
-            </h3>
-            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-              <li class="tsd-signature tsd-anchor-link" id="refresh.refresh-1">
-                refresh<span class="tsd-signature-symbol">(</span
-                ><span class="tsd-signature-symbol">)</span
-                ><span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">void</span
-                ><a
-                  href="#refresh.refresh-1"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg
-                    class="icon icon-tabler icon-tabler-link"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <use href="#icon-anchor-a"></use>
-                    <use href="#icon-anchor-b"></use>
-                    <use href="#icon-anchor-c"></use></svg
-                ></a>
-              </li>
-              <li class="tsd-description">
-                <div class="tsd-comment tsd-typography">
-                  <p>
-                    Refresh the state to ensure the
-                    <code>isAuthenticated</code>, <code>user$</code> and
-                    <code>idTokenClaims$</code> reflect the most up-to-date
-                    values from Auth0Client.
-                  </p>
-                </div>
-                <h4 class="tsd-returns-title">
-                  Returns <span class="tsd-signature-type">void</span>
-                </h4>
-                <aside class="tsd-sources">
-                  <ul>
-                    <li>
-                      Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L127"
-                        >projects/auth0-angular/src/lib/auth.state.ts:127</a
-                      >
-                    </li>
-                  </ul>
-                </aside>
-              </li>
-            </ul>
-          </section>
-          <section
-            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
-          >
-            <a id="setAccessToken" class="tsd-anchor"></a>
-            <h3 class="tsd-anchor-link">
-              <span>set<wbr />Access<wbr />Token</span
+              <code class="tsd-tag ts-flagStatic">Static</code>
+              <span>capture<wbr />Stack<wbr />Trace</span
               ><a
-                href="#setAccessToken"
+                href="#captureStackTrace"
                 aria-label="Permalink"
                 class="tsd-anchor-icon"
                 ><svg
@@ -789,20 +893,25 @@
                   <use href="#icon-anchor-c"></use></svg
               ></a>
             </h3>
-            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+            <ul
+              class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+            >
               <li
                 class="tsd-signature tsd-anchor-link"
-                id="setAccessToken.setAccessToken-1"
+                id="captureStackTrace.captureStackTrace-1"
               >
-                set<wbr />Access<wbr />Token<span class="tsd-signature-symbol"
+                capture<wbr />Stack<wbr />Trace<span
+                  class="tsd-signature-symbol"
                   >(</span
-                >accessToken<span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">string</span
+                >targetObject<span class="tsd-signature-symbol">: </span
+                ><span class="tsd-signature-type">Object</span>,
+                constructorOpt<span class="tsd-signature-symbol">?: </span
+                ><span class="tsd-signature-type">Function</span
                 ><span class="tsd-signature-symbol">)</span
                 ><span class="tsd-signature-symbol">: </span
                 ><span class="tsd-signature-type">void</span
                 ><a
-                  href="#setAccessToken.setAccessToken-1"
+                  href="#captureStackTrace.captureStackTrace-1"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg
@@ -821,22 +930,23 @@
               </li>
               <li class="tsd-description">
                 <div class="tsd-comment tsd-typography">
-                  <p>
-                    Update the access token, doing so will also refresh the
-                    state.
-                  </p>
+                  <p>Create .stack property on a target object</p>
                 </div>
                 <div class="tsd-parameters">
                   <h4 class="tsd-parameters-title">Parameters</h4>
                   <ul class="tsd-parameter-list">
                     <li>
                       <h5>
-                        accessToken:
-                        <span class="tsd-signature-type">string</span>
+                        targetObject:
+                        <span class="tsd-signature-type">Object</span>
                       </h5>
-                      <div class="tsd-comment tsd-typography">
-                        <p>The new Access Token</p>
-                      </div>
+                    </li>
+                    <li>
+                      <h5>
+                        <code class="tsd-tag ts-flagOptional">Optional</code>
+                        constructorOpt:
+                        <span class="tsd-signature-type">Function</span>
+                      </h5>
                     </li>
                   </ul>
                 </div>
@@ -844,13 +954,16 @@
                   Returns <span class="tsd-signature-type">void</span>
                 </h4>
                 <aside class="tsd-sources">
+                  <p>
+                    Inherited from
+                    <a href="GenericError.html">GenericError</a>.<a
+                      href="GenericError.html#captureStackTrace"
+                      >captureStackTrace</a
+                    >
+                  </p>
                   <ul>
                     <li>
-                      Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L136"
-                        >projects/auth0-angular/src/lib/auth.state.ts:136</a
-                      >
+                      Defined in node_modules/@types/node/globals.d.ts:133
                     </li>
                   </ul>
                 </aside>
@@ -858,13 +971,14 @@
             </ul>
           </section>
           <section
-            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
+            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"
           >
-            <a id="setError" class="tsd-anchor"></a>
+            <a id="fromPayload" class="tsd-anchor"></a>
             <h3 class="tsd-anchor-link">
-              <span>set<wbr />Error</span
+              <code class="tsd-tag ts-flagStatic">Static</code>
+              <span>from<wbr />Payload</span
               ><a
-                href="#setError"
+                href="#fromPayload"
                 aria-label="Permalink"
                 class="tsd-anchor-icon"
                 ><svg
@@ -881,19 +995,35 @@
                   <use href="#icon-anchor-c"></use></svg
               ></a>
             </h3>
-            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+            <ul
+              class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+            >
               <li
                 class="tsd-signature tsd-anchor-link"
-                id="setError.setError-1"
+                id="fromPayload.fromPayload-1"
               >
-                set<wbr />Error<span class="tsd-signature-symbol">(</span
+                from<wbr />Payload<span class="tsd-signature-symbol">(</span
+                >__namedParameters<span class="tsd-signature-symbol">: </span
+                ><span class="tsd-signature-symbol">{ </span><br /><span
+                  >    </span
                 >error<span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">any</span
+                ><span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">; </span><br /><span
+                  >    </span
+                >error_description<span class="tsd-signature-symbol">: </span
+                ><span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">; </span><br /><span
+                  class="tsd-signature-symbol"
+                  >}</span
                 ><span class="tsd-signature-symbol">)</span
                 ><span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">void</span
                 ><a
-                  href="#setError.setError-1"
+                  href="GenericError.html"
+                  class="tsd-signature-type"
+                  data-tsd-kind="Class"
+                  >GenericError</a
+                ><a
+                  href="#fromPayload.fromPayload-1"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg
@@ -911,122 +1041,66 @@
                 ></a>
               </li>
               <li class="tsd-description">
-                <div class="tsd-comment tsd-typography">
-                  <p>Emits the error in the <code>error$</code> observable.</p>
-                </div>
                 <div class="tsd-parameters">
                   <h4 class="tsd-parameters-title">Parameters</h4>
                   <ul class="tsd-parameter-list">
                     <li>
                       <h5>
-                        error: <span class="tsd-signature-type">any</span>
+                        __namedParameters:
+                        <span class="tsd-signature-symbol">{ </span><br /><span
+                          >    </span
+                        >error<span class="tsd-signature-symbol">: </span
+                        ><span class="tsd-signature-type">string</span
+                        ><span class="tsd-signature-symbol">; </span><br /><span
+                          >    </span
+                        >error_description<span class="tsd-signature-symbol"
+                          >: </span
+                        ><span class="tsd-signature-type">string</span
+                        ><span class="tsd-signature-symbol">; </span><br /><span
+                          class="tsd-signature-symbol"
+                          >}</span
+                        >
                       </h5>
-                      <div class="tsd-comment tsd-typography">
-                        <p>The new error</p>
-                      </div>
+                      <ul class="tsd-parameters">
+                        <li class="tsd-parameter">
+                          <h5>
+                            error<span class="tsd-signature-symbol">: </span
+                            ><span class="tsd-signature-type">string</span>
+                          </h5>
+                        </li>
+                        <li class="tsd-parameter">
+                          <h5>
+                            error_<wbr />description<span
+                              class="tsd-signature-symbol"
+                              >: </span
+                            ><span class="tsd-signature-type">string</span>
+                          </h5>
+                        </li>
+                      </ul>
                     </li>
                   </ul>
                 </div>
                 <h4 class="tsd-returns-title">
-                  Returns <span class="tsd-signature-type">void</span>
-                </h4>
-                <aside class="tsd-sources">
-                  <ul>
-                    <li>
-                      Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L145"
-                        >projects/auth0-angular/src/lib/auth.state.ts:145</a
-                      >
-                    </li>
-                  </ul>
-                </aside>
-              </li>
-            </ul>
-          </section>
-          <section
-            class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"
-          >
-            <a id="setIsLoading" class="tsd-anchor"></a>
-            <h3 class="tsd-anchor-link">
-              <span>set<wbr />Is<wbr />Loading</span
-              ><a
-                href="#setIsLoading"
-                aria-label="Permalink"
-                class="tsd-anchor-icon"
-                ><svg
-                  class="icon icon-tabler icon-tabler-link"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <use href="#icon-anchor-a"></use>
-                  <use href="#icon-anchor-b"></use>
-                  <use href="#icon-anchor-c"></use></svg
-              ></a>
-            </h3>
-            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-              <li
-                class="tsd-signature tsd-anchor-link"
-                id="setIsLoading.setIsLoading-1"
-              >
-                set<wbr />Is<wbr />Loading<span class="tsd-signature-symbol"
-                  >(</span
-                >isLoading<span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">boolean</span
-                ><span class="tsd-signature-symbol">)</span
-                ><span class="tsd-signature-symbol">: </span
-                ><span class="tsd-signature-type">void</span
-                ><a
-                  href="#setIsLoading.setIsLoading-1"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg
-                    class="icon icon-tabler icon-tabler-link"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                  Returns
+                  <a
+                    href="GenericError.html"
+                    class="tsd-signature-type"
+                    data-tsd-kind="Class"
+                    >GenericError</a
                   >
-                    <use href="#icon-anchor-a"></use>
-                    <use href="#icon-anchor-b"></use>
-                    <use href="#icon-anchor-c"></use></svg
-                ></a>
-              </li>
-              <li class="tsd-description">
-                <div class="tsd-comment tsd-typography">
-                  <p>Update the isLoading state using the provided value</p>
-                </div>
-                <div class="tsd-parameters">
-                  <h4 class="tsd-parameters-title">Parameters</h4>
-                  <ul class="tsd-parameter-list">
-                    <li>
-                      <h5>
-                        isLoading:
-                        <span class="tsd-signature-type">boolean</span>
-                      </h5>
-                      <div class="tsd-comment tsd-typography">
-                        <p>The new value for isLoading</p>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <h4 class="tsd-returns-title">
-                  Returns <span class="tsd-signature-type">void</span>
                 </h4>
                 <aside class="tsd-sources">
+                  <p>
+                    Inherited from
+                    <a href="GenericError.html">GenericError</a>.<a
+                      href="GenericError.html#fromPayload"
+                      >fromPayload</a
+                    >
+                  </p>
                   <ul>
                     <li>
                       Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/e6b38c8/projects/auth0-angular/src/lib/auth.state.ts#L119"
-                        >projects/auth0-angular/src/lib/auth.state.ts:119</a
-                      >
+                      node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:8
                     </li>
                   </ul>
                 </aside>
@@ -1191,8 +1265,8 @@
         </nav>
         <nav class="tsd-navigation secondary menu-sticky">
           <ul>
-            <li class="current tsd-kind-class">
-              <a href="AuthState.html" class="tsd-index-link"
+            <li class="current tsd-kind-class tsd-is-external">
+              <a href="MfaRequiredError.html" class="tsd-index-link"
                 ><svg
                   class="tsd-kind-icon"
                   width="24"
@@ -1215,11 +1289,15 @@
                     fill="var(--color-text)"
                     id="icon-128-text"
                   ></path></svg
-                ><span>Auth<wbr />State</span></a
+                ><span>Mfa<wbr />Required<wbr />Error</span></a
               >
               <ul>
-                <li class="tsd-kind-constructor tsd-parent-kind-class">
-                  <a href="AuthState.html#constructor" class="tsd-index-link"
+                <li
+                  class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"
+                >
+                  <a
+                    href="MfaRequiredError.html#constructor"
+                    class="tsd-index-link"
                     ><svg
                       class="tsd-kind-icon"
                       width="24"
@@ -1231,8 +1309,10 @@
                     >constructor</a
                   >
                 </li>
-                <li class="tsd-kind-property tsd-parent-kind-class">
-                  <a href="AuthState.html#error_" class="tsd-index-link"
+                <li
+                  class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
+                  <a href="MfaRequiredError.html#error" class="tsd-index-link"
                     ><svg
                       class="tsd-kind-icon"
                       width="24"
@@ -1241,25 +1321,14 @@
                     >
                       <use href="#icon-1024-path"></use>
                       <use href="#icon-1024-text"></use></svg
-                    >error$</a
+                    >error</a
                   >
                 </li>
-                <li class="tsd-kind-property tsd-parent-kind-class">
-                  <a href="AuthState.html#idTokenClaims_" class="tsd-index-link"
-                    ><svg
-                      class="tsd-kind-icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                    >
-                      <use href="#icon-1024-path"></use>
-                      <use href="#icon-1024-text"></use></svg
-                    >id<wbr />Token<wbr />Claims$</a
-                  >
-                </li>
-                <li class="tsd-kind-property tsd-parent-kind-class">
+                <li
+                  class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
                   <a
-                    href="AuthState.html#isAuthenticated_"
+                    href="MfaRequiredError.html#error_description"
                     class="tsd-index-link"
                     ><svg
                       class="tsd-kind-icon"
@@ -1269,11 +1338,13 @@
                     >
                       <use href="#icon-1024-path"></use>
                       <use href="#icon-1024-text"></use></svg
-                    >is<wbr />Authenticated$</a
+                    >error_<wbr />description</a
                   >
                 </li>
-                <li class="tsd-kind-property tsd-parent-kind-class">
-                  <a href="AuthState.html#isLoading_" class="tsd-index-link"
+                <li
+                  class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
+                  <a href="MfaRequiredError.html#message" class="tsd-index-link"
                     ><svg
                       class="tsd-kind-icon"
                       width="24"
@@ -1282,11 +1353,15 @@
                     >
                       <use href="#icon-1024-path"></use>
                       <use href="#icon-1024-text"></use></svg
-                    >is<wbr />Loading$</a
+                    >message</a
                   >
                 </li>
-                <li class="tsd-kind-property tsd-parent-kind-class">
-                  <a href="AuthState.html#user_" class="tsd-index-link"
+                <li
+                  class="tsd-kind-property tsd-parent-kind-class tsd-is-external"
+                >
+                  <a
+                    href="MfaRequiredError.html#mfa_token"
+                    class="tsd-index-link"
                     ><svg
                       class="tsd-kind-icon"
                       width="24"
@@ -1295,11 +1370,79 @@
                     >
                       <use href="#icon-1024-path"></use>
                       <use href="#icon-1024-text"></use></svg
-                    >user$</a
+                    >mfa_<wbr />token</a
                   >
                 </li>
-                <li class="tsd-kind-method tsd-parent-kind-class">
-                  <a href="AuthState.html#refresh" class="tsd-index-link"
+                <li
+                  class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
+                  <a href="MfaRequiredError.html#name" class="tsd-index-link"
+                    ><svg
+                      class="tsd-kind-icon"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <use href="#icon-1024-path"></use>
+                      <use href="#icon-1024-text"></use></svg
+                    >name</a
+                  >
+                </li>
+                <li
+                  class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
+                  <a href="MfaRequiredError.html#stack" class="tsd-index-link"
+                    ><svg
+                      class="tsd-kind-icon"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <use href="#icon-1024-path"></use>
+                      <use href="#icon-1024-text"></use></svg
+                    >stack?</a
+                  >
+                </li>
+                <li
+                  class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
+                  <a
+                    href="MfaRequiredError.html#prepareStackTrace"
+                    class="tsd-index-link"
+                    ><svg
+                      class="tsd-kind-icon"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <use href="#icon-1024-path"></use>
+                      <use href="#icon-1024-text"></use></svg
+                    >prepare<wbr />Stack<wbr />Trace?</a
+                  >
+                </li>
+                <li
+                  class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
+                  <a
+                    href="MfaRequiredError.html#stackTraceLimit"
+                    class="tsd-index-link"
+                    ><svg
+                      class="tsd-kind-icon"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <use href="#icon-1024-path"></use>
+                      <use href="#icon-1024-text"></use></svg
+                    >stack<wbr />Trace<wbr />Limit</a
+                  >
+                </li>
+                <li
+                  class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
+                  <a
+                    href="MfaRequiredError.html#captureStackTrace"
+                    class="tsd-index-link"
                     ><svg
                       class="tsd-kind-icon"
                       width="24"
@@ -1308,11 +1451,15 @@
                     >
                       <use href="#icon-2048-path"></use>
                       <use href="#icon-2048-text"></use></svg
-                    >refresh</a
+                    >capture<wbr />Stack<wbr />Trace</a
                   >
                 </li>
-                <li class="tsd-kind-method tsd-parent-kind-class">
-                  <a href="AuthState.html#setAccessToken" class="tsd-index-link"
+                <li
+                  class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"
+                >
+                  <a
+                    href="MfaRequiredError.html#fromPayload"
+                    class="tsd-index-link"
                     ><svg
                       class="tsd-kind-icon"
                       width="24"
@@ -1321,33 +1468,7 @@
                     >
                       <use href="#icon-2048-path"></use>
                       <use href="#icon-2048-text"></use></svg
-                    >set<wbr />Access<wbr />Token</a
-                  >
-                </li>
-                <li class="tsd-kind-method tsd-parent-kind-class">
-                  <a href="AuthState.html#setError" class="tsd-index-link"
-                    ><svg
-                      class="tsd-kind-icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                    >
-                      <use href="#icon-2048-path"></use>
-                      <use href="#icon-2048-text"></use></svg
-                    >set<wbr />Error</a
-                  >
-                </li>
-                <li class="tsd-kind-method tsd-parent-kind-class">
-                  <a href="AuthState.html#setIsLoading" class="tsd-index-link"
-                    ><svg
-                      class="tsd-kind-icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                    >
-                      <use href="#icon-2048-path"></use>
-                      <use href="#icon-2048-text"></use></svg
-                    >set<wbr />Is<wbr />Loading</a
+                    >from<wbr />Payload</a
                   >
                 </li>
               </ul>
