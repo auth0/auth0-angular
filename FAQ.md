@@ -50,18 +50,18 @@ If after successfully logging in, your user returns to your SPA and is still not
 
 ## 3. User is redirected to `/` after successful sign in with redirect
 
-By default, the SDK is configured to redirect the user back to the root of the application after succesfully exchanging the `code` for the corresponding token(s).
+By default, the SDK is configured to redirect the user back to the root of the application after successfully exchanging the `code` for the corresponding token(s).
 
 This is what a typical default flow looks like:
 
-- AuthModule is configured with a specific redirectUrl (e.g. `http://localhost:4200/callback`).
+- `AuthModule` is configured with a specific `redirect_url` (e.g. `http://localhost:4200/callback`).
 - User initiates login by calling `AuthService.loginWithRedirect()`
-- User is redirected to Auth0, including a `redirectUri` (in this case `http://localhost:4200/callback`)
-- After succesful authentication, the user is redirected back to the provided redirectUri, including a `code` and `state` query parameter (in this case `http://localhost:4200/callback?code={code}&state={state}`)
-- The configured `redirectUri` is only used to process `code` and `state` in order to retrieve an actual token.
+- User is redirected to Auth0, including a `redirect_uri` (in this case `http://localhost:4200/callback`)
+- After successful authentication, the user is redirected back to the provided `redirect_uri`, including a `code` and `state` query parameter (in this case `http://localhost:4200/callback?code={code}&state={state}`)
+- The configured `redirect_uri` is only used to process `code` and `state` to retrieve an actual token.
 - The user is then redirected to `/`
 
-However, if the user should not be redirected back to `/` in the very last step, but instead they should end up at a different URL, this can be configured by providing that information to `AuthService.loginWithRedirect()`:
+However, if the user should not be redirected back to `/` in the very last step, but instead end up at a different URL, you should provide that URL when calling `AuthService.loginWithRedirect()` through the `appState.target` property:
 
 ```
 this.authService.loginWithRedirect({
@@ -70,6 +70,8 @@ this.authService.loginWithRedirect({
 ```
 
 By doing that, in the very last step the SDK will not redirect the user back to `/`, but to `/some-url` instead.
+
+> This is done by our `AuthGuard` automatically, as it ensures the user ends up back at the protected route after being authenticated if needed.
 
 **Restoring querystring parameters**
 
@@ -210,7 +212,6 @@ export class AppComponent {
 }
 ```
 
-
 ## 9. When using localOnly logout, the user is getting logged in again
 
 When only logging the user out of the SDK, and not from Auth0, you might stumble upon behavior that automatically logs the user in again.
@@ -220,6 +221,7 @@ Even though it might not feel like it at first, this is expected, and a side-eff
 The key players that can result in the above behavior are the SDK's `AuthGuard` and `AuthHttpInterceptor`.
 
 ### AuthGuard
+
 When you are making use of `localOnly` logout, you probably don't want to use our AuthGuard, whose sole purpose is to log the user in automatically if there currently is no user. This can happen automatically and without the user noticing much of it. It relies on an existing session with Auth0 and will always log the user in again as long as there is an active session with Auth0.
 
 Instead, you might want to use a guard that only blocks routing based on the `isAuthenticated` observable rather than doing anything to ensure the user is logged in automatically:
@@ -241,6 +243,7 @@ export class AuthGuard implements CanActivate {
 ```
 
 ### AuthHttpInterceptor
+
 The purpose of the `AuthHttpInterceptor` is to attach a token to the request when making any calls using Angular's `HttpClient`. The convenience of this interceptor comes from the fact that it automatically refreshes any expired token. The side-effect of that is that it also fetches a new token if we cleared the local cache using `localOnly` logout.
 
 If this effect is not desired, you want to ensure you avoid doing any calls that trigger the interceptor when the user is not authenticated in the first place.
@@ -272,6 +275,7 @@ export class MyAuthHttpInterceptor implements HttpInterceptor {
   }
 }
 ```
+
 Important is that the SDK's `AuthHttpInterceptor` is now to be registered as a service, and not as an interceptor. Instead, your custom interceptor should be configured as one of the interceptors, and it will make use of `AuthHttpInterceptor` internally.
 
 ```ts
