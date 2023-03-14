@@ -1,5 +1,14 @@
 # Change Log
 
+## [v2.0.2](https://github.com/auth0/auth0-angular/tree/v2.0.2) (2023-03-10)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.1...v2.0.2)
+
+**Fixed**
+
+- Correctly expose Error types from Auth0-SPA-JS [\#436](https://github.com/auth0/auth0-angular/pull/436) ([frederikprijck](https://github.com/frederikprijck))
+- Ensure allowAnonymous works with missing_refresh_token [\#430](https://github.com/auth0/auth0-angular/pull/430) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v2.0.1](https://github.com/auth0/auth0-angular/tree/v2.0.1) (2023-01-25)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.0...v2.0.1)
