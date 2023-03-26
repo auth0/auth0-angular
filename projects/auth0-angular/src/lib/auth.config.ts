@@ -153,6 +153,21 @@ export interface AppState {
 }
 
 /**
+ * Injection token for accessing configuration.
+ *
+ * @usageNotes
+ *
+ * Use the `Inject` decorator to access the configuration from a service or component:
+ *
+ * ```
+ * class MyService(@Inject(AuthConfigService) config: AuthConfig) {}
+ * ```
+ */
+export const AuthConfigService = new InjectionToken<AuthConfig>(
+  'auth0-angular.config'
+);
+
+/**
  * Gets and sets configuration for the internal Auth0 client. This can be
  * used to provide configuration outside of using AuthModule.forRoot, i.e. from
  * a factory provided by APP_INITIALIZER.
@@ -194,22 +209,6 @@ export interface AppState {
  * ```
  *
  */
-
-/**
- * Injection token for accessing configuration.
- *
- * @usageNotes
- *
- * Use the `Inject` decorator to access the configuration from a service or component:
- *
- * ```
- * class MyService(@Inject(AuthConfigService) config: AuthConfig) {}
- * ```
- */
-export const AuthConfigService = new InjectionToken<AuthConfig>(
-  'auth0-angular.config'
-);
-
 @Injectable({ providedIn: 'root' })
 export class AuthClientConfig {
   private config?: AuthConfig;
