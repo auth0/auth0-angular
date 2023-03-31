@@ -383,7 +383,7 @@ export class AppComponent {
 ## Standalone components and a more functional approach
 As of Angular 15, the Angular team is putting standalone components, as well as a more functional approach, in favor of the traditional use of NgModules and class-based approach.
 
-Untill we have built in support for these concepts, you will need to add a couple of small work arounds to leverage these concepts with our SDK:
+Until we have built-in support for these concepts, you will need to add a couple of small workarounds to leverage these concepts with our SDK:
 
 - Transform our class-based `AuthGuard` to a functional guard using Angular's [`mapToCanActivate`](https://github.com/angular/angular/blob/main/packages/router/src/utils/functional_guards.ts?rgh-link-date=2023-03-28T14%3A31%3A33Z#L35-L38).
 - Transform our class-based `AuthHttpInterceptor` to a functional interceptor
