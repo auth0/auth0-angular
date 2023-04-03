@@ -1,5 +1,17 @@
 # Change Log
 
+## [v2.1.0](https://github.com/auth0/auth0-angular/tree/v2.1.0) (2023-04-03)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.2...v2.1.0)
+
+**Added**
+
+- Add API for standalone and functional approaches [\#445](https://github.com/auth0/auth0-angular/pull/445) ([frederikprijck](https://github.com/frederikprijck))
+
+**Fixed**
+
+- Return jsdoc for `AuthClientConfig` [\#440](https://github.com/auth0/auth0-angular/pull/440) ([AlexElin](https://github.com/AlexElin))
+
 ## [v2.0.2](https://github.com/auth0/auth0-angular/tree/v2.0.2) (2023-03-10)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.1...v2.0.2)
