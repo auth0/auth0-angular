@@ -383,47 +383,33 @@ export class AppComponent {
 ## Standalone components and a more functional approach
 As of Angular 15, the Angular team is putting standalone components, as well as a more functional approach, in favor of the traditional use of NgModules and class-based approach.
 
-Until we have built-in support for these concepts, you will need to add a couple of small workarounds to leverage these concepts with our SDK:
+There are a couple of difference with how you would traditionally implement our SDK:
 
-- Transform our class-based `AuthGuard` to a functional guard using Angular's [`mapToCanActivate`](https://github.com/angular/angular/blob/main/packages/router/src/utils/functional_guards.ts?rgh-link-date=2023-03-28T14%3A31%3A33Z#L35-L38).
-- Transform our class-based `AuthHttpInterceptor` to a functional interceptor
-- Add the `AuthHttpInterceptor` to the providers.
-- Register our `AuthModule` using `importProvidersFrom`.
+- Use our functional guard (`authGuardFn`) instead of our class-based `AuthGuard`.
+- Use our functional interceptor (`authHttpInterceptorFn`) instead of our class-based `AuthHttpInterceptor`.
+- Register the interceptor by passing it to `withInterceptors` when calling `provideHttpClient`.
+- Register our SDK using `provideAuth`. 
 
 ```ts
-// This function is only part of Angular 16.
-// If you use Angular 15, you will need to provide this yourself.
-// See: https://github.com/angular/angular/blob/main/packages/router/src/utils/functional_guards.ts#L35-L38
-export function mapToCanActivate(
-  providers: Array<Type<{ canActivate: CanActivateFn }>>
-): CanActivateFn[] {
-  return providers.map(
-    (provider) => (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
-      inject(provider).canActivate(route, state)
-  );
-}
+import { authGuardFn, authHttpInterceptorFn, provideAuth0 } from '@auth0/auth0-angular';
 
 const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: mapToCanActivate([AuthGuard]),
+    canActivate: [authGuardFn],
   }
 ];
-
-const authInterceptor = (req: HttpRequest<any>, handle: HttpHandlerFn) =>
-  inject(AuthHttpInterceptor).intercept(req, { handle });
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    AuthHttpInterceptor,
-    importProvidersFrom(
-      AuthModule.forRoot(/* Auth Config Goes Here */)
-    ),
+    provideAuth0(/* Auth Config Goes Here */),
     provideHttpClient(
-      withInterceptors([authInterceptor])
+      withInterceptors([authHttpInterceptorFn])
     ) 
   ]
 });
 ```
+
+Note that `provideAuth0` should **never** be provided to components, but only at the root level of your application.
