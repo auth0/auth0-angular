@@ -8,6 +8,7 @@
 - [Call an API](#call-an-api)
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
+- [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 
 ## Add login to your application
 
@@ -378,3 +379,37 @@ export class AppComponent {
   }
 }
 ```
+
+## Standalone components and a more functional approach
+As of Angular 15, the Angular team is putting standalone components, as well as a more functional approach, in favor of the traditional use of NgModules and class-based approach.
+
+There are a couple of difference with how you would traditionally implement our SDK:
+
+- Use our functional guard (`authGuardFn`) instead of our class-based `AuthGuard`.
+- Use our functional interceptor (`authHttpInterceptorFn`) instead of our class-based `AuthHttpInterceptor`.
+- Register the interceptor by passing it to `withInterceptors` when calling `provideHttpClient`.
+- Register our SDK using `provideAuth0`.
+
+```ts
+import { authGuardFn, authHttpInterceptorFn, provideAuth0 } from '@auth0/auth0-angular';
+
+const routes: Routes = [
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [authGuardFn],
+  }
+];
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes),
+    provideAuth0(/* Auth Config Goes Here */),
+    provideHttpClient(
+      withInterceptors([authHttpInterceptorFn])
+    ) 
+  ]
+});
+```
+
+Note that `provideAuth0` should **never** be provided to components, but only at the root level of your application.
