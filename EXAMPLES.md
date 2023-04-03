@@ -388,7 +388,7 @@ There are a couple of difference with how you would traditionally implement our 
 - Use our functional guard (`authGuardFn`) instead of our class-based `AuthGuard`.
 - Use our functional interceptor (`authHttpInterceptorFn`) instead of our class-based `AuthHttpInterceptor`.
 - Register the interceptor by passing it to `withInterceptors` when calling `provideHttpClient`.
-- Register our SDK using `provideAuth`. 
+- Register our SDK using `provideAuth0`.
 
 ```ts
 import { authGuardFn, authHttpInterceptorFn, provideAuth0 } from '@auth0/auth0-angular';
