@@ -10,6 +10,8 @@ export * from './lib/auth.config';
 export * from './lib/auth.client';
 export * from './lib/auth.state';
 export * from './lib/interfaces';
+export * from './lib/provide';
+export * from './lib/functional';
 
 export {
   AuthorizationParams,
