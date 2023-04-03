@@ -12,7 +12,7 @@ import { AuthHttpInterceptor } from './auth.interceptor';
  *
  * @param route Contains the information about a route associated with a component loaded in an outlet at a particular moment in time.
  * @param state Represents the state of the router at a moment in time.
- * @returns An Observable<Boolean>, indicating if the route can be accessed or not
+ * @returns An Observable, indicating if the route can be accessed or not
  */
 export const authGuardFn = (
   route: ActivatedRouteSnapshot,
@@ -27,7 +27,7 @@ export const authGuardFn = (
  * @param req An outgoing HTTP request with an optional typed body.
  * @param handle Represents the next interceptor in an interceptor chain, or the real backend if there are no
  * further interceptors.
- * @returns An Observable<HttpEvent<any>>, representing the intercepted HttpRequest
+ * @returns An Observable representing the intercepted HttpRequest
  */
 export const authHttpInterceptorFn = (
   req: HttpRequest<any>,
