@@ -12,6 +12,7 @@ jobs:
       - image: << pipeline.parameters.docker_image >>
     steps:
       - checkout
+      - run: npm install --legacy-peer-deps
       - ship/node-install-packages
       - run: npm run lint
       - run: npm run build:prod
