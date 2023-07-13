@@ -328,7 +328,7 @@ AuthModule.forRoot({
   domain: 'YOUR_AUTH0_DOMAIN',
   clientId: 'YOUR_AUTH0_CLIENT_ID',
   authorizationParams: {
-    organization: 'YOUR_ORGANIZATION_ID'
+    organization: 'YOUR_ORGANIZATION_ID_OR_NAME'
   }
 }),
 ```
@@ -339,14 +339,14 @@ You can also specify the organization when logging in:
 // Using a redirect
 this.auth.loginWithRedirect({
   authorizationParams: {
-    organization: 'YOUR_ORGANIZATION_ID'
+    organization: 'YOUR_ORGANIZATION_ID_OR_NAME'
   }
 });
 
 // Using a popup window
 this.auth.loginWithPopup({
   authorizationParams: {
-    organization: 'YOUR_ORGANIZATION_ID'
+    organization: 'YOUR_ORGANIZATION_ID_OR_NAME'
   }
 });
 ```
