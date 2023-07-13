@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.2.0](https://github.com/auth0/auth0-angular/tree/v2.2.0) (2023-07-13)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.1.0...v2.2.0)
+
+**Added**
+
+- Support Organization Name [\#453](https://github.com/auth0/auth0-angular/pull/453) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v2.1.0](https://github.com/auth0/auth0-angular/tree/v2.1.0) (2023-04-03)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.2...v2.1.0)
