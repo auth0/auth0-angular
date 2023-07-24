@@ -151,7 +151,7 @@ export class AppComponent {
 
 By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/AuthorizationParams.html#redirect_uri) option.
 
-For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, have a look at our [examples](https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md).
+For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, including how to use our standalone and function APIs, have a look at our [examples](https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md).
 
 ## API reference
 
