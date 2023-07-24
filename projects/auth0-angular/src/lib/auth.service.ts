@@ -41,7 +41,8 @@ import { LogoutOptions, RedirectLoginOptions } from './interfaces';
   providedIn: 'root',
 })
 export class AuthService<TAppState extends AppState = AppState>
-  implements OnDestroy {
+  implements OnDestroy
+{
   private appStateSubject$ = new ReplaySubject<TAppState>(1);
 
   // https://stackoverflow.com/a/41177163
@@ -242,11 +243,13 @@ export class AuthService<TAppState extends AppState = AppState>
           ? client.getTokenSilently({ ...options, detailedResponse: true })
           : client.getTokenSilently(options)
       ),
-      tap((token) =>
-        this.authState.setAccessToken(
-          typeof token === 'string' ? token : token.access_token
-        )
-      ),
+      tap((token) => {
+        if (token) {
+          this.authState.setAccessToken(
+            typeof token === 'string' ? token : token.access_token
+          );
+        }
+      }),
       catchError((error) => {
         this.authState.setError(error);
         this.authState.refresh();
