@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.2.1](https://github.com/auth0/auth0-angular/tree/v2.2.1) (2023-07-24)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.0...v2.2.1)
+
+**Fixed**
+
+- Do not crash when getTokenSilently returns null [\#458](https://github.com/auth0/auth0-angular/pull/458) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v2.2.0](https://github.com/auth0/auth0-angular/tree/v2.2.0) (2023-07-13)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.1.0...v2.2.0)
