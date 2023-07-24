@@ -776,6 +776,20 @@ describe('AuthService', () => {
         });
     });
 
+    it('should null when nothing in cache', (done) => {
+      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+        null
+      );
+
+      const service = createService();
+      service
+        .getAccessTokenSilently()
+        .subscribe((token) => {
+          expect(token).toBeNull();
+          done();
+        });
+    });
+
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
