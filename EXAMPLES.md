@@ -3,7 +3,7 @@
 - [Add login to your application](#add-login-to-your-application)
 - [Add logout to your application](#add-logout-to-your-application)
 - [Checking if a user is authenticated](#checking-if-a-user-is-authenticated)
-- [Dislay the user profile](#display-the-user-profile)
+- [Display the user profile](#display-the-user-profile)
 - [Protect a route](#protect-a-route)
 - [Call an API](#call-an-api)
 - [Handling errors](#handling-errors)
