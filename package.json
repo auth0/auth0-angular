@@ -58,7 +58,7 @@
     "@typescript-eslint/parser": "5.27.1",
     "concurrently": "^6.2.0",
     "cors": "^2.8.5",
-    "cypress": "^7.2.0",
+    "cypress": "^13.1.0",
     "eslint": "^8.17.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "latest",
