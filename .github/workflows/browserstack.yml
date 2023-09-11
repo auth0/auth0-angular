@@ -49,7 +49,7 @@ jobs:
 
       - name: Run tests
         shell: bash
-        run: npx concurrently --raw --kill-others --success first "npm:start:local:oidc" "wait-on http://127.0.0.1:3000/ && npm:start:local:playground" "wait-on http://127.0.0.1:4200/ && browserstack-cypress run --build-name ${{ github.event.pull_request.head.sha || github.ref }} --no-wrap --specs "projects/playground/e2e/integration/playground.cy.ts""
+        run: npx concurrently --raw --kill-others --success first "npm:start:local:oidc" "wait-on http://127.0.0.1:3000/ && npm:start:local:playground" "wait-on http://127.0.0.1:4200/ && browserstack-cypress run --build-name ${{ github.event.pull_request.head.sha || github.ref }}"
         env:
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
