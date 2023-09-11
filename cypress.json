@@ -1,0 +1,18 @@
+{
+  "baseUrl": "http://127.0.0.1:4200",
+  "chromeWebSecurity": false,
+  "viewportWidth": 1000,
+  "viewportHeight": 1000,
+  "fixturesFolder": false,
+  "pluginsFile": false,
+  "supportFile": false,
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "projects/playground/test-results/e2e/junit-[hash].xml"
+  },
+  "fileServerFolder": "projects/playground",
+  "integrationFolder": "projects/playground/e2e/integration",
+  "pluginFolder": "projects/playground/e2e/plugins",
+  "screenshotsFolder": "projects/playground/e2e/screenshots",
+  "videosFolder": "projects/playground/e2e/videos"
+}
