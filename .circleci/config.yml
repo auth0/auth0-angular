@@ -54,5 +54,5 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
                 - beta

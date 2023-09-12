@@ -1,6 +1,6 @@
 name: 🐞 Report a bug
 description: Have you found a bug or issue? Create a bug report for this library
-labels: ["bug"]
+labels: ['bug']
 
 body:
   - type: markdown
@@ -15,7 +15,7 @@ body:
       options:
         - label: The issue can be reproduced in the [auth0-angular sample app](https://github.com/auth0-samples/auth0-angular-samples/tree/master/Sample-01) (or N/A).
           required: true
-        - label: I have looked into the [Readme](https://github.com/auth0/auth0-angular#readme), [Examples](https://github.com/auth0/auth0-angular/blob/master/EXAMPLES.md), and [FAQ](https://github.com/auth0/auth0-angular/blob/master/FAQ.md) and have not found a suitable solution or answer.
+        - label: I have looked into the [Readme](https://github.com/auth0/auth0-angular#readme), [Examples](https://github.com/auth0/auth0-angular/blob/main/EXAMPLES.md), and [FAQ](https://github.com/auth0/auth0-angular/blob/main/FAQ.md) and have not found a suitable solution or answer.
           required: true
         - label: I have looked into the [API documentation](https://auth0.github.io/auth0-angular/) and have not found a suitable solution or answer.
           required: true
