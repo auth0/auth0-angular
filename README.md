@@ -14,8 +14,8 @@ A library for integrating [Auth0](https://auth0.com) into an Angular application
 
 - [Quickstart](https://auth0.com/docs/quickstart/spa/angular) - our interactive guide for quickly adding login, logout and user information to an Angular app using Auth0.
 - [Sample App](https://github.com/auth0-samples/auth0-angular-samples/tree/master/Sample-01) - a full-fledged Angular application integrated with Auth0.
-- [FAQs](https://github.com/auth0/auth0-angular/tree/master/FAQ.md) - frequently asked questions about the auth0-angular SDK.
-- [Examples](https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md) - code samples for common Angular authentication scenario's.
+- [FAQs](https://github.com/auth0/auth0-angular/tree/main/FAQ.md) - frequently asked questions about the auth0-angular SDK.
+- [Examples](https://github.com/auth0/auth0-angular/tree/main/EXAMPLES.md) - code samples for common Angular authentication scenario's.
 - [Docs site](https://www.auth0.com/docs) - explore our docs site and learn more about Auth0.
 
 ## Getting started
@@ -150,7 +150,7 @@ export class AppComponent {
 
 By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/AuthorizationParams.html#redirect_uri) option.
 
-For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, including how to use our standalone and function APIs, have a look at the [examples](https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md).
+For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, including how to use our standalone and function APIs, have a look at the [examples](https://github.com/auth0/auth0-angular/tree/main/EXAMPLES.md).
 
 ## API reference
 
@@ -187,4 +187,4 @@ Please do not report security vulnerabilities on the public GitHub issue tracker
 </p>
 <p align="center">Auth0 is an easy to implement, adaptable authentication and authorization platform. To learn more checkout <a href="https://auth0.com/why-auth0">Why Auth0?</a></p>
 <p align="center">
-This project is licensed under the MIT license. See the <a href="https://github.com/auth0/auth0-angular/tree/master/LICENSE"> LICENSE</a> file for more info.</p>
+This project is licensed under the MIT license. See the <a href="https://github.com/auth0/auth0-angular/tree/main/LICENSE"> LICENSE</a> file for more info.</p>
