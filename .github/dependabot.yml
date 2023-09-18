@@ -2,9 +2,8 @@ version: 2
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
-    ignore:
-      - dependency-name: '*'
-        update-types: ['version-update:semver-patch']
+    schedule:
+      interval: 'daily'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
