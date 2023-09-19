@@ -32,7 +32,7 @@
     "@angular/compiler": "^13.3.11",
     "@angular/core": "^13.3.11",
     "@angular/platform-browser": "^13.3.11",
-    "@angular/platform-browser-dynamic": "^13.3.11",
+    "@angular/platform-browser-dynamic": "^13.4.0",
     "@angular/router": "^13.3.11",
     "@auth0/auth0-spa-js": "^2.1.1",
     "rxjs": "^6.6.7",
