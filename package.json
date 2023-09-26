@@ -36,7 +36,7 @@
     "@angular/router": "^13.4.0",
     "@auth0/auth0-spa-js": "^2.1.2",
     "rxjs": "^6.6.7",
-    "tslib": "^2.4.1",
+    "tslib": "^2.6.2",
     "zone.js": "~0.11.8"
   },
   "devDependencies": {
@@ -60,7 +60,7 @@
     "concurrently": "^6.2.0",
     "cors": "^2.8.5",
     "cypress": "^13.2.0",
-    "eslint": "^8.17.0",
+    "eslint": "^8.50.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "latest",
     "eslint-plugin-prefer-arrow": "latest",
