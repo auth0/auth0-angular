@@ -59,7 +59,7 @@
     "browserstack-cypress-cli": "^1.26.0",
     "concurrently": "^6.2.0",
     "cors": "^2.8.5",
-    "cypress": "^13.3.2",
+    "cypress": "^13.3.3",
     "eslint": "^8.52.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "latest",
