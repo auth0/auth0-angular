@@ -50,7 +50,7 @@
     "@angular/compiler-cli": "^13.4.0",
     "@angular/forms": "^13.4.0",
     "@cypress/schematic": "^2.4.0",
-    "@types/jasmine": "^3.10.17",
+    "@types/jasmine": "^3.10.18",
     "@types/jasminewd2": "~2.0.13",
     "@types/jest": "^29.2.2",
     "@types/node": "^12.19.8",
