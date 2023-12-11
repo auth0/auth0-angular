@@ -3,5 +3,5 @@
     "files": {
         ".version": []
     },
-    "postbump": "npm run build"
+    "postbump": "npm run docs"
 }

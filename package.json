@@ -11,7 +11,7 @@
     "build:dev": "ng build && npm run build:schematics",
     "build": "ng build --configuration=production && npm run build:schematics",
     "build:schematics": "npm run build --prefix projects/auth0-angular",
-    "postbuild": "cp README.md ./dist/auth0-angular/ && npm run docs",
+    "postbuild": "cp README.md ./dist/auth0-angular/",
     "test": "jest",
     "test:ci": "jest --coverage --silent",
     "e2e": "ng e2e",
