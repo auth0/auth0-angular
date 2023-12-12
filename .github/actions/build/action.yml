@@ -23,4 +23,4 @@ runs:
 
     - name: Build package
       shell: bash
-      run: npm run build:prod
+      run: npm run build
