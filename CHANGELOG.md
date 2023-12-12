@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.2.2](https://github.com/auth0/auth0-angular/tree/v2.2.2) (2023-12-12)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.1...v2.2.2)
+
+**Changed**
+
+- Update Auth0-SPA-JS [\#546](https://github.com/auth0/auth0-angular/pull/546) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v2.2.1](https://github.com/auth0/auth0-angular/tree/v2.2.1) (2023-07-24)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.0...v2.2.1)
