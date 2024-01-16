@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.2.3](https://github.com/auth0/auth0-angular/tree/v2.2.3) (2024-01-15)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.2...v2.2.3)
+
+**Changed**
+
+- Export AbstractNavigator [\#564](https://github.com/auth0/auth0-angular/pull/564) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v2.2.2](https://github.com/auth0/auth0-angular/tree/v2.2.2) (2023-12-12)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.1...v2.2.2)
