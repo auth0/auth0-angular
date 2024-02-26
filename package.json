@@ -58,7 +58,7 @@
     "concurrently": "^6.2.0",
     "cors": "^2.8.5",
     "cypress": "^13.6.2",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "latest",
     "eslint-plugin-prefer-arrow": "latest",
