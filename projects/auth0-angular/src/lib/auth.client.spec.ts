@@ -1,6 +1,17 @@
 import { AuthConfig, AuthClientConfig } from './auth.config';
 import { Auth0ClientFactory } from './auth.client';
 
+const mockWindow = global as any;
+
+mockWindow.crypto = {
+  subtle: {
+    digest: () => 'foo',
+  },
+  getRandomValues() {
+    return '123';
+  },
+};
+
 describe('Auth0ClientFactory', () => {
   describe('createClient', () => {
     it('creates a new instance of Auth0Client', () => {
@@ -36,7 +47,7 @@ describe('Auth0ClientFactory', () => {
 
       expect(client).not.toBeUndefined();
       expect((client as any).options.domain).toEqual('test.domain.com');
-      expect((client as any).options.client_id).toEqual('abc123');
+      expect((client as any).options.clientId).toEqual('abc123');
       expect((client as any).options.useRefreshTokens).toEqual(true);
       expect((client as any).options.useRefreshTokensFallback).toEqual(false);
     });
@@ -53,11 +64,9 @@ describe('Auth0ClientFactory', () => {
 
       expect(client).not.toBeUndefined();
       expect((client as any).options.domain).toEqual('test.domain.com');
-      expect((client as any).options.client_id).toEqual('abc123');
+      expect((client as any).options.clientId).toEqual('abc123');
       expect((client as any).options.useRefreshTokens).toEqual(true);
-      expect(
-        (client as any).options.useRefreshTokensFallback
-      ).not.toBeDefined();
+      expect((client as any).options.useRefreshTokensFallback).toEqual(false);
     });
   });
 });

@@ -17,26 +17,22 @@ import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
 import { ErrorComponent } from './components/error.component';
 
-import {
-  AuthClientConfig,
-  AuthConfig,
-} from 'projects/auth0-angular/src/lib/auth.config';
+import { AuthClientConfig } from 'projects/auth0-angular/src/lib/auth.config';
 
 /**
  * Provides configuration to the application
+ *
  * @param handler The HttpBackend instance used to instantiate HttpClient manually
  * @param config The AuthConfigClient service
  */
-function configInitializer(
+const configInitializer = (
   handler: HttpBackend,
   config: AuthClientConfig
-): () => Promise<any> {
-  return () =>
-    new HttpClient(handler)
-      .get('/assets/config.json')
-      .toPromise()
-      .then((loadedConfig: any) => config.set(loadedConfig)); // Set the config that was loaded asynchronously here
-}
+): (() => Promise<any>) => () =>
+  new HttpClient(handler)
+    .get('/assets/config.json')
+    .toPromise()
+    .then((loadedConfig: any) => config.set(loadedConfig)); // Set the config that was loaded asynchronously here
 
 @NgModule({
   declarations: [

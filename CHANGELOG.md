@@ -1,5 +1,106 @@
 # Change Log
 
+## [v2.2.3](https://github.com/auth0/auth0-angular/tree/v2.2.3) (2024-01-15)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.2...v2.2.3)
+
+**Changed**
+
+- Export AbstractNavigator [\#564](https://github.com/auth0/auth0-angular/pull/564) ([frederikprijck](https://github.com/frederikprijck))
+
+## [v2.2.2](https://github.com/auth0/auth0-angular/tree/v2.2.2) (2023-12-12)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.1...v2.2.2)
+
+**Changed**
+
+- Update Auth0-SPA-JS [\#546](https://github.com/auth0/auth0-angular/pull/546) ([frederikprijck](https://github.com/frederikprijck))
+
+## [v2.2.1](https://github.com/auth0/auth0-angular/tree/v2.2.1) (2023-07-24)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.0...v2.2.1)
+
+**Fixed**
+
+- Do not crash when getTokenSilently returns null [\#458](https://github.com/auth0/auth0-angular/pull/458) ([frederikprijck](https://github.com/frederikprijck))
+
+## [v2.2.0](https://github.com/auth0/auth0-angular/tree/v2.2.0) (2023-07-13)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.1.0...v2.2.0)
+
+**Added**
+
+- Support Organization Name [\#453](https://github.com/auth0/auth0-angular/pull/453) ([frederikprijck](https://github.com/frederikprijck))
+
+## [v2.1.0](https://github.com/auth0/auth0-angular/tree/v2.1.0) (2023-04-03)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.2...v2.1.0)
+
+**Added**
+
+- Add API for standalone and functional approaches [\#445](https://github.com/auth0/auth0-angular/pull/445) ([frederikprijck](https://github.com/frederikprijck))
+
+**Fixed**
+
+- Return jsdoc for `AuthClientConfig` [\#440](https://github.com/auth0/auth0-angular/pull/440) ([AlexElin](https://github.com/AlexElin))
+
+## [v2.0.2](https://github.com/auth0/auth0-angular/tree/v2.0.2) (2023-03-10)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.1...v2.0.2)
+
+**Fixed**
+
+- Correctly expose Error types from Auth0-SPA-JS [\#436](https://github.com/auth0/auth0-angular/pull/436) ([frederikprijck](https://github.com/frederikprijck))
+- Ensure allowAnonymous works with missing_refresh_token [\#430](https://github.com/auth0/auth0-angular/pull/430) ([frederikprijck](https://github.com/frederikprijck))
+
+## [v2.0.1](https://github.com/auth0/auth0-angular/tree/v2.0.1) (2023-01-25)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.0.0...v2.0.1)
+
+**Fixed**
+
+- Ensure AuthConfigService is exported before AuthClientConfig [\#413](https://github.com/auth0/auth0-angular/pull/413) ([frederikprijck](https://github.com/frederikprijck))
+
+## [v2.0.0](https://github.com/auth0/auth0-angular/tree/v2.0.0) (2023-01-19)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.11.0...v2.0.0)
+
+Auth0-Angular v2 includes many significant changes compared to v1:
+
+- Remove polyfills from bundles
+- Introduce `authorizationParams` and `logoutParams` to hold properties sent to Auth0
+- Remove `buildAuthorizeUrl` and `buildLogoutUrl`
+- Remove `redirectMethod`, and replace by `openUrl`
+- Remove `localOnly` from `logout` in favor of `openUrl`
+- Ensure `logout` returns an Onservable instead of a Promise
+- Rework `ignoreCache` to `cacheMode` and introduce `cache-only`
+- Use form-encoded data by default
+- Do not fallback to refreshing tokens via iframe method by default
+- `getUser` and `getIdTokenClaims` are removed
+- Remove `advancedOptions.defaultScope` and replace with `scope`
+
+As with any major version bump, v2 of Auth0-Angular contains a set of breaking changes. **Please review [the migration guide](./MIGRATION_GUIDE.md) thoroughly to understand the changes required to migrate your application to v2.**
+
+## [v2.0.0-beta.0](https://github.com/auth0/auth0-angular/tree/v2.0.0-beta.0) (2022-12-13)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.11.0...v2.0.0-beta.0)
+
+Auth0-Angular v2 includes many significant changes compared to v1:
+
+- Remove polyfills from bundles
+- Introduce `authorizationParams` and `logoutParams` to hold properties sent to Auth0
+- Remove `buildAuthorizeUrl` and `buildLogoutUrl`
+- Remove `redirectMethod`, and replace by `openUrl`
+- Remove `localOnly` from `logout` in favor of `openUrl`
+- Ensure `logout` returns an Onservable instead of a Promise
+- Rework `ignoreCache` to `cacheMode` and introduce `cache-only`
+- Use form-encoded data by default
+- Do not fallback to refreshing tokens via iframe method by default
+- `getUser` and `getIdTokenClaims` are removed
+- Remove `advancedOptions.defaultScope` and replace with `scope`
+
+As with any major version bump, v2 of Auth0-Angular contains a set of breaking changes. **Please review [the migration guide](./MIGRATION_GUIDE.md) thoroughly to understand the changes required to migrate your application to v2.**
+
 ## [v1.11.1](https://github.com/auth0/auth0-angular/tree/v1.11.1) (2022-11-17)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v1.11.0...v1.11.1)

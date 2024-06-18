@@ -1,28 +1,40 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import {
-  Auth0Client,
-  IdToken,
-  LogoutUrlOptions,
-  RedirectLoginOptions,
-} from '@auth0/auth0-spa-js';
+import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import {
   bufferCount,
   bufferTime,
+  delay,
   filter,
   mergeMap,
   take,
   tap,
 } from 'rxjs/operators';
-import { Location } from '@angular/common';
 import { AuthConfig, AuthConfigService } from './auth.config';
 import { AuthState } from './auth.state';
+
+const mockWindow = global as any;
+
+mockWindow.crypto = {
+  subtle: {
+    digest: () => 'foo',
+  },
+  getRandomValues() {
+    return '123';
+  },
+};
+
+const assignMock = jest.fn();
+
+delete mockWindow.location;
+mockWindow.location = { assign: assignMock };
 
 /**
  * Wraps service.isLoading$ so that assertions can be made
  * only when the SDK has finished loading.
+ *
  * @param service The service instance under test
  */
 const loaded = (service: AuthService) =>
@@ -31,36 +43,33 @@ const loaded = (service: AuthService) =>
 describe('AuthService', () => {
   let auth0Client: Auth0Client;
   let moduleSetup: any;
-  let service: AuthService;
   let authConfig: Partial<AuthConfig>;
   let authState: AuthState;
 
-  const createService = () => {
-    return TestBed.inject(AuthService);
-  };
+  const createService = () => TestBed.inject(AuthService);
 
   beforeEach(() => {
     authConfig = {};
     auth0Client = new Auth0Client({
       domain: '',
-      client_id: '',
+      clientId: '',
     });
 
-    spyOn(auth0Client, 'handleRedirectCallback').and.resolveTo({});
-    spyOn(auth0Client, 'loginWithRedirect').and.resolveTo();
-    spyOn(auth0Client, 'loginWithPopup').and.resolveTo();
-    spyOn(auth0Client, 'checkSession').and.resolveTo();
-    spyOn(auth0Client, 'isAuthenticated').and.resolveTo(false);
-    spyOn(auth0Client, 'getUser').and.resolveTo(undefined);
-    spyOn(auth0Client, 'getIdTokenClaims').and.resolveTo(undefined);
-    spyOn(auth0Client, 'logout');
-    spyOn(auth0Client, 'getTokenSilently').and.resolveTo('__access_token__');
-    spyOn(auth0Client, 'buildAuthorizeUrl').and.resolveTo('/authorize');
-    spyOn(auth0Client, 'buildLogoutUrl').and.returnValue('/v2/logout');
+    jest.spyOn(auth0Client, 'handleRedirectCallback').mockResolvedValue({});
+    jest.spyOn(auth0Client, 'loginWithRedirect').mockResolvedValue();
+    jest.spyOn(auth0Client, 'loginWithPopup').mockResolvedValue();
+    jest.spyOn(auth0Client, 'checkSession').mockResolvedValue();
+    jest.spyOn(auth0Client, 'isAuthenticated').mockResolvedValue(false);
+    jest.spyOn(auth0Client, 'getUser').mockResolvedValue(undefined);
+    jest.spyOn(auth0Client, 'getIdTokenClaims').mockResolvedValue(undefined);
+    jest.spyOn(auth0Client, 'logout');
+    jest
+      .spyOn(auth0Client, 'getTokenSilently')
+      .mockResolvedValue('__access_token__');
 
-    spyOn(auth0Client, 'getTokenWithPopup').and.resolveTo(
-      '__access_token_from_popup__'
-    );
+    jest
+      .spyOn(auth0Client, 'getTokenWithPopup')
+      .mockResolvedValue('__access_token_from_popup__');
 
     window.history.replaceState(null, '', '');
 
@@ -71,29 +80,40 @@ describe('AuthService', () => {
           provide: Auth0ClientService,
           useValue: auth0Client,
         },
+        {
+          provide: AuthConfigService,
+          useValue: authConfig,
+        },
       ],
     };
 
     TestBed.configureTestingModule(moduleSetup);
-    service = createService();
     authState = TestBed.inject(AuthState);
+  });
+
+  afterEach(() => {
+    assignMock.mockClear();
   });
 
   describe('constructor', () => {
     it('should be created', () => {
+      const service = createService();
       expect(service).toBeTruthy();
     });
 
     it('should not call handleRedirectCallback on init, when code and state are not present on the URL', () => {
+      createService();
       expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalled();
     });
 
     it('should call checkSession', () => {
+      createService();
       expect(auth0Client.checkSession).toHaveBeenCalled();
     });
 
     it('should set isLoading$ in the correct sequence', (done) => {
       const values: boolean[] = [];
+      const service = createService();
 
       service.isLoading$.subscribe((loading) => {
         values.push(loading);
@@ -106,6 +126,9 @@ describe('AuthService', () => {
     });
 
     it('should not set isLoading when service destroyed before checkSession finished', (done) => {
+      ((auth0Client.checkSession as unknown) as jest.SpyInstance).mockImplementation(
+        () => new Promise((resolve) => setTimeout(resolve, 5000))
+      );
       const localService = createService();
 
       localService.isLoading$.pipe(bufferTime(500)).subscribe((loading) => {
@@ -120,26 +143,33 @@ describe('AuthService', () => {
 
   describe('The `isAuthenticated` observable', () => {
     it('should return `false` when the client is not authenticated', (done) => {
+      const service = createService();
       service.isAuthenticated$.subscribe((value) => {
-        expect(value).toBeFalse();
+        expect(value).toBe(false);
         done();
       });
     });
 
     it('should return `true` when the client is authenticated', (done) => {
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+      const service = createService();
 
       loaded(service).subscribe(() => {
         service.isAuthenticated$.subscribe((value) => {
-          expect(value).toBeTrue();
+          expect(value).toBe(true);
           done();
         });
       });
     });
 
     it('should return true after successfully getting a new token', (done) => {
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        false
+      );
 
+      const service = createService();
       service.isAuthenticated$.pipe(bufferCount(2)).subscribe((values) => {
         expect(values[0]).toBe(false);
         expect(values[1]).toBe(true);
@@ -149,8 +179,12 @@ describe('AuthService', () => {
       // Add a small delay before triggering a new emit to the isAuthenticated$.
       // This ensures we can capture both emits using the above bufferCount(2)
       setTimeout(() => {
-        (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
-        (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+        ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+          {}
+        );
+        ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+          true
+        );
 
         service.getAccessTokenSilently().subscribe();
       }, 0);
@@ -160,7 +194,11 @@ describe('AuthService', () => {
       done: any
     ) => {
       authState.setIsLoading(false);
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+
+      const service = createService();
 
       service.isAuthenticated$.pipe(take(1)).subscribe((value) => {
         expect(value).toBe(true);
@@ -169,7 +207,9 @@ describe('AuthService', () => {
       // When the token is expired, auth0Client.isAuthenticated is resolving to false.
       // This is unexpected but known behavior in Auth0-SPA-JS, so we shouldnt rely on it apart from initially.
       // Once this is resolved, we should be able to rely on `auth0Client.isAuthenticated`, even when the Access Token is expired.
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        false
+      );
 
       service.isAuthenticated$.pipe(take(1)).subscribe((value) => {
         expect(value).toBe(true);
@@ -183,9 +223,14 @@ describe('AuthService', () => {
         name: 'Test User',
       };
 
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
-      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+        user
+      );
 
+      const service = createService();
       service.user$.subscribe((value) => {
         expect(value).toBe(user);
         done();
@@ -201,9 +246,14 @@ describe('AuthService', () => {
         name: 'Another User',
       };
 
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
-      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+        user
+      );
 
+      const service = createService();
       service.user$.pipe(bufferCount(2)).subscribe((values) => {
         expect(values[0]).toBe(user);
         expect(values[1]).toBe(user2);
@@ -213,8 +263,12 @@ describe('AuthService', () => {
       // Add a small delay before triggering a new emit to the user$.
       // This ensures we can capture both emits using the above bufferCount(2)
       setTimeout(() => {
-        (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
-        (auth0Client.getUser as jasmine.Spy).and.resolveTo(user2);
+        ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+          {}
+        );
+        ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+          user2
+        );
 
         service.getAccessTokenSilently().subscribe();
       }, 0);
@@ -225,9 +279,14 @@ describe('AuthService', () => {
         name: 'Test User',
       };
 
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
-      (auth0Client.getUser as jasmine.Spy).and.resolveTo(user);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+        user
+      );
 
+      const service = createService();
       service.user$.pipe(bufferCount(2)).subscribe((values) => {
         expect(values[0]).toBe(user);
         expect(values[1]).toBe(null);
@@ -235,11 +294,56 @@ describe('AuthService', () => {
       });
 
       service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
-        (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+        ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+          false
+        );
         service.logout({
-          localOnly: true,
+          openUrl: false,
         });
       });
+    });
+
+    it('should not emit when state is updated that doesnt change the user', (done) => {
+      const user = {
+        name: 'Test User',
+      };
+
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+        'AT1'
+      );
+      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+        user
+      );
+
+      let userEmissions = 0;
+      const service = createService();
+      service.user$.subscribe(() => userEmissions++);
+
+      service
+        .getAccessTokenSilently()
+        .pipe(
+          tap(() =>
+            ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+              'AT2'
+            )
+          ),
+          mergeMap(() => service.getAccessTokenSilently()),
+          tap(() =>
+            ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+              'AT3'
+            )
+          ),
+          mergeMap(() => service.getAccessTokenSilently()),
+          // Allow user emissions to come through
+          delay(0)
+        )
+        .subscribe(() => {
+          expect(userEmissions).toBe(1);
+          done();
+        });
     });
   });
 
@@ -252,8 +356,13 @@ describe('AuthService', () => {
         iss: 'https://example.eu.auth0.com/',
       };
 
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
-      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+      ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
+        claims
+      );
+      const service = createService();
 
       service.idTokenClaims$.subscribe((value) => {
         expect(value).toBe(claims);
@@ -276,9 +385,14 @@ describe('AuthService', () => {
         iss: 'https://example.eu.auth0.com/',
       };
 
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
-      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+      ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
+        claims
+      );
 
+      const service = createService();
       service.idTokenClaims$.pipe(bufferCount(2)).subscribe((values) => {
         expect(values[0]).toBe(claims);
         expect(values[1]).toBe(claims2);
@@ -288,8 +402,12 @@ describe('AuthService', () => {
       // Add a small delay before triggering a new emit to the idTokenClaims$.
       // This ensures we can capture both emits using the above bufferCount(2)
       setTimeout(() => {
-        (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo({});
-        (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims2);
+        ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+          {}
+        );
+        ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
+          claims2
+        );
 
         service.getAccessTokenSilently().subscribe();
       }, 0);
@@ -303,9 +421,14 @@ describe('AuthService', () => {
         iss: 'https://example.eu.auth0.com/',
       };
 
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
-      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(claims);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
+      ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
+        claims
+      );
 
+      const service = createService();
       service.idTokenClaims$.pipe(bufferCount(2)).subscribe((values) => {
         expect(values[0]).toBe(claims);
         expect(values[1]).toBe(null);
@@ -313,9 +436,11 @@ describe('AuthService', () => {
       });
 
       service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
-        (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+        ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+          false
+        );
         service.logout({
-          localOnly: true,
+          openUrl: false,
         });
       });
     });
@@ -327,9 +452,9 @@ describe('AuthService', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
 
-      navigator = jasmine.createSpyObj('RouteNavigator', {
-        navigateByUrl: Promise.resolve(true),
-      }) as any;
+      navigator = {
+        navigateByUrl: jest.fn().mockResolvedValue(true),
+      } as any;
 
       TestBed.configureTestingModule({
         ...moduleSetup,
@@ -353,6 +478,7 @@ describe('AuthService', () => {
     });
 
     it('should handle the callback when code and state are available', (done) => {
+      mockWindow.location.search = '?code=123&state=456';
       const localService = createService();
 
       loaded(localService).subscribe(() => {
@@ -362,6 +488,7 @@ describe('AuthService', () => {
     });
 
     it('should not handle the callback when skipRedirectCallback is true', (done) => {
+      mockWindow.location.search = '?code=123&state=456';
       authConfig.skipRedirectCallback = true;
 
       const localService = createService();
@@ -382,11 +509,13 @@ describe('AuthService', () => {
     });
 
     it('should redirect to the route specified in appState', (done) => {
-      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({
-        appState: {
-          target: '/test-route',
-        },
-      });
+      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
+        {
+          appState: {
+            target: '/test-route',
+          },
+        }
+      );
 
       const localService = createService();
 
@@ -397,7 +526,9 @@ describe('AuthService', () => {
     });
 
     it('should fallback to `/` when missing appState', (done) => {
-      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({});
+      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
+        {}
+      );
 
       const localService = createService();
 
@@ -408,7 +539,7 @@ describe('AuthService', () => {
     });
 
     it('should fallback to `/` when handleRedirectCallback returns undefined', (done) => {
-      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo(
+      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
         undefined
       );
 
@@ -425,9 +556,11 @@ describe('AuthService', () => {
         myValue: 'State to Preserve',
       };
 
-      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({
-        appState,
-      });
+      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
+        {
+          appState,
+        }
+      );
 
       const localService = createService();
 
@@ -440,8 +573,10 @@ describe('AuthService', () => {
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
-      (auth0Client.handleRedirectCallback as jasmine.Spy).and.throwError(
-        errorObj
+      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockImplementation(
+        () => {
+          throw errorObj;
+        }
       );
 
       const localService = createService();
@@ -459,8 +594,10 @@ describe('AuthService', () => {
       const errorObj = new Error('An error has occured');
 
       authConfig.errorPath = '/error';
-      (auth0Client.handleRedirectCallback as jasmine.Spy).and.throwError(
-        errorObj
+      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockImplementation(
+        () => {
+          throw errorObj;
+        }
       );
 
       const localService = createService();
@@ -485,24 +622,42 @@ describe('AuthService', () => {
         done();
       });
     });
+
+    it('should not process the callback when query string is a sub string', (done) => {
+      window.location.search = '?abccode=123&xyzstate=456';
+
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(auth0Client.handleRedirectCallback).not.toHaveBeenCalled();
+        done();
+      });
+    });
   });
 
   it('should call `loginWithRedirect`', async () => {
+    const service = createService();
     await service.loginWithRedirect().toPromise();
     expect(auth0Client.loginWithRedirect).toHaveBeenCalled();
   });
 
   it('should call `loginWithRedirect` and pass options', async () => {
-    const options = { redirect_uri: 'http://localhost:3001' };
+    const options = {
+      authorizationParams: { redirect_uri: 'http://localhost:3001' },
+    };
 
+    const service = createService();
     await service.loginWithRedirect(options).toPromise();
     expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
   });
 
   it('should call `loginWithPopup`', (done) => {
+    const service = createService();
     loaded(service).subscribe(() => {
-      (auth0Client.isAuthenticated as jasmine.Spy).calls.reset();
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockReset();
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
 
       service.loginWithPopup();
 
@@ -521,10 +676,13 @@ describe('AuthService', () => {
     // same object reference was passed through than any specific options.
     const options = {};
     const config = {};
+    const service = createService();
 
     loaded(service).subscribe(() => {
-      (auth0Client.isAuthenticated as jasmine.Spy).calls.reset();
-      (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockReset();
+      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+        true
+      );
 
       service.loginWithPopup(options, config);
 
@@ -541,29 +699,47 @@ describe('AuthService', () => {
   });
 
   it('should call `logout`', () => {
+    const service = createService();
     service.logout();
     expect(auth0Client.logout).toHaveBeenCalled();
   });
 
   it('should call `logout` with options', () => {
-    const options = { returnTo: 'http://localhost' };
+    const options = { logoutParams: { returnTo: 'http://localhost' } };
+    const service = createService();
     service.logout(options);
     expect(auth0Client.logout).toHaveBeenCalledWith(options);
   });
 
   it('should reset the authentication state when passing `localOnly` to logout', (done) => {
-    const options = { localOnly: true };
+    const options = {
+      openUrl: async () => {
+        ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+          false
+        );
+      },
+    };
 
-    service.isAuthenticated$.subscribe((authenticated) => {
-      expect(authenticated).toBeFalse();
-      done();
+    ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+      true
+    );
+
+    const service = createService();
+
+    loaded(service).subscribe(() => {
+      service.isAuthenticated$.pipe(bufferCount(2)).subscribe((values) => {
+        expect(values[0]).toBe(true);
+        expect(values[1]).toBe(false);
+        done();
+      });
+
+      service.logout(options);
     });
-
-    service.logout(options);
   });
 
   describe('getAccessTokenSilently', () => {
     it('should call the underlying SDK', (done) => {
+      const service = createService();
       service.getAccessTokenSilently().subscribe((token) => {
         expect(auth0Client.getTokenSilently).toHaveBeenCalled();
         done();
@@ -573,6 +749,7 @@ describe('AuthService', () => {
     it('should call the underlying SDK and pass along the options', (done) => {
       // Empty object here just to test the object reference
       const options = {};
+      const service = createService();
 
       service.getAccessTokenSilently(options).subscribe((token) => {
         expect(auth0Client.getTokenSilently).toHaveBeenCalledWith(options);
@@ -586,10 +763,11 @@ describe('AuthService', () => {
         id_token: '456',
         expires_in: 2,
       };
-      (auth0Client.getTokenSilently as jasmine.Spy).and.resolveTo(
+      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
         tokenResponse
       );
 
+      const service = createService();
       service
         .getAccessTokenSilently({ detailedResponse: true })
         .subscribe((token) => {
@@ -598,10 +776,27 @@ describe('AuthService', () => {
         });
     });
 
+    it('should null when nothing in cache', (done) => {
+      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
+        null
+      );
+
+      const service = createService();
+      service
+        .getAccessTokenSilently()
+        .subscribe((token) => {
+          expect(token).toBeNull();
+          done();
+        });
+    });
+
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
-      (auth0Client.getTokenSilently as jasmine.Spy).and.rejectWith(errorObj);
+      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockRejectedValue(
+        errorObj
+      );
+      const service = createService();
 
       service.getAccessTokenSilently().subscribe({
         error: () => {},
@@ -616,7 +811,10 @@ describe('AuthService', () => {
     it('should bubble errors', (done) => {
       const errorObj = new Error('An error has occured');
 
-      (auth0Client.getTokenSilently as jasmine.Spy).and.rejectWith(errorObj);
+      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockRejectedValue(
+        errorObj
+      );
+      const service = createService();
 
       service.getAccessTokenSilently().subscribe({
         error: (err: Error) => {
@@ -629,6 +827,7 @@ describe('AuthService', () => {
 
   describe('getAccessTokenWithPopup', () => {
     it('should call the underlying SDK', (done) => {
+      const service = createService();
       service.getAccessTokenWithPopup().subscribe((token) => {
         expect(auth0Client.getTokenWithPopup).toHaveBeenCalled();
         done();
@@ -639,6 +838,7 @@ describe('AuthService', () => {
       // Empty object just to test reference
       const options = {};
 
+      const service = createService();
       service.getAccessTokenWithPopup(options).subscribe((token) => {
         expect(auth0Client.getTokenWithPopup).toHaveBeenCalledWith(options);
         done();
@@ -648,8 +848,11 @@ describe('AuthService', () => {
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
-      (auth0Client.getTokenWithPopup as jasmine.Spy).and.rejectWith(errorObj);
+      ((auth0Client.getTokenWithPopup as unknown) as jest.SpyInstance).mockRejectedValue(
+        errorObj
+      );
 
+      const service = createService();
       service.getAccessTokenWithPopup().subscribe({
         error: () => {},
       });
@@ -663,8 +866,11 @@ describe('AuthService', () => {
     it('should bubble errors', (done) => {
       const errorObj = new Error('An error has occured');
 
-      (auth0Client.getTokenWithPopup as jasmine.Spy).and.rejectWith(errorObj);
+      ((auth0Client.getTokenWithPopup as unknown) as jest.SpyInstance).mockRejectedValue(
+        errorObj
+      );
 
+      const service = createService();
       service.getAccessTokenWithPopup().subscribe({
         error: (err: Error) => {
           expect(err).toBe(errorObj);
@@ -674,61 +880,15 @@ describe('AuthService', () => {
     });
   });
 
-  describe('getUser', () => {
-    it('should call `getUser`', async () => {
-      await service.getUser().toPromise();
-      expect(auth0Client.getUser).toHaveBeenCalled();
-    });
-
-    it('should call `getUser` and pass options', async () => {
-      const options = { audience: 'http://localhost:3001' };
-
-      await service.getUser(options).toPromise();
-      expect(auth0Client.getUser).toHaveBeenCalledWith(options);
-    });
-
-    it('should return the user from `getUser`', async () => {
-      const options = { audience: 'http://localhost:3001' };
-      const expected = { name: 'John Doe' };
-      (auth0Client.getUser as jasmine.Spy).and.resolveTo(expected);
-
-      const user = await service.getUser(options).toPromise();
-      expect(user).toBe(expected);
-    });
-  });
-
-  describe('getIdTokenClaims', () => {
-    it('should call `getIdTokenClaims`', async () => {
-      await service.getIdTokenClaims().toPromise();
-      expect(auth0Client.getIdTokenClaims).toHaveBeenCalled();
-    });
-
-    it('should call `getIdTokenClaims` and pass options', async () => {
-      const options = { audience: 'http://localhost:3001' };
-
-      await service.getIdTokenClaims(options).toPromise();
-      expect(auth0Client.getIdTokenClaims).toHaveBeenCalledWith(options);
-    });
-
-    it('should return the claims from `getIdTokenClaims`', async () => {
-      const options = { audience: 'http://localhost:3001' };
-      const expected = { __raw: '', name: 'John Doe' };
-      (auth0Client.getIdTokenClaims as jasmine.Spy).and.resolveTo(expected);
-
-      const claims = await service.getIdTokenClaims(options).toPromise();
-      expect(claims).toBe(expected);
-    });
-  });
-
   describe('handleRedirectCallback', () => {
     let navigator: AbstractNavigator;
 
     beforeEach(() => {
       TestBed.resetTestingModule();
 
-      navigator = jasmine.createSpyObj('RouteNavigator', {
-        navigateByUrl: Promise.resolve(true),
-      }) as any;
+      navigator = {
+        navigateByUrl: jest.fn().mockResolvedValue(true),
+      } as any;
 
       TestBed.configureTestingModule({
         ...moduleSetup,
@@ -788,7 +948,9 @@ describe('AuthService', () => {
         .pipe(
           filter((isLoading) => !isLoading),
           tap(() =>
-            (auth0Client.isAuthenticated as jasmine.Spy).and.resolveTo(true)
+            ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
+              true
+            )
           ),
           mergeMap(() => localService.handleRedirectCallback())
         )
@@ -800,9 +962,11 @@ describe('AuthService', () => {
         myValue: 'State to Preserve',
       };
 
-      (auth0Client.handleRedirectCallback as jasmine.Spy).and.resolveTo({
-        appState,
-      });
+      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
+        {
+          appState,
+        }
+      );
 
       const localService = createService();
       localService.handleRedirectCallback().subscribe(() => {
@@ -810,30 +974,6 @@ describe('AuthService', () => {
           expect(recievedState).toEqual(appState);
           done();
         });
-      });
-    });
-  });
-
-  describe('buildAuthorizeUrl', () => {
-    it('should call the underlying SDK', (done) => {
-      const options: RedirectLoginOptions = {};
-
-      service.buildAuthorizeUrl(options).subscribe((url) => {
-        expect(url).toBeTruthy();
-        expect(auth0Client.buildAuthorizeUrl).toHaveBeenCalledWith(options);
-        done();
-      });
-    });
-  });
-
-  describe('buildLogoutUrl', () => {
-    it('should call the underlying SDK', (done) => {
-      const options: LogoutUrlOptions = {};
-
-      service.buildLogoutUrl(options).subscribe((url) => {
-        expect(url).toBeTruthy();
-        expect(auth0Client.buildLogoutUrl).toHaveBeenCalledWith(options);
-        done();
       });
     });
   });

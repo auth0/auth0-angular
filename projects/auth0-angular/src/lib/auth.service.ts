@@ -2,19 +2,12 @@ import { Injectable, Inject, OnDestroy } from '@angular/core';
 
 import {
   Auth0Client,
-  RedirectLoginOptions,
   PopupLoginOptions,
   PopupConfigOptions,
-  LogoutOptions,
   GetTokenSilentlyOptions,
   GetTokenWithPopupOptions,
   RedirectLoginResult,
-  LogoutUrlOptions,
   GetTokenSilentlyVerboseResponse,
-  GetUserOptions,
-  User,
-  GetIdTokenClaimsOptions,
-  IdToken,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -42,12 +35,14 @@ import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { AuthClientConfig, AppState } from './auth.config';
 import { AuthState } from './auth.state';
+import { LogoutOptions, RedirectLoginOptions } from './interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService<TAppState extends AppState = AppState>
-  implements OnDestroy {
+  implements OnDestroy
+{
   private appStateSubject$ = new ReplaySubject<TAppState>(1);
 
   // https://stackoverflow.com/a/41177163
@@ -179,21 +174,21 @@ export class AuthService<TAppState extends AppState = AppState>
    * Clears the application session and performs a redirect to `/v2/logout`, using
    * the parameters provided as arguments, to clear the Auth0 session.
    * If the `federated` option is specified it also clears the Identity Provider session.
-   * If the `localOnly` option is specified, it only clears the application session.
-   * It is invalid to set both the `federated` and `localOnly` options to `true`,
+   * If the `openUrl` option is set to false, it only clears the application session.
+   * It is invalid to set both the `federated` to true and `openUrl` to `false`,
    * and an error will be thrown if you do.
    * [Read more about how Logout works at Auth0](https://auth0.com/docs/logout).
    *
    * @param options The logout options
    */
-  logout(options?: LogoutOptions): void {
-    const logout = this.auth0Client.logout(options) || of(null);
-
-    from(logout).subscribe(() => {
-      if (options?.localOnly) {
-        this.authState.refresh();
-      }
-    });
+  logout(options?: LogoutOptions): Observable<void> {
+    return from(
+      this.auth0Client.logout(options).then(() => {
+        if (options?.openUrl === false || options?.openUrl) {
+          this.authState.refresh();
+        }
+      })
+    );
   }
 
   /**
@@ -248,11 +243,13 @@ export class AuthService<TAppState extends AppState = AppState>
           ? client.getTokenSilently({ ...options, detailedResponse: true })
           : client.getTokenSilently(options)
       ),
-      tap((token) =>
-        this.authState.setAccessToken(
-          typeof token === 'string' ? token : token.access_token
-        )
-      ),
+      tap((token) => {
+        if (token) {
+          this.authState.setAccessToken(
+            typeof token === 'string' ? token : token.access_token
+          );
+        }
+      }),
       catchError((error) => {
         this.authState.setError(error);
         this.authState.refresh();
@@ -275,64 +272,20 @@ export class AuthService<TAppState extends AppState = AppState>
    */
   getAccessTokenWithPopup(
     options?: GetTokenWithPopupOptions
-  ): Observable<string> {
+  ): Observable<string | undefined> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenWithPopup(options)),
-      tap((token) => this.authState.setAccessToken(token)),
+      tap((token) => {
+        if (token) {
+          this.authState.setAccessToken(token);
+        }
+      }),
       catchError((error) => {
         this.authState.setError(error);
         this.authState.refresh();
         return throwError(error);
       })
     );
-  }
-
-  /**
-   * ```js
-   * getUser(options).subscribe(user => ...);
-   * ```
-   *
-   * Returns the user information if available (decoded
-   * from the `id_token`).
-   *
-   * If you provide an audience or scope, they should match an existing Access Token
-   * (the SDK stores a corresponding ID Token with every Access Token, and uses the
-   * scope and audience to look up the ID Token)
-   *
-   * @remarks
-   *
-   * The returned observable will emit once and then complete.
-   *
-   * @typeparam TUser The type to return, has to extend {@link User}.
-   * @param options The options to get the user
-   */
-  getUser<TUser extends User>(
-    options?: GetUserOptions
-  ): Observable<TUser | undefined> {
-    return defer(() => this.auth0Client.getUser<TUser>(options));
-  }
-
-  /**
-   * ```js
-   * getIdTokenClaims(options).subscribe(claims => ...);
-   * ```
-   *
-   * Returns all claims from the id_token if available.
-   *
-   * If you provide an audience or scope, they should match an existing Access Token
-   * (the SDK stores a corresponding ID Token with every Access Token, and uses the
-   * scope and audience to look up the ID Token)
-   *
-   * @remarks
-   *
-   * The returned observable will emit once and then complete.
-   *
-   * @param options The options to get the Id token claims
-   */
-  getIdTokenClaims(
-    options?: GetIdTokenClaimsOptions
-  ): Observable<IdToken | undefined> {
-    return defer(() => this.auth0Client.getIdTokenClaims(options));
   }
 
   /**
@@ -373,40 +326,13 @@ export class AuthService<TAppState extends AppState = AppState>
     );
   }
 
-  /**
-   * ```js
-   * buildAuthorizeUrl().subscribe(url => ...)
-   * ```
-   *
-   * Builds an `/authorize` URL for loginWithRedirect using the parameters
-   * provided as arguments. Random and secure `state` and `nonce`
-   * parameters will be auto-generated.
-   * @param options The options
-   * @returns A URL to the authorize endpoint
-   */
-  buildAuthorizeUrl(options?: RedirectLoginOptions): Observable<string> {
-    return defer(() => this.auth0Client.buildAuthorizeUrl(options));
-  }
-
-  /**
-   * ```js
-   * buildLogoutUrl().subscribe(url => ...)
-   * ```
-   * Builds a URL to the logout endpoint.
-   *
-   * @param options The options used to configure the parameters that appear in the logout endpoint URL.
-   * @returns a URL to the logout endpoint using the parameters provided as arguments.
-   */
-  buildLogoutUrl(options?: LogoutUrlOptions): Observable<string> {
-    return of(this.auth0Client.buildLogoutUrl(options));
-  }
-
   private shouldHandleCallback(): Observable<boolean> {
     return of(location.search).pipe(
       map((search) => {
+        const searchParams = new URLSearchParams(search);
         return (
-          (search.includes('code=') || search.includes('error=')) &&
-          search.includes('state=') &&
+          (searchParams.has('code') || searchParams.has('error')) &&
+          searchParams.has('state') &&
           !this.configFactory.get().skipRedirectCallback
         );
       })

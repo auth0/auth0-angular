@@ -3,11 +3,12 @@
 - [Add login to your application](#add-login-to-your-application)
 - [Add logout to your application](#add-logout-to-your-application)
 - [Checking if a user is authenticated](#checking-if-a-user-is-authenticated)
-- [Dislay the user profile](#display-the-user-profile)
+- [Display the user profile](#display-the-user-profile)
 - [Protect a route](#protect-a-route)
 - [Call an API](#call-an-api)
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
+- [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 
 ## Add login to your application
 
@@ -30,7 +31,7 @@ export class AppComponent {
   }
 ```
 
-By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html#redirecturi) option.
+By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/auth_config.AuthConfig.html#redirectUri) option.
 
 ## Add logout to your application
 
@@ -154,7 +155,9 @@ import { AuthModule } from '@auth0/auth0-angular';
     AuthModule.forRoot({
       domain: 'YOUR_AUTH0_DOMAIN',
       clientId: 'YOUR_AUTH0_CLIENT_ID',
-      audience: 'YOUR_AUTH0_API_IDENTIFIER',
+      authorizationParams: {
+        audience: 'YOUR_AUTH0_API_IDENTIFIER',
+      }
     }),
   ],
   // ...
@@ -223,8 +226,10 @@ AuthModule.forRoot({
       {
         uri: '/api/accounts/*',
         tokenOptions: {
-          audience: 'http://my-api/',
-          scope: 'read:accounts',
+          authorizationParams: {
+            audience: 'http://my-api/',
+            scope: 'read:accounts',
+          }
         },
       },
 
@@ -233,8 +238,10 @@ AuthModule.forRoot({
         uri: '/api/orders',
         httpMethod: HttpMethod.Post,
         tokenOptions: {
-          audience: 'http://my-api/',
-          scope: 'write:orders',
+          authorizationParams: {
+            audience: 'http://my-api/',
+            scope: 'write:orders',
+          }
         },
       },
 
@@ -242,8 +249,10 @@ AuthModule.forRoot({
       {
         uri: 'https://your-domain.auth0.com/api/v2/users',
         tokenOptions: {
-          audience: 'https://your-domain.com/api/v2/',
-          scope: 'read:users',
+          authorizationParams: {
+            audience: 'https://your-domain.com/api/v2/',
+            scope: 'read:users',
+          }
         },
       },
     ],
@@ -266,8 +275,10 @@ AuthModule.forRoot({
         uriMatcher: (uri) => uri.indexOf('/api/orders') > -1,
         httpMethod: HttpMethod.Post,
         tokenOptions: {
-          audience: 'http://my-api/',
-          scope: 'write:orders',
+          authorizationParams: {
+            audience: 'http://my-api/',
+            scope: 'write:orders',
+          }
         },
       },
     ],
@@ -316,7 +327,9 @@ Log in to an organization by specifying the `organization` parameter importing t
 AuthModule.forRoot({
   domain: 'YOUR_AUTH0_DOMAIN',
   clientId: 'YOUR_AUTH0_CLIENT_ID',
-  organization: 'YOUR_ORGANIZATION_ID'
+  authorizationParams: {
+    organization: 'YOUR_ORGANIZATION_ID_OR_NAME'
+  }
 }),
 ```
 
@@ -325,12 +338,16 @@ You can also specify the organization when logging in:
 ```
 // Using a redirect
 this.auth.loginWithRedirect({
-  organization: 'YOUR_ORGANIZATION_ID'
+  authorizationParams: {
+    organization: 'YOUR_ORGANIZATION_ID_OR_NAME'
+  }
 });
 
 // Using a popup window
 this.auth.loginWithPopup({
-  organization: 'YOUR_ORGANIZATION_ID'
+  authorizationParams: {
+    organization: 'YOUR_ORGANIZATION_ID_OR_NAME'
+  }
 });
 ```
 
@@ -354,9 +371,45 @@ export class AppComponent {
     const { organization, invitation } = this.activatedRoute.snapshot.params;
 
     this.auth.loginWithRedirect({
-      organization,
-      invitation
+      authorizationParams: {
+        organization,
+        invitation
+      }
     });
   }
 }
 ```
+
+## Standalone components and a more functional approach
+As of Angular 15, the Angular team is putting standalone components, as well as a more functional approach, in favor of the traditional use of NgModules and class-based approach.
+
+There are a couple of difference with how you would traditionally implement our SDK:
+
+- Use our functional guard (`authGuardFn`) instead of our class-based `AuthGuard`.
+- Use our functional interceptor (`authHttpInterceptorFn`) instead of our class-based `AuthHttpInterceptor`.
+- Register the interceptor by passing it to `withInterceptors` when calling `provideHttpClient`.
+- Register our SDK using `provideAuth0`.
+
+```ts
+import { authGuardFn, authHttpInterceptorFn, provideAuth0 } from '@auth0/auth0-angular';
+
+const routes: Routes = [
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [authGuardFn],
+  }
+];
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes),
+    provideAuth0(/* Auth Config Goes Here */),
+    provideHttpClient(
+      withInterceptors([authHttpInterceptorFn])
+    ) 
+  ]
+});
+```
+
+Note that `provideAuth0` should **never** be provided to components, but only at the root level of your application.

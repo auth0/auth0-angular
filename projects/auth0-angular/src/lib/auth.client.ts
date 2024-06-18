@@ -13,13 +13,8 @@ export class Auth0ClientFactory {
       );
     }
 
-    const { redirectUri, clientId, maxAge, httpInterceptor, ...rest } = config;
-
     return new Auth0Client({
-      redirect_uri: redirectUri || window.location.origin,
-      client_id: clientId,
-      max_age: maxAge,
-      ...rest,
+      ...config,
       auth0Client: {
         name: useragent.name,
         version: useragent.version,

@@ -13,12 +13,24 @@ import {
   AuthClientConfig,
   HttpInterceptorConfig,
 } from './auth.config';
-import { throwError } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { Auth0ClientService } from './auth.client';
 import { AuthState } from './auth.state';
+import { AuthService } from './auth.service';
 
 // NOTE: Read Async testing: https://github.com/angular/angular/issues/25733#issuecomment-636154553
+
+const mockWindow = global as any;
+
+mockWindow.crypto = {
+  subtle: {
+    digest: () => 'foo',
+  },
+  getRandomValues() {
+    return '123';
+  },
+};
 
 describe('The Auth HTTP Interceptor', () => {
   let httpClient: HttpClient;
@@ -27,14 +39,17 @@ describe('The Auth HTTP Interceptor', () => {
   let req: TestRequest;
   let authState: AuthState;
   const testData: Data = { message: 'Hello, world' };
+  let authService: AuthService;
+  let isLoading$: Subject<boolean>;
 
-  const assertAuthorizedApiCallTo = (
+  const assertAuthorizedApiCallTo = async (
     url: string,
     done: () => void,
     method = 'get'
   ) => {
     httpClient.request(method, url).subscribe(done);
     flush();
+    await new Promise(process.nextTick);
     req = httpTestingController.expectOne(url);
 
     expect(req.request.headers.get('Authorization')).toBe(
@@ -42,9 +57,10 @@ describe('The Auth HTTP Interceptor', () => {
     );
   };
 
-  const assertPassThruApiCallTo = (url: string, done: () => void) => {
+  const assertPassThruApiCallTo = async (url: string, done: () => void) => {
     httpClient.get<Data>(url).subscribe(done);
     flush();
+    await new Promise(process.nextTick);
     req = httpTestingController.expectOne(url);
     expect(req.request.headers.get('Authorization')).toBeFalsy();
   };
@@ -52,14 +68,17 @@ describe('The Auth HTTP Interceptor', () => {
   let config: Partial<AuthConfig>;
 
   beforeEach(() => {
+    isLoading$ = new BehaviorSubject<boolean>(false);
     req = undefined as any;
 
     auth0Client = new Auth0Client({
       domain: '',
-      client_id: '',
+      clientId: '',
     });
 
-    spyOn(auth0Client, 'getTokenSilently').and.resolveTo('access-token');
+    jest
+      .spyOn(auth0Client, 'getTokenSilently')
+      .mockImplementation(() => Promise.resolve('access-token'));
 
     config = {
       httpInterceptor: {
@@ -75,8 +94,10 @@ describe('The Auth HTTP Interceptor', () => {
           {
             uri: 'https://my-api.com/api/addresses',
             tokenOptions: {
-              audience: 'audience',
-              scope: 'scope',
+              authorizationParams: {
+                audience: 'audience',
+                scope: 'scope',
+              },
             },
           },
           {
@@ -90,8 +111,10 @@ describe('The Auth HTTP Interceptor', () => {
             uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1,
             httpMethod: HttpMethod.Post,
             tokenOptions: {
-              audience: 'audience',
-              scope: 'scope',
+              authorizationParams: {
+                audience: 'audience',
+                scope: 'scope',
+              },
             },
           },
         ],
@@ -114,14 +137,21 @@ describe('The Auth HTTP Interceptor', () => {
           provide: AuthClientConfig,
           useValue: { get: () => config },
         },
+        {
+          provide: AuthService,
+          useValue: {
+            isLoading$,
+          },
+        },
       ],
     });
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     authState = TestBed.inject(AuthState);
+    authService = TestBed.inject(AuthService);
 
-    spyOn(authState, 'setError').and.callThrough();
+    jest.spyOn(authState, 'setError');
   });
 
   afterEach(() => {
@@ -132,55 +162,77 @@ describe('The Auth HTTP Interceptor', () => {
   });
 
   describe('When no httpInterceptor is configured', () => {
-    it('pass through and do not have access tokens attached', fakeAsync((
+    it('pass through and do not have access tokens attached', fakeAsync(async (
       done: () => void
     ) => {
-      config.httpInterceptor = (null as unknown) as HttpInterceptorConfig;
-      assertPassThruApiCallTo('https://my-api.com/api/public', done);
+      config.httpInterceptor = null as unknown as HttpInterceptorConfig;
+      await assertPassThruApiCallTo('https://my-api.com/api/public', done);
     }));
   });
 
   describe('Requests that do not require authentication', () => {
-    it('pass through and do not have access tokens attached', fakeAsync((
+    it('pass through and do not have access tokens attached', fakeAsync(async (
       done: () => void
     ) => {
-      assertPassThruApiCallTo('https://my-api.com/api/public', done);
+      await assertPassThruApiCallTo('https://my-api.com/api/public', done);
     }));
   });
 
   describe('Requests that are configured using a primitive', () => {
-    it('attach the access token when the configuration uri is a string', fakeAsync((
+    it('waits unil isLoading emits false', fakeAsync(async (
+      done: () => void
+    ) => {
+      const method = 'GET';
+      const url = 'https://my-api.com/api/photos';
+
+      isLoading$.next(true);
+
+      httpClient.request(method, url).subscribe(done);
+      flush();
+
+      httpTestingController.expectNone(url);
+
+      isLoading$.next(false);
+      flush();
+
+      httpTestingController.expectOne(url);
+    }));
+
+    it('attach the access token when the configuration uri is a string', fakeAsync(async (
       done: () => void
     ) => {
       // Testing /api/photos (exact match)
-      assertAuthorizedApiCallTo('https://my-api.com/api/photos', done);
+      await assertAuthorizedApiCallTo('https://my-api.com/api/photos', done);
     }));
 
-    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
+    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync(async (
       done: () => void
     ) => {
       // Testing /api/people* (wildcard match)
-      assertAuthorizedApiCallTo('https://my-api.com/api/people/profile', done);
+      await assertAuthorizedApiCallTo(
+        'https://my-api.com/api/people/profile',
+        done
+      );
     }));
 
-    it('matches a full url to an API', fakeAsync((done: () => void) => {
+    it('matches a full url to an API', fakeAsync(async (done: () => void) => {
       // Testing 'https://my-api.com/orders' (exact)
-      assertAuthorizedApiCallTo('https://my-api.com/orders', done);
+      await assertAuthorizedApiCallTo('https://my-api.com/orders', done);
     }));
 
-    it('matches a URL that contains a query string', fakeAsync((
+    it('matches a URL that contains a query string', fakeAsync(async (
       done: () => void
     ) => {
-      assertAuthorizedApiCallTo(
+      await assertAuthorizedApiCallTo(
         'https://my-api.com/api/people?name=test',
         done
       );
     }));
 
-    it('matches a URL that contains a hash fragment', fakeAsync((
+    it('matches a URL that contains a hash fragment', fakeAsync(async (
       done: () => void
     ) => {
-      assertAuthorizedApiCallTo(
+      await assertAuthorizedApiCallTo(
         'https://my-api.com/api/people#hash-fragment',
         done
       );
@@ -188,128 +240,215 @@ describe('The Auth HTTP Interceptor', () => {
   });
 
   describe('Requests that are configured using a complex object', () => {
-    it('attach the access token when the uri is configured using a string', fakeAsync((
+    it('waits unil isLoading emits false', fakeAsync(async (
+      done: () => void
+    ) => {
+      const method = 'GET';
+      const url = 'https://my-api.com/api/orders';
+
+      isLoading$.next(true);
+
+      httpClient.request(method, url).subscribe(done);
+      flush();
+
+      httpTestingController.expectNone(url);
+
+      isLoading$.next(false);
+      flush();
+
+      httpTestingController.expectOne(url);
+    }));
+
+    it('attach the access token when the uri is configured using a string', fakeAsync(async (
       done: () => void
     ) => {
       // Testing { uri: /api/orders } (exact match)
-      assertAuthorizedApiCallTo('https://my-api.com/api/orders', done);
+      await assertAuthorizedApiCallTo('https://my-api.com/api/orders', done);
     }));
 
-    it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
+    it('pass through the route options to getTokenSilently, without additional properties', fakeAsync(async (
       done: () => void
     ) => {
       // Testing { uri: /api/addresses } (exact match)
-      assertAuthorizedApiCallTo('https://my-api.com/api/addresses', done);
+      await assertAuthorizedApiCallTo('https://my-api.com/api/addresses', done);
 
       expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
-        audience: 'audience',
-        scope: 'scope',
+        authorizationParams: {
+          audience: 'audience',
+          scope: 'scope',
+        },
       });
     }));
 
-    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync((
+    it('attach the access token when the configuration uri is a string with a wildcard', fakeAsync(async (
       done: () => void
     ) => {
       // Testing { uri: /api/calendar* } (wildcard match)
-      assertAuthorizedApiCallTo('https://my-api.com/api/calendar/events', done);
+      await assertAuthorizedApiCallTo(
+        'https://my-api.com/api/calendar/events',
+        done
+      );
     }));
 
-    it('attaches the access token when the HTTP method matches', fakeAsync((
+    it('attaches the access token when the HTTP method matches', fakeAsync(async (
       done: () => void
     ) => {
       // Testing { uri: /api/register } (wildcard match)
-      assertAuthorizedApiCallTo(
+      await assertAuthorizedApiCallTo(
         'https://my-api.com/api/register',
         done,
         'post'
       );
     }));
 
-    it('does not attach the access token if the HTTP method does not match', fakeAsync((
+    it('does not attach the access token if the HTTP method does not match', fakeAsync(async (
       done: () => void
     ) => {
-      assertPassThruApiCallTo('https://my-api.com/api/public', done);
+      await assertPassThruApiCallTo('https://my-api.com/api/public', done);
     }));
 
-    it('does not execute HTTP call when not able to retrieve a token', fakeAsync((
+    it('does not execute HTTP call when not able to retrieve a token', fakeAsync(async (
       done: () => void
     ) => {
-      (auth0Client.getTokenSilently as jasmine.Spy).and.returnValue(
-        throwError({ error: 'login_required' })
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(throwError({ error: 'login_required' }));
 
       httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
         error: (err) => expect(err).toEqual({ error: 'login_required' }),
       });
 
-      httpTestingController.expectNone('https://my-api.com/api/calendar');
       flush();
+      await new Promise(process.nextTick);
+
+      httpTestingController.expectNone('https://my-api.com/api/calendar');
     }));
 
-    it('does execute HTTP call when not able to retrieve a token but allowAnonymous is set to true', fakeAsync((
+    it('does execute HTTP call when not able to retrieve a token but allowAnonymous is set to true', fakeAsync(async (
       done: () => void
     ) => {
-      (auth0Client.getTokenSilently as jasmine.Spy).and.returnValue(
-        throwError({ error: 'login_required' })
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(throwError({ error: 'login_required' }));
 
-      assertPassThruApiCallTo('https://my-api.com/api/orders', done);
+      await assertPassThruApiCallTo('https://my-api.com/api/orders', done);
     }));
 
-    it('emit error when not able to retrieve a token but allowAnonymous is set to false', fakeAsync((
+    it('does execute HTTP call when missing_refresh_token but allowAnonymous is set to true', fakeAsync(async (
       done: () => void
     ) => {
-      (auth0Client.getTokenSilently as jasmine.Spy).and.callFake(() => {
-        return Promise.reject({ error: 'login_required' });
-      });
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(throwError({ error: 'missing_refresh_token' }));
+
+      await assertPassThruApiCallTo('https://my-api.com/api/orders', done);
+    }));
+
+    it('emit error when not able to retrieve a token but allowAnonymous is set to false', fakeAsync(async (
+      done: () => void
+    ) => {
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockRejectedValue({ error: 'login_required' });
 
       httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
         error: (err) => expect(err).toEqual({ error: 'login_required' }),
       });
 
-      httpTestingController.expectNone('https://my-api.com/api/calendar');
       flush();
+      await new Promise(process.nextTick);
+
+      httpTestingController.expectNone('https://my-api.com/api/calendar');
 
       expect(authState.setError).toHaveBeenCalled();
     }));
 
-    it('does not emit error when not able to retrieve a token but allowAnonymous is set to true', fakeAsync(() => {
-      (auth0Client.getTokenSilently as jasmine.Spy).and.callFake(() => {
-        return Promise.reject({ error: 'login_required' });
-      });
+    it('does not emit error when not able to retrieve a token but allowAnonymous is set to true', fakeAsync(async () => {
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockRejectedValue({ error: 'login_required' });
 
-      assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
+      await assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
+        expect(authState.setError).not.toHaveBeenCalled();
+      });
+    }));
+
+    it('does not emit error when missing_refresh_token but allowAnonymous is set to true', fakeAsync(async () => {
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockRejectedValue({ error: 'missing_refresh_token' });
+
+      await assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
         expect(authState.setError).not.toHaveBeenCalled();
       });
     }));
   });
 
   describe('Requests that are configured using an uri matcher', () => {
-    it('attach the access token when the matcher returns true', fakeAsync((
+    it('waits unil isLoading emits false', fakeAsync(async (
       done: () => void
     ) => {
-      // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
-      assertAuthorizedApiCallTo('https://my-api.com/api/contact', done, 'post');
+      const method = 'GET';
+      const url = 'https://my-api.com/api/orders';
+
+      isLoading$.next(true);
+
+      httpClient.request(method, url).subscribe(done);
+      flush();
+
+      httpTestingController.expectNone(url);
+
+      isLoading$.next(false);
+      flush();
+
+      httpTestingController.expectOne(url);
     }));
 
-    it('pass through the route options to getTokenSilently, without additional properties', fakeAsync((
+    it('attach the access token when the matcher returns true', fakeAsync(async (
       done: () => void
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
-      assertAuthorizedApiCallTo('https://my-api.com/api/contact', done, 'post');
+      await assertAuthorizedApiCallTo(
+        'https://my-api.com/api/contact',
+        done,
+        'post'
+      );
+    }));
+
+    it('pass through the route options to getTokenSilently, without additional properties', fakeAsync(async (
+      done: () => void
+    ) => {
+      // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
+      await assertAuthorizedApiCallTo(
+        'https://my-api.com/api/contact',
+        done,
+        'post'
+      );
 
       expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
-        audience: 'audience',
-        scope: 'scope',
+        authorizationParams: {
+          audience: 'audience',
+          scope: 'scope',
+        },
       });
     }));
 
-    it('does not attach the access token when the HTTP method does not match', fakeAsync((
+    it('does attach the access token when the HTTP method does match', fakeAsync(async (
       done: () => void
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
-      assertAuthorizedApiCallTo('https://my-api.com/api/contact', done, 'post');
-      assertPassThruApiCallTo('https://my-api.com/api/contact', done);
+      await assertAuthorizedApiCallTo(
+        'https://my-api.com/api/contact',
+        done,
+        'post'
+      );
+    }));
+
+    it('does not attach the access token when the HTTP method does not match', fakeAsync(async (
+      done: () => void
+    ) => {
+      // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
+      await assertPassThruApiCallTo('https://my-api.com/api/contact', done);
     }));
   });
 });

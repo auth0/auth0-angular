@@ -1,11 +1,15 @@
 {
-  "entryPoints": ["./projects/auth0-angular/src/lib"],
-  "entryPointStrategy": "expand",
+  "entryPoints": ["./projects/auth0-angular/src/public-api.ts"],
   "exclude": ["**/*.spec.ts"],
   "tsconfig": "./projects/auth0-angular/tsconfig.lib.json",
   "out": "docs",
-  "excludeExternals": true,
+  "excludeExternals": false,
   "excludePrivate": true,
   "hideGenerator": true,
-  "readme": "./README.md"
+  "readme": "./README.md",
+  "visibilityFilters": {
+    "protected": false,
+    "inherited": true,
+    "external": true
+  }
 }

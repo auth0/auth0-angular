@@ -14,8 +14,8 @@ A library for integrating [Auth0](https://auth0.com) into an Angular application
 
 - [Quickstart](https://auth0.com/docs/quickstart/spa/angular) - our interactive guide for quickly adding login, logout and user information to an Angular app using Auth0.
 - [Sample App](https://github.com/auth0-samples/auth0-angular-samples/tree/master/Sample-01) - a full-fledged Angular application integrated with Auth0.
-- [FAQs](https://github.com/auth0/auth0-angular/tree/master/FAQ.md) - frequently asked questions about the auth0-angular SDK.
-- [Examples](https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md) - code samples for common Angular authentication scenario's.
+- [FAQs](https://github.com/auth0/auth0-angular/tree/main/FAQ.md) - frequently asked questions about the auth0-angular SDK.
+- [Examples](https://github.com/auth0/auth0-angular/tree/main/EXAMPLES.md) - code samples for common Angular authentication scenario's.
 - [Docs site](https://www.auth0.com/docs) - explore our docs site and learn more about Auth0.
 
 ## Getting started
@@ -45,7 +45,6 @@ Create a **Single Page Application** in the [Auth0 Dashboard](https://manage.aut
 > **If you're using an existing application**, verify that you have configured the following settings in your Single Page Application:
 >
 > - Click on the "Settings" tab of your application's page.
-> - Ensure that "Token Endpoint Authentication Method" under "Application Properties" is set to "None"
 > - Scroll down and click on the "Show Advanced Settings" link.
 > - Under "Advanced Settings", click on the "OAuth" tab.
 > - Ensure that "JsonWebToken Signature Algorithm" is set to `RS256` and that "OIDC Conformant" is enabled.
@@ -64,7 +63,7 @@ Take note of the **Client ID** and **Domain** values under the "Basic Informatio
 
 #### Static configuration
 
-Install the SDK into your application by importing `AuthModule.forRoot()` and configuring with your Auth0 domain and client id:
+Install the SDK into your application by importing `AuthModule.forRoot()` and configuring with your Auth0 domain and client id, as well as the URL to which Auth0 should redirect back after succesful authentication:
 
 ```ts
 import { NgModule } from '@angular/core';
@@ -76,6 +75,9 @@ import { AuthModule } from '@auth0/auth0-angular';
     AuthModule.forRoot({
       domain: 'YOUR_AUTH0_DOMAIN',
       clientId: 'YOUR_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+      },
     }),
   ],
   // ...
@@ -146,16 +148,16 @@ export class AppComponent {
   }
 ```
 
-By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html#redirecturi) option.
+By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/AuthorizationParams.html#redirect_uri) option.
 
-For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, have a look at our [examples](https://github.com/auth0/auth0-angular/tree/master/EXAMPLES.md).
+For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, including how to use our standalone and function APIs, have a look at the [examples](https://github.com/auth0/auth0-angular/tree/main/EXAMPLES.md).
 
 ## API reference
 
 Explore public API's available in auth0-angular.
 
-- [AuthService](https://auth0.github.io/auth0-angular/classes/auth_service.authservice.html) - service used to interact with the SDK.
-- [AuthConfig](https://auth0.github.io/auth0-angular/interfaces/auth_config.authconfig.html) - used to configure the SDK.
+- [AuthService](https://auth0.github.io/auth0-angular/classes/AuthService.html) - service used to interact with the SDK.
+- [AuthConfig](https://auth0.github.io/auth0-angular/interfaces/AuthConfig.html) - used to configure the SDK.
 
 ## Feedback
 
@@ -185,4 +187,4 @@ Please do not report security vulnerabilities on the public GitHub issue tracker
 </p>
 <p align="center">Auth0 is an easy to implement, adaptable authentication and authorization platform. To learn more checkout <a href="https://auth0.com/why-auth0">Why Auth0?</a></p>
 <p align="center">
-This project is licensed under the MIT license. See the <a href="https://github.com/auth0/auth0-angular/tree/master/LICENSE"> LICENSE</a> file for more info.</p>
+This project is licensed under the MIT license. See the <a href="https://github.com/auth0/auth0-angular/tree/main/LICENSE"> LICENSE</a> file for more info.</p>

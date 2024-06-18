@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { AuthService } from 'projects/auth0-angular/src/lib/auth.service';
+import { AuthService } from '../../../auth0-angular/src/lib/auth.service';
 import { iif } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { LogoutOptions } from '@auth0/auth0-spa-js';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { LogoutOptions } from 'projects/auth0-angular/src/lib/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -38,27 +39,31 @@ export class AppComponent implements OnInit {
     ignoreCache: new FormControl(false),
   });
 
-  ngOnInit(): void {
-    this.auth.appState$.subscribe((appState) => {
-      this.appStateResult = appState.myValue;
-    });
-  }
-
   constructor(
     public auth: AuthService,
     @Inject(DOCUMENT) private doc: Document,
     private httpClient: HttpClient
   ) {}
 
+  ngOnInit(): void {
+    this.auth.appState$.subscribe((appState) => {
+      this.appStateResult = appState['myValue'];
+    });
+  }
+
   launchLogin(): void {
     const usePopup = this.loginOptionsForm.value.usePopup === true;
     if (usePopup) {
       this.auth.loginWithPopup({
-        ...(this.organization ? { organization: this.organization } : null),
+        authorizationParams: {
+          ...(this.organization ? { organization: this.organization } : null),
+        },
       });
     } else {
       this.auth.loginWithRedirect({
-        ...(this.organization ? { organization: this.organization } : null),
+        authorizationParams: {
+          ...(this.organization ? { organization: this.organization } : null),
+        },
         appState: {
           myValue: this.loginOptionsForm.value.appStateInput,
         },
@@ -75,12 +80,16 @@ export class AppComponent implements OnInit {
 
       if (orgMatches && inviteMatches) {
         this.auth.loginWithRedirect({
-          organization: orgMatches[1],
-          invitation: inviteMatches[1],
+          authorizationParams: {
+            organization: orgMatches[1],
+            invitation: inviteMatches[1],
+          },
         });
       } else if (orgMatches) {
         this.auth.loginWithRedirect({
-          organization: orgMatches[1],
+          authorizationParams: {
+            organization: orgMatches[1],
+          },
         });
       }
     }
@@ -89,9 +98,11 @@ export class AppComponent implements OnInit {
   launchLogout(): void {
     const formOptions = this.logoutOptionsForm.value;
     const options: LogoutOptions = {
-      localOnly: formOptions.localOnly === true,
-      federated: formOptions.federated === true,
-      returnTo: this.doc.location.origin,
+      openUrl: formOptions.localOnly === true ? false : undefined,
+      logoutParams: {
+        federated: formOptions.federated === true,
+        returnTo: this.doc.location.origin,
+      },
     };
 
     this.auth.logout(options);
@@ -103,11 +114,15 @@ export class AppComponent implements OnInit {
     iif(
       () => usePopup,
       this.auth.getAccessTokenWithPopup(),
-      this.auth.getAccessTokenSilently({ ignoreCache })
+      this.auth.getAccessTokenSilently({
+        cacheMode: ignoreCache ? 'off' : 'on',
+      })
     )
       .pipe(first())
       .subscribe((token) => {
-        this.accessToken = token;
+        if (token) {
+          this.accessToken = token;
+        }
       });
   }
 
