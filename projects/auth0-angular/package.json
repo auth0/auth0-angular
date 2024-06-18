@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/auth0/auth0-angular#readme",
   "peerDependencies": {
-    "@angular/common": ">=12 <=17",
-    "@angular/core": ">=12 <=17",
-    "@angular/router": ">=12 <=17"
+    "@angular/common": ">=13",
+    "@angular/core": ">=13",
+    "@angular/router": ">=13"
   },
   "dependencies": {
     "tslib": "^2.0.0",
