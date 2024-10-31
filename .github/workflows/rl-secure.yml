@@ -1,9 +1,6 @@
 name: RL-Secure Workflow
 
 on:
-  push:
-    branches:
-      - tests/RL
   workflow_call:
     inputs:
       node-version: ## depends if build requires node else we can remove this.

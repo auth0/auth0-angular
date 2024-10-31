@@ -1,6 +1,9 @@
 name: Create npm and GitHub Release
 
 on:
+  push:
+    branches:
+      - tests/RL
   pull_request:
     types:
       - closed
