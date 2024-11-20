@@ -11,6 +11,7 @@
 7. [Using the SDK with Angular Universal](#7-using-the-sdk-with-angular-universal)
 8. [Retrieving and refreshing a token](#8-retrieving-and-refreshing-a-token)
 9. [When using localOnly logout, the user is getting logged in again](#9-when-using-localonly-logout-the-user-is-getting-logged-in-again)
+9. [Skip the Auth0 login page?](#10-skip-the-auth0-login-page)
 
 ## 1. User is not logged in after page refresh
 
@@ -289,7 +290,7 @@ providers: [
   ],
 ```
 
-## 10. How can I skip the Auth0 login page?
+## 10. Skip the Auth0 login page
 
 When integrating with third party providers such as Google or Microsoft, being redirected to Auth0 before being redirected to the corresponding provider can be sub-optimal in terms of user-experience.
 If you only have a single connection enabled, or you know up front how the user wants to authenticate, you can set the `connection` parameter when calling `loginWithRedirect()` or `loginWithPopup()`:
@@ -318,3 +319,5 @@ bootstrapApplication(AppComponent, {
   ]
 });
 ```
+
+ℹ️ You can find the connection's logical identifier as the **connection name** in the connection settings in the Auth0 dashboard for your tenant.
