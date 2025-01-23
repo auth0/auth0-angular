@@ -52,8 +52,9 @@ jobs:
       # Build the tag string from package.json version and release suffix. Produces something like `1.0.0-beta.1` for a beta, or `1.0.0` for a stable release.
       - name: Build tag
         id: vtag
-        run: |
+        env:
           PACKAGE_VERSION="${{ github.event.inputs.version }}"
+        run: |
           echo "vtag=${PACKAGE_VERSION}" >> $GITHUB_ENV
           echo "vtag=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
 
