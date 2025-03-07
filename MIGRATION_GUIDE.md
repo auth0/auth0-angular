@@ -308,9 +308,9 @@ With v2, we have flipped the default value for `useFormData` to **true**, meanin
 
 When using refresh tokens in v1, we fall back to using iframes whenever a refresh token exchange would fail. This has caused problems before in environments that do not support iframes, and we have specifically introduced `useRefreshTokensFallback` to be able to opt-out of falling back to iframes in the case a refresh_grant fails.
 
-With v2, we have flipped the default value for `useRefreshTokensFallback` to false so we do not fall back to using iframes by default when `useRefreshTokens` is `true`, and the refresh token exchange fails.
+With v2, we have flipped the default value for `useRefreshTokensFallback` to `false` so we do not fall back to using iframes by default when `useRefreshTokens` is `true`, and the refresh token exchange fails.
 
-If you want to restore the original behaviour, and still fall back to iframes when the refresh token exchange fails, you can set `useRefreshTokensFallback` to true.
+If you want to restore the original behaviour, and still fall back to iframes when the refresh token exchange fails, you can set `useRefreshTokensFallback` to `true`.
 
 ### `getUser` and `getIdTokenClaims` have been removed
 
