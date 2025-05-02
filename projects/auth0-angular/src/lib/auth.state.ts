@@ -16,16 +16,15 @@ import {
   scan,
   shareReplay,
   switchMap,
+  tap,
 } from 'rxjs/operators';
 import { Auth0ClientService } from './auth.client';
+import { RefreshState } from './refresh-state';
 
-/**
- * Tracks the Authentication State for the SDK
- */
 @Injectable({ providedIn: 'root' })
 export class AuthState {
   private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
-  private refresh$ = new Subject<void>();
+  private refreshSubject$ = new Subject<RefreshState>();
   private accessToken$ = new ReplaySubject<string>(1);
   private errorSubject$ = new ReplaySubject<Error>(1);
 
@@ -33,6 +32,11 @@ export class AuthState {
    * Emits boolean values indicating the loading state of the SDK.
    */
   public readonly isLoading$ = this.isLoadingSubject$.asObservable();
+
+  /**
+   * Emits the current state of refresh operations after a change in authentication state is made.
+   */
+  public readonly refresh$ = this.refreshSubject$.asObservable();
 
   /**
    * Trigger used to pull User information from the Auth0Client.
@@ -71,7 +75,11 @@ export class AuthState {
         this.accessTokenTrigger$.pipe(
           mergeMap(() => this.auth0Client.isAuthenticated())
         ),
-        this.refresh$.pipe(mergeMap(() => this.auth0Client.isAuthenticated()))
+        this.refreshSubject$.pipe(
+          filter((state) => state === RefreshState.Refreshing),
+          mergeMap(() => this.auth0Client.isAuthenticated()),
+          tap(() => this.refreshSubject$.next(RefreshState.Complete))
+        )
       )
     )
   );
@@ -125,7 +133,7 @@ export class AuthState {
    * reflect the most up-to-date values from  Auth0Client.
    */
   public refresh(): void {
-    this.refresh$.next();
+    this.refreshSubject$.next(RefreshState.Refreshing);
   }
 
   /**
