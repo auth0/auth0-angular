@@ -126,7 +126,9 @@ describe('AuthService', () => {
     });
 
     it('should not set isLoading when service destroyed before checkSession finished', (done) => {
-      ((auth0Client.checkSession as unknown) as jest.SpyInstance).mockImplementation(
+      (
+        auth0Client.checkSession as unknown as jest.SpyInstance
+      ).mockImplementation(
         () => new Promise((resolve) => setTimeout(resolve, 5000))
       );
       const localService = createService();
@@ -151,9 +153,9 @@ describe('AuthService', () => {
     });
 
     it('should return `true` when the client is authenticated', (done) => {
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
       const service = createService();
 
       loaded(service).subscribe(() => {
@@ -165,9 +167,9 @@ describe('AuthService', () => {
     });
 
     it('should return true after successfully getting a new token', (done) => {
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        false
-      );
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(false);
 
       const service = createService();
       service.isAuthenticated$.pipe(bufferCount(2)).subscribe((values) => {
@@ -179,12 +181,12 @@ describe('AuthService', () => {
       // Add a small delay before triggering a new emit to the isAuthenticated$.
       // This ensures we can capture both emits using the above bufferCount(2)
       setTimeout(() => {
-        ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-          {}
-        );
-        ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-          true
-        );
+        (
+          auth0Client.getTokenSilently as unknown as jest.SpyInstance
+        ).mockResolvedValue({});
+        (
+          auth0Client.isAuthenticated as unknown as jest.SpyInstance
+        ).mockResolvedValue(true);
 
         service.getAccessTokenSilently().subscribe();
       }, 0);
@@ -194,9 +196,9 @@ describe('AuthService', () => {
       done: any
     ) => {
       authState.setIsLoading(false);
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
 
       const service = createService();
 
@@ -207,9 +209,9 @@ describe('AuthService', () => {
       // When the token is expired, auth0Client.isAuthenticated is resolving to false.
       // This is unexpected but known behavior in Auth0-SPA-JS, so we shouldnt rely on it apart from initially.
       // Once this is resolved, we should be able to rely on `auth0Client.isAuthenticated`, even when the Access Token is expired.
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        false
-      );
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(false);
 
       service.isAuthenticated$.pipe(take(1)).subscribe((value) => {
         expect(value).toBe(true);
@@ -223,10 +225,10 @@ describe('AuthService', () => {
         name: 'Test User',
       };
 
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
-      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
+      (auth0Client.getUser as unknown as jest.SpyInstance).mockResolvedValue(
         user
       );
 
@@ -246,10 +248,10 @@ describe('AuthService', () => {
         name: 'Another User',
       };
 
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
-      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
+      (auth0Client.getUser as unknown as jest.SpyInstance).mockResolvedValue(
         user
       );
 
@@ -263,10 +265,10 @@ describe('AuthService', () => {
       // Add a small delay before triggering a new emit to the user$.
       // This ensures we can capture both emits using the above bufferCount(2)
       setTimeout(() => {
-        ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-          {}
-        );
-        ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+        (
+          auth0Client.getTokenSilently as unknown as jest.SpyInstance
+        ).mockResolvedValue({});
+        (auth0Client.getUser as unknown as jest.SpyInstance).mockResolvedValue(
           user2
         );
 
@@ -279,10 +281,10 @@ describe('AuthService', () => {
         name: 'Test User',
       };
 
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
-      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
+      (auth0Client.getUser as unknown as jest.SpyInstance).mockResolvedValue(
         user
       );
 
@@ -294,9 +296,9 @@ describe('AuthService', () => {
       });
 
       service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
-        ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-          false
-        );
+        (
+          auth0Client.isAuthenticated as unknown as jest.SpyInstance
+        ).mockResolvedValue(false);
         service.logout({
           openUrl: false,
         });
@@ -308,13 +310,13 @@ describe('AuthService', () => {
         name: 'Test User',
       };
 
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-        'AT1'
-      );
-      ((auth0Client.getUser as unknown) as jest.SpyInstance).mockResolvedValue(
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockResolvedValue('AT1');
+      (auth0Client.getUser as unknown as jest.SpyInstance).mockResolvedValue(
         user
       );
 
@@ -326,15 +328,15 @@ describe('AuthService', () => {
         .getAccessTokenSilently()
         .pipe(
           tap(() =>
-            ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-              'AT2'
-            )
+            (
+              auth0Client.getTokenSilently as unknown as jest.SpyInstance
+            ).mockResolvedValue('AT2')
           ),
           mergeMap(() => service.getAccessTokenSilently()),
           tap(() =>
-            ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-              'AT3'
-            )
+            (
+              auth0Client.getTokenSilently as unknown as jest.SpyInstance
+            ).mockResolvedValue('AT3')
           ),
           mergeMap(() => service.getAccessTokenSilently()),
           // Allow user emissions to come through
@@ -356,12 +358,12 @@ describe('AuthService', () => {
         iss: 'https://example.eu.auth0.com/',
       };
 
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
-      ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
-        claims
-      );
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
+      (
+        auth0Client.getIdTokenClaims as unknown as jest.SpyInstance
+      ).mockResolvedValue(claims);
       const service = createService();
 
       service.idTokenClaims$.subscribe((value) => {
@@ -385,12 +387,12 @@ describe('AuthService', () => {
         iss: 'https://example.eu.auth0.com/',
       };
 
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
-      ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
-        claims
-      );
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
+      (
+        auth0Client.getIdTokenClaims as unknown as jest.SpyInstance
+      ).mockResolvedValue(claims);
 
       const service = createService();
       service.idTokenClaims$.pipe(bufferCount(2)).subscribe((values) => {
@@ -402,12 +404,12 @@ describe('AuthService', () => {
       // Add a small delay before triggering a new emit to the idTokenClaims$.
       // This ensures we can capture both emits using the above bufferCount(2)
       setTimeout(() => {
-        ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-          {}
-        );
-        ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
-          claims2
-        );
+        (
+          auth0Client.getTokenSilently as unknown as jest.SpyInstance
+        ).mockResolvedValue({});
+        (
+          auth0Client.getIdTokenClaims as unknown as jest.SpyInstance
+        ).mockResolvedValue(claims2);
 
         service.getAccessTokenSilently().subscribe();
       }, 0);
@@ -421,12 +423,12 @@ describe('AuthService', () => {
         iss: 'https://example.eu.auth0.com/',
       };
 
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
-      ((auth0Client.getIdTokenClaims as unknown) as jest.SpyInstance).mockResolvedValue(
-        claims
-      );
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
+      (
+        auth0Client.getIdTokenClaims as unknown as jest.SpyInstance
+      ).mockResolvedValue(claims);
 
       const service = createService();
       service.idTokenClaims$.pipe(bufferCount(2)).subscribe((values) => {
@@ -436,9 +438,9 @@ describe('AuthService', () => {
       });
 
       service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
-        ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-          false
-        );
+        (
+          auth0Client.isAuthenticated as unknown as jest.SpyInstance
+        ).mockResolvedValue(false);
         service.logout({
           openUrl: false,
         });
@@ -509,13 +511,13 @@ describe('AuthService', () => {
     });
 
     it('should redirect to the route specified in appState', (done) => {
-      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
-        {
-          appState: {
-            target: '/test-route',
-          },
-        }
-      );
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockResolvedValue({
+        appState: {
+          target: '/test-route',
+        },
+      });
 
       const localService = createService();
 
@@ -526,9 +528,9 @@ describe('AuthService', () => {
     });
 
     it('should fallback to `/` when missing appState', (done) => {
-      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
-        {}
-      );
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockResolvedValue({});
 
       const localService = createService();
 
@@ -539,9 +541,9 @@ describe('AuthService', () => {
     });
 
     it('should fallback to `/` when handleRedirectCallback returns undefined', (done) => {
-      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
-        undefined
-      );
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockResolvedValue(undefined);
 
       const localService = createService();
 
@@ -556,11 +558,11 @@ describe('AuthService', () => {
         myValue: 'State to Preserve',
       };
 
-      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
-        {
-          appState,
-        }
-      );
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockResolvedValue({
+        appState,
+      });
 
       const localService = createService();
 
@@ -573,11 +575,11 @@ describe('AuthService', () => {
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
-      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockImplementation(
-        () => {
-          throw errorObj;
-        }
-      );
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockImplementation(() => {
+        throw errorObj;
+      });
 
       const localService = createService();
 
@@ -594,11 +596,11 @@ describe('AuthService', () => {
       const errorObj = new Error('An error has occured');
 
       authConfig.errorPath = '/error';
-      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockImplementation(
-        () => {
-          throw errorObj;
-        }
-      );
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockImplementation(() => {
+        throw errorObj;
+      });
 
       const localService = createService();
 
@@ -654,10 +656,10 @@ describe('AuthService', () => {
   it('should call `loginWithPopup`', (done) => {
     const service = createService();
     loaded(service).subscribe(() => {
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockReset();
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
+      (auth0Client.isAuthenticated as unknown as jest.SpyInstance).mockReset();
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
 
       service.loginWithPopup();
 
@@ -679,10 +681,10 @@ describe('AuthService', () => {
     const service = createService();
 
     loaded(service).subscribe(() => {
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockReset();
-      ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-        true
-      );
+      (auth0Client.isAuthenticated as unknown as jest.SpyInstance).mockReset();
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
 
       service.loginWithPopup(options, config);
 
@@ -714,15 +716,15 @@ describe('AuthService', () => {
   it('should reset the authentication state when passing `localOnly` to logout', (done) => {
     const options = {
       openUrl: async () => {
-        ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-          false
-        );
+        (
+          auth0Client.isAuthenticated as unknown as jest.SpyInstance
+        ).mockResolvedValue(false);
       },
     };
 
-    ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-      true
-    );
+    (
+      auth0Client.isAuthenticated as unknown as jest.SpyInstance
+    ).mockResolvedValue(true);
 
     const service = createService();
 
@@ -763,9 +765,9 @@ describe('AuthService', () => {
         id_token: '456',
         expires_in: 2,
       };
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-        tokenResponse
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockResolvedValue(tokenResponse);
 
       const service = createService();
       service
@@ -777,25 +779,23 @@ describe('AuthService', () => {
     });
 
     it('should null when nothing in cache', (done) => {
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockResolvedValue(
-        null
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockResolvedValue(null);
 
       const service = createService();
-      service
-        .getAccessTokenSilently()
-        .subscribe((token) => {
-          expect(token).toBeNull();
-          done();
-        });
+      service.getAccessTokenSilently().subscribe((token) => {
+        expect(token).toBeNull();
+        done();
+      });
     });
 
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockRejectedValue(
-        errorObj
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockRejectedValue(errorObj);
       const service = createService();
 
       service.getAccessTokenSilently().subscribe({
@@ -811,9 +811,9 @@ describe('AuthService', () => {
     it('should bubble errors', (done) => {
       const errorObj = new Error('An error has occured');
 
-      ((auth0Client.getTokenSilently as unknown) as jest.SpyInstance).mockRejectedValue(
-        errorObj
-      );
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockRejectedValue(errorObj);
       const service = createService();
 
       service.getAccessTokenSilently().subscribe({
@@ -848,9 +848,9 @@ describe('AuthService', () => {
     it('should record errors in the error$ observable', (done) => {
       const errorObj = new Error('An error has occured');
 
-      ((auth0Client.getTokenWithPopup as unknown) as jest.SpyInstance).mockRejectedValue(
-        errorObj
-      );
+      (
+        auth0Client.getTokenWithPopup as unknown as jest.SpyInstance
+      ).mockRejectedValue(errorObj);
 
       const service = createService();
       service.getAccessTokenWithPopup().subscribe({
@@ -866,9 +866,9 @@ describe('AuthService', () => {
     it('should bubble errors', (done) => {
       const errorObj = new Error('An error has occured');
 
-      ((auth0Client.getTokenWithPopup as unknown) as jest.SpyInstance).mockRejectedValue(
-        errorObj
-      );
+      (
+        auth0Client.getTokenWithPopup as unknown as jest.SpyInstance
+      ).mockRejectedValue(errorObj);
 
       const service = createService();
       service.getAccessTokenWithPopup().subscribe({
@@ -948,9 +948,9 @@ describe('AuthService', () => {
         .pipe(
           filter((isLoading) => !isLoading),
           tap(() =>
-            ((auth0Client.isAuthenticated as unknown) as jest.SpyInstance).mockResolvedValue(
-              true
-            )
+            (
+              auth0Client.isAuthenticated as unknown as jest.SpyInstance
+            ).mockResolvedValue(true)
           ),
           mergeMap(() => localService.handleRedirectCallback())
         )
@@ -962,11 +962,11 @@ describe('AuthService', () => {
         myValue: 'State to Preserve',
       };
 
-      ((auth0Client.handleRedirectCallback as unknown) as jest.SpyInstance).mockResolvedValue(
-        {
-          appState,
-        }
-      );
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockResolvedValue({
+        appState,
+      });
 
       const localService = createService();
       localService.handleRedirectCallback().subscribe(() => {
@@ -975,6 +975,120 @@ describe('AuthService', () => {
           done();
         });
       });
+    });
+
+    it('should ensure isAuthenticated$ has correct value after refresh', (done) => {
+      // Simulate the authentication state changing
+      (auth0Client.isAuthenticated as unknown as jest.SpyInstance)
+        .mockResolvedValueOnce(false)
+        .mockResolvedValueOnce(true);
+
+      const service = createService();
+      authState.setIsLoading(false);
+      const authStates: boolean[] = [];
+
+      // Subscribe to isAuthenticated$ before triggering the refresh
+      service.isAuthenticated$
+        .pipe(
+          // Use bufferTime to collect all emissions within a small window
+          bufferTime(100),
+          take(1)
+        )
+        .subscribe((states) => {
+          authStates.push(...states);
+          expect(authStates).toEqual([false, true]);
+          done();
+        });
+
+      service.handleRedirectCallback().subscribe();
+    });
+
+    it('should not wait for refresh when already loading', (done) => {
+      const service = createService();
+
+      // Track isAuthenticated$ values
+      const authStates: boolean[] = [];
+      service.isAuthenticated$
+        .pipe(bufferTime(100), take(1))
+        .subscribe((states) => {
+          authStates.push(...states);
+
+          // Should only have one state change since we're not waiting for refresh
+          expect(authStates).toEqual([false]);
+          expect(callbackComplete).toBe(true);
+          done();
+        });
+
+      let callbackComplete = false;
+      service.handleRedirectCallback().subscribe(() => {
+        callbackComplete = true;
+      });
+    });
+  });
+
+  describe('logout', () => {
+    it('should return not call refresh when openUrl is undefined', (done) => {
+      const service = createService();
+      const refreshSpy = jest.spyOn(authState, 'refresh');
+
+      service.logout({ openUrl: undefined }).subscribe(() => {
+        expect(refreshSpy).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should wait for refresh to complete when openUrl is false', (done) => {
+      const service = createService();
+      authState.setIsLoading(false);
+
+      // Simulate the authentication state changing
+      (auth0Client.isAuthenticated as unknown as jest.SpyInstance)
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(false);
+
+      const authStates: boolean[] = [];
+
+      // Subscribe to isAuthenticated$ before triggering the refresh
+      service.isAuthenticated$
+        .pipe(
+          // Use bufferTime to collect all emissions within a small window
+          bufferTime(100),
+          take(1)
+        )
+        .subscribe((states) => {
+          authStates.push(...states);
+          expect(authStates).toEqual([true, false]);
+          done();
+        });
+
+      service.logout({ openUrl: false }).subscribe();
+    });
+
+    it('should wait for refresh to complete when openUrl is a function', (done) => {
+      const service = createService();
+      authState.setIsLoading(false);
+
+      // Simulate the authentication state changing
+      (auth0Client.isAuthenticated as unknown as jest.SpyInstance)
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(false);
+
+      const authStates: boolean[] = [];
+
+      // Subscribe to isAuthenticated$ before triggering the refresh
+      service.isAuthenticated$
+        .pipe(
+          // Use bufferTime to collect all emissions within a small window
+          bufferTime(100),
+          take(1)
+        )
+        .subscribe((states) => {
+          authStates.push(...states);
+          expect(authStates).toEqual([true, false]);
+          done();
+        });
+
+      service.logout({ openUrl: () => {} }).subscribe();
     });
   });
 });
