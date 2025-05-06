@@ -126,20 +126,35 @@ describe('AuthService', () => {
     });
 
     it('should not set isLoading when service destroyed before checkSession finished', (done) => {
+      // Mock checkSession to never resolve
       (
         auth0Client.checkSession as unknown as jest.SpyInstance
       ).mockImplementation(
-        () => new Promise((resolve) => setTimeout(resolve, 5000))
+        () => new Promise(() => {}) // Never resolves
       );
+
       const localService = createService();
+      const loadingStates: boolean[] = [];
 
-      localService.isLoading$.pipe(bufferTime(500)).subscribe((loading) => {
-        expect(loading.length).toEqual(1);
-        expect(loading).toEqual([true]);
-        done();
-      });
+      // Subscribe to isLoading$ and collect states
+      localService.isLoading$
+        .pipe(
+          // Use a longer buffer time to ensure we catch all emissions
+          bufferTime(1000),
+          // Take only the first buffer
+          take(1)
+        )
+        .subscribe((states) => {
+          loadingStates.push(...states);
+          // Should only see the initial true state
+          expect(loadingStates).toEqual([true]);
+          done();
+        });
 
-      localService.ngOnDestroy();
+      // Destroy the service after a short delay to ensure subscription is set up
+      setTimeout(() => {
+        localService.ngOnDestroy();
+      }, 100);
     });
   });
 
@@ -299,9 +314,11 @@ describe('AuthService', () => {
         (
           auth0Client.isAuthenticated as unknown as jest.SpyInstance
         ).mockResolvedValue(false);
-        service.logout({
-          openUrl: false,
-        });
+        service
+          .logout({
+            openUrl: false,
+          })
+          .subscribe();
       });
     });
 
@@ -441,9 +458,11 @@ describe('AuthService', () => {
         (
           auth0Client.isAuthenticated as unknown as jest.SpyInstance
         ).mockResolvedValue(false);
-        service.logout({
-          openUrl: false,
-        });
+        service
+          .logout({
+            openUrl: false,
+          })
+          .subscribe();
       });
     });
   });
@@ -735,7 +754,7 @@ describe('AuthService', () => {
         done();
       });
 
-      service.logout(options);
+      service.logout(options).subscribe();
     });
   });
 
@@ -978,27 +997,23 @@ describe('AuthService', () => {
     });
 
     it('should ensure isAuthenticated$ has correct value after refresh', (done) => {
-      // Simulate the authentication state changing
+      // Simulate the authentication state changing. isAuthenticatedTrigger$ calls isAuthenticated()
+      // twice at the start of the stream, and then once after the refresh completes.
       (auth0Client.isAuthenticated as unknown as jest.SpyInstance)
         .mockResolvedValueOnce(false)
-        .mockResolvedValueOnce(true);
+        .mockResolvedValueOnce(false)
+        .mockResolvedValue(true);
 
       const service = createService();
       authState.setIsLoading(false);
       const authStates: boolean[] = [];
 
       // Subscribe to isAuthenticated$ before triggering the refresh
-      service.isAuthenticated$
-        .pipe(
-          // Use bufferTime to collect all emissions within a small window
-          bufferTime(100),
-          take(1)
-        )
-        .subscribe((states) => {
-          authStates.push(...states);
-          expect(authStates).toEqual([false, true]);
-          done();
-        });
+      service.isAuthenticated$.pipe(bufferCount(2)).subscribe((states) => {
+        authStates.push(...states);
+        expect(authStates).toEqual([false, true]);
+        done();
+      });
 
       service.handleRedirectCallback().subscribe();
     });
@@ -1041,25 +1056,21 @@ describe('AuthService', () => {
       const service = createService();
       authState.setIsLoading(false);
 
-      // Simulate the authentication state changing
+      // Simulate the authentication state changing. isAuthenticatedTrigger$ calls isAuthenticated()
+      // twice at the start of the stream, and then once after the refresh completes.
       (auth0Client.isAuthenticated as unknown as jest.SpyInstance)
         .mockResolvedValueOnce(true)
-        .mockResolvedValueOnce(false);
+        .mockResolvedValueOnce(true)
+        .mockResolvedValue(false);
 
       const authStates: boolean[] = [];
 
       // Subscribe to isAuthenticated$ before triggering the refresh
-      service.isAuthenticated$
-        .pipe(
-          // Use bufferTime to collect all emissions within a small window
-          bufferTime(100),
-          take(1)
-        )
-        .subscribe((states) => {
-          authStates.push(...states);
-          expect(authStates).toEqual([true, false]);
-          done();
-        });
+      service.isAuthenticated$.pipe(bufferCount(2)).subscribe((states) => {
+        authStates.push(...states);
+        expect(authStates).toEqual([true, false]);
+        done();
+      });
 
       service.logout({ openUrl: false }).subscribe();
     });
@@ -1071,22 +1082,17 @@ describe('AuthService', () => {
       // Simulate the authentication state changing
       (auth0Client.isAuthenticated as unknown as jest.SpyInstance)
         .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(true)
         .mockResolvedValueOnce(false);
 
       const authStates: boolean[] = [];
 
       // Subscribe to isAuthenticated$ before triggering the refresh
-      service.isAuthenticated$
-        .pipe(
-          // Use bufferTime to collect all emissions within a small window
-          bufferTime(100),
-          take(1)
-        )
-        .subscribe((states) => {
-          authStates.push(...states);
-          expect(authStates).toEqual([true, false]);
-          done();
-        });
+      service.isAuthenticated$.pipe(bufferCount(2)).subscribe((states) => {
+        authStates.push(...states);
+        expect(authStates).toEqual([true, false]);
+        done();
+      });
 
       service.logout({ openUrl: () => {} }).subscribe();
     });
