@@ -81,6 +81,9 @@
     "semi": true,
     "singleQuote": true
   },
+  "overrides": {
+    "core-js": "^3.23.3"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
