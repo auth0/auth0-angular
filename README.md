@@ -22,7 +22,7 @@ A library for integrating [Auth0](https://auth0.com) into an Angular application
 
 ### Requirements
 
-This project only supports the [actively supported versions of Angular as stated in the Angular documentation](https://angular.dev/reference/releases#support-policy-and-schedule). Whilst other versions might be compatible they are not actively supported.
+This project only supports the [actively supported versions of Angular as stated in the Angular documentation](https://angular.dev/reference/releases#actively-supported-versions). Whilst other versions might be compatible they are not actively supported.
 
 ### Installation
 
