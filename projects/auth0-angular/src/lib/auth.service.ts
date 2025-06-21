@@ -29,6 +29,8 @@ import {
   catchError,
   switchMap,
   withLatestFrom,
+  filter,
+  take,
 } from 'rxjs/operators';
 
 import { Auth0ClientService } from './auth.client';
@@ -36,7 +38,7 @@ import { AbstractNavigator } from './abstract-navigator';
 import { AuthClientConfig, AppState } from './auth.config';
 import { AuthState } from './auth.state';
 import { LogoutOptions, RedirectLoginOptions } from './interfaces';
-
+import { RefreshState } from './refresh-state';
 @Injectable({
   providedIn: 'root',
 })
@@ -182,11 +184,18 @@ export class AuthService<TAppState extends AppState = AppState>
    * @param options The logout options
    */
   logout(options?: LogoutOptions): Observable<void> {
-    return from(
-      this.auth0Client.logout(options).then(() => {
-        if (options?.openUrl === false || options?.openUrl) {
-          this.authState.refresh();
+    return from(this.auth0Client.logout(options)).pipe(
+      concatMap(() => {
+        if (options?.openUrl === undefined) {
+          return of(undefined);
         }
+
+        this.authState.refresh();
+        return this.authState.refresh$.pipe(
+          filter((state) => state === RefreshState.Complete),
+          take(1),
+          map(() => undefined)
+        );
       })
     );
   }
@@ -309,10 +318,7 @@ export class AuthService<TAppState extends AppState = AppState>
       this.auth0Client.handleRedirectCallback<TAppState>(url)
     ).pipe(
       withLatestFrom(this.authState.isLoading$),
-      tap(([result, isLoading]) => {
-        if (!isLoading) {
-          this.authState.refresh();
-        }
+      concatMap(([result, isLoading]) => {
         const appState = result?.appState;
         const target = appState?.target ?? '/';
 
@@ -320,9 +326,23 @@ export class AuthService<TAppState extends AppState = AppState>
           this.appStateSubject$.next(appState);
         }
 
-        this.navigator.navigateByUrl(target);
-      }),
-      map(([result]) => result)
+        if (isLoading) {
+          this.navigator.navigateByUrl(target);
+          return of(result);
+        }
+
+        this.authState.refresh();
+
+        // Wait for the refresh to complete before navigating
+        return this.authState.refresh$.pipe(
+          filter((state) => state === RefreshState.Complete),
+          take(1),
+          // Wait for the refresh to complete before navigating,
+          // otherwise an auth.guard could have a stale isAuthenticated value
+          tap(() => this.navigator.navigateByUrl(target)),
+          map(() => result)
+        );
+      })
     );
   }
 

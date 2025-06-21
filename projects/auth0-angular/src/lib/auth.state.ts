@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import {
   BehaviorSubject,
@@ -16,16 +16,18 @@ import {
   scan,
   shareReplay,
   switchMap,
+  takeUntil,
+  tap,
 } from 'rxjs/operators';
 import { Auth0ClientService } from './auth.client';
+import { RefreshState } from './refresh-state';
 
-/**
- * Tracks the Authentication State for the SDK
- */
 @Injectable({ providedIn: 'root' })
-export class AuthState {
+export class AuthState implements OnDestroy {
+  // https://stackoverflow.com/a/41177163
+  private ngUnsubscribe$ = new Subject<void>();
   private isLoadingSubject$ = new BehaviorSubject<boolean>(true);
-  private refresh$ = new Subject<void>();
+  private refreshSubject$ = new Subject<RefreshState>();
   private accessToken$ = new ReplaySubject<string>(1);
   private errorSubject$ = new ReplaySubject<Error>(1);
 
@@ -33,6 +35,11 @@ export class AuthState {
    * Emits boolean values indicating the loading state of the SDK.
    */
   public readonly isLoading$ = this.isLoadingSubject$.asObservable();
+
+  /**
+   * Emits the current state of refresh operations after a change in authentication state is made.
+   */
+  public readonly refresh$ = this.refreshSubject$.asObservable();
 
   /**
    * Trigger used to pull User information from the Auth0Client.
@@ -50,6 +57,15 @@ export class AuthState {
       { current: null, previous: null }
     ),
     filter(({ previous, current }) => previous !== current)
+  );
+
+  /**
+   * Stream that handles refresh state completion independently of isAuthenticated$ subscriptions
+   */
+  private readonly refreshCompletion$ = this.refreshSubject$.pipe(
+    filter((state) => state === RefreshState.Refreshing),
+    mergeMap(() => this.auth0Client.isAuthenticated()),
+    tap(() => this.refreshSubject$.next(RefreshState.Complete))
   );
 
   /**
@@ -71,7 +87,7 @@ export class AuthState {
         this.accessTokenTrigger$.pipe(
           mergeMap(() => this.auth0Client.isAuthenticated())
         ),
-        this.refresh$.pipe(mergeMap(() => this.auth0Client.isAuthenticated()))
+        this.refreshCompletion$
       )
     )
   );
@@ -109,7 +125,10 @@ export class AuthState {
    */
   public readonly error$ = this.errorSubject$.asObservable();
 
-  constructor(@Inject(Auth0ClientService) private auth0Client: Auth0Client) {}
+  constructor(@Inject(Auth0ClientService) private auth0Client: Auth0Client) {
+    // Subscribe to refreshCompletion$ to ensure refresh state completes
+    this.refreshCompletion$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+  }
 
   /**
    * Update the isLoading state using the provided value
@@ -125,7 +144,7 @@ export class AuthState {
    * reflect the most up-to-date values from  Auth0Client.
    */
   public refresh(): void {
-    this.refresh$.next();
+    this.refreshSubject$.next(RefreshState.Refreshing);
   }
 
   /**
@@ -144,5 +163,14 @@ export class AuthState {
    */
   public setError(error: any): void {
     this.errorSubject$.next(error);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+    this.isLoadingSubject$.complete();
+    this.refreshSubject$.complete();
+    this.accessToken$.complete();
+    this.errorSubject$.complete();
   }
 }
