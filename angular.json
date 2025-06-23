@@ -116,23 +116,23 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "playground:build",
-            "host": "0.0.0.0"
+            "host": "0.0.0.0",
+            "buildTarget": "playground:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "playground:build"
+              "buildTarget": "playground:build"
             },
             "local": {
-              "browserTarget": "playground:build:local",
-              "proxyConfig": "projects/playground/src/proxy.conf.json"
+              "proxyConfig": "projects/playground/src/proxy.conf.json",
+              "buildTarget": "playground:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "playground:build"
+            "buildTarget": "playground:build"
           }
         },
         "test": {
