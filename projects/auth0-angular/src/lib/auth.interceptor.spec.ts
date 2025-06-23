@@ -28,14 +28,17 @@ import { AuthService } from './auth.service';
 
 const mockWindow = global as any;
 
-mockWindow.crypto = {
-  subtle: {
-    digest: () => 'foo',
+Object.defineProperty(mockWindow, 'crypto', {
+  value: {
+    subtle: {
+      digest: () => 'foo',
+    },
+    getRandomValues() {
+      return '123';
+    },
   },
-  getRandomValues() {
-    return '123';
-  },
-};
+  writable: false,
+});
 
 describe('The Auth HTTP Interceptor', () => {
   let httpClient: HttpClient;
