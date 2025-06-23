@@ -135,7 +135,14 @@ export class AuthService<TAppState extends AppState = AppState>
   loginWithRedirect(
     options?: RedirectLoginOptions<TAppState>
   ): Observable<void> {
-    return from(this.auth0Client.loginWithRedirect(options));
+    this.authState.setIsLoading(true);
+
+    return from(this.auth0Client.loginWithRedirect(options)).pipe(
+      catchError((e) => {
+        this.authState.setIsLoading(false);
+        return throwError(() => e);
+      })
+    );
   }
 
   /**
