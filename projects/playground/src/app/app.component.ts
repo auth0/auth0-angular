@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { AuthService } from '../../../auth0-angular/src/lib/auth.service';
 import { iif } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -24,19 +24,19 @@ export class AppComponent implements OnInit {
 
   organization = '';
 
-  loginOptionsForm = new FormGroup({
-    appStateInput: new FormControl(''),
-    usePopup: new FormControl(false),
+  loginOptionsForm = new UntypedFormGroup({
+    appStateInput: new UntypedFormControl(''),
+    usePopup: new UntypedFormControl(false),
   });
 
-  logoutOptionsForm = new FormGroup({
-    localOnly: new FormControl(false),
-    federated: new FormControl(false),
+  logoutOptionsForm = new UntypedFormGroup({
+    localOnly: new UntypedFormControl(false),
+    federated: new UntypedFormControl(false),
   });
 
-  accessTokenOptionsForm = new FormGroup({
-    usePopup: new FormControl(false),
-    ignoreCache: new FormControl(false),
+  accessTokenOptionsForm = new UntypedFormGroup({
+    usePopup: new UntypedFormControl(false),
+    ignoreCache: new UntypedFormControl(false),
   });
 
   constructor(
