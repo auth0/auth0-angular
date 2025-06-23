@@ -47,12 +47,13 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/playground",
+            "outputPath": {
+              "base": "dist/playground"
+            },
             "index": "projects/playground/src/index.html",
-            "main": "projects/playground/src/main.ts",
-            "polyfills": "projects/playground/src/polyfills.ts",
+            "polyfills": ["projects/playground/src/polyfills.ts"],
             "tsConfig": "projects/playground/tsconfig.app.json",
             "assets": [
               "projects/playground/src/favicon.ico",
@@ -65,12 +66,11 @@
             ],
             "styles": ["projects/playground/src/styles.css"],
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "projects/playground/src/main.ts"
           },
           "configurations": {
             "local": {
@@ -96,8 +96,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",

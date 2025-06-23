@@ -1,10 +1,15 @@
 import { AuthHttpInterceptor } from './auth.interceptor';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
-  HttpClientTestingModule,
+  HttpClient,
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import {
   HttpTestingController,
   TestRequest,
+  provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { Data } from '@angular/router';
 import {
@@ -122,7 +127,7 @@ describe('The Auth HTTP Interceptor', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         {
           provide: HTTP_INTERCEPTORS,
@@ -143,6 +148,8 @@ describe('The Auth HTTP Interceptor', () => {
             isLoading$,
           },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
 
