@@ -24,7 +24,6 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/auth0-angular/src/test.ts",
             "tsConfig": "projects/auth0-angular/tsconfig.spec.json",
             "karmaConfig": "projects/auth0-angular/karma.conf.js"
           }
@@ -139,7 +138,6 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/playground/src/test.ts",
             "polyfills": "projects/playground/src/polyfills.ts",
             "tsConfig": "projects/playground/tsconfig.spec.json",
             "karmaConfig": "projects/playground/karma.conf.js",
