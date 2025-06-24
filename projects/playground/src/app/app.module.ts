@@ -2,9 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import {
   HttpClient,
-  HttpClientModule,
   HTTP_INTERCEPTORS,
   HttpBackend,
+  provideHttpClient,
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { AuthModule } from 'projects/auth0-angular/src/lib/auth.module';
 import { AuthHttpInterceptor } from 'projects/auth0-angular/src/lib/auth.interceptor';
@@ -25,14 +26,13 @@ import { AuthClientConfig } from 'projects/auth0-angular/src/lib/auth.config';
  * @param handler The HttpBackend instance used to instantiate HttpClient manually
  * @param config The AuthConfigClient service
  */
-const configInitializer = (
-  handler: HttpBackend,
-  config: AuthClientConfig
-): (() => Promise<any>) => () =>
-  new HttpClient(handler)
-    .get('/assets/config.json')
-    .toPromise()
-    .then((loadedConfig: any) => config.set(loadedConfig)); // Set the config that was loaded asynchronously here
+const configInitializer =
+  (handler: HttpBackend, config: AuthClientConfig): (() => Promise<any>) =>
+  () =>
+    new HttpClient(handler)
+      .get('/assets/config.json')
+      .toPromise()
+      .then((loadedConfig: any) => config.set(loadedConfig)); // Set the config that was loaded asynchronously here
 
 @NgModule({
   declarations: [
@@ -43,12 +43,11 @@ const configInitializer = (
     NestedChildRouteComponent,
     ErrorComponent,
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule,
-
     // This playground has been configured by default to use dynamic configuration.
     // If you wish to specify configuration to `forRoot` directly, uncomment `authConfig`
     // here, and comment out the APP_INITIALIZER config in the providers array below.
@@ -62,7 +61,7 @@ const configInitializer = (
       multi: true,
     },
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}

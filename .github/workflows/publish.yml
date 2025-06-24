@@ -22,7 +22,7 @@ permissions:
   id-token: write # For publishing to NPM with provenance. Allows developers to run `npm audit signatures` and verify release signature of SDK. @see https://github.blog/2023-04-19-introducing-npm-package-provenance/
 
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 22
   NODE_ENV: development
 
 jobs:
@@ -52,8 +52,7 @@ jobs:
       # Build the tag string from package.json version and release suffix. Produces something like `1.0.0-beta.1` for a beta, or `1.0.0` for a stable release.
       - name: Build tag
         id: vtag
-        env:
-          PACKAGE_VERSION="${{ github.event.inputs.version }}"
+        env: PACKAGE_VERSION="${{ github.event.inputs.version }}"
         run: |
           echo "vtag=${PACKAGE_VERSION}" >> $GITHUB_ENV
           echo "vtag=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT

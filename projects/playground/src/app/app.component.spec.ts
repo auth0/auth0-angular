@@ -1,11 +1,13 @@
-/* eslint-disable @typescript-eslint/dot-notation */
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from '../../../auth0-angular/src/lib/auth.service';
 import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { expect } from '@jest/globals';
 
 describe('AppComponent', () => {
@@ -29,13 +31,14 @@ describe('AppComponent', () => {
     } as any;
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ReactiveFormsModule, HttpClientModule],
       declarations: [AppComponent],
+      imports: [RouterTestingModule, ReactiveFormsModule],
       providers: [
         {
           provide: AuthService,
           useValue: authMock,
         },
+        provideHttpClient(withInterceptorsFromDi()),
       ],
     }).compileComponents();
 
@@ -84,7 +87,8 @@ describe('AppComponent', () => {
   describe('when user is authenticated', () => {
     beforeEach(() => {
       const loading = authMock.isLoading$ as BehaviorSubject<boolean>;
-      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<boolean>;
+      const authenticated =
+        authMock.isAuthenticated$ as BehaviorSubject<boolean>;
       const user = authMock.user$ as BehaviorSubject<any>;
 
       loading.next(false);
@@ -189,9 +193,9 @@ describe('AppComponent', () => {
       );
       const form = component.accessTokenOptionsForm.controls;
       form['usePopup'].setValue(false);
-      ((authMock.getAccessTokenSilently as unknown) as jest.SpyInstance).mockReturnValue(
-        of('access token silently')
-      );
+      (
+        authMock.getAccessTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(of('access token silently'));
 
       const btnRefresh = divToken.querySelector('button');
       btnRefresh?.click();
@@ -212,9 +216,9 @@ describe('AppComponent', () => {
       const form = component.accessTokenOptionsForm.controls;
       form['usePopup'].setValue(false);
       form['ignoreCache'].setValue(false);
-      ((authMock.getAccessTokenSilently as unknown) as jest.SpyInstance).mockReturnValue(
-        of('access token silently')
-      );
+      (
+        authMock.getAccessTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(of('access token silently'));
 
       const btnRefresh = divToken.querySelector('button');
       btnRefresh?.click();
@@ -235,9 +239,9 @@ describe('AppComponent', () => {
       const form = component.accessTokenOptionsForm.controls;
       form['usePopup'].setValue(false);
       form['ignoreCache'].setValue(true);
-      ((authMock.getAccessTokenSilently as unknown) as jest.SpyInstance).mockReturnValue(
-        of('access token silently')
-      );
+      (
+        authMock.getAccessTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(of('access token silently'));
 
       const btnRefresh = divToken.querySelector('button');
       btnRefresh?.click();
@@ -257,9 +261,9 @@ describe('AppComponent', () => {
       );
       const form = component.accessTokenOptionsForm.controls;
       form['usePopup'].setValue(true);
-      ((authMock.getAccessTokenWithPopup as unknown) as jest.SpyInstance).mockReturnValue(
-        of('access token popup')
-      );
+      (
+        authMock.getAccessTokenWithPopup as unknown as jest.SpyInstance
+      ).mockReturnValue(of('access token popup'));
 
       const btnRefresh = divToken.querySelector('button');
       btnRefresh?.click();
@@ -274,7 +278,8 @@ describe('AppComponent', () => {
   describe('when user is not authenticated', () => {
     beforeEach(() => {
       const loading = authMock.isLoading$ as BehaviorSubject<boolean>;
-      const authenticated = authMock.isAuthenticated$ as BehaviorSubject<boolean>;
+      const authenticated =
+        authMock.isAuthenticated$ as BehaviorSubject<boolean>;
 
       loading.next(false);
       authenticated.next(false);

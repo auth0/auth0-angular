@@ -1,10 +1,15 @@
 import { AuthHttpInterceptor } from './auth.interceptor';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
-  HttpClientTestingModule,
+  HttpClient,
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import {
   HttpTestingController,
   TestRequest,
+  provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { Data } from '@angular/router';
 import {
@@ -23,14 +28,17 @@ import { AuthService } from './auth.service';
 
 const mockWindow = global as any;
 
-mockWindow.crypto = {
-  subtle: {
-    digest: () => 'foo',
+Object.defineProperty(mockWindow, 'crypto', {
+  value: {
+    subtle: {
+      digest: () => 'foo',
+    },
+    getRandomValues() {
+      return '123';
+    },
   },
-  getRandomValues() {
-    return '123';
-  },
-};
+  writable: false,
+});
 
 describe('The Auth HTTP Interceptor', () => {
   let httpClient: HttpClient;
@@ -122,7 +130,7 @@ describe('The Auth HTTP Interceptor', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         {
           provide: HTTP_INTERCEPTORS,
@@ -143,6 +151,8 @@ describe('The Auth HTTP Interceptor', () => {
             isLoading$,
           },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
 

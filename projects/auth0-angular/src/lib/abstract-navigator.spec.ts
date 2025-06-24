@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
 import { AbstractNavigator } from './abstract-navigator';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 describe('RouteNavigator', () => {
   let navigator: AbstractNavigator;
@@ -14,7 +15,9 @@ describe('RouteNavigator', () => {
 
   describe('with no router', () => {
     beforeEach(() => {
-      TestBed.configureTestingModule({});
+      TestBed.configureTestingModule({
+        providers: [{ provide: Router, useValue: null }],
+      });
 
       navigator = TestBed.inject(AbstractNavigator);
 
