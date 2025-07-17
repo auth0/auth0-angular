@@ -68,7 +68,7 @@ jobs:
         run: npm run test:ci
 
       - name: Upload coverage
-        uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # pin@3.1.4
+        uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # pin@5.4.3
 
   lint:
     needs: build # Require build to complete before running tests
