@@ -24,7 +24,6 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/auth0-angular/src/test.ts",
             "tsConfig": "projects/auth0-angular/tsconfig.spec.json",
             "karmaConfig": "projects/auth0-angular/karma.conf.js"
           }
@@ -48,12 +47,13 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/playground",
+            "outputPath": {
+              "base": "dist/playground"
+            },
             "index": "projects/playground/src/index.html",
-            "main": "projects/playground/src/main.ts",
-            "polyfills": "projects/playground/src/polyfills.ts",
+            "polyfills": ["projects/playground/src/polyfills.ts"],
             "tsConfig": "projects/playground/tsconfig.app.json",
             "assets": [
               "projects/playground/src/favicon.ico",
@@ -66,12 +66,11 @@
             ],
             "styles": ["projects/playground/src/styles.css"],
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "projects/playground/src/main.ts"
           },
           "configurations": {
             "local": {
@@ -97,8 +96,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -117,29 +114,28 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "playground:build",
-            "host": "0.0.0.0"
+            "host": "0.0.0.0",
+            "buildTarget": "playground:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "playground:build"
+              "buildTarget": "playground:build"
             },
             "local": {
-              "browserTarget": "playground:build:local",
-              "proxyConfig": "projects/playground/src/proxy.conf.json"
+              "proxyConfig": "projects/playground/src/proxy.conf.json",
+              "buildTarget": "playground:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "playground:build"
+            "buildTarget": "playground:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/playground/src/test.ts",
             "polyfills": "projects/playground/src/polyfills.ts",
             "tsConfig": "projects/playground/tsconfig.spec.json",
             "karmaConfig": "projects/playground/karma.conf.js",
@@ -200,8 +196,7 @@
       }
     }
   },
-  "defaultProject": "auth0-angular",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": ["angular-eslint"]
   }
 }
