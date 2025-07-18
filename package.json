@@ -47,7 +47,7 @@
     "@angular/cli": "^18.2.20",
     "@angular/compiler-cli": "^18.2.13",
     "@angular/forms": "^18.2.13",
-    "@cypress/schematic": "^2.4.0",
+    "@cypress/schematic": "^2.5.2",
     "@types/jasmine": "^3.10.18",
     "@types/jasminewd2": "~2.0.13",
     "@types/jest": "^29.2.2",
