@@ -1,14 +1,20 @@
 # Examples using auth0-angular
 
-- [Add login to your application](#add-login-to-your-application)
-- [Add logout to your application](#add-logout-to-your-application)
-- [Checking if a user is authenticated](#checking-if-a-user-is-authenticated)
-- [Display the user profile](#display-the-user-profile)
-- [Protect a route](#protect-a-route)
-- [Call an API](#call-an-api)
-- [Handling errors](#handling-errors)
-- [Organizations](#organizations)
-- [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
+- [Examples using auth0-angular](#examples-using-auth0-angular)
+  - [Add login to your application](#add-login-to-your-application)
+  - [Add logout to your application](#add-logout-to-your-application)
+  - [Checking if a user is authenticated](#checking-if-a-user-is-authenticated)
+  - [Display the user profile](#display-the-user-profile)
+  - [Protect a route](#protect-a-route)
+  - [Call an API](#call-an-api)
+    - [Specify the audience](#specify-the-audience)
+    - [Register AuthHttpInterceptor](#register-authhttpinterceptor)
+    - [Configure AuthHttpInterceptor to attach access tokens](#configure-authhttpinterceptor-to-attach-access-tokens)
+  - [Handling errors](#handling-errors)
+  - [Organizations](#organizations)
+    - [Log in to an organization](#log-in-to-an-organization)
+    - [Accept user invitations](#accept-user-invitations)
+  - [Standalone components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 
 ## Add login to your application
 
@@ -157,7 +163,7 @@ import { AuthModule } from '@auth0/auth0-angular';
       clientId: 'YOUR_AUTH0_CLIENT_ID',
       authorizationParams: {
         audience: 'YOUR_AUTH0_API_IDENTIFIER',
-      }
+      },
     }),
   ],
   // ...
@@ -278,7 +284,7 @@ AuthModule.forRoot({
           authorizationParams: {
             audience: 'http://my-api/',
             scope: 'write:orders',
-          }
+          },
         },
       },
     ],
@@ -381,6 +387,7 @@ export class AppComponent {
 ```
 
 ## Standalone components and a more functional approach
+
 As of Angular 15, the Angular team is putting standalone components, as well as a more functional approach, in favor of the traditional use of NgModules and class-based approach.
 
 There are a couple of difference with how you would traditionally implement our SDK:
@@ -398,18 +405,31 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [authGuardFn],
-  }
+  },
 ];
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    provideRouter(routes),
-    provideAuth0(/* Auth Config Goes Here */),
-    provideHttpClient(
-      withInterceptors([authHttpInterceptorFn])
-    ) 
-  ]
+  providers: [provideRouter(routes), provideAuth0(/* Auth Config Goes Here */), provideHttpClient(withInterceptors([authHttpInterceptorFn]))],
 });
 ```
 
 Note that `provideAuth0` should **never** be provided to components, but only at the root level of your application.
+
+`AuthConfig` can be omitted or it can be provided either as a basic config object, or a function that returns a config object:
+
+```ts
+provideAuth0({
+  clientId: 'clientId',
+  domain: 'domain',
+}),
+  // or
+  provideAuth0(() => {
+    const someProvider = inject(SomeProvider);
+    // you can inject as many providers as you want
+    return {
+      clientId: 'clientId',
+      domain: 'domain',
+      // use someProvider (or other porviders) to build your config object
+    };
+  });
+```
