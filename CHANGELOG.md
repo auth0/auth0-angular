@@ -1,5 +1,15 @@
 # Change Log
 
+## [v2.3.0](https://github.com/auth0/auth0-angular/tree/v2.3.0) (2025-09-10)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.3...v2.3.0)
+
+**Added**
+
+- Update Angular to Angular 18 [\#675](https://github.com/auth0/auth0-angular/pull/675) ([frederikprijck](https://github.com/frederikprijck))
+- Incorporate observable of loginWithRedirect in observable returned by AuthGuard [\#660](https://github.com/auth0/auth0-angular/pull/660) ([Mobe91](https://github.com/Mobe91))
+- Add Skip the Auth0 login page to FAQ [\#661](https://github.com/auth0/auth0-angular/pull/661) ([frederikprijck](https://github.com/frederikprijck))
+
 ## [v2.2.3](https://github.com/auth0/auth0-angular/tree/v2.2.3) (2024-01-15)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.2...v2.2.3)
