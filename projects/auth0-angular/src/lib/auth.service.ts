@@ -9,6 +9,9 @@ import {
   RedirectLoginResult,
   GetTokenSilentlyVerboseResponse,
   ConnectAccountRedirectResult,
+  CustomFetchMinimalOutput,
+  Fetcher,
+  FetcherConfig,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -327,6 +330,80 @@ export class AuthService<TAppState extends AppState = AppState>
       }),
       map(([result]) => result)
     );
+  }
+
+  /**
+   * ```js
+   * getDpopNonce(id).subscribe(nonce => ...)
+   * ```
+   *
+   * Gets the DPoP nonce for the specified domain or the default domain.
+   * The nonce is used in DPoP proof generation for token binding.
+   *
+   * @param id Optional identifier for the domain. If not provided, uses the default domain.
+   * @returns An Observable that emits the DPoP nonce string or undefined if not available.
+   */
+  getDpopNonce(id?: string): Observable<string | undefined> {
+    return from(this.auth0Client.getDpopNonce(id));
+  }
+
+  /**
+   * ```js
+   * setDpopNonce(nonce, id).subscribe(() => ...)
+   * ```
+   *
+   * Sets the DPoP nonce for the specified domain or the default domain.
+   * This is typically used after receiving a new nonce from the authorization server.
+   *
+   * @param nonce The DPoP nonce value to set.
+   * @param id Optional identifier for the domain. If not provided, uses the default domain.
+   * @returns An Observable that completes when the nonce is set.
+   */
+  setDpopNonce(nonce: string, id?: string): Observable<void> {
+    return from(this.auth0Client.setDpopNonce(nonce, id));
+  }
+
+  /**
+   * ```js
+   * generateDpopProof(params).subscribe(proof => ...)
+   * ```
+   *
+   * Generates a DPoP (Demonstrating Proof-of-Possession) proof JWT.
+   * This proof is used to bind access tokens to a specific client, providing
+   * an additional layer of security for token usage.
+   *
+   * @param params Configuration for generating the DPoP proof
+   * @param params.url The URL of the resource server endpoint
+   * @param params.method The HTTP method (e.g., 'GET', 'POST')
+   * @param params.nonce Optional DPoP nonce from the authorization server
+   * @param params.accessToken The access token to bind to the proof
+   * @returns An Observable that emits the generated DPoP proof as a JWT string.
+   */
+  generateDpopProof(params: {
+    url: string;
+    method: string;
+    nonce?: string;
+    accessToken: string;
+  }): Observable<string> {
+    return from(this.auth0Client.generateDpopProof(params));
+  }
+
+  /**
+   * ```js
+   * const fetcher = createFetcher(config);
+   * ```
+   *
+   * Creates a custom fetcher instance that can be used to make authenticated
+   * HTTP requests. The fetcher automatically handles token refresh and can
+   * be configured with custom request/response handling.
+   *
+   * @param config Optional configuration for the fetcher
+   * @returns A Fetcher instance configured with the Auth0 client.
+   */
+  createFetcher<TOutput extends CustomFetchMinimalOutput = Response>(
+    config?: FetcherConfig<TOutput>
+  ): Fetcher<TOutput> {
+    return this.auth0Client.createFetcher(config);
   }
 
   private shouldHandleCallback(): Observable<boolean> {

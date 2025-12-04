@@ -76,6 +76,17 @@ describe('AuthService', () => {
       .spyOn(auth0Client, 'getTokenWithPopup')
       .mockResolvedValue('__access_token_from_popup__');
 
+    jest
+      .spyOn(auth0Client, 'getDpopNonce')
+      .mockResolvedValue('test-nonce-value');
+    jest.spyOn(auth0Client, 'setDpopNonce').mockResolvedValue(undefined);
+    jest
+      .spyOn(auth0Client, 'generateDpopProof')
+      .mockResolvedValue('test-proof-jwt');
+    jest.spyOn(auth0Client, 'createFetcher').mockReturnValue({
+      fetch: jest.fn(),
+    } as any);
+
     window.history.replaceState(null, '', '');
 
     moduleSetup = {
@@ -980,6 +991,110 @@ describe('AuthService', () => {
           done();
         });
       });
+    });
+  });
+
+  describe('getDpopNonce', () => {
+    it('should retrieve DPoP nonce from the client', (done) => {
+      const service = createService();
+      service.getDpopNonce().subscribe((nonce) => {
+        expect(nonce).toBe('test-nonce-value');
+        expect(auth0Client.getDpopNonce).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should pass domain identifier to the underlying SDK', (done) => {
+      const domainId = 'custom-domain';
+      const service = createService();
+      service.getDpopNonce(domainId).subscribe(() => {
+        expect(auth0Client.getDpopNonce).toHaveBeenCalledWith(domainId);
+        done();
+      });
+    });
+
+    it('should handle undefined nonce', (done) => {
+      (auth0Client.getDpopNonce as jest.Mock).mockResolvedValue(undefined);
+      const service = createService();
+      service.getDpopNonce().subscribe((nonce) => {
+        expect(nonce).toBeUndefined();
+        done();
+      });
+    });
+  });
+
+  describe('setDpopNonce', () => {
+    it('should set DPoP nonce through the client', (done) => {
+      const service = createService();
+      const nonceValue = 'new-nonce-123';
+      service.setDpopNonce(nonceValue).subscribe(() => {
+        expect(auth0Client.setDpopNonce).toHaveBeenCalledWith(
+          nonceValue,
+          undefined
+        );
+        done();
+      });
+    });
+
+    it('should pass nonce and domain identifier to the underlying SDK', (done) => {
+      const service = createService();
+      const nonceValue = 'nonce-456';
+      const domainId = 'domain-1';
+      service.setDpopNonce(nonceValue, domainId).subscribe(() => {
+        expect(auth0Client.setDpopNonce).toHaveBeenCalledWith(
+          nonceValue,
+          domainId
+        );
+        done();
+      });
+    });
+  });
+
+  describe('generateDpopProof', () => {
+    it('should generate DPoP proof JWT', (done) => {
+      const service = createService();
+      const params = {
+        url: 'https://api.example.com/resource',
+        method: 'POST',
+        accessToken: 'access-token-123',
+      };
+      service.generateDpopProof(params).subscribe((proof) => {
+        expect(proof).toBe('test-proof-jwt');
+        expect(auth0Client.generateDpopProof).toHaveBeenCalledWith(params);
+        done();
+      });
+    });
+
+    it('should pass all parameters including nonce', (done) => {
+      const service = createService();
+      const params = {
+        url: 'https://api.example.com/data',
+        method: 'GET',
+        nonce: 'server-nonce',
+        accessToken: 'token-xyz',
+      };
+      service.generateDpopProof(params).subscribe(() => {
+        expect(auth0Client.generateDpopProof).toHaveBeenCalledWith(params);
+        done();
+      });
+    });
+  });
+
+  describe('createFetcher', () => {
+    it('should create a fetcher instance', () => {
+      const service = createService();
+      const fetcher = service.createFetcher();
+      expect(fetcher).toBeDefined();
+      expect(auth0Client.createFetcher).toHaveBeenCalled();
+    });
+
+    it('should pass configuration to the underlying SDK', () => {
+      const service = createService();
+      const config = {
+        baseUrl: 'https://api.example.com',
+      };
+      service.createFetcher(config);
+      expect(auth0Client.createFetcher).toHaveBeenCalledWith(config);
     });
   });
 });
