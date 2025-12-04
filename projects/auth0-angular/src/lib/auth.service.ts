@@ -8,6 +8,7 @@ import {
   GetTokenWithPopupOptions,
   RedirectLoginResult,
   GetTokenSilentlyVerboseResponse,
+  ConnectAccountRedirectResult,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -304,7 +305,9 @@ export class AuthService<TAppState extends AppState = AppState>
    */
   handleRedirectCallback(
     url?: string
-  ): Observable<RedirectLoginResult<TAppState>> {
+  ): Observable<
+    RedirectLoginResult<TAppState> | ConnectAccountRedirectResult<AppState>
+  > {
     return defer(() =>
       this.auth0Client.handleRedirectCallback<TAppState>(url)
     ).pipe(

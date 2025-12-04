@@ -58,7 +58,9 @@ describe('AuthService', () => {
       clientId: '',
     });
 
-    jest.spyOn(auth0Client, 'handleRedirectCallback').mockResolvedValue({});
+    jest.spyOn(auth0Client, 'handleRedirectCallback').mockResolvedValue({
+      appState: undefined,
+    } as any);
     jest.spyOn(auth0Client, 'loginWithRedirect').mockResolvedValue();
     jest.spyOn(auth0Client, 'loginWithPopup').mockResolvedValue();
     jest.spyOn(auth0Client, 'checkSession').mockResolvedValue();
