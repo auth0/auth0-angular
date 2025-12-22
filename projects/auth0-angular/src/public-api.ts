@@ -33,4 +33,8 @@ export {
   AuthenticationError,
   PopupCancelledError,
   MissingRefreshTokenError,
+  Fetcher,
+  FetcherConfig,
+  CustomFetchMinimalOutput,
+  UseDpopNonceError,
 } from '@auth0/auth0-spa-js';
