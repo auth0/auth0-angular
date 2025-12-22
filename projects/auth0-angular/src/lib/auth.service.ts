@@ -309,7 +309,7 @@ export class AuthService<TAppState extends AppState = AppState>
   handleRedirectCallback(
     url?: string
   ): Observable<
-    RedirectLoginResult<TAppState> | ConnectAccountRedirectResult<AppState>
+    RedirectLoginResult<TAppState> | ConnectAccountRedirectResult<TAppState>
   > {
     return defer(() =>
       this.auth0Client.handleRedirectCallback<TAppState>(url)
