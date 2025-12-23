@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="default" lang="en">
+<html class="default" lang="en" data-base="./">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
@@ -12,6 +12,7 @@
     <script async src="assets/icons.js" id="tsd-icons-script"></script>
     <script async src="assets/search.js" id="tsd-search-script"></script>
     <script async src="assets/navigation.js" id="tsd-nav-script"></script>
+    <script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script>
   </head>
   <body>
     <script>
@@ -20,457 +21,1137 @@
       document.body.style.display = 'none';
       setTimeout(
         () =>
-          app ? app.showPage() : document.body.style.removeProperty('display'),
+          window.app
+            ? app.showPage()
+            : document.body.style.removeProperty('display'),
         500
       );
     </script>
     <header class="tsd-page-toolbar">
       <div class="tsd-toolbar-contents container">
-        <div class="table-cell" id="tsd-search" data-base=".">
-          <div class="field">
-            <label
-              for="tsd-search-field"
-              class="tsd-widget tsd-toolbar-icon search no-caption"
-              ><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <use href="assets/icons.svg#icon-search"></use></svg></label
-            ><input type="text" id="tsd-search-field" aria-label="Search" />
+        <a href="index.html" class="title">@auth0/auth0-angular</a>
+        <div id="tsd-toolbar-links"></div>
+        <button id="tsd-search-trigger" class="tsd-widget" aria-label="Search">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <use href="assets/icons.svg#icon-search"></use>
+          </svg>
+        </button>
+        <dialog id="tsd-search" aria-label="Search">
+          <input
+            role="combobox"
+            id="tsd-search-input"
+            aria-controls="tsd-search-results"
+            aria-autocomplete="list"
+            aria-expanded="true"
+            autocapitalize="off"
+            autocomplete="off"
+            placeholder="Search the docs"
+            maxlength="100"
+          />
+          <ul role="listbox" id="tsd-search-results"></ul>
+          <div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+            <div>Preparing search index...</div>
           </div>
-          <div class="field"><div id="tsd-toolbar-links"></div></div>
-          <ul class="results">
-            <li class="state loading">Preparing search index...</li>
-            <li class="state failure">The search index is not available</li>
-          </ul>
-          <a href="index.html" class="title">@auth0/auth0-angular</a>
-        </div>
-        <div class="table-cell" id="tsd-widgets">
-          <a
-            href="#"
-            class="tsd-widget tsd-toolbar-icon menu no-caption"
-            data-toggle="menu"
-            aria-label="Menu"
-            ><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <use href="assets/icons.svg#icon-menu"></use></svg
-          ></a>
-        </div>
+        </dialog>
+        <a
+          href="#"
+          class="tsd-widget menu"
+          id="tsd-toolbar-menu-trigger"
+          data-toggle="menu"
+          aria-label="Menu"
+          ><svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <use href="assets/icons.svg#icon-menu"></use></svg
+        ></a>
       </div>
     </header>
     <div class="container container-main">
       <div class="col-content">
-        <div class="tsd-page-title"><h2>@auth0/auth0-angular</h2></div>
-        <section class="tsd-panel-group tsd-index-group">
-          <section class="tsd-panel tsd-index-panel">
-            <h3 class="tsd-index-heading uppercase">Index</h3>
-            <section class="tsd-index-section">
-              <h3 class="tsd-index-heading">Enumerations</h3>
-              <div class="tsd-index-list">
-                <a href="enums/HttpMethod.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-8"></use></svg
-                  ><span>Http<wbr />Method</span></a
+        <div class="tsd-page-title">
+          <ul class="tsd-breadcrumb" aria-label="Breadcrumb"></ul>
+          <h1>@auth0/auth0-angular</h1>
+        </div>
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary
+            class="tsd-accordion-summary"
+            data-key="section-Enumerations"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Enumerations</h2>
+          </summary>
+          <dl class="tsd-member-summaries">
+            <dt class="tsd-member-summary" id="httpmethod">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Enumeration"
                 >
-              </div>
-            </section>
-            <section class="tsd-index-section">
-              <h3 class="tsd-index-heading">Classes</h3>
-              <div class="tsd-index-list">
-                <a href="classes/AbstractNavigator.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Abstract<wbr />Navigator</span></a
+                  <use href="assets/icons.svg#icon-8"></use></svg
+                ><a href="enums/HttpMethod.html">HttpMethod</a
+                ><a
+                  href="#httpmethod"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+          </dl>
+        </details>
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary class="tsd-accordion-summary" data-key="section-Classes">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Classes</h2>
+          </summary>
+          <dl class="tsd-member-summaries">
+            <dt class="tsd-member-summary" id="abstractnavigator">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a href="classes/Auth0ClientFactory.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Auth0<wbr />Client<wbr />Factory</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/AbstractNavigator.html">AbstractNavigator</a
+                ><a
+                  href="#abstractnavigator"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="auth0clientfactory">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a href="classes/AuthClientConfig.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Auth<wbr />Client<wbr />Config</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/Auth0ClientFactory.html">Auth0ClientFactory</a
+                ><a
+                  href="#auth0clientfactory"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="authclientconfig">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a href="classes/AuthGuard.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Auth<wbr />Guard</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/AuthClientConfig.html">AuthClientConfig</a
+                ><a
+                  href="#authclientconfig"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="authenticationerror"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/AuthHttpInterceptor.html"
-                  class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Auth<wbr />Http<wbr />Interceptor</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/AuthenticationError.html"
+                  >AuthenticationError</a
+                ><a
+                  href="#authenticationerror"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary" id="authguard">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a href="classes/AuthModule.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Auth<wbr />Module</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/AuthGuard.html">AuthGuard</a
+                ><a
+                  href="#authguard"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="authhttpinterceptor">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a href="classes/AuthService.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Auth<wbr />Service</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/AuthHttpInterceptor.html"
+                  >AuthHttpInterceptor</a
+                ><a
+                  href="#authhttpinterceptor"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="authmodule">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a href="classes/AuthState.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Auth<wbr />State</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/AuthModule.html">AuthModule</a
+                ><a
+                  href="#authmodule"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="authservice">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/AuthenticationError.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Authentication<wbr />Error</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/AuthService.html">AuthService</a
+                ><a
+                  href="#authservice"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="authstate">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/GenericError.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Generic<wbr />Error</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/AuthState.html">AuthState</a
+                ><a
+                  href="#authstate"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="fetcher">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/InMemoryCache.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>In<wbr />Memory<wbr />Cache</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/Fetcher.html">Fetcher</a
+                ><a
+                  href="#fetcher"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="genericerror">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/LocalStorageCache.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Local<wbr />Storage<wbr />Cache</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/GenericError.html">GenericError</a
+                ><a
+                  href="#genericerror"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="inmemorycache">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/MfaRequiredError.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Mfa<wbr />Required<wbr />Error</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/InMemoryCache.html">InMemoryCache</a
+                ><a
+                  href="#inmemorycache"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="localstoragecache"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/MissingRefreshTokenError.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Missing<wbr />Refresh<wbr />Token<wbr />Error</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/LocalStorageCache.html">LocalStorageCache</a
+                ><a
+                  href="#localstoragecache"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="mfarequirederror"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/PopupCancelledError.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Popup<wbr />Cancelled<wbr />Error</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/MfaRequiredError.html">MfaRequiredError</a
+                ><a
+                  href="#mfarequirederror"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="missingrefreshtokenerror"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/PopupTimeoutError.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Popup<wbr />Timeout<wbr />Error</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/MissingRefreshTokenError.html"
+                  >MissingRefreshTokenError</a
+                ><a
+                  href="#missingrefreshtokenerror"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="popupcancellederror"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/TimeoutError.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>Timeout<wbr />Error</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/PopupCancelledError.html"
+                  >PopupCancelledError</a
+                ><a
+                  href="#popupcancellederror"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="popuptimeouterror"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="classes/User.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-128"></use></svg
-                  ><span>User</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/PopupTimeoutError.html">PopupTimeoutError</a
+                ><a
+                  href="#popuptimeouterror"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="timeouterror">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-              </div>
-            </section>
-            <section class="tsd-index-section">
-              <h3 class="tsd-index-heading">Interfaces</h3>
-              <div class="tsd-index-list">
-                <a href="interfaces/AppState.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>App<wbr />State</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/TimeoutError.html">TimeoutError</a
+                ><a
+                  href="#timeouterror"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="usedpopnonceerror"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a href="interfaces/AuthConfig.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Auth<wbr />Config</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/UseDpopNonceError.html">UseDpopNonceError</a
+                ><a
+                  href="#usedpopnonceerror"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="user">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Class"
                 >
-                <a
-                  href="interfaces/AuthorizationParams.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Authorization<wbr />Params</span></a
+                  <use href="assets/icons.svg#icon-128"></use></svg
+                ><a href="classes/User.html">User</a
+                ><a href="#user" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+          </dl>
+        </details>
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary class="tsd-accordion-summary" data-key="section-Interfaces">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Interfaces</h2>
+          </summary>
+          <dl class="tsd-member-summaries">
+            <dt class="tsd-member-summary" id="appstate">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/GetTokenSilentlyOptions.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Get<wbr />Token<wbr />Silently<wbr />Options</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/AppState.html">AppState</a
+                ><a
+                  href="#appstate"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="authconfig">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/GetTokenWithPopupOptions.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span
-                    >Get<wbr />Token<wbr />With<wbr />Popup<wbr />Options</span
-                  ></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/AuthConfig.html">AuthConfig</a
+                ><a
+                  href="#authconfig"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="authorizationparams"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/HttpInterceptorConfig.html"
-                  class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Http<wbr />Interceptor<wbr />Config</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/AuthorizationParams.html"
+                  >AuthorizationParams</a
+                ><a
+                  href="#authorizationparams"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="gettokensilentlyoptions"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/HttpInterceptorRouteConfig.html"
-                  class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span
-                    >Http<wbr />Interceptor<wbr />Route<wbr />Config</span
-                  ></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/GetTokenSilentlyOptions.html"
+                  >GetTokenSilentlyOptions</a
+                ><a
+                  href="#gettokensilentlyoptions"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="gettokenwithpopupoptions"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/ICache.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>ICache</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/GetTokenWithPopupOptions.html"
+                  >GetTokenWithPopupOptions</a
+                ><a
+                  href="#gettokenwithpopupoptions"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary" id="httpinterceptorconfig">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/IdToken.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Id<wbr />Token</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/HttpInterceptorConfig.html"
+                  >HttpInterceptorConfig</a
+                ><a
+                  href="#httpinterceptorconfig"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="httpinterceptorrouteconfig">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a href="interfaces/LogoutOptions.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Logout<wbr />Options</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/HttpInterceptorRouteConfig.html"
+                  >HttpInterceptorRouteConfig</a
+                ><a
+                  href="#httpinterceptorrouteconfig"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="icache">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/PopupConfigOptions.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Popup<wbr />Config<wbr />Options</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/ICache.html">ICache</a
+                ><a
+                  href="#icache"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="idtoken">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/PopupLoginOptions.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Popup<wbr />Login<wbr />Options</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/IdToken.html">IdToken</a
+                ><a
+                  href="#idtoken"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary" id="logoutoptions">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="interfaces/RedirectLoginOptions.html"
-                  class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-256"></use></svg
-                  ><span>Redirect<wbr />Login<wbr />Options</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/LogoutOptions.html">LogoutOptions</a
+                ><a
+                  href="#logoutoptions"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="popupconfigoptions"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-              </div>
-            </section>
-            <section class="tsd-index-section">
-              <h3 class="tsd-index-heading">Type Aliases</h3>
-              <div class="tsd-index-list">
-                <a href="types/ApiRouteDefinition.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-2097152"></use></svg
-                  ><span>Api<wbr />Route<wbr />Definition</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/PopupConfigOptions.html"
+                  >PopupConfigOptions</a
+                ><a
+                  href="#popupconfigoptions"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="popuploginoptions"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-                <a
-                  href="types/Cacheable.html"
-                  class="tsd-index-link tsd-is-external"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-2097152"></use></svg
-                  ><span>Cacheable</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/PopupLoginOptions.html"
+                  >PopupLoginOptions</a
+                ><a
+                  href="#popuploginoptions"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary" id="redirectloginoptions">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Interface"
                 >
-              </div>
-            </section>
-            <section class="tsd-index-section">
-              <h3 class="tsd-index-heading">Variables</h3>
-              <div class="tsd-index-list">
-                <a
-                  href="variables/Auth0ClientService.html"
-                  class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-32"></use></svg
-                  ><span>Auth0<wbr />Client<wbr />Service</span></a
+                  <use href="assets/icons.svg#icon-256"></use></svg
+                ><a href="interfaces/RedirectLoginOptions.html"
+                  >RedirectLoginOptions</a
+                ><a
+                  href="#redirectloginoptions"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+          </dl>
+        </details>
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary
+            class="tsd-accordion-summary"
+            data-key="section-Type Aliases"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Type Aliases</h2>
+          </summary>
+          <dl class="tsd-member-summaries">
+            <dt class="tsd-member-summary" id="apiroutedefinition">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Type Alias"
                 >
-                <a
-                  href="variables/AuthConfigService.html"
-                  class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-32"></use></svg
-                  ><span>Auth<wbr />Config<wbr />Service</span></a
+                  <use href="assets/icons.svg#icon-2097152"></use></svg
+                ><a href="types/ApiRouteDefinition.html">ApiRouteDefinition</a
+                ><a
+                  href="#apiroutedefinition"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="cacheable">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Type Alias"
                 >
-              </div>
-            </section>
-            <section class="tsd-index-section">
-              <h3 class="tsd-index-heading">Functions</h3>
-              <div class="tsd-index-list">
-                <a href="functions/authGuardFn.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-64"></use></svg
-                  ><span>auth<wbr />Guard<wbr />Fn</span></a
+                  <use href="assets/icons.svg#icon-2097152"></use></svg
+                ><a href="types/Cacheable.html">Cacheable</a
+                ><a
+                  href="#cacheable"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt
+              class="tsd-member-summary tsd-is-external"
+              id="customfetchminimaloutput"
+            >
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Type Alias"
                 >
-                <a
-                  href="functions/authHttpInterceptorFn.html"
-                  class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-64"></use></svg
-                  ><span>auth<wbr />Http<wbr />Interceptor<wbr />Fn</span></a
+                  <use href="assets/icons.svg#icon-2097152"></use></svg
+                ><a href="types/CustomFetchMinimalOutput.html"
+                  >CustomFetchMinimalOutput</a
+                ><a
+                  href="#customfetchminimaloutput"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+            <dt class="tsd-member-summary tsd-is-external" id="fetcherconfig">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Type Alias"
                 >
-                <a
-                  href="functions/isHttpInterceptorRouteConfig.html"
-                  class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-64"></use></svg
-                  ><span
-                    >is<wbr />Http<wbr />Interceptor<wbr />Route<wbr />Config</span
-                  ></a
+                  <use href="assets/icons.svg#icon-2097152"></use></svg
+                ><a href="types/FetcherConfig.html">FetcherConfig</a
+                ><a
+                  href="#fetcherconfig"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary tsd-is-external"></dd>
+          </dl>
+        </details>
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary class="tsd-accordion-summary" data-key="section-Variables">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Variables</h2>
+          </summary>
+          <dl class="tsd-member-summaries">
+            <dt class="tsd-member-summary" id="auth0clientservice">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Variable"
                 >
-                <a href="functions/provideAuth0.html" class="tsd-index-link"
-                  ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                    <use href="assets/icons.svg#icon-64"></use></svg
-                  ><span>provide<wbr />Auth0</span></a
+                  <use href="assets/icons.svg#icon-32"></use></svg
+                ><a href="variables/Auth0ClientService.html"
+                  >Auth0ClientService</a
+                ><a
+                  href="#auth0clientservice"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="authconfigservice">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Variable"
                 >
-              </div>
-            </section>
-          </section>
-        </section>
+                  <use href="assets/icons.svg#icon-32"></use></svg
+                ><a href="variables/AuthConfigService.html">AuthConfigService</a
+                ><a
+                  href="#authconfigservice"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+          </dl>
+        </details>
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary class="tsd-accordion-summary" data-key="section-Functions">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Functions</h2>
+          </summary>
+          <dl class="tsd-member-summaries">
+            <dt class="tsd-member-summary" id="authguardfn">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Function"
+                >
+                  <use href="assets/icons.svg#icon-64"></use></svg
+                ><a href="functions/authGuardFn.html">authGuardFn</a
+                ><a
+                  href="#authguardfn"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="authhttpinterceptorfn">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Function"
+                >
+                  <use href="assets/icons.svg#icon-64"></use></svg
+                ><a href="functions/authHttpInterceptorFn.html"
+                  >authHttpInterceptorFn</a
+                ><a
+                  href="#authhttpinterceptorfn"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="ishttpinterceptorrouteconfig">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Function"
+                >
+                  <use href="assets/icons.svg#icon-64"></use></svg
+                ><a href="functions/isHttpInterceptorRouteConfig.html"
+                  >isHttpInterceptorRouteConfig</a
+                ><a
+                  href="#ishttpinterceptorrouteconfig"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+            <dt class="tsd-member-summary" id="provideauth0">
+              <span class="tsd-member-summary-name"
+                ><svg
+                  class="tsd-kind-icon"
+                  viewBox="0 0 24 24"
+                  aria-label="Function"
+                >
+                  <use href="assets/icons.svg#icon-64"></use></svg
+                ><a href="functions/provideAuth0.html">provideAuth0</a
+                ><a
+                  href="#provideauth0"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="assets/icons.svg#icon-anchor"></use></svg></a
+              ></span>
+            </dt>
+            <dd class="tsd-member-summary"></dd>
+          </dl>
+        </details>
       </div>
       <div class="col-sidebar">
         <div class="page-menu">
           <div class="tsd-navigation settings">
-            <details class="tsd-index-accordion">
+            <details class="tsd-accordion">
               <summary class="tsd-accordion-summary">
-                <h3>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <use href="assets/icons.svg#icon-chevronDown"></use></svg
-                  >Settings
-                </h3>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <use href="assets/icons.svg#icon-chevronDown"></use>
+                </svg>
+                <h3>Settings</h3>
               </summary>
               <div class="tsd-accordion-details">
                 <div class="tsd-filter-visibility">
-                  <h4 class="uppercase">Member Visibility</h4>
-                  <form>
-                    <ul id="tsd-filter-options">
-                      <li class="tsd-filter-item">
-                        <label class="tsd-filter-input"
-                          ><input
-                            type="checkbox"
-                            id="tsd-filter-protected"
-                            name="protected"
-                          /><svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            aria-hidden="true"
-                          >
-                            <rect
-                              class="tsd-checkbox-background"
-                              width="30"
-                              height="30"
-                              x="1"
-                              y="1"
-                              rx="6"
-                              fill="none"
-                            ></rect>
-                            <path
-                              class="tsd-checkbox-checkmark"
-                              d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                              stroke="none"
-                              stroke-width="3.5"
-                              stroke-linejoin="round"
-                              fill="none"
-                            ></path></svg
-                          ><span>Protected</span></label
+                  <span class="settings-label">Member Visibility</span>
+                  <ul id="tsd-filter-options">
+                    <li class="tsd-filter-item">
+                      <label class="tsd-filter-input"
+                        ><input
+                          type="checkbox"
+                          id="tsd-filter-protected"
+                          name="protected"
+                        /><svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          aria-hidden="true"
                         >
-                      </li>
-                      <li class="tsd-filter-item">
-                        <label class="tsd-filter-input"
-                          ><input
-                            type="checkbox"
-                            id="tsd-filter-inherited"
-                            name="inherited"
-                            checked
-                          /><svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            aria-hidden="true"
-                          >
-                            <rect
-                              class="tsd-checkbox-background"
-                              width="30"
-                              height="30"
-                              x="1"
-                              y="1"
-                              rx="6"
-                              fill="none"
-                            ></rect>
-                            <path
-                              class="tsd-checkbox-checkmark"
-                              d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                              stroke="none"
-                              stroke-width="3.5"
-                              stroke-linejoin="round"
-                              fill="none"
-                            ></path></svg
-                          ><span>Inherited</span></label
+                          <rect
+                            class="tsd-checkbox-background"
+                            width="30"
+                            height="30"
+                            x="1"
+                            y="1"
+                            rx="6"
+                            fill="none"
+                          ></rect>
+                          <path
+                            class="tsd-checkbox-checkmark"
+                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
+                            stroke="none"
+                            stroke-width="3.5"
+                            stroke-linejoin="round"
+                            fill="none"
+                          ></path></svg
+                        ><span>Protected</span></label
+                      >
+                    </li>
+                    <li class="tsd-filter-item">
+                      <label class="tsd-filter-input"
+                        ><input
+                          type="checkbox"
+                          id="tsd-filter-inherited"
+                          name="inherited"
+                          checked
+                        /><svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          aria-hidden="true"
                         >
-                      </li>
-                      <li class="tsd-filter-item">
-                        <label class="tsd-filter-input"
-                          ><input
-                            type="checkbox"
-                            id="tsd-filter-external"
-                            name="external"
-                            checked
-                          /><svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            aria-hidden="true"
-                          >
-                            <rect
-                              class="tsd-checkbox-background"
-                              width="30"
-                              height="30"
-                              x="1"
-                              y="1"
-                              rx="6"
-                              fill="none"
-                            ></rect>
-                            <path
-                              class="tsd-checkbox-checkmark"
-                              d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                              stroke="none"
-                              stroke-width="3.5"
-                              stroke-linejoin="round"
-                              fill="none"
-                            ></path></svg
-                          ><span>External</span></label
+                          <rect
+                            class="tsd-checkbox-background"
+                            width="30"
+                            height="30"
+                            x="1"
+                            y="1"
+                            rx="6"
+                            fill="none"
+                          ></rect>
+                          <path
+                            class="tsd-checkbox-checkmark"
+                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
+                            stroke="none"
+                            stroke-width="3.5"
+                            stroke-linejoin="round"
+                            fill="none"
+                          ></path></svg
+                        ><span>Inherited</span></label
+                      >
+                    </li>
+                    <li class="tsd-filter-item">
+                      <label class="tsd-filter-input"
+                        ><input
+                          type="checkbox"
+                          id="tsd-filter-external"
+                          name="external"
+                          checked
+                        /><svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          aria-hidden="true"
                         >
-                      </li>
-                    </ul>
-                  </form>
+                          <rect
+                            class="tsd-checkbox-background"
+                            width="30"
+                            height="30"
+                            x="1"
+                            y="1"
+                            rx="6"
+                            fill="none"
+                          ></rect>
+                          <path
+                            class="tsd-checkbox-checkmark"
+                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
+                            stroke="none"
+                            stroke-width="3.5"
+                            stroke-linejoin="round"
+                            fill="none"
+                          ></path></svg
+                        ><span>External</span></label
+                      >
+                    </li>
+                  </ul>
                 </div>
                 <div class="tsd-theme-toggle">
-                  <h4 class="uppercase">Theme</h4>
-                  <select id="tsd-theme">
+                  <label class="settings-label" for="tsd-theme">Theme</label
+                  ><select id="tsd-theme">
                     <option value="os">OS</option>
                     <option value="light">Light</option>
                     <option value="dark">Dark</option>
@@ -479,19 +1160,505 @@
               </div>
             </details>
           </div>
+          <details open class="tsd-accordion tsd-page-navigation">
+            <summary class="tsd-accordion-summary">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <use href="assets/icons.svg#icon-chevronDown"></use>
+              </svg>
+              <h3>On This Page</h3>
+            </summary>
+            <div class="tsd-accordion-details">
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Enumerations"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="assets/icons.svg#icon-chevronDown"></use></svg
+                  >Enumerations
+                </summary>
+                <div>
+                  <a href="#httpmethod"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Enumeration"
+                    >
+                      <use href="assets/icons.svg#icon-8"></use></svg
+                    ><span>Http<wbr />Method</span></a
+                  >
+                </div>
+              </details>
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Classes"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="assets/icons.svg#icon-chevronDown"></use></svg
+                  >Classes
+                </summary>
+                <div>
+                  <a href="#abstractnavigator"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Abstract<wbr />Navigator</span></a
+                  ><a href="#auth0clientfactory"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Auth0<wbr />Client<wbr />Factory</span></a
+                  ><a href="#authclientconfig"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Auth<wbr />Client<wbr />Config</span></a
+                  ><a href="#authenticationerror" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Authentication<wbr />Error</span></a
+                  ><a href="#authguard"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Auth<wbr />Guard</span></a
+                  ><a href="#authhttpinterceptor"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Auth<wbr />Http<wbr />Interceptor</span></a
+                  ><a href="#authmodule"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Auth<wbr />Module</span></a
+                  ><a href="#authservice"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Auth<wbr />Service</span></a
+                  ><a href="#authstate"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Auth<wbr />State</span></a
+                  ><a href="#fetcher" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Fetcher</span></a
+                  ><a href="#genericerror" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Generic<wbr />Error</span></a
+                  ><a href="#inmemorycache" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>In<wbr />Memory<wbr />Cache</span></a
+                  ><a href="#localstoragecache" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Local<wbr />Storage<wbr />Cache</span></a
+                  ><a href="#mfarequirederror" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Mfa<wbr />Required<wbr />Error</span></a
+                  ><a href="#missingrefreshtokenerror" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span
+                      >Missing<wbr />Refresh<wbr />Token<wbr />Error</span
+                    ></a
+                  ><a href="#popupcancellederror" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Popup<wbr />Cancelled<wbr />Error</span></a
+                  ><a href="#popuptimeouterror" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Popup<wbr />Timeout<wbr />Error</span></a
+                  ><a href="#timeouterror" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Timeout<wbr />Error</span></a
+                  ><a href="#usedpopnonceerror" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>Use<wbr />Dpop<wbr />Nonce<wbr />Error</span></a
+                  ><a href="#user" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Class"
+                    >
+                      <use href="assets/icons.svg#icon-128"></use></svg
+                    ><span>User</span></a
+                  >
+                </div>
+              </details>
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Interfaces"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="assets/icons.svg#icon-chevronDown"></use></svg
+                  >Interfaces
+                </summary>
+                <div>
+                  <a href="#appstate"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>App<wbr />State</span></a
+                  ><a href="#authconfig"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>Auth<wbr />Config</span></a
+                  ><a href="#authorizationparams" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>Authorization<wbr />Params</span></a
+                  ><a href="#gettokensilentlyoptions" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span
+                      >Get<wbr />Token<wbr />Silently<wbr />Options</span
+                    ></a
+                  ><a href="#gettokenwithpopupoptions" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span
+                      >Get<wbr />Token<wbr />With<wbr />Popup<wbr />Options</span
+                    ></a
+                  ><a href="#httpinterceptorconfig"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>Http<wbr />Interceptor<wbr />Config</span></a
+                  ><a href="#httpinterceptorrouteconfig"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span
+                      >Http<wbr />Interceptor<wbr />Route<wbr />Config</span
+                    ></a
+                  ><a href="#icache" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>I<wbr />Cache</span></a
+                  ><a href="#idtoken" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>Id<wbr />Token</span></a
+                  ><a href="#logoutoptions"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>Logout<wbr />Options</span></a
+                  ><a href="#popupconfigoptions" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>Popup<wbr />Config<wbr />Options</span></a
+                  ><a href="#popuploginoptions" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>Popup<wbr />Login<wbr />Options</span></a
+                  ><a href="#redirectloginoptions"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Interface"
+                    >
+                      <use href="assets/icons.svg#icon-256"></use></svg
+                    ><span>Redirect<wbr />Login<wbr />Options</span></a
+                  >
+                </div>
+              </details>
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Type Aliases"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="assets/icons.svg#icon-chevronDown"></use></svg
+                  >Type Aliases
+                </summary>
+                <div>
+                  <a href="#apiroutedefinition"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Type Alias"
+                    >
+                      <use href="assets/icons.svg#icon-2097152"></use></svg
+                    ><span>Api<wbr />Route<wbr />Definition</span></a
+                  ><a href="#cacheable" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Type Alias"
+                    >
+                      <use href="assets/icons.svg#icon-2097152"></use></svg
+                    ><span>Cacheable</span></a
+                  ><a href="#customfetchminimaloutput" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Type Alias"
+                    >
+                      <use href="assets/icons.svg#icon-2097152"></use></svg
+                    ><span
+                      >Custom<wbr />Fetch<wbr />Minimal<wbr />Output</span
+                    ></a
+                  ><a href="#fetcherconfig" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Type Alias"
+                    >
+                      <use href="assets/icons.svg#icon-2097152"></use></svg
+                    ><span>Fetcher<wbr />Config</span></a
+                  >
+                </div>
+              </details>
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Variables"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="assets/icons.svg#icon-chevronDown"></use></svg
+                  >Variables
+                </summary>
+                <div>
+                  <a href="#auth0clientservice"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Variable"
+                    >
+                      <use href="assets/icons.svg#icon-32"></use></svg
+                    ><span>Auth0<wbr />Client<wbr />Service</span></a
+                  ><a href="#authconfigservice"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Variable"
+                    >
+                      <use href="assets/icons.svg#icon-32"></use></svg
+                    ><span>Auth<wbr />Config<wbr />Service</span></a
+                  >
+                </div>
+              </details>
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Functions"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="assets/icons.svg#icon-chevronDown"></use></svg
+                  >Functions
+                </summary>
+                <div>
+                  <a href="#authguardfn"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Function"
+                    >
+                      <use href="assets/icons.svg#icon-64"></use></svg
+                    ><span>auth<wbr />Guard<wbr />Fn</span></a
+                  ><a href="#authhttpinterceptorfn"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Function"
+                    >
+                      <use href="assets/icons.svg#icon-64"></use></svg
+                    ><span>auth<wbr />Http<wbr />Interceptor<wbr />Fn</span></a
+                  ><a href="#ishttpinterceptorrouteconfig"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Function"
+                    >
+                      <use href="assets/icons.svg#icon-64"></use></svg
+                    ><span
+                      >is<wbr />Http<wbr />Interceptor<wbr />Route<wbr />Config</span
+                    ></a
+                  ><a href="#provideauth0"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Function"
+                    >
+                      <use href="assets/icons.svg#icon-64"></use></svg
+                    ><span>provide<wbr />Auth0</span></a
+                  >
+                </div>
+              </details>
+            </div>
+          </details>
         </div>
         <div class="site-menu">
           <nav class="tsd-navigation">
-            <a href="modules.html" class="current"
-              ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                <use href="assets/icons.svg#icon-1"></use></svg
-              ><span>@auth0/auth0-angular</span></a
-            >
-            <ul
-              class="tsd-small-nested-navigation"
-              id="tsd-nav-container"
-              data-base="."
-            >
+            <a href="modules.html" class="current">@auth0/auth0-angular</a>
+            <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
               <li>Loading...</li>
             </ul>
           </nav>

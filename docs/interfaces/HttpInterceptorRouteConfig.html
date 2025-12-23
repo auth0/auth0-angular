@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="default" lang="en">
+<html class="default" lang="en" data-base="../">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
@@ -12,6 +12,11 @@
     <script async src="../assets/icons.js" id="tsd-icons-script"></script>
     <script async src="../assets/search.js" id="tsd-search-script"></script>
     <script async src="../assets/navigation.js" id="tsd-nav-script"></script>
+    <script
+      async
+      src="../assets/hierarchy.js"
+      id="tsd-hierarchy-script"
+    ></script>
   </head>
   <body>
     <script>
@@ -20,49 +25,67 @@
       document.body.style.display = 'none';
       setTimeout(
         () =>
-          app ? app.showPage() : document.body.style.removeProperty('display'),
+          window.app
+            ? app.showPage()
+            : document.body.style.removeProperty('display'),
         500
       );
     </script>
     <header class="tsd-page-toolbar">
       <div class="tsd-toolbar-contents container">
-        <div class="table-cell" id="tsd-search" data-base="..">
-          <div class="field">
-            <label
-              for="tsd-search-field"
-              class="tsd-widget tsd-toolbar-icon search no-caption"
-              ><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <use href="../assets/icons.svg#icon-search"></use></svg></label
-            ><input type="text" id="tsd-search-field" aria-label="Search" />
+        <a href="../index.html" class="title">@auth0/auth0-angular</a>
+        <div id="tsd-toolbar-links"></div>
+        <button id="tsd-search-trigger" class="tsd-widget" aria-label="Search">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <use href="../assets/icons.svg#icon-search"></use>
+          </svg>
+        </button>
+        <dialog id="tsd-search" aria-label="Search">
+          <input
+            role="combobox"
+            id="tsd-search-input"
+            aria-controls="tsd-search-results"
+            aria-autocomplete="list"
+            aria-expanded="true"
+            autocapitalize="off"
+            autocomplete="off"
+            placeholder="Search the docs"
+            maxlength="100"
+          />
+          <ul role="listbox" id="tsd-search-results"></ul>
+          <div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+            <div>Preparing search index...</div>
           </div>
-          <div class="field"><div id="tsd-toolbar-links"></div></div>
-          <ul class="results">
-            <li class="state loading">Preparing search index...</li>
-            <li class="state failure">The search index is not available</li>
-          </ul>
-          <a href="../index.html" class="title">@auth0/auth0-angular</a>
-        </div>
-        <div class="table-cell" id="tsd-widgets">
-          <a
-            href="#"
-            class="tsd-widget tsd-toolbar-icon menu no-caption"
-            data-toggle="menu"
-            aria-label="Menu"
-            ><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <use href="../assets/icons.svg#icon-menu"></use></svg
-          ></a>
-        </div>
+        </dialog>
+        <a
+          href="#"
+          class="tsd-widget menu"
+          id="tsd-toolbar-menu-trigger"
+          data-toggle="menu"
+          aria-label="Menu"
+          ><svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <use href="../assets/icons.svg#icon-menu"></use></svg
+        ></a>
       </div>
     </header>
     <div class="container container-main">
       <div class="col-content">
         <div class="tsd-page-title">
-          <ul class="tsd-breadcrumb">
-            <li><a href="../modules.html">@auth0/auth0-angular</a></li>
+          <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
             <li>
-              <a href="HttpInterceptorRouteConfig.html"
-                >HttpInterceptorRouteConfig</a
-              >
+              <a href="" aria-current="page">HttpInterceptorRouteConfig</a>
             </li>
           </ul>
           <h1>Interface HttpInterceptorRouteConfig</h1>
@@ -71,56 +94,50 @@
           <div class="tsd-comment tsd-typography">
             <p>Configuration for a single interceptor route</p>
           </div>
-          <div class="tsd-comment tsd-typography"></div>
         </section>
         <div class="tsd-signature">
-          <span class="tsd-signature-keyword">interface </span
-          ><span class="tsd-kind-interface">HttpInterceptorRouteConfig</span>
-          <span class="tsd-signature-symbol">{ </span><br /><span>    </span
-          ><a
+          <span class="tsd-signature-keyword">interface</span>
+          <span class="tsd-kind-interface">HttpInterceptorRouteConfig</span>
+          <span class="tsd-signature-symbol">{</span><br />    <a
             class="tsd-kind-property"
-            href="HttpInterceptorRouteConfig.html#allowAnonymous"
+            href="#allowanonymous"
             >allowAnonymous</a
-          ><span class="tsd-signature-symbol">?: </span
-          ><span class="tsd-signature-type">boolean</span
-          ><span class="tsd-signature-symbol">; </span><br /><span>    </span
-          ><a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">boolean</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
-            href="HttpInterceptorRouteConfig.html#httpMethod"
+            href="#httpmethod"
             >httpMethod</a
-          ><span class="tsd-signature-symbol">?: </span
-          ><span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">; </span><br /><span>    </span
-          ><a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">string</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
-            href="HttpInterceptorRouteConfig.html#tokenOptions"
+            href="#tokenoptions"
             >tokenOptions</a
-          ><span class="tsd-signature-symbol">?: </span
-          ><a
+          ><span class="tsd-signature-symbol">?:</span>
+          <a
             href="GetTokenSilentlyOptions.html"
             class="tsd-signature-type tsd-kind-interface"
             >GetTokenSilentlyOptions</a
-          ><span class="tsd-signature-symbol">; </span><br /><span>    </span
-          ><a
+          ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
-            href="HttpInterceptorRouteConfig.html#uri"
+            href="#uri"
             >uri</a
-          ><span class="tsd-signature-symbol">?: </span
-          ><span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">; </span><br /><span>    </span
-          ><a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">string</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
-            href="HttpInterceptorRouteConfig.html#uriMatcher"
+            href="#urimatcher"
             >uriMatcher</a
-          ><span class="tsd-signature-symbol">?: </span
-          ><span class="tsd-signature-symbol">(</span
-          ><span class="tsd-signature-symbol">(</span
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-symbol">(</span
           ><span class="tsd-kind-parameter">uri</span
-          ><span class="tsd-signature-symbol">)</span
-          ><span class="tsd-signature-symbol"> =&gt; </span
-          ><span class="tsd-signature-type">boolean</span
-          ><span class="tsd-signature-symbol">)</span
-          ><span class="tsd-signature-symbol">; </span><br /><span
+          ><span class="tsd-signature-symbol">:</span>
+          <span class="tsd-signature-type">string</span
+          ><span class="tsd-signature-symbol">)</span>
+          <span class="tsd-signature-symbol">=&gt;</span>
+          <span class="tsd-signature-type">boolean</span
+          ><span class="tsd-signature-symbol">;</span><br /><span
             class="tsd-signature-symbol"
             >}</span
           >
@@ -130,7 +147,7 @@
             <li>
               Defined in
               <a
-                href="https://github.com/auth0/auth0-angular/blob/69ef2b603d5f049a909eca9d71d14f69b06e9fe3/projects/auth0-angular/src/lib/auth.config.ts#L51"
+                href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L51"
                 >projects/auth0-angular/src/lib/auth.config.ts:51</a
               >
             </li>
@@ -138,56 +155,65 @@
         </aside>
         <section class="tsd-panel-group tsd-index-group">
           <section class="tsd-panel tsd-index-panel">
-            <details class="tsd-index-content tsd-index-accordion" open>
+            <details class="tsd-index-content tsd-accordion" open>
               <summary class="tsd-accordion-summary tsd-index-summary">
-                <h5
-                  class="tsd-index-heading uppercase"
-                  role="button"
-                  aria-expanded="false"
-                  tabindex="0"
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
                 >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <use href="../assets/icons.svg#icon-chevronSmall"></use>
-                  </svg>
-                  Index
-                </h5>
+                  <use href="../assets/icons.svg#icon-chevronDown"></use>
+                </svg>
+                <h5 class="tsd-index-heading uppercase">Index</h5>
               </summary>
               <div class="tsd-accordion-details">
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
-                    <a
-                      href="HttpInterceptorRouteConfig.html#allowAnonymous"
-                      class="tsd-index-link"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                    <a href="#allowanonymous" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>allow<wbr />Anonymous?</span></a
                     >
-                    <a
-                      href="HttpInterceptorRouteConfig.html#httpMethod"
-                      class="tsd-index-link"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                    <a href="#httpmethod" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>http<wbr />Method?</span></a
                     >
-                    <a
-                      href="HttpInterceptorRouteConfig.html#tokenOptions"
-                      class="tsd-index-link"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                    <a href="#tokenoptions" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>token<wbr />Options?</span></a
                     >
-                    <a
-                      href="HttpInterceptorRouteConfig.html#uri"
-                      class="tsd-index-link"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                    <a href="#uri" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>uri?</span></a
                     >
-                    <a
-                      href="HttpInterceptorRouteConfig.html#uriMatcher"
-                      class="tsd-index-link"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                    <a href="#urimatcher" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>uri<wbr />Matcher?</span></a
                     >
@@ -197,394 +223,376 @@
             </details>
           </section>
         </section>
-        <section class="tsd-panel-group tsd-member-group">
-          <h2>Properties</h2>
-          <section class="tsd-panel tsd-member">
-            <a id="allowAnonymous" class="tsd-anchor"></a>
-            <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagOptional">Optional</code>
-              <span>allow<wbr />Anonymous</span
-              ><a
-                href="#allowAnonymous"
-                aria-label="Permalink"
-                class="tsd-anchor-icon"
-                ><svg viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-anchor"></use></svg
-              ></a>
-            </h3>
-            <div class="tsd-signature">
-              <span class="tsd-kind-property">allow<wbr />Anonymous</span
-              ><span class="tsd-signature-symbol">?:</span>
-              <span class="tsd-signature-type">boolean</span>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                Allow the HTTP call to be executed anonymously, when no token is
-                available.
-              </p>
-              <p>
-                When omitted (or set to false), calls that match the
-                configuration will fail when no token is available.
-              </p>
-            </div>
-            <div class="tsd-comment tsd-typography"></div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/69ef2b603d5f049a909eca9d71d14f69b06e9fe3/projects/auth0-angular/src/lib/auth.config.ts#L101"
-                    >projects/auth0-angular/src/lib/auth.config.ts:101</a
-                  >
-                </li>
-              </ul>
-            </aside>
-          </section>
-          <section class="tsd-panel tsd-member">
-            <a id="httpMethod" class="tsd-anchor"></a>
-            <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagOptional">Optional</code>
-              <span>http<wbr />Method</span
-              ><a
-                href="#httpMethod"
-                aria-label="Permalink"
-                class="tsd-anchor-icon"
-                ><svg viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-anchor"></use></svg
-              ></a>
-            </h3>
-            <div class="tsd-signature">
-              <span class="tsd-kind-property">http<wbr />Method</span
-              ><span class="tsd-signature-symbol">?:</span>
-              <span class="tsd-signature-type">string</span>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                The HTTP method to match on. If specified, the HTTP method of
-                the outgoing request will be checked against this. If there is
-                no match, the Authorization header is not attached.
-              </p>
-              <p>The HTTP method name is case-sensitive.</p>
-            </div>
-            <div class="tsd-comment tsd-typography"></div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/69ef2b603d5f049a909eca9d71d14f69b06e9fe3/projects/auth0-angular/src/lib/auth.config.ts#L94"
-                    >projects/auth0-angular/src/lib/auth.config.ts:94</a
-                  >
-                </li>
-              </ul>
-            </aside>
-          </section>
-          <section class="tsd-panel tsd-member">
-            <a id="tokenOptions" class="tsd-anchor"></a>
-            <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagOptional">Optional</code>
-              <span>token<wbr />Options</span
-              ><a
-                href="#tokenOptions"
-                aria-label="Permalink"
-                class="tsd-anchor-icon"
-                ><svg viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-anchor"></use></svg
-              ></a>
-            </h3>
-            <div class="tsd-signature">
-              <span class="tsd-kind-property">token<wbr />Options</span
-              ><span class="tsd-signature-symbol">?:</span>
-              <a
-                href="GetTokenSilentlyOptions.html"
-                class="tsd-signature-type tsd-kind-interface"
-                >GetTokenSilentlyOptions</a
-              >
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                The options that are passed to the SDK when retrieving the
-                access token to attach to the outgoing request.
-              </p>
-            </div>
-            <div class="tsd-comment tsd-typography"></div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
-                  <a
-                    href="https://github.com/auth0/auth0-angular/blob/69ef2b603d5f049a909eca9d71d14f69b06e9fe3/projects/auth0-angular/src/lib/auth.config.ts#L85"
-                    >projects/auth0-angular/src/lib/auth.config.ts:85</a
-                  >
-                </li>
-              </ul>
-            </aside>
-          </section>
-          <section class="tsd-panel tsd-member">
-            <a id="uri" class="tsd-anchor"></a>
-            <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagOptional">Optional</code>
-              <span>uri</span
-              ><a href="#uri" aria-label="Permalink" class="tsd-anchor-icon"
-                ><svg viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-anchor"></use></svg
-              ></a>
-            </h3>
-            <div class="tsd-signature">
-              <span class="tsd-kind-property">uri</span
-              ><span class="tsd-signature-symbol">?:</span>
-              <span class="tsd-signature-type">string</span>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                The URL to test, by supplying the URL to match. If
-                <code>test</code> is a match for the current request path from
-                the HTTP client, then an access token is attached to the request
-                in the
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary class="tsd-accordion-summary" data-key="section-Properties">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="../assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Properties</h2>
+          </summary>
+          <section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="allowanonymous">
+                <code class="tsd-tag">Optional</code
+                ><span>allow<wbr />Anonymous</span
+                ><a
+                  href="#allowanonymous"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">allowAnonymous</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">boolean</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  Allow the HTTP call to be executed anonymously, when no token
+                  is available.
+                </p>
+                <p>
+                  When omitted (or set to false), calls that match the
+                  configuration will fail when no token is available.
+                </p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L101"
+                      >projects/auth0-angular/src/lib/auth.config.ts:101</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="httpmethod">
+                <code class="tsd-tag">Optional</code
+                ><span>http<wbr />Method</span
+                ><a
+                  href="#httpmethod"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">httpMethod</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  The HTTP method to match on. If specified, the HTTP method of
+                  the outgoing request will be checked against this. If there is
+                  no match, the Authorization header is not attached.
+                </p>
+                <p>The HTTP method name is case-sensitive.</p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L94"
+                      >projects/auth0-angular/src/lib/auth.config.ts:94</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="tokenoptions">
+                <code class="tsd-tag">Optional</code
+                ><span>token<wbr />Options</span
+                ><a
+                  href="#tokenoptions"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">tokenOptions</span
+                ><span class="tsd-signature-symbol">?:</span>
                 <a
-                  href="https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1"
-                  >&quot;Authorization&quot; header</a
-                >.
-              </p>
-              <p>
-                If the test does not pass, the request proceeds without the
-                access token attached.
-              </p>
-              <p>
-                A wildcard character can be used to match only the start of the
-                URL.
-              </p>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <h4>Usagenotes</h4>
-              <p>
-                &#39;/api&#39; - exactly match the route /api &#39;/api/*&#39; -
-                match any route that starts with /api/
-              </p>
-            </div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
+                  href="GetTokenSilentlyOptions.html"
+                  class="tsd-signature-type tsd-kind-interface"
+                  >GetTokenSilentlyOptions</a
+                >
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  The options that are passed to the SDK when retrieving the
+                  access token to attach to the outgoing request.
+                </p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L85"
+                      >projects/auth0-angular/src/lib/auth.config.ts:85</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="uri">
+                <code class="tsd-tag">Optional</code><span>uri</span
+                ><a href="#uri" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">uri</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  The URL to test, by supplying the URL to match. If
+                  <code>test</code> is a match for the current request path from
+                  the HTTP client, then an access token is attached to the
+                  request in the
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/69ef2b603d5f049a909eca9d71d14f69b06e9fe3/projects/auth0-angular/src/lib/auth.config.ts#L67"
-                    >projects/auth0-angular/src/lib/auth.config.ts:67</a
-                  >
-                </li>
-              </ul>
-            </aside>
-          </section>
-          <section class="tsd-panel tsd-member">
-            <a id="uriMatcher" class="tsd-anchor"></a>
-            <h3 class="tsd-anchor-link">
-              <code class="tsd-tag ts-flagOptional">Optional</code>
-              <span>uri<wbr />Matcher</span
-              ><a
-                href="#uriMatcher"
-                aria-label="Permalink"
-                class="tsd-anchor-icon"
-                ><svg viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-anchor"></use></svg
-              ></a>
-            </h3>
-            <div class="tsd-signature">
-              <span class="tsd-kind-property">uri<wbr />Matcher</span
-              ><span class="tsd-signature-symbol">?:</span>
-              <span class="tsd-signature-symbol">(</span
-              ><span class="tsd-signature-symbol">(</span
-              ><span class="tsd-kind-parameter">uri</span
-              ><span class="tsd-signature-symbol">)</span
-              ><span class="tsd-signature-symbol"> =&gt; </span
-              ><span class="tsd-signature-type">boolean</span
-              ><span class="tsd-signature-symbol">)</span>
-            </div>
-            <div class="tsd-comment tsd-typography">
-              <p>
-                A function that will be called with the HttpRequest.url value,
-                allowing you to do any kind of flexible matching.
-              </p>
-              <p>
-                If this function returns true, then an access token is attached
-                to the request in the
-                <a
-                  href="https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1"
-                  >&quot;Authorization&quot; header</a
-                >.
-              </p>
-              <p>
-                If it returns false, the request proceeds without the access
-                token attached.
-              </p>
-            </div>
-            <div class="tsd-type-declaration">
-              <h4>Type declaration</h4>
-              <ul class="tsd-parameters">
-                <li class="tsd-parameter-signature">
-                  <ul class="tsd-signatures">
-                    <li class="tsd-signature" id="uriMatcher.__type.__type-1">
-                      <span class="tsd-signature-symbol">(</span
-                      ><span class="tsd-kind-parameter">uri</span
-                      ><span class="tsd-signature-symbol">)</span
-                      ><span class="tsd-signature-symbol">: </span
-                      ><span class="tsd-signature-type">boolean</span>
-                    </li>
-                    <li class="tsd-description">
-                      <div class="tsd-parameters">
-                        <h4 class="tsd-parameters-title">Parameters</h4>
-                        <ul class="tsd-parameter-list">
-                          <li>
-                            <span
-                              ><span class="tsd-kind-parameter">uri</span>:
-                              <span class="tsd-signature-type"
-                                >string</span
-                              ></span
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <h4 class="tsd-returns-title">
-                        Returns <span class="tsd-signature-type">boolean</span>
-                      </h4>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <div class="tsd-comment tsd-typography"></div>
-            <aside class="tsd-sources">
-              <ul>
-                <li>
-                  Defined in
+                    href="https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1"
+                    >&quot;Authorization&quot; header</a
+                  >.
+                </p>
+                <p>
+                  If the test does not pass, the request proceeds without the
+                  access token attached.
+                </p>
+                <p>
+                  A wildcard character can be used to match only the start of
+                  the URL.
+                </p>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-usagenotes">
+                  <h4 class="tsd-anchor-link" id="usagenotes">
+                    Usagenotes<a
+                      href="#usagenotes"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <p>
+                    '/api' - exactly match the route /api '/api/*' - match any
+                    route that starts with /api/
+                  </p>
+                </div>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L67"
+                      >projects/auth0-angular/src/lib/auth.config.ts:67</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="urimatcher">
+                <code class="tsd-tag">Optional</code
+                ><span>uri<wbr />Matcher</span
+                ><a
+                  href="#urimatcher"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">uriMatcher</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-symbol">(</span
+                ><span class="tsd-kind-parameter">uri</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">)</span>
+                <span class="tsd-signature-symbol">=&gt;</span>
+                <span class="tsd-signature-type">boolean</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  A function that will be called with the HttpRequest.url value,
+                  allowing you to do any kind of flexible matching.
+                </p>
+                <p>
+                  If this function returns true, then an access token is
+                  attached to the request in the
                   <a
-                    href="https://github.com/auth0/auth0-angular/blob/69ef2b603d5f049a909eca9d71d14f69b06e9fe3/projects/auth0-angular/src/lib/auth.config.ts#L79"
-                    >projects/auth0-angular/src/lib/auth.config.ts:79</a
-                  >
-                </li>
-              </ul>
-            </aside>
+                    href="https://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-20#section-2.1"
+                    >&quot;Authorization&quot; header</a
+                  >.
+                </p>
+                <p>
+                  If it returns false, the request proceeds without the access
+                  token attached.
+                </p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L79"
+                      >projects/auth0-angular/src/lib/auth.config.ts:79</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
           </section>
-        </section>
+        </details>
       </div>
       <div class="col-sidebar">
         <div class="page-menu">
           <div class="tsd-navigation settings">
-            <details class="tsd-index-accordion">
+            <details class="tsd-accordion">
               <summary class="tsd-accordion-summary">
-                <h3>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <use href="../assets/icons.svg#icon-chevronDown"></use></svg
-                  >Settings
-                </h3>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <use href="../assets/icons.svg#icon-chevronDown"></use>
+                </svg>
+                <h3>Settings</h3>
               </summary>
               <div class="tsd-accordion-details">
                 <div class="tsd-filter-visibility">
-                  <h4 class="uppercase">Member Visibility</h4>
-                  <form>
-                    <ul id="tsd-filter-options">
-                      <li class="tsd-filter-item">
-                        <label class="tsd-filter-input"
-                          ><input
-                            type="checkbox"
-                            id="tsd-filter-protected"
-                            name="protected"
-                          /><svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            aria-hidden="true"
-                          >
-                            <rect
-                              class="tsd-checkbox-background"
-                              width="30"
-                              height="30"
-                              x="1"
-                              y="1"
-                              rx="6"
-                              fill="none"
-                            ></rect>
-                            <path
-                              class="tsd-checkbox-checkmark"
-                              d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                              stroke="none"
-                              stroke-width="3.5"
-                              stroke-linejoin="round"
-                              fill="none"
-                            ></path></svg
-                          ><span>Protected</span></label
+                  <span class="settings-label">Member Visibility</span>
+                  <ul id="tsd-filter-options">
+                    <li class="tsd-filter-item">
+                      <label class="tsd-filter-input"
+                        ><input
+                          type="checkbox"
+                          id="tsd-filter-protected"
+                          name="protected"
+                        /><svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          aria-hidden="true"
                         >
-                      </li>
-                      <li class="tsd-filter-item">
-                        <label class="tsd-filter-input"
-                          ><input
-                            type="checkbox"
-                            id="tsd-filter-inherited"
-                            name="inherited"
-                            checked
-                          /><svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            aria-hidden="true"
-                          >
-                            <rect
-                              class="tsd-checkbox-background"
-                              width="30"
-                              height="30"
-                              x="1"
-                              y="1"
-                              rx="6"
-                              fill="none"
-                            ></rect>
-                            <path
-                              class="tsd-checkbox-checkmark"
-                              d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                              stroke="none"
-                              stroke-width="3.5"
-                              stroke-linejoin="round"
-                              fill="none"
-                            ></path></svg
-                          ><span>Inherited</span></label
+                          <rect
+                            class="tsd-checkbox-background"
+                            width="30"
+                            height="30"
+                            x="1"
+                            y="1"
+                            rx="6"
+                            fill="none"
+                          ></rect>
+                          <path
+                            class="tsd-checkbox-checkmark"
+                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
+                            stroke="none"
+                            stroke-width="3.5"
+                            stroke-linejoin="round"
+                            fill="none"
+                          ></path></svg
+                        ><span>Protected</span></label
+                      >
+                    </li>
+                    <li class="tsd-filter-item">
+                      <label class="tsd-filter-input"
+                        ><input
+                          type="checkbox"
+                          id="tsd-filter-inherited"
+                          name="inherited"
+                          checked
+                        /><svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          aria-hidden="true"
                         >
-                      </li>
-                      <li class="tsd-filter-item">
-                        <label class="tsd-filter-input"
-                          ><input
-                            type="checkbox"
-                            id="tsd-filter-external"
-                            name="external"
-                            checked
-                          /><svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            aria-hidden="true"
-                          >
-                            <rect
-                              class="tsd-checkbox-background"
-                              width="30"
-                              height="30"
-                              x="1"
-                              y="1"
-                              rx="6"
-                              fill="none"
-                            ></rect>
-                            <path
-                              class="tsd-checkbox-checkmark"
-                              d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
-                              stroke="none"
-                              stroke-width="3.5"
-                              stroke-linejoin="round"
-                              fill="none"
-                            ></path></svg
-                          ><span>External</span></label
+                          <rect
+                            class="tsd-checkbox-background"
+                            width="30"
+                            height="30"
+                            x="1"
+                            y="1"
+                            rx="6"
+                            fill="none"
+                          ></rect>
+                          <path
+                            class="tsd-checkbox-checkmark"
+                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
+                            stroke="none"
+                            stroke-width="3.5"
+                            stroke-linejoin="round"
+                            fill="none"
+                          ></path></svg
+                        ><span>Inherited</span></label
+                      >
+                    </li>
+                    <li class="tsd-filter-item">
+                      <label class="tsd-filter-input"
+                        ><input
+                          type="checkbox"
+                          id="tsd-filter-external"
+                          name="external"
+                          checked
+                        /><svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 32 32"
+                          aria-hidden="true"
                         >
-                      </li>
-                    </ul>
-                  </form>
+                          <rect
+                            class="tsd-checkbox-background"
+                            width="30"
+                            height="30"
+                            x="1"
+                            y="1"
+                            rx="6"
+                            fill="none"
+                          ></rect>
+                          <path
+                            class="tsd-checkbox-checkmark"
+                            d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25"
+                            stroke="none"
+                            stroke-width="3.5"
+                            stroke-linejoin="round"
+                            fill="none"
+                          ></path></svg
+                        ><span>External</span></label
+                      >
+                    </li>
+                  </ul>
                 </div>
                 <div class="tsd-theme-toggle">
-                  <h4 class="uppercase">Theme</h4>
-                  <select id="tsd-theme">
+                  <label class="settings-label" for="tsd-theme">Theme</label
+                  ><select id="tsd-theme">
                     <option value="os">OS</option>
                     <option value="light">Light</option>
                     <option value="dark">Dark</option>
@@ -593,51 +601,86 @@
               </div>
             </details>
           </div>
-          <details open class="tsd-index-accordion tsd-page-navigation">
+          <details open class="tsd-accordion tsd-page-navigation">
             <summary class="tsd-accordion-summary">
-              <h3>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <use href="../assets/icons.svg#icon-chevronDown"></use></svg
-                >On This Page
-              </h3>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <use href="../assets/icons.svg#icon-chevronDown"></use>
+              </svg>
+              <h3>On This Page</h3>
             </summary>
             <div class="tsd-accordion-details">
-              <a href="#allowAnonymous" class=""
-                ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-1024"></use></svg
-                ><span>allow<wbr />Anonymous</span></a
-              ><a href="#httpMethod" class=""
-                ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-1024"></use></svg
-                ><span>http<wbr />Method</span></a
-              ><a href="#tokenOptions" class=""
-                ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-1024"></use></svg
-                ><span>token<wbr />Options</span></a
-              ><a href="#uri" class=""
-                ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-1024"></use></svg
-                ><span>uri</span></a
-              ><a href="#uriMatcher" class=""
-                ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                  <use href="../assets/icons.svg#icon-1024"></use></svg
-                ><span>uri<wbr />Matcher</span></a
-              >
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Properties"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="../assets/icons.svg#icon-chevronDown"></use></svg
+                  >Properties
+                </summary>
+                <div>
+                  <a href="#allowanonymous"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>allow<wbr />Anonymous</span></a
+                  ><a href="#httpmethod"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>http<wbr />Method</span></a
+                  ><a href="#tokenoptions"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>token<wbr />Options</span></a
+                  ><a href="#uri"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>uri</span></a
+                  ><a href="#urimatcher"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>uri<wbr />Matcher</span></a
+                  >
+                </div>
+              </details>
             </div>
           </details>
         </div>
         <div class="site-menu">
           <nav class="tsd-navigation">
-            <a href="../modules.html"
-              ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                <use href="../assets/icons.svg#icon-1"></use></svg
-              ><span>@auth0/auth0-angular</span></a
-            >
-            <ul
-              class="tsd-small-nested-navigation"
-              id="tsd-nav-container"
-              data-base=".."
-            >
+            <a href="../modules.html">@auth0/auth0-angular</a>
+            <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
               <li>Loading...</li>
             </ul>
           </nav>

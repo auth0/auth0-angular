@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.4.0](https://github.com/auth0/auth0-angular/tree/v2.4.0) (2025-12-23)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.3.0...v2.4.0)
+
+**Added**
+
+- feat: add DPoP support with fetcher API [\#732](https://github.com/auth0/auth0-angular/pull/732) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.3.0](https://github.com/auth0/auth0-angular/tree/v2.3.0) (2025-09-10)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.2.3...v2.3.0)
