@@ -10,9 +10,7 @@ describe('RouteNavigator', () => {
   let replaceStateSpy: any;
 
   // Stub component for the sake of getting the router to accept routes
-  @Component({
-    standalone: false,
-  })
+  @Component({})
   class StubComponent {}
 
   describe('with no router', () => {

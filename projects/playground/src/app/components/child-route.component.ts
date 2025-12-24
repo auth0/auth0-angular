@@ -8,6 +8,5 @@ import { Component } from '@angular/core';
     <router-outlet></router-outlet>
   `,
   styles: [],
-  standalone: false,
 })
 export class ChildRouteComponent {}
