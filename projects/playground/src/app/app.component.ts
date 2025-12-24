@@ -1,16 +1,35 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import {
+  UntypedFormGroup,
+  UntypedFormControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { AuthService } from '../../../auth0-angular/src/lib/auth.service';
 import { iif } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { DOCUMENT } from '@angular/common';
+import {
+  DOCUMENT,
+  AsyncPipe,
+  JsonPipe,
+  UpperCasePipe,
+  NgIf,
+} from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { LogoutOptions } from 'projects/auth0-angular/src/lib/interfaces';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  imports: [
+    AsyncPipe,
+    JsonPipe,
+    UpperCasePipe,
+    NgIf,
+    ReactiveFormsModule,
+    RouterOutlet,
+  ],
 })
 export class AppComponent implements OnInit {
   isAuthenticated$ = this.auth.isAuthenticated$;
