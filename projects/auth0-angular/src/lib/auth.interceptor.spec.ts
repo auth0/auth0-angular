@@ -392,6 +392,107 @@ describe('The Auth HTTP Interceptor', () => {
         expect(authState.setError).not.toHaveBeenCalled();
       });
     }));
+
+    it('attach the access token when tokenOptions includes detailedResponse: true', fakeAsync(async (
+      done: () => void
+    ) => {
+      // Mock getTokenSilently to return a detailed response object
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockResolvedValue({
+        access_token: 'detailed-access-token',
+        id_token: 'id-token',
+        expires_in: 86400,
+        token_type: 'Bearer',
+        scope: 'openid profile email',
+      });
+
+      // Add a route with detailedResponse: true
+      config.httpInterceptor!.allowedList!.push({
+        uri: 'https://my-api.com/api/detailed',
+        tokenOptions: {
+          detailedResponse: true,
+        },
+      });
+
+      httpClient.get('https://my-api.com/api/detailed').subscribe(done);
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/detailed');
+
+      // Should attach only the access_token string, not the whole object
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer detailed-access-token'
+      );
+    }));
+
+    it('stores only the access token string when detailedResponse is used', fakeAsync(async (
+      done: () => void
+    ) => {
+      const detailedResponse = {
+        access_token: 'detailed-token-123',
+        id_token: 'id-token-456',
+        expires_in: 3600,
+        token_type: 'Bearer',
+        scope: 'openid profile',
+      };
+
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockResolvedValue(detailedResponse);
+
+      jest.spyOn(authState, 'setAccessToken');
+
+      config.httpInterceptor!.allowedList!.push({
+        uri: 'https://my-api.com/api/detailed-store',
+        tokenOptions: {
+          detailedResponse: true,
+        },
+      });
+
+      httpClient.get('https://my-api.com/api/detailed-store').subscribe(done);
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne(
+        'https://my-api.com/api/detailed-store'
+      );
+
+      // Should store only the token string, not the whole object
+      expect(authState.setAccessToken).toHaveBeenCalledWith(
+        'detailed-token-123'
+      );
+    }));
+
+    it('handles string token response when detailedResponse is false', fakeAsync(async (
+      done: () => void
+    ) => {
+      // Mock getTokenSilently to return a plain string token (default behavior)
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockResolvedValue('simple-access-token');
+
+      jest.spyOn(authState, 'setAccessToken');
+
+      config.httpInterceptor!.allowedList!.push({
+        uri: 'https://my-api.com/api/simple',
+        tokenOptions: {
+          detailedResponse: false,
+        },
+      });
+
+      httpClient.get('https://my-api.com/api/simple').subscribe(done);
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/simple');
+
+      // Should handle string token correctly
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer simple-access-token'
+      );
+      expect(authState.setAccessToken).toHaveBeenCalledWith(
+        'simple-access-token'
+      );
+    }));
   });
 
   describe('Requests that are configured using an uri matcher', () => {

@@ -25,8 +25,13 @@ import {
   mergeMap,
   mapTo,
   pluck,
+  map,
 } from 'rxjs/operators';
-import { Auth0Client, GetTokenSilentlyOptions } from '@auth0/auth0-spa-js';
+import {
+  Auth0Client,
+  GetTokenSilentlyOptions,
+  GetTokenSilentlyVerboseResponse,
+} from '@auth0/auth0-spa-js';
 import { Auth0ClientService } from './auth.client';
 import { AuthState } from './auth.state';
 import { AuthService } from './auth.service';
@@ -113,6 +118,11 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   ): Observable<string> {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options)),
+      map((tokenOrResponse: string | GetTokenSilentlyVerboseResponse) => {
+        // Extract access_token from detailed response when detailedResponse: true
+        if (typeof tokenOrResponse === 'string') return tokenOrResponse;
+        return tokenOrResponse.access_token;
+      }),
       tap((token) => this.authState.setAccessToken(token)),
       catchError((error) => {
         this.authState.refresh();
