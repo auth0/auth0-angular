@@ -35,19 +35,23 @@ const configInitializer =
       .then((loadedConfig: any) => config.set(loadedConfig)); // Set the config that was loaded asynchronously here
 
 @NgModule({
-  declarations: [],
-  bootstrap: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    AuthModule.forRoot(/* authConfig */),
+  declarations: [
     AppComponent,
     ProtectedComponent,
     UnprotectedComponent,
     ChildRouteComponent,
     NestedChildRouteComponent,
     ErrorComponent,
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    // This playground has been configured by default to use dynamic configuration.
+    // If you wish to specify configuration to `forRoot` directly, uncomment `authConfig`
+    // here, and comment out the APP_INITIALIZER config in the providers array below.
+    AuthModule.forRoot(/* authConfig */),
   ],
   providers: [
     {

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-child-route',
@@ -9,6 +8,5 @@ import { RouterOutlet } from '@angular/router';
     <router-outlet></router-outlet>
   `,
   styles: [],
-  imports: [RouterOutlet],
 })
 export class ChildRouteComponent {}
