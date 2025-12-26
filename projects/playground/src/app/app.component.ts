@@ -11,6 +11,7 @@ import { LogoutOptions } from 'projects/auth0-angular/src/lib/interfaces';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: false,
 })
 export class AppComponent implements OnInit {
   isAuthenticated$ = this.auth.isAuthenticated$;

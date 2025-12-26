@@ -28,7 +28,8 @@
             "prefix": "app",
             "style": "camelCase"
           }
-        ]
+        ],
+        "@angular-eslint/prefer-standalone": "off"
       }
     },
     {
