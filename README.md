@@ -64,14 +64,35 @@ Take note of the **Client ID** and **Domain** values under the "Basic Informatio
 
 #### Static configuration
 
-Install the SDK into your application by importing `AuthModule.forRoot()` and configuring with your Auth0 domain and client id, as well as the URL to which Auth0 should redirect back after succesful authentication:
+For modern Angular applications (v19+), use the functional `provideAuth0()` approach in your application configuration:
+
+```ts
+import { ApplicationConfig } from '@angular/core';
+import { provideAuth0 } from '@auth0/auth0-angular';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+      },
+    }),
+  ],
+};
+```
+
+<details>
+<summary>Using NgModules (Legacy Approach)</summary>
+
+If you're using NgModules, you can configure the SDK using `AuthModule.forRoot()`:
 
 ```ts
 import { NgModule } from '@angular/core';
 import { AuthModule } from '@auth0/auth0-angular';
 
 @NgModule({
-  // ...
   imports: [
     AuthModule.forRoot({
       domain: 'YOUR_AUTH0_DOMAIN',
@@ -81,52 +102,79 @@ import { AuthModule } from '@auth0/auth0-angular';
       },
     }),
   ],
-  // ...
 })
 export class AppModule {}
 ```
 
+</details>
+
 #### Dynamic configuration
 
-Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`.
+Instead of providing static configuration, you can use `provideAppInitializer` to load your config from an external source before the SDK is instantiated, and configure it using `AuthClientConfig.set`.
 
-The configuration will only be used initially when the SDK is instantiated. Any changes made to the configuration at a later moment in time will have no effect on the default options used when calling the SDK's methods. This is also the reason why the dynamic configuration should be set using an `APP_INITIALIZER`, because doing so ensures the configuration is available prior to instantiating the SDK.
+```ts
+import { ApplicationConfig, inject, provideAppInitializer } from '@angular/core';
+import { provideHttpClient, HttpBackend, HttpClient } from '@angular/common/http';
+import { provideAuth0, AuthClientConfig } from '@auth0/auth0-angular';
 
-> :information_source: Any request made through an instance of `HttpClient` that got instantiated by Angular, will use all of the configured interceptors, including our `AuthHttpInterceptor`. Because the `AuthHttpInterceptor` requires the existence of configuration settings, the request for retrieving those dynamic configuration settings should ensure it's not using any of those interceptors. In Angular, this can be done by manually instantiating `HttpClient` using an injected `HttpBackend` instance.
-
-```js
-import { AuthModule, AuthClientConfig } from '@auth0/auth0-angular';
-
-// Provide an initializer function that returns a Promise
-function configInitializer(
-  handler: HttpBackend,
-  config: AuthClientConfig
-) {
+export function configInitializer(handler: HttpBackend, config: AuthClientConfig) {
   return () =>
     new HttpClient(handler)
       .get('/config')
       .toPromise()
-      // Set the config that was loaded asynchronously here
       .then((loadedConfig: any) => config.set(loadedConfig));
 }
 
-export class AppModule {
-  // ...
-  imports: [
-    HttpClientModule,
-    AuthModule.forRoot(), // <- don't pass any config here
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(),
+    provideAuth0(),
+    provideAppInitializer(() => {
+      const handler = inject(HttpBackend);
+      const config = inject(AuthClientConfig);
+      return configInitializer(handler, config)();
+    }),
   ],
+};
+```
+
+> **Important:** The configuration will only be used initially when the SDK is instantiated. Any changes made to the configuration at a later moment in time will have no effect on the default options used when calling the SDK's methods. This is why the dynamic configuration should be set using an app initializer, which ensures the configuration is available prior to instantiating the SDK.
+
+> :information_source: Any request made through an instance of `HttpClient` that got instantiated by Angular will use all configured interceptors, including our `AuthHttpInterceptor`. Because the `AuthHttpInterceptor` requires the existence of configuration settings, the request for retrieving those dynamic configuration settings should ensure it's not using any interceptors. In Angular, this can be done by manually instantiating `HttpClient` using an injected `HttpBackend` instance.
+
+<details>
+<summary>Using NgModules (Legacy Approach)</summary>
+
+Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`.
+
+```ts
+import { APP_INITIALIZER } from '@angular/core';
+import { HttpClientModule, HttpClient, HttpBackend } from '@angular/common/http';
+import { AuthModule, AuthClientConfig } from '@auth0/auth0-angular';
+
+function configInitializer(handler: HttpBackend, config: AuthClientConfig) {
+  return () =>
+    new HttpClient(handler)
+      .get('/config')
+      .toPromise()
+      .then((loadedConfig: any) => config.set(loadedConfig));
+}
+
+@NgModule({
+  imports: [HttpClientModule, AuthModule.forRoot()],
   providers: [
     {
       provide: APP_INITIALIZER,
-      useFactory: configInitializer, // <- pass your initializer function here
+      useFactory: configInitializer,
       deps: [HttpBackend, AuthClientConfig],
       multi: true,
     },
   ],
-  // ...
-}
+})
+export class AppModule {}
 ```
+
+</details>
 
 ### Add login to your application
 
