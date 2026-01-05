@@ -21,10 +21,6 @@ A library for integrating [Auth0](https://auth0.com) into an Angular application
 
 ## Getting started
 
-### Angular 19 Security Update
-
-**v2.5.0** updates to Angular 19.2.17+ to address two high-severity vulnerabilities (CVE-2025-66035, CVE-2025-66412). We recommend upgrading to Angular 19 for the best security and support.
-
 ### Requirements
 
 This project only supports the [actively supported versions of Angular as stated in the Angular documentation](https://angular.dev/reference/releases#actively-supported-versions). Whilst other versions might be compatible they are not actively supported.
