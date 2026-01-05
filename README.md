@@ -64,7 +64,7 @@ Take note of the **Client ID** and **Domain** values under the "Basic Informatio
 
 #### Static configuration
 
-For modern Angular applications (v19+), use the functional `provideAuth0()` approach in your application configuration:
+The recommended approach is to use the functional `provideAuth0()` in your application configuration:
 
 ```ts
 import { ApplicationConfig } from '@angular/core';
@@ -84,7 +84,7 @@ export const appConfig: ApplicationConfig = {
 ```
 
 <details>
-<summary>Using NgModules (Legacy Approach)</summary>
+<summary>Using NgModules</summary>
 
 If you're using NgModules, you can configure the SDK using `AuthModule.forRoot()`:
 
@@ -143,7 +143,7 @@ export const appConfig: ApplicationConfig = {
 > :information_source: Any request made through an instance of `HttpClient` that got instantiated by Angular will use all configured interceptors, including our `AuthHttpInterceptor`. Because the `AuthHttpInterceptor` requires the existence of configuration settings, the request for retrieving those dynamic configuration settings should ensure it's not using any interceptors. In Angular, this can be done by manually instantiating `HttpClient` using an injected `HttpBackend` instance.
 
 <details>
-<summary>Using NgModules (Legacy Approach)</summary>
+<summary>Using NgModules</summary>
 
 Instead of using `AuthModule.forRoot` to specify auth configuration, you can provide a factory function using `APP_INITIALIZER` to load your config from an external source before the auth module is loaded, and provide your configuration using `AuthClientConfig.set`.
 
