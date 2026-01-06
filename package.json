@@ -52,7 +52,7 @@
     "@types/jasminewd2": "~2.0.13",
     "@types/jest": "^29.2.2",
     "@types/node": "^22.19.3",
-    "@typescript-eslint/eslint-plugin": "8.34.1",
+    "@typescript-eslint/eslint-plugin": "8.52.0",
     "@typescript-eslint/parser": "8.34.1",
     "browserstack-cypress-cli": "^1.32.8",
     "concurrently": "^6.2.0",
