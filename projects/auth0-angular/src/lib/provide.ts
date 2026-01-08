@@ -5,6 +5,8 @@ import { AuthGuard } from './auth.guard';
 import { AuthHttpInterceptor } from './auth.interceptor';
 import { AuthService } from './auth.service';
 
+type AuthConfigFactory = () => AuthConfig;
+
 /**
  * Initialize the authentication system. Configuration can either be specified here,
  * or by calling AuthClientConfig.set (perhaps from an APP_INITIALIZER factory function).
@@ -20,19 +22,25 @@ import { AuthService } from './auth.service';
  *   ],
  * });
  */
-export function provideAuth0(config?: AuthConfig): Provider[] {
+export function provideAuth0(
+  config?: AuthConfig | AuthConfigFactory
+): Provider[] {
   return [
     AuthService,
     AuthHttpInterceptor,
     AuthGuard,
-    {
-      provide: AuthConfigService,
-      useValue: config,
-    },
+    provideAuthConfigService(config),
     {
       provide: Auth0ClientService,
       useFactory: Auth0ClientFactory.createClient,
       deps: [AuthClientConfig],
     },
   ];
+}
+
+function provideAuthConfigService(config?: AuthConfig | AuthConfigFactory) {
+  const provide = AuthConfigService;
+  return typeof config === 'function'
+    ? { provide, useFactory: config }
+    : { provide, useValue: config };
 }
