@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.4.1](https://github.com/auth0/auth0-angular/tree/v2.4.1) (2026-01-08)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.4.0...v2.4.1)
+
+**Fixed**
+
+- fix: handle detailedResponse in HTTP interceptor (#731) [\#752](https://github.com/auth0/auth0-angular/pull/752) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.4.0](https://github.com/auth0/auth0-angular/tree/v2.4.0) (2025-12-23)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.3.0...v2.4.0)

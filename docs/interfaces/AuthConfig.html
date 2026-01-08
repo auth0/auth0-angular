@@ -298,7 +298,7 @@
             <li>
               Defined in
               <a
-                href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L107"
+                href="https://github.com/auth0/auth0-angular/blob/c9e9894f6ebd3e5466d5cec14f34bbc59de9138a/projects/auth0-angular/src/lib/auth.config.ts#L107"
                 >projects/auth0-angular/src/lib/auth.config.ts:107</a
               >
             </li>
@@ -966,7 +966,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L136"
+                      href="https://github.com/auth0/auth0-angular/blob/c9e9894f6ebd3e5466d5cec14f34bbc59de9138a/projects/auth0-angular/src/lib/auth.config.ts#L136"
                       >projects/auth0-angular/src/lib/auth.config.ts:136</a
                     >
                   </li>
@@ -1005,7 +1005,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L130"
+                      href="https://github.com/auth0/auth0-angular/blob/c9e9894f6ebd3e5466d5cec14f34bbc59de9138a/projects/auth0-angular/src/lib/auth.config.ts#L130"
                       >projects/auth0-angular/src/lib/auth.config.ts:130</a
                     >
                   </li>
@@ -1282,7 +1282,7 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/74b44d4137f4435d3fab3377043ac68e268ae6b8/projects/auth0-angular/src/lib/auth.config.ts#L124"
+                      href="https://github.com/auth0/auth0-angular/blob/c9e9894f6ebd3e5466d5cec14f34bbc59de9138a/projects/auth0-angular/src/lib/auth.config.ts#L124"
                       >projects/auth0-angular/src/lib/auth.config.ts:124</a
                     >
                   </li>
@@ -1560,7 +1560,7 @@
                         <use href="../assets/icons.svg#icon-anchor"></use></svg
                     ></a>
                   </h4>
-                  <pre><code class="ts"><span class="hl-6">let</span><span class="hl-1"> </span><span class="hl-4">token</span><span class="hl-1">: </span><span class="hl-7">string</span><span class="hl-1">;</span><br/><span class="hl-3">try</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">token</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">getTokenSilently</span><span class="hl-1">();</span><br/><span class="hl-1">} </span><span class="hl-3">catch</span><span class="hl-1"> (</span><span class="hl-4">e</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">e</span><span class="hl-1">.</span><span class="hl-4">error</span><span class="hl-1"> === </span><span class="hl-2">&#39;missing_refresh_token&#39;</span><span class="hl-1"> || </span><span class="hl-4">e</span><span class="hl-1">.</span><span class="hl-4">error</span><span class="hl-1"> === </span><span class="hl-2">&#39;invalid_grant&#39;</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">loginWithRedirect</span><span class="hl-1">();</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+                  <pre><code class="ts"><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-4">token</span><span class="hl-1">: </span><span class="hl-7">string</span><span class="hl-1">;</span><br/><span class="hl-3">try</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">token</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">getTokenSilently</span><span class="hl-1">();</span><br/><span class="hl-1">} </span><span class="hl-3">catch</span><span class="hl-1"> (</span><span class="hl-4">e</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">e</span><span class="hl-1">.</span><span class="hl-4">error</span><span class="hl-1"> === </span><span class="hl-2">&#39;missing_refresh_token&#39;</span><span class="hl-1"> || </span><span class="hl-4">e</span><span class="hl-1">.</span><span class="hl-4">error</span><span class="hl-1"> === </span><span class="hl-2">&#39;invalid_grant&#39;</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">loginWithRedirect</span><span class="hl-1">();</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
 </code><button type="button">Copy</button></pre>
                 </div>
               </div>
