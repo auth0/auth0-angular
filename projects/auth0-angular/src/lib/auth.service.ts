@@ -9,6 +9,7 @@ import {
   RedirectLoginResult,
   GetTokenSilentlyVerboseResponse,
   ConnectAccountRedirectResult,
+  RedirectConnectAccountOptions,
   CustomFetchMinimalOutput,
   Fetcher,
   FetcherConfig,
@@ -140,6 +141,32 @@ export class AuthService<TAppState extends AppState = AppState>
     options?: RedirectLoginOptions<TAppState>
   ): Observable<void> {
     return from(this.auth0Client.loginWithRedirect(options));
+  }
+
+  /**
+   * ```js
+   * connectAccountWithRedirect({
+   *   connection: 'google-oauth2',
+   *   scopes: ['openid', 'profile', 'email', 'https://www.googleapis.com/auth/drive.readonly'],
+   *   authorization_params: {
+   *     // additional authorization params to forward to the authorization server
+   *   }
+   * });
+   * ```
+   *
+   * Redirects to the `/connect` URL using the parameters
+   * provided as arguments. This then redirects to the connection's login page
+   * where the user can authenticate and authorize the account to be connected.
+   *
+   * If connecting the account is successful, `handleRedirectCallback` will be called
+   * with the details of the connected account.
+   *
+   * @param options The connect account options
+   */
+  connectAccountWithRedirect(
+    options: RedirectConnectAccountOptions<TAppState>
+  ): Observable<void> {
+    return from(this.auth0Client.connectAccountWithRedirect(options));
   }
 
   /**
