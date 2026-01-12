@@ -62,6 +62,7 @@ describe('AuthService', () => {
       appState: undefined,
     } as any);
     jest.spyOn(auth0Client, 'loginWithRedirect').mockResolvedValue();
+    jest.spyOn(auth0Client, 'connectAccountWithRedirect').mockResolvedValue();
     jest.spyOn(auth0Client, 'loginWithPopup').mockResolvedValue();
     jest.spyOn(auth0Client, 'checkSession').mockResolvedValue();
     jest.spyOn(auth0Client, 'isAuthenticated').mockResolvedValue(false);
@@ -667,6 +668,31 @@ describe('AuthService', () => {
     const service = createService();
     await service.loginWithRedirect(options).toPromise();
     expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
+  });
+
+  it('should call `connectAccountWithRedirect`', async () => {
+    const service = createService();
+    const options = { connection: 'google-oauth2' };
+    await service.connectAccountWithRedirect(options).toPromise();
+    expect(auth0Client.connectAccountWithRedirect).toHaveBeenCalledWith(
+      options
+    );
+  });
+
+  it('should call `connectAccountWithRedirect` and pass all options', async () => {
+    const options = {
+      connection: 'github',
+      scopes: ['openid', 'profile', 'email'],
+      authorization_params: { audience: 'https://api.github.com' },
+      redirectUri: 'http://localhost:3000/callback',
+      appState: { returnTo: '/profile' },
+    };
+
+    const service = createService();
+    await service.connectAccountWithRedirect(options).toPromise();
+    expect(auth0Client.connectAccountWithRedirect).toHaveBeenCalledWith(
+      options
+    );
   });
 
   it('should call `loginWithPopup`', (done) => {

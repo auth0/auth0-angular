@@ -20,6 +20,7 @@ export {
   PopupConfigOptions,
   GetTokenWithPopupOptions,
   GetTokenSilentlyOptions,
+  RedirectConnectAccountOptions,
   ICache,
   Cacheable,
   LocalStorageCache,
