@@ -9,6 +9,7 @@
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
 - [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
+- [Connect Accounts](#connect-accounts)
 
 ## Add login to your application
 
@@ -157,7 +158,7 @@ import { AuthModule } from '@auth0/auth0-angular';
       clientId: 'YOUR_AUTH0_CLIENT_ID',
       authorizationParams: {
         audience: 'YOUR_AUTH0_API_IDENTIFIER',
-      }
+      },
     }),
   ],
   // ...
@@ -278,7 +279,7 @@ AuthModule.forRoot({
           authorizationParams: {
             audience: 'http://my-api/',
             scope: 'write:orders',
-          }
+          },
         },
       },
     ],
@@ -381,6 +382,7 @@ export class AppComponent {
 ```
 
 ## Standalone components and a more functional approach
+
 As of Angular 15, the Angular team is putting standalone components, as well as a more functional approach, in favor of the traditional use of NgModules and class-based approach.
 
 There are a couple of difference with how you would traditionally implement our SDK:
@@ -398,18 +400,68 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [authGuardFn],
-  }
+  },
 ];
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    provideRouter(routes),
-    provideAuth0(/* Auth Config Goes Here */),
-    provideHttpClient(
-      withInterceptors([authHttpInterceptorFn])
-    ) 
-  ]
+  providers: [provideRouter(routes), provideAuth0(/* Auth Config Goes Here */), provideHttpClient(withInterceptors([authHttpInterceptorFn]))],
 });
 ```
 
 Note that `provideAuth0` should **never** be provided to components, but only at the root level of your application.
+
+## Connect Accounts
+
+Link multiple identity providers to a single Auth0 user profile, allowing users to authenticate with any of their connected accounts.
+
+**Note:** User must be logged in first.
+
+### Configuration
+
+Enable `useRefreshTokens` and `useMrrt` in your Auth0 configuration:
+
+```ts
+AuthModule.forRoot({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  useRefreshTokens: true,
+  useMrrt: true,
+});
+```
+
+### Usage
+
+Use `connectAccountWithRedirect` to link an additional account:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-connect-account',
+  template: `<button (click)="connectAccount()">Connect Google</button>`,
+})
+export class ConnectAccountComponent {
+  constructor(private auth: AuthService) {}
+
+  connectAccount(): void {
+    this.auth
+      .connectAccountWithRedirect({
+        connection: 'google-oauth2',
+        scopes: ['openid', 'profile', 'email'],
+        appState: { returnTo: '/profile' },
+      })
+      .subscribe();
+  }
+}
+```
+
+After redirect, you can access connection details via the `appState$` observable:
+
+```ts
+this.auth.appState$.subscribe((appState) => {
+  if (appState?.connectedAccount) {
+    console.log(`Connected to ${appState.connectedAccount.connection}`);
+  }
+});
+```
