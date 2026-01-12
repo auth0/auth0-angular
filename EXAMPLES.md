@@ -8,6 +8,7 @@
 - [Call an API](#call-an-api)
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
+- [DPoP (Demonstrating Proof-of-Possession)](#dpop-demonstrating-proof-of-possession)
 - [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 - [Connect Accounts for using Token Vault](#connect-accounts-for-using-token-vault)
 
@@ -379,6 +380,264 @@ export class AppComponent {
     });
   }
 }
+```
+
+## DPoP (Demonstrating Proof-of-Possession)
+
+[DPoP](https://datatracker.ietf.org/doc/html/rfc9449) is a security mechanism that cryptographically binds access tokens to clients, providing protection against:
+
+- **Token Theft** - Stolen tokens are cryptographically bound and unusable by attackers
+- **Replay Attacks** - Tokens are tied to specific HTTP requests
+- **Token Exfiltration** - Tokens require the client's private key to use
+
+### Enable DPoP
+
+To enable DPoP support, set `useDpop: true` in your Auth0 configuration:
+
+```ts
+import { NgModule } from '@angular/core';
+import { AuthModule } from '@auth0/auth0-angular';
+
+@NgModule({
+  imports: [
+    AuthModule.forRoot({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+        audience: 'https://api.example.com',
+      },
+      useDpop: true, // Enable DPoP
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+### Using createFetcher (Recommended)
+
+The simplest way to make authenticated API calls with DPoP is using the `createFetcher` method. It automatically handles tokens, DPoP proofs, and nonce management:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-data',
+  template: `
+    <div *ngIf="loading">Loading...</div>
+    <div *ngIf="data">{{ data | json }}</div>
+    <div *ngIf="error">{{ error }}</div>
+  `,
+})
+export class DataComponent {
+  data: any;
+  loading = false;
+  error: string | null = null;
+
+  constructor(private auth: AuthService) {}
+
+  async fetchData() {
+    this.loading = true;
+    this.error = null;
+
+    try {
+      // Create fetcher - handles tokens, DPoP proofs, and nonces automatically
+      const fetcher = this.auth.createFetcher({
+        dpopNonceId: 'my-api',
+        baseUrl: 'https://api.example.com',
+      });
+
+      const response = await fetcher.fetchWithAuth('/protected-data');
+      this.data = await response.json();
+    } catch (err) {
+      this.error = 'Failed to fetch data';
+      console.error(err);
+    } finally {
+      this.loading = false;
+    }
+  }
+}
+```
+
+The `createFetcher` method automatically:
+
+- Retrieves access tokens
+- Adds proper `Authorization` headers (`DPoP <token>` or `Bearer <token>`)
+- Generates and includes DPoP proofs in the `DPoP` header
+- Manages DPoP nonces per API endpoint
+- Automatically retries on nonce errors
+- Handles token refreshing
+
+### Multiple API Endpoints
+
+When working with multiple APIs, create separate fetchers for each. Each fetcher manages its own nonces independently:
+
+```ts
+import { Injectable } from '@angular/core';
+import { AuthService, Fetcher } from '@auth0/auth0-angular';
+
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+  private internalApi: Fetcher;
+  private partnerApi: Fetcher;
+
+  constructor(private auth: AuthService) {
+    // Each fetcher manages its own nonces independently
+    this.internalApi = this.auth.createFetcher({
+      dpopNonceId: 'internal-api',
+      baseUrl: 'https://internal.example.com',
+    });
+
+    this.partnerApi = this.auth.createFetcher({
+      dpopNonceId: 'partner-api',
+      baseUrl: 'https://partner.example.com',
+    });
+  }
+
+  async getInternalData() {
+    const response = await this.internalApi.fetchWithAuth('/data');
+    return response.json();
+  }
+
+  async getPartnerResources() {
+    const response = await this.partnerApi.fetchWithAuth('/resources');
+    return response.json();
+  }
+
+  async getAllData() {
+    const [internal, partner] = await Promise.all([this.getInternalData(), this.getPartnerResources()]);
+    return { internal, partner };
+  }
+}
+```
+
+### Advanced: Manual DPoP Management
+
+For scenarios requiring full control over DPoP proof generation and nonce management:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService, UseDpopNonceError } from '@auth0/auth0-angular';
+import { firstValueFrom } from 'rxjs';
+
+@Component({
+  selector: 'app-advanced',
+  template: `<button (click)="makeRequest()">Make Request</button>`,
+})
+export class AdvancedComponent {
+  constructor(private auth: AuthService) {}
+
+  async makeRequest() {
+    try {
+      // 1. Get access token
+      const token = await firstValueFrom(this.auth.getAccessTokenSilently());
+
+      // 2. Get current DPoP nonce for the API
+      const nonce = await firstValueFrom(this.auth.getDpopNonce('my-api'));
+
+      // 3. Generate DPoP proof
+      const proof = await firstValueFrom(
+        this.auth.generateDpopProof({
+          url: 'https://api.example.com/data',
+          method: 'POST',
+          accessToken: token!,
+          nonce,
+        })
+      );
+
+      // 4. Make the API request
+      const response = await fetch('https://api.example.com/data', {
+        method: 'POST',
+        headers: {
+          Authorization: `DPoP ${token}`,
+          DPoP: proof!,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: 'example' }),
+      });
+
+      // 5. Update nonce if server provides a new one
+      const newNonce = response.headers.get('DPoP-Nonce');
+      if (newNonce) {
+        await firstValueFrom(this.auth.setDpopNonce(newNonce, 'my-api'));
+      }
+
+      const data = await response.json();
+      console.log('Success:', data);
+    } catch (error) {
+      if (error instanceof UseDpopNonceError) {
+        console.error('DPoP nonce error:', error.message);
+      } else {
+        console.error('Request failed:', error);
+      }
+    }
+  }
+}
+```
+
+### Error Handling
+
+Handle DPoP-specific errors using the `UseDpopNonceError` class:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService, UseDpopNonceError } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-error-handling',
+  template: `...`,
+})
+export class ErrorHandlingComponent {
+  constructor(private auth: AuthService) {}
+
+  async fetchWithErrorHandling() {
+    try {
+      const fetcher = this.auth.createFetcher({
+        dpopNonceId: 'my-api',
+        baseUrl: 'https://api.example.com',
+      });
+
+      const response = await fetcher.fetchWithAuth('/data');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      if (error instanceof UseDpopNonceError) {
+        // DPoP nonce validation failed
+        console.error('DPoP nonce error:', error.message);
+        // The fetcher automatically retries, so this error means
+        // the retry also failed
+      } else {
+        console.error('Other error:', error);
+      }
+      throw error;
+    }
+  }
+}
+```
+
+### Standalone Components with DPoP
+
+When using standalone components, enable DPoP in your `provideAuth0` configuration:
+
+```ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAuth0 } from '@auth0/auth0-angular';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+        audience: 'https://api.example.com',
+      },
+      useDpop: true, // Enable DPoP
+    }),
+  ],
+});
 ```
 
 ## Standalone components and a more functional approach
