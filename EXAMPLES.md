@@ -9,7 +9,7 @@
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
 - [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
-- [Connect Accounts](#connect-accounts)
+- [Connect Accounts for using Token Vault](#connect-accounts-for-using-token-vault)
 
 ## Add login to your application
 
@@ -410,58 +410,72 @@ bootstrapApplication(AppComponent, {
 
 Note that `provideAuth0` should **never** be provided to components, but only at the root level of your application.
 
-## Connect Accounts
+## Connect Accounts for using Token Vault
 
-Link multiple identity providers to a single Auth0 user profile, allowing users to authenticate with any of their connected accounts.
+The Connect Accounts feature uses the Auth0 My Account API to allow users to link multiple third party accounts to a single Auth0 user profile.
 
-**Note:** User must be logged in first.
+When using Connected Accounts, Auth0 acquires tokens from upstream Identity Providers (like Google) and stores them in a secure [Token Vault](https://auth0.com/docs/secure/tokens/token-vault). These tokens can then be used to access third-party APIs (like Google Calendar) on behalf of the user.
 
-### Configuration
+The tokens in the Token Vault are then accessible to [Resource Servers](https://auth0.com/docs/get-started/apis) (APIs) configured in Auth0. The SPA application can then issue requests to the API, which can retrieve the tokens from the Token Vault and use them to access the third-party APIs.
 
-Enable `useRefreshTokens` and `useMrrt` in your Auth0 configuration:
+This is particularly useful for applications that require access to different resources on behalf of a user, like AI Agents.
+
+### Configure the SDK
+
+The SDK must be configured with an audience (an API Identifier) - this will be the resource server that uses the tokens from the Token Vault.
+
+The SDK must also be configured to use refresh tokens and MRRT ([Multiple Resource Refresh Tokens](https://auth0.com/docs/secure/tokens/refresh-tokens/multi-resource-refresh-token)) since we will use the refresh token grant to get Access Tokens for the My Account API in addition to the API we are calling.
+
+The My Account API requires DPoP tokens, so we also need to enable DPoP.
 
 ```ts
 AuthModule.forRoot({
-  domain: 'YOUR_AUTH0_DOMAIN',
-  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  domain: '<AUTH0_DOMAIN>',
+  clientId: '<AUTH0_CLIENT_ID>',
   useRefreshTokens: true,
   useMrrt: true,
+  useDpop: true,
+  authorizationParams: {
+    redirect_uri: '<MY_CALLBACK_URL>',
+  },
 });
 ```
 
-### Usage
+### Login to the application
 
-Use `connectAccountWithRedirect` to link an additional account:
-
-```ts
-import { Component } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-
-@Component({
-  selector: 'app-connect-account',
-  template: `<button (click)="connectAccount()">Connect Google</button>`,
-})
-export class ConnectAccountComponent {
-  constructor(private auth: AuthService) {}
-
-  connectAccount(): void {
-    this.auth
-      .connectAccountWithRedirect({
-        connection: 'google-oauth2',
-        scopes: ['openid', 'profile', 'email'],
-        appState: { returnTo: '/profile' },
-      })
-      .subscribe();
-  }
-}
-```
-
-After redirect, you can access connection details via the `appState$` observable:
+Use the login methods to authenticate to the application and get a refresh and access token for the API.
 
 ```ts
-this.auth.appState$.subscribe((appState) => {
-  if (appState?.connectedAccount) {
-    console.log(`Connected to ${appState.connectedAccount.connection}`);
-  }
-});
+// Login specifying any scopes for the Auth0 API
+this.auth
+  .loginWithRedirect({
+    authorizationParams: {
+      audience: '<AUTH0_API_IDENTIFIER>',
+      scope: 'openid profile email read:calendar',
+    },
+  })
+  .subscribe();
 ```
+
+### Connect to a third party account
+
+Use the `connectAccountWithRedirect` method to redirect the user to the third party Identity Provider to connect their account.
+
+```ts
+// Start the connect flow by redirecting to the third party API's login, defined as an Auth0 connection
+this.auth
+  .connectAccountWithRedirect({
+    connection: '<CONNECTION eg, google-apps-connection>',
+    scopes: ['<SCOPE eg https://www.googleapis.com/auth/calendar.acls.readonly>'],
+    authorizationParams: {
+      // additional authorization params to forward to the authorization server
+    },
+  })
+  .subscribe();
+```
+
+You can now call the API with your access token and the API can use [Access Token Exchange with Token Vault](https://auth0.com/docs/secure/tokens/token-vault/access-token-exchange-with-token-vault) to get tokens from the Token Vault to access third party APIs on behalf of the user.
+
+> **Important**
+>
+> You must enable Offline Access from the Connection Permissions settings to be able to use the connection with Connected Accounts.
