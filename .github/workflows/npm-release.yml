@@ -15,8 +15,10 @@ on:
     secrets:
       github-token:
         required: true
-      npm-token:
-        required: true
+
+permissions:
+  contents: write
+  id-token: write
 
 jobs:
   release:
@@ -66,7 +68,6 @@ jobs:
           node-version: ${{ inputs.node-version }}
           require-build: ${{ inputs.require-build }}
           version: ${{ steps.get_version.outputs.version }}
-          npm-token: ${{ secrets.npm-token }}
           release-directory: ${{ inputs.release-directory }}
 
       # Create a release for the tag
