@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>LogoutOptions | @auth0/auth0-angular</title>
+    <title>RedirectConnectAccountOptions | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/style.css" />
@@ -84,87 +84,89 @@
       <div class="col-content">
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
-            <li><a href="" aria-current="page">LogoutOptions</a></li>
+            <li>
+              <a href="" aria-current="page">RedirectConnectAccountOptions</a>
+            </li>
           </ul>
-          <h1>Interface LogoutOptions</h1>
+          <h1>Interface RedirectConnectAccountOptions&lt;TAppState&gt;</h1>
         </div>
         <div class="tsd-signature">
           <span class="tsd-signature-keyword">interface</span>
-          <span class="tsd-kind-interface">LogoutOptions</span>
+          <span class="tsd-kind-interface">RedirectConnectAccountOptions</span
+          ><span class="tsd-signature-symbol">&lt;</span
+          ><a
+            class="tsd-signature-type tsd-kind-type-parameter"
+            href="#tappstate"
+            >TAppState</a
+          >
+          <span class="tsd-signature-symbol">=</span>
+          <span class="tsd-signature-type">any</span
+          ><span class="tsd-signature-symbol">&gt;</span>
           <span class="tsd-signature-symbol">{</span><br />    <a
             class="tsd-kind-property"
-            href="#clientid"
-            >clientId</a
+            href="#appstate"
+            >appState</a
           ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-type">string</span>
-          <span class="tsd-signature-symbol">|</span>
-          <span class="tsd-signature-type">null</span
+          <a
+            class="tsd-signature-type tsd-kind-type-parameter"
+            href="#tappstate"
+            >TAppState</a
           ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
-            href="#logoutparams"
-            >logoutParams</a
+            href="#authorization_params"
+            >authorization_params</a
           ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-symbol">{</span><br />        <span
+          <a
+            href="AuthorizationParams.html"
+            class="tsd-signature-type tsd-kind-interface"
+            >AuthorizationParams</a
+          ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
-            >federated</span
-          ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-type">boolean</span
-          ><span class="tsd-signature-symbol">;</span><br />        <span
-            class="tsd-kind-property"
-            >returnTo</span
-          ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">;</span><br />        <span
-            class="tsd-signature-symbol"
-            >[</span
-          ><span class="tsd-kind-index-signature">key</span
+            href="#connection"
+            >connection</a
           ><span class="tsd-signature-symbol">:</span>
           <span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">]:</span>
-          <span class="tsd-signature-type">any</span
-          ><span class="tsd-signature-symbol">;</span><br />    <span
-            class="tsd-signature-symbol"
-            >}</span
           ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
             href="#openurl"
             >openUrl</a
           ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-type">false</span><br />    <span
-            class="tsd-signature-symbol"
-            >|</span
-          >
-          (<span class="tsd-signature-symbol">(</span
+          <span class="tsd-signature-symbol">(</span
           ><span class="tsd-kind-parameter">url</span
           ><span class="tsd-signature-symbol">:</span>
           <span class="tsd-signature-type">string</span
           ><span class="tsd-signature-symbol">)</span>
           <span class="tsd-signature-symbol">=&gt;</span>
-          <span class="tsd-signature-type">void</span>
-          <span class="tsd-signature-symbol">|</span>
           <span class="tsd-signature-type">Promise</span
           ><span class="tsd-signature-symbol">&lt;</span
           ><span class="tsd-signature-type">void</span
-          ><span class="tsd-signature-symbol">&gt;</span>)<span
+          ><span class="tsd-signature-symbol">&gt;</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#redirecturi"
+            >redirectUri</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">string</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#scopes"
+            >scopes</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">string</span
+          ><span class="tsd-signature-symbol">[]</span
+          ><span class="tsd-signature-symbol">;</span><br /><span
             class="tsd-signature-symbol"
-            >;</span
-          ><br /><span class="tsd-signature-symbol">}</span>
+            >}</span
+          >
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="247">
-          <h4>Hierarchy</h4>
-          <ul class="tsd-hierarchy">
-            <li class="tsd-hierarchy-item">
-              <span class="tsd-signature-type">Omit</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">SPALogoutOptions</span
-              ><span class="tsd-signature-symbol">,</span>
-              <span class="tsd-signature-type">&quot;onRedirect&quot;</span
-              ><span class="tsd-signature-symbol">&gt;</span>
-              <ul class="tsd-hierarchy">
-                <li class="tsd-hierarchy-item">
-                  <span class="tsd-hierarchy-target">LogoutOptions</span>
-                </li>
-              </ul>
+        <section class="tsd-panel">
+          <h4>Type Parameters</h4>
+          <ul class="tsd-type-parameter-list">
+            <li>
+              <span id="tappstate"
+                ><span class="tsd-kind-type-parameter">TAppState</span> =
+                <span class="tsd-signature-type">any</span></span
+              >
             </li>
           </ul>
         </section>
@@ -172,10 +174,7 @@
           <ul>
             <li>
               Defined in
-              <a
-                href="https://github.com/auth0/auth0-angular/blob/0ec040da5a0a0cf9539791bdc7d9eb99f7d4860c/projects/auth0-angular/src/lib/interfaces.ts#L9"
-                >projects/auth0-angular/src/lib/interfaces.ts:9</a
-              >
+              node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:494
             </li>
           </ul>
         </aside>
@@ -198,31 +197,36 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
-                    <a
-                      href="#clientid"
-                      class="tsd-index-link tsd-is-inherited tsd-is-external"
+                    <a href="#appstate" class="tsd-index-link tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>client<wbr />Id?</span></a
+                      ><span>app<wbr />State?</span></a
                     >
                     <a
-                      href="#logoutparams"
-                      class="tsd-index-link tsd-is-inherited tsd-is-external"
+                      href="#authorization_params"
+                      class="tsd-index-link tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>logout<wbr />Params?</span></a
+                      ><span>authorization_<wbr />params?</span></a
                     >
-                    <a
-                      href="#openurl"
-                      class="tsd-index-link tsd-is-inherited tsd-is-external"
+                    <a href="#connection" class="tsd-index-link tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>connection</span></a
+                    >
+                    <a href="#openurl" class="tsd-index-link tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
@@ -230,6 +234,26 @@
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>open<wbr />Url?</span></a
+                    >
+                    <a
+                      href="#redirecturi"
+                      class="tsd-index-link tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>redirect<wbr />Uri?</span></a
+                    >
+                    <a href="#scopes" class="tsd-index-link tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>scopes?</span></a
                     >
                   </div>
                 </section>
@@ -251,13 +275,11 @@
             <h2>Properties</h2>
           </summary>
           <section>
-            <section
-              class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
-            >
-              <h3 class="tsd-anchor-link" id="clientid">
-                <code class="tsd-tag">Optional</code><span>client<wbr />Id</span
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="appstate">
+                <code class="tsd-tag">Optional</code><span>app<wbr />State</span
                 ><a
-                  href="#clientid"
+                  href="#appstate"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -265,202 +287,17 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">clientId</span
+                <span class="tsd-kind-property">appState</span
                 ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">string</span>
-                <span class="tsd-signature-symbol">|</span>
-                <span class="tsd-signature-type">null</span>
-              </div>
-              <div class="tsd-comment tsd-typography">
-                <p>The <code>clientId</code> of your application.</p>
-                <p>
-                  If this property is not set, then the
-                  <code>clientId</code> that was used during initialization of
-                  the SDK is sent to the logout endpoint.
-                </p>
-                <p>
-                  If this property is set to <code>null</code>, then no client
-                  ID value is sent to the logout endpoint.
-                </p>
-                <p>
-                  <a
-                    href="https://auth0.com/docs/logout/guides/redirect-users-after-logout"
-                    >Read more about how redirecting after logout works</a
-                  >
-                </p>
-              </div>
-              <aside class="tsd-sources">
-                <p>Inherited from Omit.clientId</p>
-                <ul>
-                  <li>
-                    Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:426
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section
-              class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
-            >
-              <h3 class="tsd-anchor-link" id="logoutparams">
-                <code class="tsd-tag">Optional</code
-                ><span>logout<wbr />Params</span
-                ><a
-                  href="#logoutparams"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">logoutParams</span
-                ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-symbol">{</span>
-                <span class="tsd-kind-property">federated</span
-                ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">boolean</span
-                ><span class="tsd-signature-symbol">;</span>
-                <span class="tsd-kind-property">returnTo</span
-                ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">;</span>
-                <span class="tsd-signature-symbol">[</span
-                ><span class="tsd-kind-index-signature">key</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">]:</span>
-                <span class="tsd-signature-type">any</span>
-                <span class="tsd-signature-symbol">}</span>
+                <a
+                  class="tsd-signature-type tsd-kind-type-parameter"
+                  href="#tappstate"
+                  >TAppState</a
+                >
               </div>
               <div class="tsd-comment tsd-typography">
                 <p>
-                  Parameters to pass to the logout endpoint. This can be known
-                  parameters defined by Auth0 or custom parameters you wish to
-                  provide.
-                </p>
-              </div>
-              <div class="tsd-type-declaration">
-                <h4>Type Declaration</h4>
-                <ul class="tsd-parameters">
-                  <li class="tsd-parameter-index-signature">
-                    <h5>
-                      <span class="tsd-signature-symbol">[</span
-                      ><span class="tsd-kind-parameter">key</span>:
-                      <span class="tsd-signature-type">string</span
-                      ><span class="tsd-signature-symbol">]:</span>
-                      <span class="tsd-signature-type">any</span>
-                    </h5>
-                    <div class="tsd-comment tsd-typography">
-                      <p>
-                        If you need to send custom parameters to the logout
-                        endpoint, make sure to use the original parameter name.
-                      </p>
-                    </div>
-                  </li>
-                  <li class="tsd-parameter">
-                    <h5>
-                      <code class="tsd-tag">Optional</code
-                      ><span class="tsd-kind-property">federated</span
-                      ><span class="tsd-signature-symbol">?: </span
-                      ><span class="tsd-signature-type">boolean</span>
-                    </h5>
-                    <div class="tsd-comment tsd-typography">
-                      <p>
-                        When supported by the upstream identity provider, forces
-                        the user to logout of their identity provider and from
-                        Auth0.
-                        <a
-                          href="https://auth0.com/docs/logout/guides/logout-idps"
-                          >Read more about how federated logout works at
-                          Auth0</a
-                        >
-                      </p>
-                    </div>
-                  </li>
-                  <li class="tsd-parameter">
-                    <h5>
-                      <code class="tsd-tag">Optional</code
-                      ><span class="tsd-kind-property">returnTo</span
-                      ><span class="tsd-signature-symbol">?: </span
-                      ><span class="tsd-signature-type">string</span>
-                    </h5>
-                    <div class="tsd-comment tsd-typography">
-                      <p>
-                        The URL where Auth0 will redirect your browser to after
-                        the logout.
-                      </p>
-                      <p>
-                        <strong>Note</strong>: If the
-                        <code>client_id</code> parameter is included, the
-                        <code>returnTo</code> URL that is provided must be
-                        listed in the Application's &quot;Allowed Logout
-                        URLs&quot; in the Auth0 dashboard. However, if the
-                        <code>client_id</code> parameter is not included, the
-                        <code>returnTo</code> URL must be listed in the
-                        &quot;Allowed Logout URLs&quot; at the account level in
-                        the Auth0 dashboard.
-                      </p>
-                      <p>
-                        <a
-                          href="https://auth0.com/docs/logout/guides/redirect-users-after-logout"
-                          >Read more about how redirecting after logout works</a
-                        >
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <aside class="tsd-sources">
-                <p>Inherited from Omit.logoutParams</p>
-                <ul>
-                  <li>
-                    Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:431
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section
-              class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
-            >
-              <h3 class="tsd-anchor-link" id="openurl">
-                <code class="tsd-tag">Optional</code><span>open<wbr />Url</span
-                ><a
-                  href="#openurl"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">openUrl</span
-                ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">false</span>
-                <span class="tsd-signature-symbol">|</span> (<span
-                  class="tsd-signature-symbol"
-                  >(</span
-                ><span class="tsd-kind-parameter">url</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">)</span>
-                <span class="tsd-signature-symbol">=&gt;</span>
-                <span class="tsd-signature-type">void</span>
-                <span class="tsd-signature-symbol">|</span>
-                <span class="tsd-signature-type">Promise</span
-                ><span class="tsd-signature-symbol">&lt;</span
-                ><span class="tsd-signature-type">void</span
-                ><span class="tsd-signature-symbol">&gt;</span>)
-              </div>
-              <div class="tsd-comment tsd-typography">
-                <p>
-                  Used to control the redirect and not rely on the SDK to do the
-                  actual redirect.
-                </p>
-                <p>
-                  Set to <code>false</code> to disable the redirect, or provide
-                  a function to handle the actual redirect yourself.
+                  Optional application state to persist through the transaction.
                 </p>
               </div>
               <div class="tsd-comment tsd-typography">
@@ -474,9 +311,44 @@
                         <use href="../assets/icons.svg#icon-anchor"></use></svg
                     ></a>
                   </h4>
-                  <pre><code class="ts"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">logout</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-0">openUrl</span><span class="hl-1">(</span><span class="hl-4">url</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-4">window</span><span class="hl-1">.</span><span class="hl-4">location</span><span class="hl-1">.</span><span class="hl-0">replace</span><span class="hl-1">(</span><span class="hl-4">url</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
+                  <pre><code class="ts"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">connectAccountWithRedirect</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">connection:</span><span class="hl-1"> </span><span class="hl-2">&#39;google-oauth2&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">appState:</span><span class="hl-1"> { </span><span class="hl-4">returnTo:</span><span class="hl-1"> </span><span class="hl-2">&#39;/settings&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">});</span>
 </code><button type="button">Copy</button></pre>
                 </div>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:534
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="authorization_params">
+                <code class="tsd-tag">Optional</code
+                ><span>authorization_<wbr />params</span
+                ><a
+                  href="#authorization_params"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">authorization_params</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <a
+                  href="AuthorizationParams.html"
+                  class="tsd-signature-type tsd-kind-interface"
+                  >AuthorizationParams</a
+                >
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>Additional authorization parameters for the request.</p>
+              </div>
+              <div class="tsd-comment tsd-typography">
                 <div class="tsd-tag-example">
                   <h4 class="tsd-anchor-link" id="example-1">
                     Example<a
@@ -487,16 +359,173 @@
                         <use href="../assets/icons.svg#icon-anchor"></use></svg
                     ></a>
                   </h4>
-                  <pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">Browser</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@capacitor/browser&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">logout</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">async</span><span class="hl-1"> </span><span class="hl-0">openUrl</span><span class="hl-1">(</span><span class="hl-4">url</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">Browser</span><span class="hl-1">.</span><span class="hl-0">open</span><span class="hl-1">({ </span><span class="hl-4">url</span><span class="hl-1"> });</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
+                  <pre><code class="ts"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">connectAccountWithRedirect</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">connection:</span><span class="hl-1"> </span><span class="hl-2">&#39;github&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">authorization_params:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">audience:</span><span class="hl-1"> </span><span class="hl-2">&#39;https://api.github.com&#39;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
 </code><button type="button">Copy</button></pre>
                 </div>
               </div>
               <aside class="tsd-sources">
-                <p>Inherited from Omit.openUrl</p>
                 <ul>
                   <li>
                     Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:492
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:520
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="connection">
+                <span>connection</span
+                ><a
+                  href="#connection"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">connection</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  The name of the connection to link (e.g. 'google-oauth2').
+                </p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:498
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="openurl">
+                <code class="tsd-tag">Optional</code><span>open<wbr />Url</span
+                ><a
+                  href="#openurl"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">openUrl</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-symbol">(</span
+                ><span class="tsd-kind-parameter">url</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">)</span>
+                <span class="tsd-signature-symbol">=&gt;</span>
+                <span class="tsd-signature-type">Promise</span
+                ><span class="tsd-signature-symbol">&lt;</span
+                ><span class="tsd-signature-type">void</span
+                ><span class="tsd-signature-symbol">&gt;</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>Optional function to handle the redirect URL.</p>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-example">
+                  <h4 class="tsd-anchor-link" id="example-2">
+                    Example<a
+                      href="#example-2"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <pre><code class="ts"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">connectAccountWithRedirect</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">connection:</span><span class="hl-1"> </span><span class="hl-2">&#39;google-oauth2&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">openUrl</span><span class="hl-4">:</span><span class="hl-1"> </span><span class="hl-5">async</span><span class="hl-1"> (</span><span class="hl-4">url</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> { </span><span class="hl-4">myBrowserApi</span><span class="hl-1">.</span><span class="hl-0">open</span><span class="hl-1">(</span><span class="hl-4">url</span><span class="hl-1">); }</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+                </div>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:544
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="redirecturi">
+                <code class="tsd-tag">Optional</code
+                ><span>redirect<wbr />Uri</span
+                ><a
+                  href="#redirecturi"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">redirectUri</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>The URI to redirect back to after connecting the account.</p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:524
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="scopes">
+                <code class="tsd-tag">Optional</code><span>scopes</span
+                ><a
+                  href="#scopes"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">scopes</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">[]</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  Array of scopes to request from the Identity Provider during
+                  the connect account flow.
+                </p>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-example">
+                  <h4 class="tsd-anchor-link" id="example-3">
+                    Example<a
+                      href="#example-3"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <pre><code class="ts"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">connectAccountWithRedirect</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">connection:</span><span class="hl-1"> </span><span class="hl-2">&#39;google-oauth2&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">scopes:</span><span class="hl-1"> [</span><span class="hl-2">&#39;https://www.googleapis.com/auth/calendar&#39;</span><span class="hl-1">]</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+                </div>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:508
                   </li>
                 </ul>
               </aside>
@@ -665,25 +694,31 @@
                   >Properties
                 </summary>
                 <div>
-                  <a href="#clientid" class="tsd-is-inherited tsd-is-external"
+                  <a href="#appstate" class="tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>client<wbr />Id</span></a
-                  ><a
-                    href="#logoutparams"
-                    class="tsd-is-inherited tsd-is-external"
+                    ><span>app<wbr />State</span></a
+                  ><a href="#authorization_params" class="tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>logout<wbr />Params</span></a
-                  ><a href="#openurl" class="tsd-is-inherited tsd-is-external"
+                    ><span>authorization_<wbr />params</span></a
+                  ><a href="#connection" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>connection</span></a
+                  ><a href="#openurl" class="tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
@@ -691,6 +726,22 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>open<wbr />Url</span></a
+                  ><a href="#redirecturi" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>redirect<wbr />Uri</span></a
+                  ><a href="#scopes" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>scopes</span></a
                   >
                 </div>
               </details>
