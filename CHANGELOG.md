@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.5.0](https://github.com/auth0/auth0-angular/tree/v2.5.0) (2026-01-13)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.4.1...v2.5.0)
+
+**Added**
+
+- feat: add connectAccountWithRedirect method to AuthService [\#767](https://github.com/auth0/auth0-angular/pull/767) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.4.1](https://github.com/auth0/auth0-angular/tree/v2.4.1) (2026-01-08)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.4.0...v2.4.1)
