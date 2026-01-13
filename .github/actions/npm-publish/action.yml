@@ -1,13 +1,18 @@
 name: Publish release to npm
+description: Publish SDK package to npm
 
 inputs:
   node-version:
+    description: Node.js version to use
     required: true
   version:
+    description: Version being published
     required: true
   require-build:
+    description: Whether to build before publishing
     default: true
   release-directory:
+    description: Directory to publish from
     default: './'
 
 runs:
@@ -17,16 +22,11 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Node
-      uses: actions/setup-node@v4
+    - name: Setup Node and npm
+      uses: ./.github/actions/setup-node-npm
       with:
         node-version: ${{ inputs.node-version }}
-        cache: 'npm'
         registry-url: 'https://registry.npmjs.org'
-
-    - name: Update npm to version 11
-      shell: bash
-      run: npm install -g npm@11
 
     - name: Install dependencies
       shell: bash

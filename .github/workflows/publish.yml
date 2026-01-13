@@ -93,11 +93,10 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - name: Setup Node and npm
+        uses: ./.github/actions/setup-node-npm
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies

@@ -1,0 +1,30 @@
+name: Setup Node and npm
+description: Setup Node.js and upgrade npm to version 11 for trusted publishing support
+
+inputs:
+  node-version:
+    description: The Node version to use
+    required: false
+    default: '22'
+  cache:
+    description: Enable npm caching
+    required: false
+    default: 'npm'
+  registry-url:
+    description: Registry URL for publishing
+    required: false
+
+runs:
+  using: composite
+
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: ${{ inputs.cache }}
+        registry-url: ${{ inputs.registry-url }}
+
+    - name: Update npm to version 11
+      shell: bash
+      run: npm install -g npm@11
