@@ -44,7 +44,7 @@
     "@angular-eslint/eslint-plugin-template": "^19.0.0",
     "@angular-eslint/schematics": "^19.0.0",
     "@angular-eslint/template-parser": "^19.0.0",
-    "@angular/cli": "^19.2.19",
+    "@angular/cli": "^21.1.0",
     "@angular/compiler-cli": "^19.2.18",
     "@angular/forms": "^19.2.18",
     "@cypress/schematic": "^2.5.2",
