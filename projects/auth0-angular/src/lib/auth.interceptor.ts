@@ -13,6 +13,7 @@ import {
   isHttpInterceptorRouteConfig,
   AuthClientConfig,
   HttpInterceptorConfig,
+  AUTH_INTERCEPTOR_BYPASS,
 } from './auth.config';
 
 import {
@@ -56,6 +57,11 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const config = this.configFactory.get();
     if (!config.httpInterceptor?.allowedList) {
+      return next.handle(req);
+    }
+
+    // Early return if interceptor bypass is requested via HttpContext
+    if (req.context.get(AUTH_INTERCEPTOR_BYPASS)) {
       return next.handle(req);
     }
 

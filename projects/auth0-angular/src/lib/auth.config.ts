@@ -6,6 +6,7 @@ import {
 } from '@auth0/auth0-spa-js';
 
 import { InjectionToken, Injectable, Optional, Inject } from '@angular/core';
+import { HttpContextToken } from '@angular/common/http';
 
 /**
  * Defines a common set of HTTP methods.
@@ -18,6 +19,28 @@ export const enum HttpMethod {
   Delete = 'DELETE',
   Head = 'HEAD',
 }
+
+/**
+ * HttpContextToken to bypass the AuthHttpInterceptor for a specific request.
+ *
+ * When set to true on an HttpRequest's context, the interceptor will not attach
+ * an access token to the request, even if the URL matches the allowedList configuration.
+ *
+ * @usageNotes
+ *
+ * ```typescript
+ * import { HttpClient, HttpContext } from '@angular/common/http';
+ * import { AUTH_INTERCEPTOR_BYPASS } from '@auth0/auth0-angular';
+ *
+ * // Bypass the interceptor for a specific request
+ * this.http.get('/api/public', {
+ *   context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true)
+ * });
+ * ```
+ */
+export const AUTH_INTERCEPTOR_BYPASS = new HttpContextToken<boolean>(
+  () => false
+);
 
 /**
  * Defines the type for a route config entry. Can either be:

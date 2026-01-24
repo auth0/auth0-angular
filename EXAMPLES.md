@@ -290,6 +290,65 @@ AuthModule.forRoot({
 
 You might want to do this in scenarios where you need the token on multiple endpoints, but want to exclude it from only a few other endpoints. Instead of explicitly listing all endpoints that do need a token, a uriMatcher can be used to include all but the few endpoints that do not need a token attached to its requests.
 
+### Bypassing the AuthHttpInterceptor per request
+
+While the `allowedList` configuration provides URL-based control over which requests receive access tokens, you may need more dynamic control on a per-request basis. The SDK provides the `AUTH_INTERCEPTOR_BYPASS` HttpContextToken that allows you to bypass the interceptor for specific requests, regardless of the `allowedList` configuration.
+
+When set to `true` on an HttpRequest's context, the interceptor will not attach an access token to the request, even if the URL matches the `allowedList` configuration.
+
+```ts
+import { HttpClient, HttpContext } from '@angular/common/http';
+import { AUTH_INTERCEPTOR_BYPASS } from '@auth0/auth0-angular';
+
+// Make a request without attaching an access token
+this.http
+  .get('/api/public-data', {
+    context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+  })
+  .subscribe((data) => {
+    // Handle response
+  });
+```
+
+This is particularly useful in scenarios such as:
+
+- **Public endpoints**: Making requests to public endpoints that don't require authentication, even if they match the `allowedList` pattern.
+- **Dynamic control**: Conditionally bypassing authentication based on runtime logic.
+- **Per-request override**: Overriding the default `allowedList` behavior for specific requests without modifying the global configuration.
+
+```ts
+import { Component } from '@angular/core';
+import { HttpClient, HttpContext } from '@angular/common/http';
+import { AUTH_INTERCEPTOR_BYPASS } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-data',
+  templateUrl: './data.component.html',
+})
+export class DataComponent {
+  constructor(private http: HttpClient) {}
+
+  // Fetch public data without authentication
+  getPublicData() {
+    return this.http.get('/api/public', {
+      context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+    });
+  }
+
+  // Fetch protected data with authentication (default behavior)
+  getProtectedData() {
+    return this.http.get('/api/protected');
+  }
+
+  // Conditionally bypass based on user preference
+  getData(isPublic: boolean) {
+    const context = isPublic ? new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true) : new HttpContext();
+
+    return this.http.get('/api/data', { context });
+  }
+}
+```
+
 ## Handling errors
 
 Whenever the SDK fails to retrieve an Access Token, either as part of the above interceptor or when manually calling `AuthService.getAccessTokenSilently` and `AuthService.getAccessTokenWithPopup`, it will emit the corresponding error in the `AuthService.error$` observable.

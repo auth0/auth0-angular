@@ -5,6 +5,7 @@ import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
+  HttpContext,
 } from '@angular/common/http';
 import {
   HttpTestingController,
@@ -17,6 +18,7 @@ import {
   HttpMethod,
   AuthClientConfig,
   HttpInterceptorConfig,
+  AUTH_INTERCEPTOR_BYPASS,
 } from './auth.config';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { Auth0Client } from '@auth0/auth0-spa-js';
@@ -560,6 +562,156 @@ describe('The Auth HTTP Interceptor', () => {
     ) => {
       // Testing { uriMatcher: (uri) => uri.indexOf('/api/contact') !== -1 }
       await assertPassThruApiCallTo('https://my-api.com/api/contact', done);
+    }));
+  });
+
+  describe('HttpContext bypass token', () => {
+    it('bypasses interceptor when context token is set to true', fakeAsync(async (
+      done: () => void
+    ) => {
+      httpClient
+        .get<Data>('https://my-api.com/api/photos', {
+          context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+        })
+        .subscribe(done);
+
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/photos');
+
+      // Assert NO Authorization header
+      expect(req.request.headers.get('Authorization')).toBeFalsy();
+    }));
+
+    it('bypasses for URLs not in allowedList', fakeAsync(async (
+      done: () => void
+    ) => {
+      httpClient
+        .get<Data>('https://my-api.com/api/not-in-list', {
+          context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+        })
+        .subscribe(done);
+
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne(
+        'https://my-api.com/api/not-in-list'
+      );
+
+      expect(req.request.headers.get('Authorization')).toBeFalsy();
+    }));
+
+    it('attaches token normally when context bypass is false', fakeAsync(async (
+      done: () => void
+    ) => {
+      httpClient
+        .get<Data>('https://my-api.com/api/photos', {
+          context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, false),
+        })
+        .subscribe(done);
+
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/photos');
+
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer access-token'
+      );
+    }));
+
+    it('defaults to normal behavior when context token is not set', fakeAsync(async (
+      done: () => void
+    ) => {
+      await assertAuthorizedApiCallTo('https://my-api.com/api/photos', done);
+    }));
+
+    it('works with POST requests', fakeAsync(async (done: () => void) => {
+      httpClient
+        .post<Data>(
+          'https://my-api.com/api/register',
+          {},
+          {
+            context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+          }
+        )
+        .subscribe(done);
+
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/register');
+
+      expect(req.request.headers.get('Authorization')).toBeFalsy();
+    }));
+
+    it('works with PUT method', fakeAsync(async (done: () => void) => {
+      httpClient
+        .put<Data>(
+          'https://my-api.com/api/photos',
+          {},
+          {
+            context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+          }
+        )
+        .subscribe(done);
+
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/photos');
+      expect(req.request.headers.get('Authorization')).toBeFalsy();
+    }));
+
+    it('works with DELETE method', fakeAsync(async (done: () => void) => {
+      httpClient
+        .delete<Data>('https://my-api.com/api/photos', {
+          context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+        })
+        .subscribe(done);
+
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/photos');
+      expect(req.request.headers.get('Authorization')).toBeFalsy();
+    }));
+
+    it('works with PATCH method', fakeAsync(async (done: () => void) => {
+      httpClient
+        .patch<Data>(
+          'https://my-api.com/api/photos',
+          {},
+          {
+            context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+          }
+        )
+        .subscribe(done);
+
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/photos');
+      expect(req.request.headers.get('Authorization')).toBeFalsy();
+    }));
+
+    it('bypasses allowAnonymous logic when context token is set', fakeAsync(async (
+      done: () => void
+    ) => {
+      // Mock getTokenSilently to throw an error
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockReturnValue(throwError({ error: 'login_required' }));
+
+      // URL matches allowAnonymous route, but bypass should take precedence
+      httpClient
+        .get<Data>('https://my-api.com/api/orders', {
+          context: new HttpContext().set(AUTH_INTERCEPTOR_BYPASS, true),
+        })
+        .subscribe(done);
+
+      flush();
+      await new Promise(process.nextTick);
+      req = httpTestingController.expectOne('https://my-api.com/api/orders');
+
+      // Request should proceed without attempting to get token
+      expect(req.request.headers.get('Authorization')).toBeFalsy();
+      expect(authState.setError).not.toHaveBeenCalled();
     }));
   });
 });
