@@ -35,12 +35,6 @@ jobs:
         with:
           node: ${{ env.NODE_VERSION }}
 
-      - name: Save build artifacts
-        uses: actions/cache/save@v5
-        with:
-          path: .
-          key: ${{ env.CACHE_KEY }}
-
   unit:
     name: Unit Tests
     runs-on: ubuntu-latest
@@ -59,10 +53,8 @@ jobs:
           node-version: ${{ matrix.NODE_VERSION }}
           cache: npm
 
-      - name: Build package
-        uses: ./.github/actions/build
-        with:
-          node: ${{ matrix.NODE_VERSION }}
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run tests
         run: npm run test:ci
@@ -71,8 +63,6 @@ jobs:
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # pin@5.5.2
 
   lint:
-    needs: build # Require build to complete before running tests
-
     name: Lint Tests
     runs-on: ubuntu-latest
 
@@ -86,11 +76,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Restore build artifacts
-        uses: actions/cache/restore@v5
-        with:
-          path: .
-          key: ${{ env.CACHE_KEY }}
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run tests
         run: npm run lint
