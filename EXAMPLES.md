@@ -6,6 +6,7 @@
 - [Display the user profile](#display-the-user-profile)
 - [Protect a route](#protect-a-route)
 - [Call an API](#call-an-api)
+- [Wrapping the interceptor for granular control](#wrapping-the-interceptor-for-granular-control)
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
 - [Device-bound tokens with DPoP](#device-bound-tokens-with-dpop)
@@ -289,6 +290,66 @@ AuthModule.forRoot({
 ```
 
 You might want to do this in scenarios where you need the token on multiple endpoints, but want to exclude it from only a few other endpoints. Instead of explicitly listing all endpoints that do need a token, a uriMatcher can be used to include all but the few endpoints that do not need a token attached to its requests.
+
+## Wrapping the interceptor for granular control
+
+While the `allowedList` configuration and `uriMatcher` provide flexible ways to control which requests receive access tokens, there may be scenarios where you need even more granular control on a per-request basis. For example:
+
+- Conditionally attaching tokens based on runtime state (not just URL patterns)
+- Using HttpContextTokens to bypass the interceptor for specific requests
+- Implementing environment-specific behavior (e.g., skip authentication in development)
+- Making the same request with and without a token based on user actions
+
+In these cases, you can wrap the `authHttpInterceptorFn` in your own custom interceptor:
+
+```ts
+import { HttpRequest, HttpHandlerFn, HttpEvent, HttpContextToken } from '@angular/common/http';
+import { authHttpInterceptorFn } from '@auth0/auth0-angular';
+import { Observable } from 'rxjs';
+
+export function customAuthInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  // Implement shouldByPassAuth logic based on your needs
+  if (shouldByPassAuth(req)) {
+    return next(req);
+  }
+
+  // Otherwise, use the standard auth interceptor
+  return authHttpInterceptorFn(req, next);
+}
+```
+
+Register your custom interceptor instead of the built-in one:
+
+```ts
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAuth0 } from '@auth0/auth0-angular';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        audience: 'YOUR_AUTH0_API_IDENTIFIER',
+      },
+      httpInterceptor: {
+        allowedList: ['/api/*'], // Configure as needed
+      },
+    }),
+    provideHttpClient(withInterceptors([customAuthInterceptor])),
+  ],
+});
+```
+
+### Important: allowedList still applies
+
+**When you wrap the interceptor, any request that you pass through to `authHttpInterceptorFn` must still match the `allowedList` configuration.** If a request doesn't match the `allowedList` (or the configured glob patterns), the Auth0 interceptor will not add a token to that request, even if you intended it to.
+
+This means:
+
+- If you bypass a request in your wrapper (e.g., using `AUTH_INTERCEPTOR_BYPASS`), it will never reach `authHttpInterceptorFn`, so the `allowedList` doesn't matter for that request.
+- If you pass a request through to `authHttpInterceptorFn`, ensure its URL matches your `allowedList` configuration, otherwise no token will be added.
 
 ## Handling errors
 
