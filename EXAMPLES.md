@@ -785,7 +785,7 @@ bootstrapApplication(AppComponent, {
 });
 ```
 
-Note that `provideAuth0` should **never** be provided to components, but only at the root level of your application.
+**Important:** `provideAuth0` returns `EnvironmentProviders`, which ensures it can only be used at the application/environment level. Attempting to add it to a component's `providers` array will result in a compile-time error.
 
 ## Connect Accounts for using Token Vault
 
