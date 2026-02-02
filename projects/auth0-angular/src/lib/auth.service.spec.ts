@@ -77,6 +77,13 @@ describe('AuthService', () => {
       .spyOn(auth0Client, 'getTokenWithPopup')
       .mockResolvedValue('__access_token_from_popup__');
 
+    jest.spyOn(auth0Client, 'loginWithCustomTokenExchange').mockResolvedValue({
+      access_token: '__exchanged_access_token__',
+      id_token: '__exchanged_id_token__',
+      token_type: 'Bearer',
+      expires_in: 86400,
+    });
+
     jest
       .spyOn(auth0Client, 'getDpopNonce')
       .mockResolvedValue('test-nonce-value');
@@ -919,6 +926,107 @@ describe('AuthService', () => {
           done();
         },
       });
+    });
+  });
+
+  describe('loginWithCustomTokenExchange', () => {
+    it('should call the underlying SDK', (done) => {
+      const service = createService();
+      const options = {
+        subject_token: '__test_token__',
+        subject_token_type: 'urn:test:token-type',
+      };
+
+      service
+        .loginWithCustomTokenExchange(options)
+        .subscribe((tokenResponse) => {
+          expect(auth0Client.loginWithCustomTokenExchange).toHaveBeenCalledWith(
+            options
+          );
+          done();
+        });
+    });
+
+    it('should return the token response', (done) => {
+      const service = createService();
+      const options = {
+        subject_token: '__test_token__',
+        subject_token_type: 'urn:test:token-type',
+        scope: 'openid profile email',
+      };
+
+      service
+        .loginWithCustomTokenExchange(options)
+        .subscribe((tokenResponse) => {
+          expect(tokenResponse).toEqual({
+            access_token: '__exchanged_access_token__',
+            id_token: '__exchanged_id_token__',
+            token_type: 'Bearer',
+            expires_in: 86400,
+          });
+          done();
+        });
+    });
+
+    it('should update auth state after successful token exchange', (done) => {
+      const service = createService();
+      const options = {
+        subject_token: '__test_token__',
+        subject_token_type: 'urn:test:token-type',
+      };
+
+      jest.spyOn(authState, 'setAccessToken');
+
+      service.loginWithCustomTokenExchange(options).subscribe(() => {
+        expect(authState.setAccessToken).toHaveBeenCalledWith(
+          '__exchanged_access_token__'
+        );
+        done();
+      });
+    });
+
+    it('should record errors in the error$ observable', (done) => {
+      const errorObj = new Error('Token exchange failed');
+
+      (
+        auth0Client.loginWithCustomTokenExchange as unknown as jest.SpyInstance
+      ).mockRejectedValue(errorObj);
+
+      const service = createService();
+      service
+        .loginWithCustomTokenExchange({
+          subject_token: '__test_token__',
+          subject_token_type: 'urn:test:token-type',
+        })
+        .subscribe({
+          error: () => {},
+        });
+
+      service.error$.subscribe((err: Error) => {
+        expect(err).toBe(errorObj);
+        done();
+      });
+    });
+
+    it('should bubble errors', (done) => {
+      const errorObj = new Error('Token exchange failed');
+
+      (
+        auth0Client.loginWithCustomTokenExchange as unknown as jest.SpyInstance
+      ).mockRejectedValue(errorObj);
+
+      const service = createService();
+      service
+        .loginWithCustomTokenExchange({
+          subject_token: '__test_token__',
+          subject_token_type: 'urn:test:token-type',
+        })
+        .subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
     });
   });
 

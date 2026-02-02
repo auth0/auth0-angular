@@ -38,4 +38,6 @@ export {
   FetcherConfig,
   CustomFetchMinimalOutput,
   UseDpopNonceError,
+  CustomTokenExchangeOptions,
+  TokenEndpointResponse,
 } from '@auth0/auth0-spa-js';

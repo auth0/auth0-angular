@@ -13,6 +13,8 @@ import {
   CustomFetchMinimalOutput,
   Fetcher,
   FetcherConfig,
+  CustomTokenExchangeOptions,
+  TokenEndpointResponse,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -309,6 +311,48 @@ export class AuthService<TAppState extends AppState = AppState>
       tap((token) => {
         if (token) {
           this.authState.setAccessToken(token);
+        }
+      }),
+      catchError((error) => {
+        this.authState.setError(error);
+        this.authState.refresh();
+        return throwError(error);
+      })
+    );
+  }
+
+  /**
+   * ```js
+   * loginWithCustomTokenExchange(options).subscribe(tokenResponse => ...)
+   * ```
+   *
+   * Exchanges an external subject token for Auth0 tokens and establishes an authenticated session.
+   *
+   * This method implements the token exchange grant as specified in RFC 8693.
+   * It performs a token exchange by sending a request to the `/oauth/token` endpoint
+   * with the external token and returns Auth0 tokens (access token, ID token, etc.).
+   *
+   * The request includes the following parameters:
+   * - `grant_type`: Hard-coded to "urn:ietf:params:oauth:grant-type:token-exchange"
+   * - `subject_token`: The external token to be exchanged
+   * - `subject_token_type`: A namespaced URI identifying the token type (must be under your organization's control)
+   * - `audience`: The target audience (falls back to the SDK's default audience if not provided)
+   * - `scope`: Space-separated list of scopes (merged with the SDK's default scopes)
+   *
+   * After a successful token exchange, this method updates the authentication state
+   * to ensure consistency with the standard authentication flows.
+   *
+   * @param options The options required to perform the token exchange
+   * @returns An Observable that emits the token endpoint response containing Auth0 tokens
+   */
+  loginWithCustomTokenExchange(
+    options: CustomTokenExchangeOptions
+  ): Observable<TokenEndpointResponse> {
+    return of(this.auth0Client).pipe(
+      concatMap((client) => client.loginWithCustomTokenExchange(options)),
+      tap((tokenResponse) => {
+        if (tokenResponse.access_token) {
+          this.authState.setAccessToken(tokenResponse.access_token);
         }
       }),
       catchError((error) => {
