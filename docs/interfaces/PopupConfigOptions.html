@@ -93,6 +93,12 @@
           <span class="tsd-kind-interface">PopupConfigOptions</span>
           <span class="tsd-signature-symbol">{</span><br />    <a
             class="tsd-kind-property"
+            href="#closepopup"
+            >closePopup</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">boolean</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
             href="#popup"
             >popup</a
           ><span class="tsd-signature-symbol">?:</span>
@@ -112,7 +118,7 @@
           <ul>
             <li>
               Defined in
-              node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:348
+              node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:366
             </li>
           </ul>
         </aside>
@@ -135,6 +141,15 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
+                    <a href="#closepopup" class="tsd-index-link tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>close<wbr />Popup?</span></a
+                    >
                     <a href="#popup" class="tsd-index-link tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
@@ -176,6 +191,75 @@
           </summary>
           <section>
             <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="closepopup">
+                <code class="tsd-tag">Optional</code
+                ><span>close<wbr />Popup</span
+                ><a
+                  href="#closepopup"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">closePopup</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">boolean</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  Controls whether the SDK automatically closes the popup
+                  window.
+                </p>
+                <ul>
+                  <li>
+                    <code>true</code> (default): SDK closes the popup
+                    automatically after receiving the authorization response
+                  </li>
+                  <li>
+                    <code>false</code>: SDK does not close the popup. The caller
+                    is responsible for closing it, including on errors.
+                  </li>
+                </ul>
+                <p>
+                  Setting this to <code>false</code> is useful when you need
+                  full control over the popup lifecycle, such as in Chrome
+                  extensions where closing the popup too early can terminate the
+                  extension's service worker before authentication completes.
+                </p>
+                <p>
+                  When <code>closePopup: false</code>, you should close the
+                  popup in a try/finally block:
+                </p>
+                <pre><code><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">popup</span><span class="hl-1"> = </span><span class="hl-4">window</span><span class="hl-1">.</span><span class="hl-0">open</span><span class="hl-1">(</span><span class="hl-2">&#39;&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;_blank&#39;</span><span class="hl-1">);</span><br/><span class="hl-3">try</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">loginWithPopup</span><span class="hl-1">({}, { </span><span class="hl-4">popup</span><span class="hl-1">, </span><span class="hl-4">closePopup:</span><span class="hl-1"> </span><span class="hl-5">false</span><span class="hl-1"> });</span><br/><span class="hl-1">} </span><span class="hl-3">finally</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">popup</span><span class="hl-1">.</span><span class="hl-0">close</span><span class="hl-1">();</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-default">
+                  <h4 class="tsd-anchor-link" id="default">
+                    Default<a
+                      href="#default"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <pre><code class="ts"><span class="hl-5">true</span>
+</code><button type="button">Copy</button></pre>
+                </div>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:400
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
               <h3 class="tsd-anchor-link" id="popup">
                 <code class="tsd-tag">Optional</code><span>popup</span
                 ><a href="#popup" aria-label="Permalink" class="tsd-anchor-icon"
@@ -200,7 +284,7 @@
                 <ul>
                   <li>
                     Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:359
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:377
                   </li>
                 </ul>
               </aside>
@@ -232,7 +316,7 @@
                 <ul>
                   <li>
                     Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:353
+                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:371
                   </li>
                 </ul>
               </aside>
@@ -401,7 +485,15 @@
                   >Properties
                 </summary>
                 <div>
-                  <a href="#popup" class="tsd-is-external"
+                  <a href="#closepopup" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>close<wbr />Popup</span></a
+                  ><a href="#popup" class="tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
