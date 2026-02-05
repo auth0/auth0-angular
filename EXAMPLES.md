@@ -6,6 +6,7 @@
 - [Display the user profile](#display-the-user-profile)
 - [Protect a route](#protect-a-route)
 - [Call an API](#call-an-api)
+- [Custom token exchange](#custom-token-exchange)
 - [Wrapping the interceptor for granular control](#wrapping-the-interceptor-for-granular-control)
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
@@ -290,6 +291,62 @@ AuthModule.forRoot({
 ```
 
 You might want to do this in scenarios where you need the token on multiple endpoints, but want to exclude it from only a few other endpoints. Instead of explicitly listing all endpoints that do need a token, a uriMatcher can be used to include all but the few endpoints that do not need a token attached to its requests.
+
+## Custom token exchange
+
+Exchange an external subject token for Auth0 tokens and establish an authenticated session using the token exchange flow (RFC 8693):
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService, CustomTokenExchangeOptions } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-token-exchange',
+  template: `
+    <button (click)="handleExchange()">Exchange Token</button>
+    <div *ngIf="tokens">Token exchange successful!</div>
+    <div *ngIf="error">Error: {{ error }}</div>
+  `,
+})
+export class TokenExchangeComponent {
+  tokens: any = null;
+  error: string | null = null;
+
+  constructor(private auth: AuthService) {}
+
+  handleExchange() {
+    const options: CustomTokenExchangeOptions = {
+      subject_token: 'your-external-token',
+      subject_token_type: 'urn:your-company:legacy-system-token',
+      audience: 'https://api.example.com/',
+      scope: 'openid profile email',
+    };
+
+    this.auth.loginWithCustomTokenExchange(options).subscribe({
+      next: (tokenResponse) => {
+        this.tokens = tokenResponse;
+        this.error = null;
+
+        // Use the returned tokens
+        console.log('Access Token:', tokenResponse.access_token);
+        console.log('ID Token:', tokenResponse.id_token);
+      },
+      error: (err) => {
+        console.error('Token exchange failed:', err);
+        this.error = err.message;
+      },
+    });
+  }
+}
+```
+
+**Important Notes:**
+
+- The `subject_token_type` must be a namespaced URI under your organization's control
+- The external token must be validated in Auth0 Actions using strong cryptographic verification
+- This method implements RFC 8693 token exchange grant type
+- The audience and scope can be provided directly in the options or will fall back to SDK defaults
+- **State Management:** This method updates the SDK's authentication state after a successful exchange, ensuring that `isLoading$`, `isAuthenticated$`, and `user$` observables behave identically to the standard `getAccessTokenSilently()` flow
 
 ## Wrapping the interceptor for granular control
 
