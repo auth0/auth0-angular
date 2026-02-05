@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>GetTokenSilentlyOptions | @auth0/auth0-angular</title>
+    <title>CustomTokenExchangeOptions | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/style.css" />
@@ -84,80 +84,134 @@
       <div class="col-content">
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
-            <li><a href="" aria-current="page">GetTokenSilentlyOptions</a></li>
+            <li>
+              <a href="" aria-current="page">CustomTokenExchangeOptions</a>
+            </li>
           </ul>
-          <h1>Interface GetTokenSilentlyOptions</h1>
+          <h1>Type Alias CustomTokenExchangeOptions</h1>
         </div>
+        <section class="tsd-panel tsd-comment">
+          <div class="tsd-comment tsd-typography">
+            <p>
+              Represents the configuration options required for initiating a
+              Custom Token Exchange request following RFC 8693 specifications.
+            </p>
+          </div>
+          <div class="tsd-comment tsd-typography">
+            <div class="tsd-tag-see">
+              <h4 class="tsd-anchor-link" id="see">
+                See<a href="#see" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h4>
+              <p>
+                <a href="https://www.rfc-editor.org/rfc/rfc8693"
+                  >RFC 8693: OAuth 2.0 Token Exchange</a
+                >
+              </p>
+            </div>
+          </div>
+        </section>
         <div class="tsd-signature">
-          <span class="tsd-signature-keyword">interface</span>
-          <span class="tsd-kind-interface">GetTokenSilentlyOptions</span>
+          <span class="tsd-signature-keyword">type</span>
+          <span class="tsd-kind-type-alias">CustomTokenExchangeOptions</span>
+          <span class="tsd-signature-symbol">=</span>
           <span class="tsd-signature-symbol">{</span><br />    <a
             class="tsd-kind-property"
-            href="#authorizationparams"
-            >authorizationParams</a
-          ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-symbol">{</span><br />        <span
-            class="tsd-kind-property"
-            >audience</span
+            href="#audience"
+            >audience</a
           ><span class="tsd-signature-symbol">?:</span>
           <span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">;</span><br />        <span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
-            >redirect_uri</span
+            href="#organization"
+            >organization</a
           ><span class="tsd-signature-symbol">?:</span>
           <span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">;</span><br />        <span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
-            >scope</span
+            href="#scope"
+            >scope</a
           ><span class="tsd-signature-symbol">?:</span>
           <span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">;</span><br />        <span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#subject_token"
+            >subject_token</a
+          ><span class="tsd-signature-symbol">:</span>
+          <span class="tsd-signature-type">string</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#subject_token_type"
+            >subject_token_type</a
+          ><span class="tsd-signature-symbol">:</span>
+          <span class="tsd-signature-type">string</span
+          ><span class="tsd-signature-symbol">;</span><br />    <span
             class="tsd-signature-symbol"
             >[</span
           ><span class="tsd-kind-index-signature">key</span
           ><span class="tsd-signature-symbol">:</span>
           <span class="tsd-signature-type">string</span
           ><span class="tsd-signature-symbol">]:</span>
-          <span class="tsd-signature-type">any</span
-          ><span class="tsd-signature-symbol">;</span><br />    <span
-            class="tsd-signature-symbol"
-            >}</span
-          ><span class="tsd-signature-symbol">;</span><br />    <a
-            class="tsd-kind-property"
-            href="#cachemode"
-            >cacheMode</a
-          ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-type">&quot;off&quot;</span><br />    <span
-            class="tsd-signature-symbol"
-            >|</span
-          >
-          <span class="tsd-signature-type">&quot;on&quot;</span><br />    <span
-            class="tsd-signature-symbol"
-            >|</span
-          >
-          <span class="tsd-signature-type">&quot;cache-only&quot;</span
-          ><span class="tsd-signature-symbol">;</span><br />    <a
-            class="tsd-kind-property"
-            href="#detailedresponse"
-            >detailedResponse</a
-          ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-type">boolean</span
-          ><span class="tsd-signature-symbol">;</span><br />    <a
-            class="tsd-kind-property"
-            href="#timeoutinseconds"
-            >timeoutInSeconds</a
-          ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-type">number</span
+          <span class="tsd-signature-type">unknown</span
           ><span class="tsd-signature-symbol">;</span><br /><span
             class="tsd-signature-symbol"
             >}</span
           >
         </div>
+        <section class="tsd-panel">
+          <h4 class="tsd-before-signature">Indexable</h4>
+          <ul class="tsd-signatures">
+            <li class="tsd-index-signature tsd-is-external">
+              <div class="tsd-signature">
+                <span class="tsd-signature-symbol">[</span
+                ><span class="tsd-kind-parameter">key</span>:
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">]:</span>
+                <span class="tsd-signature-type">unknown</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>Additional custom parameters for Auth0 Action processing</p>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-remarks">
+                  <h4 class="tsd-anchor-link" id="remarks">
+                    Remarks<a
+                      href="#remarks"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <p>
+                    Accessible in Action code via
+                    <code>event.request.body</code>
+                  </p>
+                </div>
+                <div class="tsd-tag-example">
+                  <h4 class="tsd-anchor-link" id="example">
+                    Example<a
+                      href="#example"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <pre><code class="typescript"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-9">custom_parameter</span><span class="hl-1">: </span><span class="hl-2">&quot;session_context&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-9">device_fingerprint</span><span class="hl-1">: </span><span class="hl-2">&quot;a3d8f7...&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
         <aside class="tsd-sources">
           <ul>
             <li>
               Defined in
-              node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:402
+              node_modules/@auth0/auth0-spa-js/dist/typings/TokenExchange.d.ts:7
             </li>
           </ul>
         </aside>
@@ -180,8 +234,17 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
+                    <a href="#audience" class="tsd-index-link tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>audience?</span></a
+                    >
                     <a
-                      href="#authorizationparams"
+                      href="#organization"
                       class="tsd-index-link tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
@@ -189,19 +252,19 @@
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>authorization<wbr />Params?</span></a
+                      ><span>organization?</span></a
                     >
-                    <a href="#cachemode" class="tsd-index-link tsd-is-external"
+                    <a href="#scope" class="tsd-index-link tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>cache<wbr />Mode?</span></a
+                      ><span>scope?</span></a
                     >
                     <a
-                      href="#detailedresponse"
+                      href="#subject_token"
                       class="tsd-index-link tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
@@ -209,10 +272,10 @@
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>detailed<wbr />Response?</span></a
+                      ><span>subject_<wbr />token</span></a
                     >
                     <a
-                      href="#timeoutinseconds"
+                      href="#subject_token_type"
                       class="tsd-index-link tsd-is-external"
                       ><svg
                         class="tsd-kind-icon"
@@ -220,7 +283,7 @@
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>timeout<wbr />In<wbr />Seconds?</span></a
+                      ><span>subject_<wbr />token_<wbr />type</span></a
                     >
                   </div>
                 </section>
@@ -243,11 +306,10 @@
           </summary>
           <section>
             <section class="tsd-panel tsd-member tsd-is-external">
-              <h3 class="tsd-anchor-link" id="authorizationparams">
-                <code class="tsd-tag">Optional</code
-                ><span>authorization<wbr />Params</span
+              <h3 class="tsd-anchor-link" id="audience">
+                <code class="tsd-tag">Optional</code><span>audience</span
                 ><a
-                  href="#authorizationparams"
+                  href="#audience"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -255,125 +317,210 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">authorizationParams</span
+                <span class="tsd-kind-property">audience</span
                 ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-symbol">{</span><br />    <span
-                  class="tsd-kind-property"
-                  >audience</span
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>The target audience for the requested Auth0 token</p>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-remarks">
+                  <h4 class="tsd-anchor-link" id="remarks-1">
+                    Remarks<a
+                      href="#remarks-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <p>
+                    Must match exactly with an API identifier configured in your
+                    Auth0 tenant. If not provided, falls back to the client's
+                    default audience.
+                  </p>
+                </div>
+                <div class="tsd-tag-example">
+                  <h4 class="tsd-anchor-link" id="example-1">
+                    Example<a
+                      href="#example-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <pre><code class="ts"><span class="hl-2">&quot;https://api.your-service.com/v1&quot;</span>
+</code><button type="button">Copy</button></pre>
+                </div>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/TokenExchange.d.ts:45
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="organization">
+                <code class="tsd-tag">Optional</code><span>organization</span
+                ><a
+                  href="#organization"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">organization</span
                 ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">;</span><br />    <span
-                  class="tsd-kind-property"
-                  >redirect_uri</span
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  ID or name of the organization to use when authenticating a
+                  user. When provided, the user will be authenticated using the
+                  organization context. The organization ID will be present in
+                  the access token payload.
+                </p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/TokenExchange.d.ts:61
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="scope">
+                <code class="tsd-tag">Optional</code><span>scope</span
+                ><a href="#scope" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">scope</span
                 ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">;</span><br />    <span
-                  class="tsd-kind-property"
-                  >scope</span
-                ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">;</span><br />    <span
-                  class="tsd-signature-symbol"
-                  >[</span
-                ><span class="tsd-kind-index-signature">key</span
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>Space-separated list of OAuth 2.0 scopes being requested</p>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-remarks">
+                  <h4 class="tsd-anchor-link" id="remarks-2">
+                    Remarks<a
+                      href="#remarks-2"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <p>
+                    Subject to API authorization policies configured in Auth0
+                  </p>
+                </div>
+                <div class="tsd-tag-example">
+                  <h4 class="tsd-anchor-link" id="example-2">
+                    Example<a
+                      href="#example-2"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <pre><code class="ts"><span class="hl-2">&quot;openid profile email read:data write:data&quot;</span>
+</code><button type="button">Copy</button></pre>
+                </div>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/TokenExchange.d.ts:55
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="subject_token">
+                <span>subject_<wbr />token</span
+                ><a
+                  href="#subject_token"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">subject_token</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">]:</span>
-                <span class="tsd-signature-type">any</span
-                ><span class="tsd-signature-symbol">;</span><br /><span
-                  class="tsd-signature-symbol"
-                  >}</span
-                >
+                <span class="tsd-signature-type">string</span>
               </div>
               <div class="tsd-comment tsd-typography">
-                <p>
-                  Parameters that will be sent back to Auth0 as part of a
-                  request.
-                </p>
+                <p>The opaque token value being exchanged for Auth0 tokens</p>
               </div>
-              <div class="tsd-type-declaration">
-                <h4>Type Declaration</h4>
-                <ul class="tsd-parameters">
-                  <li class="tsd-parameter-index-signature">
-                    <h5>
-                      <span class="tsd-signature-symbol">[</span
-                      ><span class="tsd-kind-parameter">key</span>:
-                      <span class="tsd-signature-type">string</span
-                      ><span class="tsd-signature-symbol">]:</span>
-                      <span class="tsd-signature-type">any</span>
-                    </h5>
-                    <div class="tsd-comment tsd-typography">
-                      <p>
-                        If you need to send custom parameters to the
-                        Authorization Server, make sure to use the original
-                        parameter name.
-                      </p>
-                    </div>
-                  </li>
-                  <li class="tsd-parameter">
-                    <h5>
-                      <code class="tsd-tag">Optional</code
-                      ><span class="tsd-kind-property">audience</span
-                      ><span class="tsd-signature-symbol">?: </span
-                      ><span class="tsd-signature-type">string</span>
-                    </h5>
-                    <div class="tsd-comment tsd-typography">
-                      <p>
-                        The audience that was used in the authentication request
-                      </p>
-                    </div>
-                  </li>
-                  <li class="tsd-parameter">
-                    <h5>
-                      <code class="tsd-tag">Optional</code
-                      ><span class="tsd-kind-property">redirect_uri</span
-                      ><span class="tsd-signature-symbol">?: </span
-                      ><span class="tsd-signature-type">string</span>
-                    </h5>
-                    <div class="tsd-comment tsd-typography">
-                      <p>
-                        There's no actual redirect when getting a token
-                        silently, but, according to the spec, a
-                        <code>redirect_uri</code> param is required. Auth0 uses
-                        this parameter to validate that the current
-                        <code>origin</code> matches the
-                        <code>redirect_uri</code> <code>origin</code> when
-                        sending the response. It must be whitelisted in the
-                        &quot;Allowed Web Origins&quot; in your Auth0
-                        Application's settings.
-                      </p>
-                    </div>
-                  </li>
-                  <li class="tsd-parameter">
-                    <h5>
-                      <code class="tsd-tag">Optional</code
-                      ><span class="tsd-kind-property">scope</span
-                      ><span class="tsd-signature-symbol">?: </span
-                      ><span class="tsd-signature-type">string</span>
-                    </h5>
-                    <div class="tsd-comment tsd-typography">
-                      <p>
-                        The scope that was used in the authentication request
-                      </p>
-                    </div>
-                  </li>
-                </ul>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-security">
+                  <h4 class="tsd-anchor-link" id="security">
+                    Security<a
+                      href="#security"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <ul>
+                    <li>
+                      Must be validated in Auth0 Actions using strong
+                      cryptographic verification
+                    </li>
+                    <li>Implement replay attack protection</li>
+                    <li>
+                      Recommended validation libraries: <code>jose</code>,
+                      <code>jsonwebtoken</code>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tsd-tag-example">
+                  <h4 class="tsd-anchor-link" id="example-3">
+                    Example<a
+                      href="#example-3"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <pre><code class="ts"><span class="hl-2">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c&quot;</span>
+</code><button type="button">Copy</button></pre>
+                </div>
               </div>
               <aside class="tsd-sources">
                 <ul>
                   <li>
                     Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:413
+                    node_modules/@auth0/auth0-spa-js/dist/typings/TokenExchange.d.ts:34
                   </li>
                 </ul>
               </aside>
             </section>
             <section class="tsd-panel tsd-member tsd-is-external">
-              <h3 class="tsd-anchor-link" id="cachemode">
-                <code class="tsd-tag">Optional</code
-                ><span>cache<wbr />Mode</span
+              <h3 class="tsd-anchor-link" id="subject_token_type">
+                <span>subject_<wbr />token_<wbr />type</span
                 ><a
-                  href="#cachemode"
+                  href="#subject_token_type"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -381,96 +528,61 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">cacheMode</span
-                ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">&quot;off&quot;</span>
-                <span class="tsd-signature-symbol">|</span>
-                <span class="tsd-signature-type">&quot;on&quot;</span>
-                <span class="tsd-signature-symbol">|</span>
-                <span class="tsd-signature-type">&quot;cache-only&quot;</span>
+                <span class="tsd-kind-property">subject_token_type</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span>
               </div>
               <div class="tsd-comment tsd-typography">
-                <p>
-                  When <code>off</code>, ignores the cache and always sends a
-                  request to Auth0. When <code>cache-only</code>, only reads
-                  from the cache and never sends a request to Auth0. Defaults to
-                  <code>on</code>, where it both reads from the cache and sends
-                  a request to Auth0 as needed.
-                </p>
+                <p>The type identifier for the subject token being exchanged</p>
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-pattern">
+                  <h4 class="tsd-anchor-link" id="pattern">
+                    Pattern<a
+                      href="#pattern"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <ul>
+                    <li>
+                      Must be a namespaced URI under your organization's control
+                    </li>
+                    <li>
+                      Forbidden patterns:
+                      <ul>
+                        <li>
+                          <code>^urn:ietf:params:oauth:*</code> (IETF reserved)
+                        </li>
+                        <li>
+                          <code>^https://auth0\.com/*</code> (Auth0 reserved)
+                        </li>
+                        <li><code>^urn:auth0:*</code> (Auth0 reserved)</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tsd-tag-example">
+                  <h4 class="tsd-anchor-link" id="example-4">
+                    Example<a
+                      href="#example-4"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <pre><code class="ts"><span class="hl-2">&quot;urn:acme:legacy-system-token&quot;</span><br/><span class="hl-2">&quot;https://api.yourcompany.com/token-type/v1&quot;</span>
+</code><button type="button">Copy</button></pre>
+                </div>
               </div>
               <aside class="tsd-sources">
                 <ul>
                   <li>
                     Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:409
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member tsd-is-external">
-              <h3 class="tsd-anchor-link" id="detailedresponse">
-                <code class="tsd-tag">Optional</code
-                ><span>detailed<wbr />Response</span
-                ><a
-                  href="#detailedresponse"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">detailedResponse</span
-                ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">boolean</span>
-              </div>
-              <div class="tsd-comment tsd-typography">
-                <p>
-                  If true, the full response from the /oauth/token endpoint (or
-                  the cache, if the cache was used) is returned (minus
-                  <code>refresh_token</code> if one was issued). Otherwise, just
-                  the access token is returned.
-                </p>
-                <p>The default is <code>false</code>.</p>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:447
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member tsd-is-external">
-              <h3 class="tsd-anchor-link" id="timeoutinseconds">
-                <code class="tsd-tag">Optional</code
-                ><span>timeout<wbr />In<wbr />Seconds</span
-                ><a
-                  href="#timeoutinseconds"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">timeoutInSeconds</span
-                ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">number</span>
-              </div>
-              <div class="tsd-comment tsd-typography">
-                <p>
-                  A maximum number of seconds to wait before declaring the
-                  background /authorize call as failed for timeout Defaults to
-                  60s.
-                </p>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:440
+                    node_modules/@auth0/auth0-spa-js/dist/typings/TokenExchange.d.ts:22
                   </li>
                 </ul>
               </aside>
@@ -639,38 +751,46 @@
                   >Properties
                 </summary>
                 <div>
-                  <a href="#authorizationparams" class="tsd-is-external"
+                  <a href="#audience" class="tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>authorization<wbr />Params</span></a
-                  ><a href="#cachemode" class="tsd-is-external"
+                    ><span>audience</span></a
+                  ><a href="#organization" class="tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>cache<wbr />Mode</span></a
-                  ><a href="#detailedresponse" class="tsd-is-external"
+                    ><span>organization</span></a
+                  ><a href="#scope" class="tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>detailed<wbr />Response</span></a
-                  ><a href="#timeoutinseconds" class="tsd-is-external"
+                    ><span>scope</span></a
+                  ><a href="#subject_token" class="tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>timeout<wbr />In<wbr />Seconds</span></a
+                    ><span>subject_<wbr />token</span></a
+                  ><a href="#subject_token_type" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>subject_<wbr />token_<wbr />type</span></a
                   >
                 </div>
               </details>

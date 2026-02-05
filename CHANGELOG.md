@@ -1,5 +1,17 @@
 # Change Log
 
+## [v2.6.0](https://github.com/auth0/auth0-angular/tree/v2.6.0) (2026-02-05)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.5.0...v2.6.0)
+
+**Added**
+
+- feat: add loginWithCustomTokenExchange method [\#799](https://github.com/auth0/auth0-angular/pull/799) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
+**Changed**
+
+- feat: use makeEnvironmentProviders to prevent provideAuth0 component-level usage at compile time [\#785](https://github.com/auth0/auth0-angular/pull/785) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.5.0](https://github.com/auth0/auth0-angular/tree/v2.5.0) (2026-01-13)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.4.1...v2.5.0)
