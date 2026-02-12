@@ -32,7 +32,7 @@
     "@angular/platform-browser": "^19.2.18",
     "@angular/platform-browser-dynamic": "^19.2.18",
     "@angular/router": "^19.2.18",
-    "@auth0/auth0-spa-js": "^2.14.0",
+    "@auth0/auth0-spa-js": "^2.15.0",
     "rxjs": "^6.6.7",
     "tslib": "^2.8.1",
     "zone.js": "~0.15.1"
