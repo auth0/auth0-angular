@@ -908,6 +908,20 @@ this.auth
   .subscribe();
 ```
 
+When the redirect completes, the user will be returned to the application and the tokens from the third party Identity Provider will be stored in the Token Vault. You can access the connected account details via the `appState$` observable:
+
+```ts
+ngOnInit() {
+  this.auth.appState$.subscribe((appState) => {
+    if (appState.connectedAccount) {
+      console.log(`You've connected to ${appState.connectedAccount.connection}`);
+      // Handle the connected account details
+      // appState.connectedAccount contains: id, connection, access_type, created_at, expires_at
+    }
+  });
+}
+```
+
 You can now call the API with your access token and the API can use [Access Token Exchange with Token Vault](https://auth0.com/docs/secure/tokens/token-vault/access-token-exchange-with-token-vault) to get tokens from the Token Vault to access third party APIs on behalf of the user.
 
 > **Important**
