@@ -75,7 +75,7 @@
     "pretty-quick": "^2.0.2",
     "protractor": "~7.0.0",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.28.15",
+    "typedoc": "^0.28.17",
     "typescript": "~5.8.3"
   },
   "prettier": {
