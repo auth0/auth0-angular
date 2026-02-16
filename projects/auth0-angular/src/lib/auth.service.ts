@@ -15,6 +15,7 @@ import {
   FetcherConfig,
   CustomTokenExchangeOptions,
   TokenEndpointResponse,
+  ResponseType,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -40,7 +41,7 @@ import {
 
 import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
-import { AuthClientConfig, AppState } from './auth.config';
+import { AuthClientConfig, AppState, ConnectedAccount } from './auth.config';
 import { AuthState } from './auth.state';
 import { LogoutOptions, RedirectLoginOptions } from './interfaces';
 
@@ -390,8 +391,16 @@ export class AuthService<TAppState extends AppState = AppState>
         if (!isLoading) {
           this.authState.refresh();
         }
-        const appState = result?.appState;
+        const { appState = {} as TAppState, response_type, ...rest } = result;
         const target = appState?.target ?? '/';
+
+        // Add response_type to appState
+        appState.response_type = response_type;
+
+        // If this is a connect account flow, add the connected account data to appState
+        if (response_type === ResponseType.ConnectCode) {
+          appState.connectedAccount = rest as ConnectedAccount;
+        }
 
         if (appState) {
           this.appStateSubject$.next(appState);
@@ -482,7 +491,9 @@ export class AuthService<TAppState extends AppState = AppState>
       map((search) => {
         const searchParams = new URLSearchParams(search);
         return (
-          (searchParams.has('code') || searchParams.has('error')) &&
+          (searchParams.has('code') ||
+            searchParams.has('connect_code') ||
+            searchParams.has('error')) &&
           searchParams.has('state') &&
           !this.configFactory.get().skipRedirectCallback
         );
