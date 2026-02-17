@@ -53,7 +53,7 @@
     "@types/jest": "^29.2.2",
     "@types/node": "^22.19.11",
     "@typescript-eslint/eslint-plugin": "^8.55.0",
-    "@typescript-eslint/parser": "^8.52.0",
+    "@typescript-eslint/parser": "^8.56.0",
     "browserstack-cypress-cli": "^1.36.2",
     "concurrently": "^6.2.0",
     "cors": "^2.8.6",
