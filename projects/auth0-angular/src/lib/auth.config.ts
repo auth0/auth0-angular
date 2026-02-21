@@ -3,6 +3,8 @@ import {
   CacheLocation,
   GetTokenSilentlyOptions,
   ICache,
+  ConnectAccountRedirectResult,
+  ResponseType,
 } from '@auth0/auth0-spa-js';
 
 import { InjectionToken, Injectable, Optional, Inject } from '@angular/core';
@@ -137,7 +139,16 @@ export interface AuthConfig extends Auth0ClientOptions {
 }
 
 /**
+ * The account that has been connected during the connect flow.
+ */
+export type ConnectedAccount = Omit<
+  ConnectAccountRedirectResult,
+  'appState' | 'response_type'
+>;
+
+/**
  * Angular specific state to be stored before redirect
+ * and any account that the user may have connected to.
  */
 export interface AppState {
   /**
@@ -145,6 +156,17 @@ export interface AppState {
    * handling the callback from Auth0 (defaults to '/')
    */
   target?: string;
+
+  /**
+   * The connected account information when the user has completed
+   * a connect account flow.
+   */
+  connectedAccount?: ConnectedAccount;
+
+  /**
+   * The response type returned from the authentication server.
+   */
+  response_type?: ResponseType;
 
   /**
    * Any custom parameter to be stored in appState
