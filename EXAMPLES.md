@@ -864,13 +864,13 @@ The My Account API requires DPoP tokens, so we also need to enable DPoP.
 
 ```ts
 AuthModule.forRoot({
-  domain: '<AUTH0_DOMAIN>',
-  clientId: '<AUTH0_CLIENT_ID>',
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
   useRefreshTokens: true,
   useMrrt: true,
   useDpop: true,
   authorizationParams: {
-    redirect_uri: '<MY_CALLBACK_URL>',
+    redirect_uri: window.location.origin,
   },
 });
 ```
@@ -884,7 +884,7 @@ Use the login methods to authenticate to the application and get a refresh and a
 this.auth
   .loginWithRedirect({
     authorizationParams: {
-      audience: '<AUTH0_API_IDENTIFIER>',
+      audience: 'YOUR_AUTH0_API_IDENTIFIER',
       scope: 'openid profile email read:calendar',
     },
   })
@@ -913,13 +913,34 @@ When the redirect completes, the user will be returned to the application and th
 ```ts
 ngOnInit() {
   this.auth.appState$.subscribe((appState) => {
-    if (appState.connectedAccount) {
+    if (appState?.connectedAccount) {
       console.log(`You've connected to ${appState.connectedAccount.connection}`);
       // Handle the connected account details
       // appState.connectedAccount contains: id, connection, access_type, created_at, expires_at
     }
   });
 }
+```
+
+### List connected accounts
+
+To retrieve the accounts a user has connected, get an access token for the My Account API and call the `/v1/connected-accounts/accounts` endpoint:
+
+```ts
+this.auth
+  .getAccessTokenSilently({
+    authorizationParams: {
+      audience: `https://YOUR_AUTH0_DOMAIN/me/`,
+      scope: 'read:me:connected_accounts',
+    },
+  })
+  .subscribe(async (token) => {
+    const res = await fetch(`https://YOUR_AUTH0_DOMAIN/me/v1/connected-accounts/accounts`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const { accounts } = await res.json();
+    // accounts contains: id, connection, access_type, scopes, created_at
+  });
 ```
 
 You can now call the API with your access token and the API can use [Access Token Exchange with Token Vault](https://auth0.com/docs/secure/tokens/token-vault/access-token-exchange-with-token-vault) to get tokens from the Token Vault to access third party APIs on behalf of the user.
