@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.7.0](https://github.com/auth0/auth0-angular/tree/v2.7.0) (2026-02-25)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.6.0...v2.7.0)
+
+**Added**
+
+- feat: add connected accounts callback handling [\#817](https://github.com/auth0/auth0-angular/pull/817) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.6.0](https://github.com/auth0/auth0-angular/tree/v2.6.0) (2026-02-05)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.5.0...v2.6.0)

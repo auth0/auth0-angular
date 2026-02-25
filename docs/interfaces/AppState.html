@@ -90,13 +90,34 @@
         </div>
         <section class="tsd-panel tsd-comment">
           <div class="tsd-comment tsd-typography">
-            <p>Angular specific state to be stored before redirect</p>
+            <p>
+              Angular specific state to be stored before redirect and any
+              account that the user may have connected to.
+            </p>
           </div>
         </section>
         <div class="tsd-signature">
           <span class="tsd-signature-keyword">interface</span>
           <span class="tsd-kind-interface">AppState</span>
           <span class="tsd-signature-symbol">{</span><br />    <a
+            class="tsd-kind-property"
+            href="#connectedaccount"
+            >connectedAccount</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <a
+            href="../types/ConnectedAccount.html"
+            class="tsd-signature-type tsd-kind-type-alias"
+            >ConnectedAccount</a
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#response_type"
+            >response_type</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <a
+            href="../enums/ResponseType.html"
+            class="tsd-signature-type tsd-kind-enum"
+            >ResponseType</a
+          ><span class="tsd-signature-symbol">;</span><br />    <a
             class="tsd-kind-property"
             href="#target"
             >target</a
@@ -137,8 +158,8 @@
             <li>
               Defined in
               <a
-                href="https://github.com/auth0/auth0-angular/blob/97f19c8f90db8df75b01ac557bcc589abafd5586/projects/auth0-angular/src/lib/auth.config.ts#L142"
-                >projects/auth0-angular/src/lib/auth.config.ts:142</a
+                href="https://github.com/auth0/auth0-angular/blob/a510f514c4ae37ecb348fd5e9bf3b15d126dbe1f/projects/auth0-angular/src/lib/auth.config.ts#L153"
+                >projects/auth0-angular/src/lib/auth.config.ts:153</a
               >
             </li>
           </ul>
@@ -162,6 +183,24 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
+                    <a href="#connectedaccount" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>connected<wbr />Account?</span></a
+                    >
+                    <a href="#response_type" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>response_<wbr />type?</span></a
+                    >
                     <a href="#target" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
@@ -192,6 +231,83 @@
           </summary>
           <section>
             <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="connectedaccount">
+                <code class="tsd-tag">Optional</code
+                ><span>connected<wbr />Account</span
+                ><a
+                  href="#connectedaccount"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">connectedAccount</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <a
+                  href="../types/ConnectedAccount.html"
+                  class="tsd-signature-type tsd-kind-type-alias"
+                  >ConnectedAccount</a
+                >
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  The connected account information when the user has completed
+                  a connect account flow.
+                </p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/auth0/auth0-angular/blob/a510f514c4ae37ecb348fd5e9bf3b15d126dbe1f/projects/auth0-angular/src/lib/auth.config.ts#L164"
+                      >projects/auth0-angular/src/lib/auth.config.ts:164</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="response_type">
+                <code class="tsd-tag">Optional</code
+                ><span>response_<wbr />type</span
+                ><a
+                  href="#response_type"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">response_type</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <a
+                  href="../enums/ResponseType.html"
+                  class="tsd-signature-type tsd-kind-enum"
+                  >ResponseType</a
+                >
+              </div>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  The response type returned from the authentication server.
+                </p>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/auth0/auth0-angular/blob/a510f514c4ae37ecb348fd5e9bf3b15d126dbe1f/projects/auth0-angular/src/lib/auth.config.ts#L169"
+                      >projects/auth0-angular/src/lib/auth.config.ts:169</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
               <h3 class="tsd-anchor-link" id="target">
                 <code class="tsd-tag">Optional</code><span>target</span
                 ><a
@@ -218,8 +334,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/auth0/auth0-angular/blob/97f19c8f90db8df75b01ac557bcc589abafd5586/projects/auth0-angular/src/lib/auth.config.ts#L147"
-                      >projects/auth0-angular/src/lib/auth.config.ts:147</a
+                      href="https://github.com/auth0/auth0-angular/blob/a510f514c4ae37ecb348fd5e9bf3b15d126dbe1f/projects/auth0-angular/src/lib/auth.config.ts#L158"
+                      >projects/auth0-angular/src/lib/auth.config.ts:158</a
                     >
                   </li>
                 </ul>
@@ -389,7 +505,23 @@
                   >Properties
                 </summary>
                 <div>
-                  <a href="#target"
+                  <a href="#connectedaccount"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>connected<wbr />Account</span></a
+                  ><a href="#response_type"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>response_<wbr />type</span></a
+                  ><a href="#target"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"

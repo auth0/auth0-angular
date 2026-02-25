@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>UseDpopNonceError | @auth0/auth0-angular</title>
+    <title>ConnectError | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/style.css" />
@@ -84,22 +84,26 @@
       <div class="col-content">
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
-            <li><a href="" aria-current="page">UseDpopNonceError</a></li>
+            <li><a href="" aria-current="page">ConnectError</a></li>
           </ul>
-          <h1>Class UseDpopNonceError</h1>
+          <h1>Class ConnectError</h1>
         </div>
         <section class="tsd-panel tsd-comment">
           <div class="tsd-comment tsd-typography">
             <p>
-              Error thrown when the wrong DPoP nonce is used and a potential
-              subsequent retry wasn't able to fix it.
+              Thrown when handling the redirect callback for the connect flow
+              fails, will be one of Auth0's Authentication API's Standard Error
+              Responses:
+              <a
+                href="https://auth0.com/docs/api/authentication?javascript#standard-error-responses"
+                >https://auth0.com/docs/api/authentication?javascript#standard-error-responses</a
+              >
             </p>
           </div>
         </section>
-        <section class="tsd-panel tsd-hierarchy" data-refl="732">
+        <section class="tsd-panel tsd-hierarchy" data-refl="629">
           <h4>
-            Hierarchy (<a href="../hierarchy.html#UseDpopNonceError"
-              >View Summary</a
+            Hierarchy (<a href="../hierarchy.html#ConnectError">View Summary</a
             >)
           </h4>
           <ul class="tsd-hierarchy">
@@ -111,7 +115,7 @@
               >
               <ul class="tsd-hierarchy">
                 <li class="tsd-hierarchy-item">
-                  <span class="tsd-hierarchy-target">UseDpopNonceError</span>
+                  <span class="tsd-hierarchy-target">ConnectError</span>
                 </li>
               </ul>
             </li>
@@ -121,7 +125,7 @@
           <ul>
             <li>
               Defined in
-              node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:93
+              node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:39
             </li>
           </ul>
         </aside>
@@ -160,6 +164,24 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
+                    <a href="#appstate" class="tsd-index-link tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>app<wbr />State</span></a
+                    >
+                    <a href="#connection" class="tsd-index-link tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>connection</span></a
+                    >
                     <a
                       href="#error"
                       class="tsd-index-link tsd-is-inherited tsd-is-external"
@@ -205,17 +227,6 @@
                       ><span>name</span></a
                     >
                     <a
-                      href="#newdpopnonce"
-                      class="tsd-index-link tsd-is-external"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Property"
-                      >
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>new<wbr />Dpop<wbr />Nonce</span></a
-                    >
-                    <a
                       href="#stack"
                       class="tsd-index-link tsd-is-inherited tsd-is-external"
                       ><svg
@@ -225,6 +236,15 @@
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>stack?</span></a
+                    >
+                    <a href="#state" class="tsd-index-link tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>state</span></a
                     >
                     <a
                       href="#stacktracelimit"
@@ -313,23 +333,44 @@
                 <li class="tsd-is-external">
                   <div
                     class="tsd-signature tsd-anchor-link"
-                    id="constructorusedpopnonceerror"
+                    id="constructorconnecterror"
                   >
                     <span class="tsd-signature-keyword">new</span>
                     <span class="tsd-kind-constructor-signature"
-                      >UseDpopNonceError</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">newDpopNonce</span
+                      >ConnectError</span
+                    ><span class="tsd-signature-symbol">(</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >error</span
                     ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">string</span>
-                    <span class="tsd-signature-symbol">|</span>
-                    <span class="tsd-signature-type">undefined</span
-                    ><span class="tsd-signature-symbol">)</span
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >error_description</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >connection</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >state</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >appState</span
+                    ><span class="tsd-signature-symbol">?:</span>
+                    <span class="tsd-signature-type">any</span
+                    ><span class="tsd-signature-symbol">,</span><br /><span
+                      class="tsd-signature-symbol"
+                      >)</span
                     ><span class="tsd-signature-symbol">:</span>
                     <a href="" class="tsd-signature-type tsd-kind-class"
-                      >UseDpopNonceError</a
+                      >ConnectError</a
                     ><a
-                      href="#constructorusedpopnonceerror"
+                      href="#constructorconnecterror"
                       aria-label="Permalink"
                       class="tsd-anchor-icon"
                       ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -342,12 +383,35 @@
                       <ul class="tsd-parameter-list">
                         <li>
                           <span
-                            ><span class="tsd-kind-parameter">newDpopNonce</span
-                            >: <span class="tsd-signature-type">string</span>
-                            <span class="tsd-signature-symbol">|</span>
-                            <span class="tsd-signature-type"
-                              >undefined</span
-                            ></span
+                            ><span class="tsd-kind-parameter">error</span>:
+                            <span class="tsd-signature-type">string</span></span
+                          >
+                        </li>
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter"
+                              >error_description</span
+                            >:
+                            <span class="tsd-signature-type">string</span></span
+                          >
+                        </li>
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">connection</span>:
+                            <span class="tsd-signature-type">string</span></span
+                          >
+                        </li>
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">state</span>:
+                            <span class="tsd-signature-type">string</span></span
+                          >
+                        </li>
+                        <li>
+                          <span
+                            ><code class="tsd-tag">Optional</code
+                            ><span class="tsd-kind-parameter">appState</span>:
+                            <span class="tsd-signature-type">any</span></span
                           >
                         </li>
                       </ul>
@@ -355,7 +419,7 @@
                     <h4 class="tsd-returns-title">
                       Returns
                       <a href="" class="tsd-signature-type tsd-kind-class"
-                        >UseDpopNonceError</a
+                        >ConnectError</a
                       >
                     </h4>
                     <aside class="tsd-sources">
@@ -369,7 +433,7 @@
                       <ul>
                         <li>
                           Defined in
-                          node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:95
+                          node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:43
                         </li>
                       </ul>
                     </aside>
@@ -393,6 +457,56 @@
             <h2>Properties</h2>
           </summary>
           <section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="appstate">
+                <span>app<wbr />State</span
+                ><a
+                  href="#appstate"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">appState</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">any</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:42
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="connection">
+                <span>connection</span
+                ><a
+                  href="#connection"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">connection</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:40
+                  </li>
+                </ul>
+              </aside>
+            </section>
             <section
               class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
             >
@@ -517,33 +631,6 @@
                 </ul>
               </aside>
             </section>
-            <section class="tsd-panel tsd-member tsd-is-external">
-              <h3 class="tsd-anchor-link" id="newdpopnonce">
-                <span>new<wbr />Dpop<wbr />Nonce</span
-                ><a
-                  href="#newdpopnonce"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">newDpopNonce</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">string</span>
-                <span class="tsd-signature-symbol">|</span>
-                <span class="tsd-signature-type">undefined</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:94
-                  </li>
-                </ul>
-              </aside>
-            </section>
             <section
               class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
             >
@@ -569,6 +656,28 @@
                 <ul>
                   <li>
                     Defined in node_modules/typescript/lib/lib.es5.d.ts:1078
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-external">
+              <h3 class="tsd-anchor-link" id="state">
+                <span>state</span
+                ><a href="#state" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">state</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@auth0/auth0-spa-js/dist/typings/errors.d.ts:41
                   </li>
                 </ul>
               </aside>
@@ -1142,7 +1251,23 @@
                   >Properties
                 </summary>
                 <div>
-                  <a href="#error" class="tsd-is-inherited tsd-is-external"
+                  <a href="#appstate" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>app<wbr />State</span></a
+                  ><a href="#connection" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>connection</span></a
+                  ><a href="#error" class="tsd-is-inherited tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
@@ -1176,14 +1301,6 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>name</span></a
-                  ><a href="#newdpopnonce" class="tsd-is-external"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Property"
-                    >
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>new<wbr />Dpop<wbr />Nonce</span></a
                   ><a href="#stack" class="tsd-is-inherited tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
@@ -1192,6 +1309,14 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>stack</span></a
+                  ><a href="#state" class="tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>state</span></a
                   ><a
                     href="#stacktracelimit"
                     class="tsd-is-inherited tsd-is-external"
