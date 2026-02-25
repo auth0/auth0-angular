@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>isHttpInterceptorRouteConfig | @auth0/auth0-angular</title>
+    <title>ConnectAccountRedirectResult | @auth0/auth0-angular</title>
     <meta name="description" content="Documentation for @auth0/auth0-angular" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/style.css" />
@@ -85,95 +85,123 @@
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
             <li>
-              <a href="" aria-current="page">isHttpInterceptorRouteConfig</a>
+              <a href="" aria-current="page">ConnectAccountRedirectResult</a>
             </li>
           </ul>
-          <h1>Function isHttpInterceptorRouteConfig</h1>
+          <h1>Type Alias ConnectAccountRedirectResult&lt;TAppState&gt;</h1>
+        </div>
+        <div class="tsd-signature">
+          <span class="tsd-kind-type-alias">ConnectAccountRedirectResult</span
+          ><span class="tsd-signature-symbol">:</span>
+          <span class="tsd-signature-type">CompleteResponse</span>
+          <span class="tsd-signature-symbol">&amp;</span>
+          <span class="tsd-signature-symbol">{</span><br />    <span
+            class="tsd-kind-property"
+            >appState</span
+          ><span class="tsd-signature-symbol">?:</span>
+          <a
+            class="tsd-signature-type tsd-kind-type-parameter"
+            href="#tappstate"
+            >TAppState</a
+          ><span class="tsd-signature-symbol">;</span><br />    <span
+            class="tsd-kind-property"
+            >response_type</span
+          ><span class="tsd-signature-symbol">:</span>
+          <a
+            href="../enums/ResponseType.html#connectcode"
+            class="tsd-signature-type tsd-kind-enum-member"
+            >ConnectCode</a
+          ><span class="tsd-signature-symbol">;</span><br /><span
+            class="tsd-signature-symbol"
+            >}</span
+          >
+        </div>
+        <div class="tsd-comment tsd-typography">
+          <p>
+            The result returned after a successful account connection redirect.
+          </p>
+          <p>
+            Combines the redirect login result (including any persisted app
+            state) with the complete response from the My Account API.
+          </p>
         </div>
         <section class="tsd-panel">
-          <ul class="tsd-signatures">
-            <li class="">
-              <div
-                class="tsd-signature tsd-anchor-link"
-                id="ishttpinterceptorrouteconfig"
+          <h4>Type Parameters</h4>
+          <ul class="tsd-type-parameter-list">
+            <li>
+              <span id="tappstate"
+                ><span class="tsd-kind-type-parameter">TAppState</span> =
+                <span class="tsd-signature-type">any</span></span
               >
-                <span class="tsd-kind-call-signature"
-                  >isHttpInterceptorRouteConfig</span
-                ><span class="tsd-signature-symbol">(</span><br />    <span
-                  class="tsd-kind-parameter"
-                  >def</span
-                ><span class="tsd-signature-symbol">:</span>
-                <a
-                  href="../types/ApiRouteDefinition.html"
-                  class="tsd-signature-type tsd-kind-type-alias"
-                  >ApiRouteDefinition</a
-                ><span class="tsd-signature-symbol">,</span><br /><span
-                  class="tsd-signature-symbol"
-                  >)</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-kind-parameter">def</span>
-                <span class="tsd-signature-keyword">is</span>
-                <a
-                  href="../interfaces/HttpInterceptorRouteConfig.html"
-                  class="tsd-signature-type tsd-kind-interface"
-                  >HttpInterceptorRouteConfig</a
-                ><a
-                  href="#ishttpinterceptorrouteconfig"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </div>
-              <div class="tsd-description">
-                <div class="tsd-comment tsd-typography">
-                  <p>
-                    A custom type guard to help identify route definitions that
-                    are actually HttpInterceptorRouteConfig types.
-                  </p>
-                </div>
-                <div class="tsd-parameters">
-                  <h4 class="tsd-parameters-title">Parameters</h4>
-                  <ul class="tsd-parameter-list">
-                    <li>
-                      <span
-                        ><span class="tsd-kind-parameter">def</span>:
-                        <a
-                          href="../types/ApiRouteDefinition.html"
-                          class="tsd-signature-type tsd-kind-type-alias"
-                          >ApiRouteDefinition</a
-                        ></span
-                      >
-                      <div class="tsd-comment tsd-typography">
-                        <p>The route definition type</p>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <h4 class="tsd-returns-title">
-                  Returns <span class="tsd-kind-parameter">def</span>
-                  <span class="tsd-signature-keyword">is</span>
-                  <a
-                    href="../interfaces/HttpInterceptorRouteConfig.html"
-                    class="tsd-signature-type tsd-kind-interface"
-                    >HttpInterceptorRouteConfig</a
-                  >
-                </h4>
-                <aside class="tsd-sources">
-                  <ul>
-                    <li>
-                      Defined in
-                      <a
-                        href="https://github.com/auth0/auth0-angular/blob/a510f514c4ae37ecb348fd5e9bf3b15d126dbe1f/projects/auth0-angular/src/lib/auth.config.ts#L37"
-                        >projects/auth0-angular/src/lib/auth.config.ts:37</a
-                      >
-                    </li>
-                  </ul>
-                </aside>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  The type of application state persisted through the
+                  transaction.
+                </p>
               </div>
             </li>
           </ul>
         </section>
+        <div class="tsd-type-declaration">
+          <h4>Type Declaration</h4>
+          <ul class="tsd-parameters">
+            <li class="tsd-parameter">
+              <h5>
+                <code class="tsd-tag">Optional</code
+                ><span class="tsd-kind-property">appState</span
+                ><span class="tsd-signature-symbol">?: </span
+                ><a
+                  class="tsd-signature-type tsd-kind-type-parameter"
+                  href="#tappstate"
+                  >TAppState</a
+                >
+              </h5>
+              <div class="tsd-comment tsd-typography">
+                <p>State stored when the redirect request was made</p>
+              </div>
+            </li>
+            <li class="tsd-parameter">
+              <h5>
+                <span class="tsd-kind-property">response_type</span
+                ><span class="tsd-signature-symbol">: </span
+                ><a
+                  href="../enums/ResponseType.html#connectcode"
+                  class="tsd-signature-type tsd-kind-enum-member"
+                  >ConnectCode</a
+                >
+              </h5>
+              <div class="tsd-comment tsd-typography">
+                <p>
+                  The type of response, for connect account it will be
+                  <code>connect_code</code>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="tsd-comment tsd-typography">
+          <div class="tsd-tag-example">
+            <h4 class="tsd-anchor-link" id="example">
+              Example<a
+                href="#example"
+                aria-label="Permalink"
+                class="tsd-anchor-icon"
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../assets/icons.svg#icon-anchor"></use></svg
+              ></a>
+            </h4>
+            <pre><code class="ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">result</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">auth0</span><span class="hl-1">.</span><span class="hl-0">connectAccountWithRedirect</span><span class="hl-1">(</span><span class="hl-4">options</span><span class="hl-1">);</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-4">result</span><span class="hl-1">.</span><span class="hl-4">appState</span><span class="hl-1">); </span><span class="hl-8">// Access persisted app state</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-4">result</span><span class="hl-1">.</span><span class="hl-4">connection</span><span class="hl-1">);   </span><span class="hl-8">// The connection of the account you connected to.</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-4">result</span><span class="hl-1">.</span><span class="hl-4">response_type</span><span class="hl-1"> === </span><span class="hl-2">&#39;connect_code&#39;</span><span class="hl-1">);   </span><span class="hl-8">// The response type will be &#39;connect_code&#39;</span>
+</code><button type="button">Copy</button></pre>
+          </div>
+        </div>
+        <aside class="tsd-sources">
+          <ul>
+            <li>
+              Defined in
+              node_modules/@auth0/auth0-spa-js/dist/typings/global.d.ts:621
+            </li>
+          </ul>
+        </aside>
       </div>
       <div class="col-sidebar">
         <div class="page-menu">
