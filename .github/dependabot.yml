@@ -7,12 +7,19 @@ updates:
     groups:
       angular:
         patterns:
-          - "@angular*"
+          - '@angular*'
         update-types:
-          - "minor"
+          - 'minor'
     ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+  - package-ecosystem: 'npm'
+    directory: '/projects/auth0-angular'
+    schedule:
+      interval: 'daily'
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
