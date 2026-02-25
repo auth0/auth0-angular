@@ -1143,7 +1143,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('should add response_type to appState for regular login', (done) => {
+    it('should preserve appState as-is for regular login', (done) => {
       const appState = {
         myValue: 'State to Preserve',
       };
@@ -1158,10 +1158,7 @@ describe('AuthService', () => {
       const localService = createService();
       localService.handleRedirectCallback().subscribe(() => {
         localService.appState$.subscribe((receivedState) => {
-          expect(receivedState).toEqual({
-            ...appState,
-            response_type: ResponseType.Code,
-          });
+          expect(receivedState).toEqual(appState);
           done();
         });
       });

@@ -391,18 +391,16 @@ export class AuthService<TAppState extends AppState = AppState>
         if (!isLoading) {
           this.authState.refresh();
         }
-        const { appState = {} as TAppState, response_type, ...rest } = result;
+        const { appState, response_type, ...rest } = result;
         const target = appState?.target ?? '/';
 
-        // Add response_type to appState
-        appState.response_type = response_type;
-
-        // If this is a connect account flow, add the connected account data to appState
         if (response_type === ResponseType.ConnectCode) {
-          appState.connectedAccount = rest as ConnectedAccount;
-        }
-
-        if (appState) {
+          this.appStateSubject$.next({
+            ...(appState ?? {}),
+            response_type,
+            connectedAccount: rest as ConnectedAccount,
+          } as TAppState);
+        } else if (appState) {
           this.appStateSubject$.next(appState);
         }
 
