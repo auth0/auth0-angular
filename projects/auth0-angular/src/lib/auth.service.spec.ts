@@ -1,7 +1,12 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Auth0ClientService } from './auth.client';
-import { Auth0Client, IdToken } from '@auth0/auth0-spa-js';
+import {
+  Auth0Client,
+  IdToken,
+  ResponseType,
+  ConnectAccountRedirectResult,
+} from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import {
   bufferCount,
@@ -60,6 +65,7 @@ describe('AuthService', () => {
 
     jest.spyOn(auth0Client, 'handleRedirectCallback').mockResolvedValue({
       appState: undefined,
+      response_type: ResponseType.Code,
     } as any);
     jest.spyOn(auth0Client, 'loginWithRedirect').mockResolvedValue();
     jest.spyOn(auth0Client, 'connectAccountWithRedirect').mockResolvedValue();
@@ -505,6 +511,16 @@ describe('AuthService', () => {
 
     it('should handle the callback when code and state are available', (done) => {
       mockWindow.location.search = '?code=123&state=456';
+      const localService = createService();
+
+      loaded(localService).subscribe(() => {
+        expect(auth0Client.handleRedirectCallback).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+    it('should handle the callback when connect_code and state are available', (done) => {
+      mockWindow.location.search = '?connect_code=123&state=456';
       const localService = createService();
 
       loaded(localService).subscribe(() => {
@@ -1122,6 +1138,87 @@ describe('AuthService', () => {
       localService.handleRedirectCallback().subscribe(() => {
         localService.appState$.subscribe((recievedState) => {
           expect(recievedState).toEqual(appState);
+          done();
+        });
+      });
+    });
+
+    it('should preserve appState as-is for regular login', (done) => {
+      const appState = {
+        myValue: 'State to Preserve',
+      };
+
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockResolvedValue({
+        appState,
+        response_type: ResponseType.Code,
+      });
+
+      const localService = createService();
+      localService.handleRedirectCallback().subscribe(() => {
+        localService.appState$.subscribe((receivedState) => {
+          expect(receivedState).toEqual(appState);
+          done();
+        });
+      });
+    });
+
+    it('should extract connected account data when response_type is ConnectCode', (done) => {
+      const appState = {
+        myValue: 'State to Preserve',
+      };
+
+      const connectedAccount = {
+        id: 'abc123',
+        connection: 'google-oauth2',
+        access_type: 'offline' as ConnectAccountRedirectResult['access_type'],
+        created_at: '2024-01-01T00:00:00.000Z',
+        expires_at: '2024-01-02T00:00:00.000Z',
+      };
+
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockResolvedValue({
+        appState,
+        response_type: ResponseType.ConnectCode,
+        ...connectedAccount,
+      });
+
+      const localService = createService();
+      localService.handleRedirectCallback().subscribe(() => {
+        localService.appState$.subscribe((receivedState) => {
+          expect(receivedState).toEqual({
+            ...appState,
+            response_type: ResponseType.ConnectCode,
+            connectedAccount,
+          });
+          done();
+        });
+      });
+    });
+
+    it('should handle connected account redirect without initial appState', (done) => {
+      const connectedAccount = {
+        id: 'xyz789',
+        connection: 'github',
+        access_type: 'offline' as ConnectAccountRedirectResult['access_type'],
+        created_at: '2024-02-01T00:00:00.000Z',
+        expires_at: '2024-02-02T00:00:00.000Z',
+      };
+
+      (
+        auth0Client.handleRedirectCallback as unknown as jest.SpyInstance
+      ).mockResolvedValue({
+        response_type: ResponseType.ConnectCode,
+        ...connectedAccount,
+      });
+
+      const localService = createService();
+      localService.handleRedirectCallback().subscribe(() => {
+        localService.appState$.subscribe((receivedState) => {
+          expect(receivedState.response_type).toBe(ResponseType.ConnectCode);
+          expect(receivedState.connectedAccount).toEqual(connectedAccount);
           done();
         });
       });
