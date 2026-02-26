@@ -30,7 +30,7 @@
     "@angular/compiler": "^19.2.18",
     "@angular/core": "^19.2.18",
     "@angular/platform-browser": "^19.2.18",
-    "@angular/platform-browser-dynamic": "^19.2.18",
+    "@angular/platform-browser-dynamic": "^19.2.19",
     "@angular/router": "^19.2.18",
     "@auth0/auth0-spa-js": "^2.17.0",
     "rxjs": "^6.6.7",
