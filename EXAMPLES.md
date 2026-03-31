@@ -13,6 +13,7 @@
 - [Device-bound tokens with DPoP](#device-bound-tokens-with-dpop)
 - [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 - [Connect Accounts for using Token Vault](#connect-accounts-for-using-token-vault)
+- [Native to Web SSO](#native-to-web-sso)
 
 ## Add login to your application
 
@@ -948,3 +949,62 @@ You can now call the API with your access token and the API can use [Access Toke
 > **Important**
 >
 > You must enable Offline Access from the Connection Permissions settings to be able to use the connection with Connected Accounts.
+
+## Native to Web SSO
+
+[Native to Web SSO](https://auth0.com/docs/authenticate/single-sign-on/native-to-web) enables seamless single sign-on when users transition from a native mobile app to a web app. The SDK can automatically extract a session transfer token from the URL and include it in the authorization request.
+
+The feature is **disabled by default**. To enable it, set `sessionTransferTokenQueryParamName` in the SDK configuration with the name of the query parameter your native app appends to the web app URL:
+
+```ts
+AuthModule.forRoot({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+  },
+  sessionTransferTokenQueryParamName: 'session_transfer_token',
+}),
+```
+
+Or using `provideAuth0`:
+
+```ts
+provideAuth0({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+  },
+  sessionTransferTokenQueryParamName: 'session_transfer_token',
+}),
+```
+
+When the web app is opened with `?session_transfer_token=xyz` in the URL, the SDK extracts the token, includes it in the `/authorize` request, and removes it from the URL via `window.history.replaceState()`.
+
+### Using a custom parameter name
+
+If your native app uses a different query parameter name, configure that name instead. The token is always forwarded to Auth0 as `session_transfer_token` regardless:
+
+```ts
+AuthModule.forRoot({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+  },
+  sessionTransferTokenQueryParamName: 'stt',
+}),
+```
+
+### Manually providing the session transfer token
+
+You can pass the token directly via `authorizationParams`. This takes precedence over automatic URL detection:
+
+```ts
+this.auth.loginWithRedirect({
+  authorizationParams: {
+    session_transfer_token: 'YOUR_SESSION_TRANSFER_TOKEN',
+  },
+});
+```
