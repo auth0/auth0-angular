@@ -1,5 +1,16 @@
 # Change Log
 
+## [v2.8.0](https://github.com/auth0/auth0-angular/tree/v2.8.0) (2026-03-31)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.7.0...v2.8.0)
+
+**Changed**
+
+- build(deps): bump @auth0/auth0-spa-js from 2.18.2 to 2.18.3 [\#878](https://github.com/auth0/auth0-angular/pull/878) ([dependabot[bot]](https://github.com/apps/dependabot))
+- build(deps): bump @auth0/auth0-spa-js from 2.18.0 to 2.18.2 [\#872](https://github.com/auth0/auth0-angular/pull/872) ([dependabot[bot]](https://github.com/apps/dependabot))
+- build(deps): bump @auth0/auth0-spa-js from 2.17.1 to 2.18.0 [\#865](https://github.com/auth0/auth0-angular/pull/865) ([dependabot[bot]](https://github.com/apps/dependabot))
+- build(deps): bump @auth0/auth0-spa-js from 2.17.0 to 2.17.1 [\#860](https://github.com/auth0/auth0-angular/pull/860) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v2.7.0](https://github.com/auth0/auth0-angular/tree/v2.7.0) (2026-02-25)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.6.0...v2.7.0)
