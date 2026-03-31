@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.7.0...v2.8.0)
 
+**Added**
+
+- Native to Web SSO support (via [auth0-spa-js v2.18.0](https://github.com/auth0/auth0-spa-js/releases/tag/v2.18.0))
+
 **Changed**
 
 - build(deps): bump @auth0/auth0-spa-js from 2.18.2 to 2.18.3 [\#878](https://github.com/auth0/auth0-angular/pull/878) ([dependabot[bot]](https://github.com/apps/dependabot))
