@@ -27,4 +27,4 @@ runs:
 
     - name: Update npm to version 11
       shell: bash
-      run: npm install -g npm@11
+      run: npm install -g npm@11.10.0
