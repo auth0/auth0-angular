@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.8.1](https://github.com/auth0/auth0-angular/tree/v2.8.1) (2026-04-17)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.8.0...v2.8.1)
+
+**Changed**
+
+- chore(deps): bump @auth0/auth0-spa-js from 2.11.0 to 2.19.2 [\#907](https://github.com/auth0/auth0-angular/pull/907) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.8.0](https://github.com/auth0/auth0-angular/tree/v2.8.0) (2026-03-31)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.7.0...v2.8.0)

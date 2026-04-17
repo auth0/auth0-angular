@@ -1565,13 +1565,9 @@ window.translations = {
               var i = 'expecting term, found nothing';
               throw new t.QueryParseError(i, n.start, n.end);
             }
-            switch (s.type) {
-              case t.QueryLexer.TERM:
-                return t.QueryParser.parseTerm;
-              default:
-                var i = "expecting term, found '" + s.type + "'";
-                throw new t.QueryParseError(i, s.start, s.end);
-            }
+            if (s.type === t.QueryLexer.TERM) return t.QueryParser.parseTerm;
+            var i = "expecting term, found '" + s.type + "'";
+            throw new t.QueryParseError(i, s.start, s.end);
           }
         }),
         (t.QueryParser.parseTerm = function (e) {
