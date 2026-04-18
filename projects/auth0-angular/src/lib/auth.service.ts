@@ -17,6 +17,11 @@ import {
   TokenEndpointResponse,
   ResponseType,
 } from '@auth0/auth0-spa-js';
+import type {
+  EnrollParams,
+  ChallengeAuthenticatorParams,
+  VerifyParams,
+} from '@auth0/auth0-spa-js';
 
 import {
   of,
@@ -43,7 +48,11 @@ import { Auth0ClientService } from './auth.client';
 import { AbstractNavigator } from './abstract-navigator';
 import { AuthClientConfig, AppState, ConnectedAccount } from './auth.config';
 import { AuthState } from './auth.state';
-import { LogoutOptions, RedirectLoginOptions } from './interfaces';
+import {
+  LogoutOptions,
+  ObservableMfaApiClient,
+  RedirectLoginOptions,
+} from './interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -483,6 +492,23 @@ export class AuthService<TAppState extends AppState = AppState>
   ): Fetcher<TOutput> {
     return this.auth0Client.createFetcher(config);
   }
+
+  /**
+   * Provides MFA (Multi-Factor Authentication) operations as Observables.
+   *
+   * These methods are available after `getAccessTokenSilently` throws an `MfaRequiredError`.
+   * Use the `mfa_token` from the error to call these methods.
+   */
+  readonly mfa: ObservableMfaApiClient = {
+    getAuthenticators: (mfaToken: string) =>
+      from(this.auth0Client.mfa.getAuthenticators(mfaToken)),
+    enroll: (params: EnrollParams) => from(this.auth0Client.mfa.enroll(params)),
+    challenge: (params: ChallengeAuthenticatorParams) =>
+      from(this.auth0Client.mfa.challenge(params)),
+    getEnrollmentFactors: (mfaToken: string) =>
+      from(this.auth0Client.mfa.getEnrollmentFactors(mfaToken)),
+    verify: (params: VerifyParams) => from(this.auth0Client.mfa.verify(params)),
+  };
 
   private shouldHandleCallback(): Observable<boolean> {
     return of(location.search).pipe(

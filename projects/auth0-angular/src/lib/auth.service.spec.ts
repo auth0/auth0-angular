@@ -101,6 +101,29 @@ describe('AuthService', () => {
       fetch: jest.fn(),
     } as any);
 
+    jest
+      .spyOn(auth0Client.mfa, 'getAuthenticators')
+      .mockResolvedValue([
+        { id: 'auth-1', authenticatorType: 'otp', active: true },
+      ]);
+    jest.spyOn(auth0Client.mfa, 'enroll').mockResolvedValue({
+      authenticatorType: 'otp',
+      secret: '__totp_secret__',
+      barcodeUri: '__barcode_uri__',
+    });
+    jest.spyOn(auth0Client.mfa, 'challenge').mockResolvedValue({
+      challengeType: 'otp',
+    });
+    jest
+      .spyOn(auth0Client.mfa, 'getEnrollmentFactors')
+      .mockResolvedValue([{ type: 'otp' }]);
+    jest.spyOn(auth0Client.mfa, 'verify').mockResolvedValue({
+      access_token: '__mfa_access_token__',
+      id_token: '__mfa_id_token__',
+      token_type: 'Bearer',
+      expires_in: 86400,
+    });
+
     window.history.replaceState(null, '', '');
 
     moduleSetup = {
@@ -1326,6 +1349,223 @@ describe('AuthService', () => {
       };
       service.createFetcher(config);
       expect(auth0Client.createFetcher).toHaveBeenCalledWith(config);
+    });
+  });
+
+  describe('mfa', () => {
+    describe('getAuthenticators', () => {
+      it('should call the underlying SDK', (done) => {
+        const service = createService();
+        const mfaToken = '__mfa_token__';
+
+        service.mfa.getAuthenticators(mfaToken).subscribe(() => {
+          expect(auth0Client.mfa.getAuthenticators).toHaveBeenCalledWith(
+            mfaToken
+          );
+          done();
+        });
+      });
+
+      it('should return the list of authenticators', (done) => {
+        const service = createService();
+
+        service.mfa.getAuthenticators('__mfa_token__').subscribe((result) => {
+          expect(result).toEqual([
+            { id: 'auth-1', authenticatorType: 'otp', active: true },
+          ]);
+          done();
+        });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('getAuthenticators failed');
+        (
+          auth0Client.mfa.getAuthenticators as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.mfa.getAuthenticators('__mfa_token__').subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('enroll', () => {
+      it('should call the underlying SDK', (done) => {
+        const service = createService();
+        const params = {
+          mfaToken: '__mfa_token__',
+          factorType: 'otp' as const,
+        };
+
+        service.mfa.enroll(params).subscribe(() => {
+          expect(auth0Client.mfa.enroll).toHaveBeenCalledWith(params);
+          done();
+        });
+      });
+
+      it('should return the enrollment response', (done) => {
+        const service = createService();
+
+        service.mfa
+          .enroll({ mfaToken: '__mfa_token__', factorType: 'otp' })
+          .subscribe((result) => {
+            expect(result).toEqual({
+              authenticatorType: 'otp',
+              secret: '__totp_secret__',
+              barcodeUri: '__barcode_uri__',
+            });
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('enroll failed');
+        (
+          auth0Client.mfa.enroll as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.mfa
+          .enroll({ mfaToken: '__mfa_token__', factorType: 'otp' })
+          .subscribe({
+            error: (err: Error) => {
+              expect(err).toBe(errorObj);
+              done();
+            },
+          });
+      });
+    });
+
+    describe('challenge', () => {
+      it('should call the underlying SDK', (done) => {
+        const service = createService();
+        const params = {
+          mfaToken: '__mfa_token__',
+          challengeType: 'otp' as const,
+        };
+
+        service.mfa.challenge(params).subscribe(() => {
+          expect(auth0Client.mfa.challenge).toHaveBeenCalledWith(params);
+          done();
+        });
+      });
+
+      it('should return the challenge response', (done) => {
+        const service = createService();
+
+        service.mfa
+          .challenge({ mfaToken: '__mfa_token__', challengeType: 'otp' })
+          .subscribe((result) => {
+            expect(result).toEqual({ challengeType: 'otp' });
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('challenge failed');
+        (
+          auth0Client.mfa.challenge as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.mfa
+          .challenge({ mfaToken: '__mfa_token__', challengeType: 'otp' })
+          .subscribe({
+            error: (err: Error) => {
+              expect(err).toBe(errorObj);
+              done();
+            },
+          });
+      });
+    });
+
+    describe('getEnrollmentFactors', () => {
+      it('should call the underlying SDK', (done) => {
+        const service = createService();
+        const mfaToken = '__mfa_token__';
+
+        service.mfa.getEnrollmentFactors(mfaToken).subscribe(() => {
+          expect(auth0Client.mfa.getEnrollmentFactors).toHaveBeenCalledWith(
+            mfaToken
+          );
+          done();
+        });
+      });
+
+      it('should return the enrollment factors', (done) => {
+        const service = createService();
+
+        service.mfa
+          .getEnrollmentFactors('__mfa_token__')
+          .subscribe((result) => {
+            expect(result).toEqual([{ type: 'otp' }]);
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('getEnrollmentFactors failed');
+        (
+          auth0Client.mfa.getEnrollmentFactors as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.mfa.getEnrollmentFactors('__mfa_token__').subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('verify', () => {
+      it('should call the underlying SDK', (done) => {
+        const service = createService();
+        const params = { mfaToken: '__mfa_token__', otp: '123456' };
+
+        service.mfa.verify(params).subscribe(() => {
+          expect(auth0Client.mfa.verify).toHaveBeenCalledWith(params);
+          done();
+        });
+      });
+
+      it('should return the token response', (done) => {
+        const service = createService();
+
+        service.mfa
+          .verify({ mfaToken: '__mfa_token__', otp: '123456' })
+          .subscribe((result) => {
+            expect(result).toEqual({
+              access_token: '__mfa_access_token__',
+              id_token: '__mfa_id_token__',
+              token_type: 'Bearer',
+              expires_in: 86400,
+            });
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('verify failed');
+        (
+          auth0Client.mfa.verify as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.mfa
+          .verify({ mfaToken: '__mfa_token__', otp: '123456' })
+          .subscribe({
+            error: (err: Error) => {
+              expect(err).toBe(errorObj);
+              done();
+            },
+          });
+      });
     });
   });
 });
