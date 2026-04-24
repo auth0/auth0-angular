@@ -1223,11 +1223,12 @@ export class ChallengeComponent {
 
 ### Verifying Challenges
 
-> [!IMPORTANT] > `verify()` does not update Angular auth state (`isAuthenticated$`, `user$`). Call `getAccessTokenSilently()` after a successful verification to reflect the new session in the UI.
+> [!IMPORTANT] > `verify()` does not update Angular auth state (`isAuthenticated$`, `user$`). Always chain `getAccessTokenSilently()` after a successful verification to reflect the new session in the UI.
 
 ```ts
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { switchMap, tap } from 'rxjs';
 
 @Component({ selector: 'app-verify', template: '' })
 export class VerifyComponent {
@@ -1235,23 +1236,39 @@ export class VerifyComponent {
 
   // Verify with OTP code (TOTP authenticator app)
   verifyOtp(mfaToken: string, otp: string) {
-    this.auth.mfa.verify({ mfaToken, otp }).subscribe((tokens) => {
-      console.log('Access token:', tokens.access_token);
-    });
+    this.auth.mfa
+      .verify({ mfaToken, otp })
+      .pipe(
+        switchMap(() => this.auth.getAccessTokenSilently()) // refresh isAuthenticated$, user$
+      )
+      .subscribe();
   }
 
   // Verify with OOB code (SMS / Voice / Email / Push)
   verifyOob(mfaToken: string, oobCode: string, bindingCode?: string) {
-    this.auth.mfa.verify({ mfaToken, oobCode, bindingCode }).subscribe((tokens) => {
-      console.log('Access token:', tokens.access_token);
-    });
+    this.auth.mfa
+      .verify({ mfaToken, oobCode, bindingCode })
+      .pipe(
+        switchMap(() => this.auth.getAccessTokenSilently()) // refresh isAuthenticated$, user$
+      )
+      .subscribe();
   }
 
   // Verify with recovery code (fallback for any authenticator)
+  // When a recovery code is consumed, Auth0 may return a replacement recovery_code
+  // in the response. Prompt the user to save it — losing the new code locks them out.
   verifyRecoveryCode(mfaToken: string, recoveryCode: string) {
-    this.auth.mfa.verify({ mfaToken, recoveryCode }).subscribe((tokens) => {
-      console.log('Access token:', tokens.access_token);
-    });
+    this.auth.mfa
+      .verify({ mfaToken, recoveryCode })
+      .pipe(
+        tap((tokens) => {
+          if (tokens.recovery_code) {
+            console.warn('Save your new recovery code:', tokens.recovery_code);
+          }
+        }),
+        switchMap(() => this.auth.getAccessTokenSilently()) // refresh isAuthenticated$, user$
+      )
+      .subscribe();
   }
 }
 ```

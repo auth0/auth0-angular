@@ -1566,6 +1566,30 @@ describe('AuthService', () => {
             },
           });
       });
+
+      it('should not update isAuthenticated$ or user$ after a successful verify', (done) => {
+        // verify() intentionally does not update Angular auth state — callers must
+        // follow up with getAccessTokenSilently() to reflect the new MFA session.
+        const service = createService();
+        let isAuthEmissions = 0;
+        let userEmissions = 0;
+
+        service.isAuthenticated$.subscribe(() => isAuthEmissions++);
+        service.user$.subscribe(() => userEmissions++);
+
+        loaded(service)
+          .pipe(
+            mergeMap(() =>
+              service.mfa.verify({ mfaToken: '__mfa_token__', otp: '123456' })
+            ),
+            delay(0)
+          )
+          .subscribe(() => {
+            expect(isAuthEmissions).toBe(1);
+            expect(userEmissions).toBe(1);
+            done();
+          });
+      });
     });
   });
 });
