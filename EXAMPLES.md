@@ -14,6 +14,8 @@
 - [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 - [Connect Accounts for using Token Vault](#connect-accounts-for-using-token-vault)
 - [Native to Web SSO](#native-to-web-sso)
+- [Multi-Factor Authentication (MFA)](#multi-factor-authentication-mfa)
+- [Step-Up Authentication](#step-up-authentication)
 
 ## Add login to your application
 
@@ -1007,4 +1009,411 @@ this.auth.loginWithRedirect({
     session_transfer_token: 'YOUR_SESSION_TRANSFER_TOKEN',
   },
 });
+```
+
+## Multi-Factor Authentication (MFA)
+
+Access MFA operations through the `mfa` property on `AuthService`. All operations require an `mfa_token` from the `MfaRequiredError` thrown by `getAccessTokenSilently`.
+
+> [!NOTE]
+> Multi Factor Authentication support via SDKs is currently in Early Access. To request access to this feature, contact your Auth0 representative.
+
+- [Setup](#mfa-setup)
+- [Handling MFA Required Error](#handling-mfa-required-error)
+- [Enrolling Authenticators](#enrolling-authenticators)
+- [Challenging Authenticators](#challenging-authenticators)
+- [Verifying Challenges](#verifying-challenges)
+- [Error Handling](#mfa-error-handling)
+
+### MFA Setup
+
+Before using the MFA API, configure MFA in your [Auth0 Dashboard](https://manage.auth0.com) under **Security** > **Multi-factor Auth**. For detailed configuration, see the [Auth0 MFA documentation](https://auth0.com/docs/secure/multi-factor-authentication/customize-mfa/customize-mfa-enrollments-universal-login).
+
+#### Understanding the MFA Response
+
+When MFA is required, the error payload contains an `mfa_requirements` object that indicates either a **challenge** flow (user has enrolled authenticators) or an **enroll** flow (user needs to set up MFA).
+
+**Challenge Flow Response** (user has existing authenticators):
+
+```json
+{
+  "error": "mfa_required",
+  "error_description": "Multifactor authentication required",
+  "mfa_token": "Fe26.2*...",
+  "mfa_requirements": {
+    "challenge": [{ "type": "otp" }, { "type": "email" }]
+  }
+}
+```
+
+**Enroll Flow Response** (user needs to enroll an authenticator):
+
+```json
+{
+  "error": "mfa_required",
+  "error_description": "Multifactor authentication required",
+  "mfa_token": "Fe26.2*...",
+  "mfa_requirements": {
+    "enroll": [{ "type": "otp" }, { "type": "phone" }, { "type": "push-notification" }]
+  }
+}
+```
+
+These two keys are mutually exclusive — a single response will contain either `challenge` or `enroll`, never both:
+
+- **`mfa_requirements.challenge`**: User has enrolled authenticators → proceed with **List Authenticators → Challenge → Verify** flow
+- **`mfa_requirements.enroll`**: User needs to set up MFA → proceed with **Enroll → Verify** flow
+
+### Handling MFA Required Error
+
+Catch the `MfaRequiredError` from `getAccessTokenSilently` and use `mfa_requirements` to determine which flow to follow:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService, MfaRequiredError } from '@auth0/auth0-angular';
+import { catchError, EMPTY, tap } from 'rxjs';
+
+@Component({ selector: 'app-mfa', template: '' })
+export class MfaComponent {
+  constructor(private auth: AuthService) {}
+
+  requestToken() {
+    this.auth
+      .getAccessTokenSilently()
+      .pipe(
+        catchError((error) => {
+          if (error instanceof MfaRequiredError) {
+            const mfaToken = error.mfa_token;
+
+            if (error.mfa_requirements?.enroll?.length) {
+              // New user — needs to enroll a factor first
+              return this.auth.mfa.getEnrollmentFactors(mfaToken).pipe(
+                tap((factors) => {
+                  // Show enrollment UI with available factors
+                })
+              );
+            } else {
+              // Existing user — list enrolled authenticators and challenge
+              return this.auth.mfa.getAuthenticators(mfaToken).pipe(
+                tap((authenticators) => {
+                  // Show challenge UI
+                })
+              );
+            }
+          }
+          return EMPTY;
+        })
+      )
+      .subscribe();
+  }
+}
+```
+
+### Enrolling Authenticators
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({ selector: 'app-enroll', template: '' })
+export class EnrollComponent {
+  constructor(private auth: AuthService) {}
+
+  // Enroll TOTP — returns a QR code to display to the user
+  enrollOtp(mfaToken: string) {
+    this.auth.mfa.enroll({ mfaToken, factorType: 'otp' }).subscribe((enrollment) => {
+      console.log('Scan QR:', enrollment.barcodeUri);
+      console.log('Recovery codes:', enrollment.recoveryCodes);
+    });
+  }
+
+  // Enroll SMS — include phone number in E.164 format
+  enrollSms(mfaToken: string) {
+    this.auth.mfa
+      .enroll({
+        mfaToken,
+        factorType: 'sms',
+        phoneNumber: '+12025551234',
+      })
+      .subscribe();
+  }
+
+  // Enroll Voice — include phone number in E.164 format
+  enrollVoice(mfaToken: string) {
+    this.auth.mfa
+      .enroll({
+        mfaToken,
+        factorType: 'voice',
+        phoneNumber: '+12025551234',
+      })
+      .subscribe();
+  }
+
+  // Enroll Email
+  enrollEmail(mfaToken: string) {
+    this.auth.mfa
+      .enroll({
+        mfaToken,
+        factorType: 'email',
+        email: 'user@example.com',
+      })
+      .subscribe();
+  }
+
+  // Enroll Push — returns authenticator ID for use with the Guardian app
+  enrollPush(mfaToken: string) {
+    this.auth.mfa.enroll({ mfaToken, factorType: 'push' }).subscribe((enrollment) => {
+      console.log('Authenticator ID:', enrollment.id);
+    });
+  }
+}
+```
+
+### Challenging Authenticators
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { switchMap } from 'rxjs';
+
+@Component({ selector: 'app-challenge', template: '' })
+export class ChallengeComponent {
+  constructor(private auth: AuthService) {}
+
+  // For OTP: challenge is optional — user can go straight to verify()
+  // with the 6-digit code from their authenticator app
+  challengeOtp(mfaToken: string, authenticatorId: string) {
+    this.auth.mfa
+      .challenge({
+        mfaToken,
+        challengeType: 'otp',
+        authenticatorId,
+      })
+      .subscribe();
+  }
+
+  // For SMS / Voice / Email / Push: challenge is required to send the code
+  challengeOob(mfaToken: string, authenticatorId: string) {
+    this.auth.mfa
+      .challenge({
+        mfaToken,
+        challengeType: 'oob',
+        authenticatorId,
+      })
+      .subscribe((response) => {
+        console.log('OOB Code:', response.oobCode); // use this in verify()
+      });
+  }
+
+  // Typical flow: list authenticators then challenge
+  listAndChallenge(mfaToken: string) {
+    this.auth.mfa
+      .getAuthenticators(mfaToken)
+      .pipe(
+        switchMap((authenticators) =>
+          this.auth.mfa.challenge({
+            mfaToken,
+            challengeType: 'oob',
+            authenticatorId: authenticators[0].id,
+          })
+        )
+      )
+      .subscribe((response) => {
+        // Code has been sent — show input to user
+      });
+  }
+}
+```
+
+### Verifying Challenges
+
+> [!IMPORTANT]
+> The `verify()` method does not update Angular auth state (`isAuthenticated$`, `user$`). Always chain `getAccessTokenSilently()` after a successful verification to reflect the new session in the UI.
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { switchMap, tap } from 'rxjs';
+
+@Component({ selector: 'app-verify', template: '' })
+export class VerifyComponent {
+  constructor(private auth: AuthService) {}
+
+  // Verify with OTP code (TOTP authenticator app)
+  verifyOtp(mfaToken: string, otp: string) {
+    this.auth.mfa
+      .verify({ mfaToken, otp })
+      .pipe(
+        switchMap(() => this.auth.getAccessTokenSilently()) // refresh isAuthenticated$, user$
+      )
+      .subscribe();
+  }
+
+  // Verify with OOB code (SMS / Voice / Email / Push)
+  verifyOob(mfaToken: string, oobCode: string, bindingCode?: string) {
+    this.auth.mfa
+      .verify({ mfaToken, oobCode, bindingCode })
+      .pipe(
+        switchMap(() => this.auth.getAccessTokenSilently()) // refresh isAuthenticated$, user$
+      )
+      .subscribe();
+  }
+
+  // Verify with recovery code (fallback for any authenticator)
+  // When a recovery code is consumed, Auth0 may return a replacement recovery_code
+  // in the response. Prompt the user to save it — losing the new code locks them out.
+  verifyRecoveryCode(mfaToken: string, recoveryCode: string) {
+    this.auth.mfa
+      .verify({ mfaToken, recoveryCode })
+      .pipe(
+        tap((tokens) => {
+          if (tokens.recovery_code) {
+            console.warn('Save your new recovery code:', tokens.recovery_code);
+          }
+        }),
+        switchMap(() => this.auth.getAccessTokenSilently()) // refresh isAuthenticated$, user$
+      )
+      .subscribe();
+  }
+}
+```
+
+### MFA Error Handling
+
+Each MFA operation throws a specific error class you can import from `@auth0/auth0-angular`:
+
+```ts
+import { MfaVerifyError, MfaChallengeError, MfaEnrollmentError, MfaListAuthenticatorsError, MfaEnrollmentFactorsError } from '@auth0/auth0-angular';
+import { catchError, EMPTY } from 'rxjs';
+
+this.auth.mfa
+  .verify({ mfaToken, otp })
+  .pipe(
+    catchError((error) => {
+      if (error instanceof MfaVerifyError) {
+        console.error('Invalid code:', error.error_description);
+      } else if (error instanceof MfaChallengeError) {
+        console.error('Challenge failed:', error.error_description);
+      } else if (error instanceof MfaEnrollmentError) {
+        console.error('Enrollment failed:', error.error_description);
+      }
+      return EMPTY;
+    })
+  )
+  .subscribe();
+```
+
+## Step-Up Authentication
+
+When a protected API requires MFA, `getAccessTokenSilently` receives an `mfa_required` error from Auth0. By configuring `interactiveErrorHandler`, the SDK automatically handles this by opening a Universal Login popup for the user to complete MFA, then returns the token transparently. No custom MFA UI is required.
+
+If you need full control over the MFA experience (custom UI for enrollment, challenge, and verification), see the [Multi-Factor Authentication (MFA)](#multi-factor-authentication-mfa) section instead.
+
+> [!WARNING]
+> This feature only works with the refresh token flow (`useRefreshTokens: true`) and only handles `mfa_required` errors.
+
+### Step-Up Setup
+
+Configure `provideAuth0` (or `AuthModule.forRoot`) with `interactiveErrorHandler` set to `"popup"` and refresh tokens enabled:
+
+```ts
+// app.config.ts — standalone / functional approach
+import { provideAuth0 } from '@auth0/auth0-angular';
+
+export const appConfig = {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+        audience: 'https://api.example.com/',
+      },
+      useRefreshTokens: true,
+      interactiveErrorHandler: 'popup',
+    }),
+  ],
+};
+```
+
+```ts
+// app.module.ts — NgModule approach
+import { AuthModule } from '@auth0/auth0-angular';
+
+@NgModule({
+  imports: [
+    AuthModule.forRoot({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+        audience: 'https://api.example.com/',
+      },
+      useRefreshTokens: true,
+      interactiveErrorHandler: 'popup',
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+### Usage
+
+With this configuration, `getAccessTokenSilently` automatically opens a popup when the token request triggers an `mfa_required` error. Once the user completes MFA in the popup, the token is returned as if the call succeeded normally:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({ selector: 'app-protected', template: '' })
+export class ProtectedComponent {
+  constructor(private auth: AuthService) {}
+
+  fetchSensitiveData() {
+    this.auth
+      .getAccessTokenSilently({
+        authorizationParams: {
+          audience: 'https://api.example.com/',
+          scope: 'read:sensitive',
+        },
+      })
+      .subscribe({
+        next: (token) => {
+          // If MFA was required, the popup opened and closed automatically.
+          // token is ready to use.
+          fetch('https://api.example.com/sensitive', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+        },
+        error: (e) => console.error(e),
+      });
+  }
+}
+```
+
+### Error Handling
+
+If the popup is blocked, cancelled, or times out, `getAccessTokenSilently` throws `PopupOpenError`, `PopupCancelledError`, or `PopupTimeoutError` respectively. These can be imported from `@auth0/auth0-angular`:
+
+```ts
+import { PopupOpenError, PopupCancelledError, PopupTimeoutError } from '@auth0/auth0-angular';
+import { catchError, EMPTY } from 'rxjs';
+
+this.auth
+  .getAccessTokenSilently({
+    authorizationParams: { audience: 'https://api.example.com/' },
+  })
+  .pipe(
+    catchError((error) => {
+      if (error instanceof PopupOpenError) {
+        console.error('Popup was blocked by the browser');
+      } else if (error instanceof PopupCancelledError) {
+        console.error('User closed the popup');
+      } else if (error instanceof PopupTimeoutError) {
+        console.error('Popup timed out');
+      }
+      return EMPTY;
+    })
+  )
+  .subscribe();
 ```
