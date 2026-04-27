@@ -1018,14 +1018,14 @@ Access MFA operations through the `mfa` property on `AuthService`. All operation
 > [!NOTE]
 > Multi Factor Authentication support via SDKs is currently in Early Access. To request access to this feature, contact your Auth0 representative.
 
-- [Setup](#setup)
+- [Setup](#mfa-setup)
 - [Handling MFA Required Error](#handling-mfa-required-error)
 - [Enrolling Authenticators](#enrolling-authenticators)
 - [Challenging Authenticators](#challenging-authenticators)
 - [Verifying Challenges](#verifying-challenges)
 - [Error Handling](#mfa-error-handling)
 
-### Setup
+### MFA Setup
 
 Before using the MFA API, configure MFA in your [Auth0 Dashboard](https://manage.auth0.com) under **Security** > **Multi-factor Auth**. For detailed configuration, see the [Auth0 MFA documentation](https://auth0.com/docs/secure/multi-factor-authentication/customize-mfa/customize-mfa-enrollments-universal-login).
 
@@ -1071,7 +1071,7 @@ Catch the `MfaRequiredError` from `getAccessTokenSilently` and use `mfa_requirem
 ```ts
 import { Component } from '@angular/core';
 import { AuthService, MfaRequiredError } from '@auth0/auth0-angular';
-import { catchError, EMPTY, switchMap } from 'rxjs';
+import { catchError, EMPTY, tap } from 'rxjs';
 
 @Component({ selector: 'app-mfa', template: '' })
 export class MfaComponent {
@@ -1087,14 +1087,18 @@ export class MfaComponent {
 
             if (error.mfa_requirements?.enroll?.length) {
               // New user — needs to enroll a factor first
-              this.auth.mfa.getEnrollmentFactors(mfaToken).subscribe((factors) => {
-                // Show enrollment UI with available factors
-              });
+              return this.auth.mfa.getEnrollmentFactors(mfaToken).pipe(
+                tap((factors) => {
+                  // Show enrollment UI with available factors
+                })
+              );
             } else {
               // Existing user — list enrolled authenticators and challenge
-              this.auth.mfa.getAuthenticators(mfaToken).subscribe((authenticators) => {
-                // Show challenge UI
-              });
+              return this.auth.mfa.getAuthenticators(mfaToken).pipe(
+                tap((authenticators) => {
+                  // Show challenge UI
+                })
+              );
             }
           }
           return EMPTY;
@@ -1223,7 +1227,8 @@ export class ChallengeComponent {
 
 ### Verifying Challenges
 
-> [!IMPORTANT] > `verify()` does not update Angular auth state (`isAuthenticated$`, `user$`). Always chain `getAccessTokenSilently()` after a successful verification to reflect the new session in the UI.
+> [!IMPORTANT]
+> The `verify()` method does not update Angular auth state (`isAuthenticated$`, `user$`). Always chain `getAccessTokenSilently()` after a successful verification to reflect the new session in the UI.
 
 ```ts
 import { Component } from '@angular/core';
@@ -1307,7 +1312,7 @@ If you need full control over the MFA experience (custom UI for enrollment, chal
 > [!WARNING]
 > This feature only works with the refresh token flow (`useRefreshTokens: true`) and only handles `mfa_required` errors.
 
-### Setup
+### Step-Up Setup
 
 Configure `provideAuth0` (or `AuthModule.forRoot`) with `interactiveErrorHandler` set to `"popup"` and refresh tokens enabled:
 
@@ -1388,4 +1393,27 @@ export class ProtectedComponent {
 
 ### Error Handling
 
-If the popup is blocked, cancelled, or times out, `getAccessTokenSilently` throws `PopupOpenError`, `PopupCancelledError`, or `PopupTimeoutError` respectively. These can be imported from `@auth0/auth0-angular`.
+If the popup is blocked, cancelled, or times out, `getAccessTokenSilently` throws `PopupOpenError`, `PopupCancelledError`, or `PopupTimeoutError` respectively. These can be imported from `@auth0/auth0-angular`:
+
+```ts
+import { PopupOpenError, PopupCancelledError, PopupTimeoutError } from '@auth0/auth0-angular';
+import { catchError, EMPTY } from 'rxjs';
+
+this.auth
+  .getAccessTokenSilently({
+    authorizationParams: { audience: 'https://api.example.com/' },
+  })
+  .pipe(
+    catchError((error) => {
+      if (error instanceof PopupOpenError) {
+        console.error('Popup was blocked by the browser');
+      } else if (error instanceof PopupCancelledError) {
+        console.error('User closed the popup');
+      } else if (error instanceof PopupTimeoutError) {
+        console.error('Popup timed out');
+      }
+      return EMPTY;
+    })
+  )
+  .subscribe();
+```
