@@ -54,7 +54,7 @@
     "@types/node": "^22.19.17",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.59.0",
-    "browserstack-cypress-cli": "^1.36.4",
+    "browserstack-cypress-cli": "^1.36.5",
     "concurrently": "^6.2.0",
     "cors": "^2.8.6",
     "cross-fetch": "^4.1.0",
