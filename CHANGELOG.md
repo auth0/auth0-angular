@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.9.0](https://github.com/auth0/auth0-angular/tree/v2.9.0) (2026-04-28)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.8.1...v2.9.0)
+
+**Added**
+
+- feat: add Multi-Factor Authentication (MFA) support [\#909](https://github.com/auth0/auth0-angular/pull/909) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.8.1](https://github.com/auth0/auth0-angular/tree/v2.8.1) (2026-04-17)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.8.0...v2.8.1)
