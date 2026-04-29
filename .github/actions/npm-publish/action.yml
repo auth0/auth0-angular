@@ -26,11 +26,10 @@ runs:
       uses: ./.github/actions/setup-node-npm
       with:
         node-version: ${{ inputs.node-version }}
-        registry-url: 'https://registry.npmjs.org'
 
     - name: Install dependencies
       shell: bash
-      run: npm ci --include=dev
+      run: npm i --include=dev
 
     - name: Build package
       if: inputs.require-build == 'true'
