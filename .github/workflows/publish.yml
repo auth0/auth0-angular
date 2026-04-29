@@ -97,10 +97,9 @@ jobs:
         uses: ./.github/actions/setup-node-npm
         with:
           node-version: ${{ env.NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i
 
       - name: Publish release to NPM
         run: npm publish --provenance --tag ${{ needs.configure.outputs.vtag }} ${{ needs.configure.outputs.dry-run }}
