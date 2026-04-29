@@ -22,10 +22,14 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Node and npm
-      uses: ./.github/actions/setup-node-npm
+    - name: Setup Node
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ inputs.node-version }}
+
+    - name: Update npm to version 11
+      shell: bash
+      run: npm install -g npm@11.10.0
 
     - name: Install dependencies
       shell: bash
