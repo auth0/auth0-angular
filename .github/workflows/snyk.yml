@@ -21,9 +21,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-
   check:
-
     name: Check for Vulnerabilities
     runs-on: ubuntu-latest
 
@@ -34,6 +32,9 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Install dependencies
+        run: npm i
 
       - uses: snyk/actions/node@9adf32b1121593767fc3c057af55b55db032dc04 # pin@1.0.0
         env:
