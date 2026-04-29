@@ -15,7 +15,6 @@ runs:
       uses: actions/setup-node@v6
       with:
         node-version: ${{ inputs.node-version }}
-        package-manager-cache: false
 
     - name: Update npm to version 11
       shell: bash
