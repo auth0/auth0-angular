@@ -11,6 +11,15 @@ import type {
   VerifyParams,
   EnrollmentFactor,
   TokenEndpointResponse,
+  PasskeySignupOptions,
+  PasskeyLoginOptions,
+  AuthenticationMethod,
+  AuthenticationMethodType,
+  Factor,
+  UpdateAuthenticationMethodRequest,
+  EnrollmentChallengeOptions,
+  EnrollmentChallengeResponse,
+  EnrollmentVerifyOptions,
 } from '@auth0/auth0-spa-js';
 import { Observable } from 'rxjs';
 
@@ -64,4 +73,93 @@ export interface ObservableMfaApiClient {
    * @throws {MfaVerifyError}
    */
   verify(params: VerifyParams): Observable<TokenEndpointResponse>;
+}
+
+/**
+ * Observable-based Passkey API client exposed by `AuthService.passkey`.
+ *
+ * Wraps `PasskeyApiClient` from `@auth0/auth0-spa-js`. Both methods handle the
+ * full WebAuthn flow internally and update Angular auth state on success.
+ * All methods return `Observable` instead of `Promise`.
+ */
+export interface ObservablePasskeyApiClient {
+  /**
+   * Registers a new user with a passkey credential.
+   * Updates `isAuthenticated$` and `user$` on success.
+   * @throws {PasskeyRegisterError}
+   * @throws {PasskeyGetTokenError}
+   * @throws {PasskeyError}
+   */
+  signup(options: PasskeySignupOptions): Observable<TokenEndpointResponse>;
+
+  /**
+   * Authenticates an existing user via passkey assertion.
+   * Updates `isAuthenticated$` and `user$` on success.
+   * @throws {PasskeyChallengeError}
+   * @throws {PasskeyGetTokenError}
+   * @throws {PasskeyError}
+   */
+  login(options?: PasskeyLoginOptions): Observable<TokenEndpointResponse>;
+}
+
+/**
+ * Observable-based MyAccount API client exposed by `AuthService.myAccount`.
+ *
+ * This is the Angular counterpart of `MyAccountApiClient` from `@auth0/auth0-spa-js`.
+ * All methods return `Observable` instead of `Promise`.
+ */
+export interface ObservableMyAccountApiClient {
+  /**
+   * Returns the list of factors with their enabled and enrollment status.
+   * @throws {MyAccountApiError}
+   */
+  getFactors(): Observable<Factor[]>;
+
+  /**
+   * Returns the authenticated user's enrolled authentication methods,
+   * optionally filtered by type.
+   * @throws {MyAccountApiError}
+   */
+  getAuthenticationMethods(
+    type?: AuthenticationMethodType
+  ): Observable<AuthenticationMethod[]>;
+
+  /**
+   * Returns a single authentication method by its ID.
+   * @throws {MyAccountApiError}
+   */
+  getAuthenticationMethod(id: string): Observable<AuthenticationMethod>;
+
+  /**
+   * Deletes the specified authentication method.
+   * @throws {MyAccountApiError}
+   */
+  deleteAuthenticationMethod(id: string): Observable<void>;
+
+  /**
+   * Updates the specified authentication method (e.g. name, preferred phone method).
+   * @throws {MyAccountApiError}
+   */
+  updateAuthenticationMethod(
+    id: string,
+    data: UpdateAuthenticationMethodRequest
+  ): Observable<AuthenticationMethod>;
+
+  /**
+   * Starts enrollment of an authentication method.
+   * Returns a challenge response containing `auth_session` and type-specific data.
+   * @throws {MyAccountApiError}
+   */
+  enrollmentChallenge(
+    options: EnrollmentChallengeOptions
+  ): Observable<EnrollmentChallengeResponse>;
+
+  /**
+   * Completes enrollment by verifying the challenge response.
+   * Returns the created `AuthenticationMethod`.
+   * @throws {MyAccountApiError}
+   */
+  enrollmentVerify(
+    options: EnrollmentVerifyOptions
+  ): Observable<AuthenticationMethod>;
 }
