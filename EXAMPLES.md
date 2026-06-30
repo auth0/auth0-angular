@@ -16,6 +16,8 @@
 - [Native to Web SSO](#native-to-web-sso)
 - [Multi-Factor Authentication (MFA)](#multi-factor-authentication-mfa)
 - [Step-Up Authentication](#step-up-authentication)
+- [Passkeys](#passkeys)
+- [MyAccount API](#myaccount-api)
 
 ## Add login to your application
 
@@ -1416,4 +1418,583 @@ this.auth
     })
   )
   .subscribe();
+```
+
+## Passkeys
+
+Passkeys provide passwordless authentication using platform biometrics (Face ID, Touch ID, Windows Hello) or security keys via the WebAuthn standard. `AuthService` exposes a `passkey` client that handles the full WebAuthn flow internally — requesting a challenge, triggering the browser credential ceremony, and exchanging the result for tokens.
+
+After a successful call, `isAuthenticated$` and `user$` update automatically.
+
+- [Setup](#passkey-setup)
+- [Important: Use Refresh Tokens with Passkeys](#important-use-refresh-tokens-with-passkeys)
+- [Signup with Passkey](#signup-with-passkey)
+- [Login with Passkey](#login-with-passkey)
+- [Complete Passkey Component Example](#complete-passkey-component-example)
+- [Passkey Error Handling](#passkey-error-handling)
+
+### Passkey Setup
+
+Before using passkeys, configure the following in your [Auth0 Dashboard](https://manage.auth0.com):
+
+1. **Enable passkey authentication method**: Go to **Authentication** > **Database** > your connection > **Authentication Methods** > **Passkey**.
+2. **Enable the WebAuthn passkey grant**: Go to your **Application** > **Advanced Settings** > **Grant Types** and enable the **Passkey** grant.
+3. **Custom domain required**: Passkeys are bound to an origin. A [custom domain](https://auth0.com/docs/customize/custom-domains) must be configured — passkeys will not work on the default `*.auth0.com` domain.
+
+### Important: Use Refresh Tokens with Passkeys
+
+> [!IMPORTANT]
+> When using passkeys you **must** configure the SDK with `useRefreshTokens: true`.
+
+Passkey authentication performs a direct token exchange and does **not** create an Auth0 session cookie. Without refresh tokens, `getAccessTokenSilently()` will either fail with `login_required` when the token expires, or silently return tokens for a different user if a prior redirect-based session cookie exists.
+
+```ts
+// app.config.ts (standalone)
+import { provideAuth0 } from '@auth0/auth0-angular';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      useRefreshTokens: true, // Required for passkey-based sessions
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+      },
+    }),
+  ],
+};
+```
+
+You must also enable **Refresh Token Rotation** in your Auth0 Dashboard under **Applications** > your app > **Settings** > **Refresh Token Rotation**.
+
+### Signup with Passkey
+
+Register a new user with a passkey. Inject `AuthService` and call `passkey.signup()`. The Observable completes with the token response, and `isAuthenticated$` / `user$` update automatically.
+
+```ts
+import { Component, inject } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({ selector: 'app-signup', template: `<button (click)="signup()">Sign up with Passkey</button>` })
+export class SignupComponent {
+  private auth = inject(AuthService);
+
+  signup() {
+    this.auth.passkey
+      .signup({ email: 'user@example.com', name: 'Jane Doe' })
+      .subscribe({
+        next: (tokens) => console.log('Signed up, access token:', tokens.access_token),
+        error: (err) => console.error('Signup failed', err),
+      });
+  }
+}
+```
+
+You can pass optional `scope` and `audience` to control the access token:
+
+```ts
+this.auth.passkey
+  .signup({
+    email: 'user@example.com',
+    scope: 'openid profile email read:orders',
+    audience: 'https://api.example.com',
+  })
+  .subscribe();
+```
+
+All supported signup properties:
+
+```ts
+this.auth.passkey
+  .signup({
+    // At least one identifier is typically required
+    email: 'user@example.com',
+    phoneNumber: '+1234567890', // optional, E.164 format
+    username: 'janedoe',        // optional
+
+    // Profile fields (all optional)
+    name: 'Jane Doe',
+    givenName: 'Jane',
+    familyName: 'Doe',
+    nickname: 'janie',
+    picture: 'https://example.com/avatar.png',
+    userMetadata: { plan: 'pro' },
+
+    // Connection and org
+    realm: 'my-db-connection',
+    organization: 'org_abc123',
+
+    // Token options
+    scope: 'openid profile email',
+    audience: 'https://api.example.com',
+  })
+  .subscribe();
+```
+
+### Login with Passkey
+
+Authenticate an existing user with their registered passkey. A single call handles the full assertion flow.
+
+```ts
+import { Component, inject } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({ selector: 'app-login', template: `<button (click)="login()">Sign in with Passkey</button>` })
+export class LoginComponent {
+  private auth = inject(AuthService);
+
+  login() {
+    this.auth.passkey.login().subscribe({
+      next: () => console.log('Logged in'),
+      error: (err) => console.error('Login failed', err),
+    });
+  }
+}
+```
+
+Optional parameters:
+
+```ts
+// Specify a connection (realm) if your tenant has multiple database connections
+this.auth.passkey.login({ realm: 'Username-Password-Authentication' }).subscribe();
+
+// Log in within an organization context
+this.auth.passkey.login({ organization: 'org_abc123' }).subscribe();
+```
+
+### Complete Passkey Component Example
+
+```ts
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { AuthService, PasskeyError, PasskeyRegisterError } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-passkey-auth',
+  standalone: true,
+  imports: [AsyncPipe],
+  template: `
+    <ng-container *ngIf="auth.isAuthenticated$ | async; else unauthenticated">
+      <p>Welcome, {{ (auth.user$ | async)?.name }}!</p>
+    </ng-container>
+    <ng-template #unauthenticated>
+      <button (click)="signup()">Sign up with Passkey</button>
+      <button (click)="login()">Sign in with Passkey</button>
+    </ng-template>
+  `,
+})
+export class PasskeyAuthComponent {
+  auth = inject(AuthService);
+
+  signup() {
+    this.auth.passkey
+      .signup({ email: 'user@example.com' })
+      .subscribe({
+        error: (err) => {
+          if (err instanceof PasskeyRegisterError) {
+            console.error('Registration failed:', err.message);
+          } else if (err instanceof PasskeyError) {
+            console.error('Passkey error:', err.message);
+          }
+        },
+      });
+  }
+
+  login() {
+    this.auth.passkey.login().subscribe({
+      error: (err) => {
+        if (err instanceof PasskeyError) {
+          console.error('Passkey error:', err.message);
+        }
+      },
+    });
+  }
+}
+```
+
+### Passkey Error Handling
+
+```ts
+import { PasskeyError, PasskeyRegisterError, PasskeyChallengeError } from '@auth0/auth0-angular';
+import { catchError, EMPTY } from 'rxjs';
+
+// In a component or service
+this.auth.passkey
+  .signup({ email: 'user@example.com' })
+  .pipe(
+    catchError((err) => {
+      if (err instanceof PasskeyRegisterError) {
+        // WebAuthn registration failed (e.g. user cancelled the biometric prompt)
+        console.error('Registration failed:', err.message);
+      } else if (err instanceof PasskeyError) {
+        // Auth0 returned an error (e.g. misconfigured grant, unknown user)
+        console.error('Passkey error:', err.code, err.message);
+      }
+      return EMPTY;
+    })
+  )
+  .subscribe();
+
+this.auth.passkey
+  .login()
+  .pipe(
+    catchError((err) => {
+      if (err instanceof PasskeyChallengeError) {
+        console.error('Challenge failed:', err.message);
+      } else if (err instanceof PasskeyError) {
+        console.error('Passkey error:', err.code, err.message);
+      }
+      return EMPTY;
+    })
+  )
+  .subscribe();
+```
+
+> [!TIP]
+> Both `signup()` and `login()` throw an error if the user cancels the biometric prompt. Always handle errors to avoid unhandled Observable errors crashing your application.
+
+---
+
+## MyAccount API
+
+The MyAccount API lets authenticated users manage their own authentication methods (passkeys, TOTP, phone, email, push, recovery codes, passwords) and list available factors — all without requiring an admin token.
+
+`AuthService` exposes a `myAccount` client. All methods return Observables and require an access token with the appropriate scope for each operation. Use MRRT to obtain tokens for the MyAccount API alongside your own API audience.
+
+- [Setup](#myaccount-setup)
+- [List Factors](#list-factors)
+- [Authentication Methods](#authentication-methods)
+  - [List All](#list-all)
+  - [Filter by Type](#filter-by-type)
+  - [Get by ID](#get-by-id)
+  - [Delete](#delete)
+  - [Update](#update)
+- [Enrollment](#enrollment)
+  - [Passkey](#enroll-passkey)
+  - [TOTP](#enroll-totp)
+  - [Phone](#enroll-phone)
+  - [Email](#enroll-email)
+  - [Push Notification](#enroll-push-notification)
+  - [Recovery Code](#enroll-recovery-code)
+  - [Password](#enroll-password)
+- [MyAccount Error Handling](#myaccount-error-handling)
+
+### MyAccount Setup
+
+The MyAccount API uses the `https://<YOUR_DOMAIN>/me/` audience. Configure the SDK with `useRefreshTokens: true` and `useMrrt: true` so the SDK can automatically obtain a MyAccount-scoped token using the refresh token grant, even when your app is already configured with a different API audience.
+
+```ts
+// app.config.ts
+import { provideAuth0 } from '@auth0/auth0-angular';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      useRefreshTokens: true,
+      useMrrt: true,
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+        audience: 'https://api.example.com', // your own API — MyAccount tokens are fetched automatically via MRRT
+      },
+    }),
+  ],
+};
+```
+
+Also ensure the required permissions are enabled for your application in the Auth0 Dashboard under **APIs** > **Auth0 My Account API** > **Application Access**.
+
+### List Factors
+
+Get the list of MFA factors and their enabled/enrollment status for the current user.
+
+```ts
+import { Component, inject } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({ selector: 'app-factors', template: '' })
+export class FactorsComponent {
+  private auth = inject(AuthService);
+
+  loadFactors() {
+    this.auth.myAccount.getFactors().subscribe({
+      next: (factors) => console.log(factors),
+      // [{ type: 'totp', usage: ['secondary'] }, { type: 'phone', usage: ['secondary'] }]
+      error: (err) => console.error(err),
+    });
+  }
+}
+```
+
+### Authentication Methods
+
+#### List All
+
+```ts
+this.auth.myAccount.getAuthenticationMethods().subscribe({
+  next: (methods) => console.log(methods),
+  error: (err) => console.error(err),
+});
+```
+
+#### Filter by Type
+
+```ts
+import { AuthenticationMethodType } from '@auth0/auth0-angular';
+
+this.auth.myAccount.getAuthenticationMethods('passkey').subscribe({
+  next: (passkeys) => console.log(passkeys),
+});
+```
+
+Supported type values: `'passkey'`, `'password'`, `'phone'`, `'totp'`, `'email'`, `'push-notification'`, `'recovery-code'`, `'webauthn-platform'`, `'webauthn-roaming'`.
+
+#### Get by ID
+
+```ts
+this.auth.myAccount.getAuthenticationMethod('am_abc123').subscribe({
+  next: (method) => console.log(method),
+});
+```
+
+#### Delete
+
+```ts
+this.auth.myAccount.deleteAuthenticationMethod('am_abc123').subscribe({
+  next: () => console.log('Deleted'),
+  error: (err) => console.error(err),
+});
+```
+
+#### Update
+
+Rename any authentication method, or change the preferred delivery channel for a phone method:
+
+```ts
+// Rename a passkey or TOTP authenticator
+this.auth.myAccount
+  .updateAuthenticationMethod('am_abc123', { name: 'My Work Laptop' })
+  .subscribe({ next: (updated) => console.log(updated) });
+
+// Switch a phone method between SMS and voice
+this.auth.myAccount
+  .updateAuthenticationMethod('am_abc123', { preferred_authentication_method: 'voice' })
+  .subscribe({ next: (updated) => console.log(updated) });
+```
+
+### Enrollment
+
+Enrollment is a two-step flow: call `enrollmentChallenge()` to start, then `enrollmentVerify()` to complete. Use RxJS `switchMap` to chain the two steps cleanly.
+
+#### Enroll Passkey
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .enrollmentChallenge({ type: 'passkey' })
+  .pipe(
+    switchMap((challenge) => {
+      // Trigger the browser's WebAuthn credential creation ceremony
+      const credential = await navigator.credentials.create({
+        publicKey: {
+          ...challenge.authn_params_public_key,
+          challenge: base64urlToBuffer(challenge.authn_params_public_key.challenge),
+          user: {
+            ...challenge.authn_params_public_key.user,
+            id: base64urlToBuffer(challenge.authn_params_public_key.user.id),
+          },
+        },
+      });
+
+      return this.auth.myAccount.enrollmentVerify({
+        type: 'passkey',
+        location: challenge.location,
+        auth_session: challenge.auth_session,
+        authn_response: serializeCredential(credential), // serialize to PasskeyCredentialResponse
+      });
+    })
+  )
+  .subscribe({ next: (method) => console.log('Passkey enrolled:', method) });
+```
+
+> [!NOTE]
+> `base64urlToBuffer` and `serializeCredential` are platform-specific helpers you provide. The SDK does not handle the WebAuthn browser API directly — it handles the Auth0 challenge and token exchange on both sides.
+
+#### Enroll TOTP
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .enrollmentChallenge({ type: 'totp' })
+  .pipe(
+    switchMap((challenge) => {
+      // challenge.barcode_uri   — render as a QR code for the user to scan
+      // challenge.manual_input_code — fallback code for manual entry
+      showQrCode(challenge.barcode_uri);
+
+      const otpCode = await promptUserForOtp(); // your UI to collect the OTP
+
+      return this.auth.myAccount.enrollmentVerify({
+        type: 'totp',
+        location: challenge.location,
+        auth_session: challenge.auth_session,
+        otp_code: otpCode,
+      });
+    })
+  )
+  .subscribe({ next: (method) => console.log('TOTP enrolled:', method) });
+```
+
+#### Enroll Phone
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .enrollmentChallenge({
+    type: 'phone',
+    phone_number: '+15551234567',
+    preferred_authentication_method: 'sms', // or 'voice'
+  })
+  .pipe(
+    switchMap((challenge) => {
+      const otpCode = await promptUserForOtp();
+
+      return this.auth.myAccount.enrollmentVerify({
+        type: 'phone',
+        location: challenge.location,
+        auth_session: challenge.auth_session,
+        otp_code: otpCode,
+      });
+    })
+  )
+  .subscribe({ next: (method) => console.log('Phone enrolled:', method) });
+```
+
+#### Enroll Email
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .enrollmentChallenge({ type: 'email', email: 'user@example.com' })
+  .pipe(
+    switchMap((challenge) => {
+      const otpCode = await promptUserForOtp();
+
+      return this.auth.myAccount.enrollmentVerify({
+        type: 'email',
+        location: challenge.location,
+        auth_session: challenge.auth_session,
+        otp_code: otpCode,
+      });
+    })
+  )
+  .subscribe({ next: (method) => console.log('Email enrolled:', method) });
+```
+
+#### Enroll Push Notification
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .enrollmentChallenge({ type: 'push-notification' })
+  .pipe(
+    switchMap((challenge) => {
+      // challenge.barcode_uri — render as a QR code for the user to scan with Auth0 Guardian
+      showQrCode(challenge.barcode_uri);
+
+      // No OTP needed — user approves the enrollment on their device
+      return this.auth.myAccount.enrollmentVerify({
+        type: 'push-notification',
+        location: challenge.location,
+        auth_session: challenge.auth_session,
+      });
+    })
+  )
+  .subscribe({ next: (method) => console.log('Push enrolled:', method) });
+```
+
+#### Enroll Recovery Code
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .enrollmentChallenge({ type: 'recovery-code' })
+  .pipe(
+    switchMap((challenge) => {
+      // challenge.recovery_code — display this to the user to save securely
+      showRecoveryCode(challenge.recovery_code);
+
+      return this.auth.myAccount.enrollmentVerify({
+        type: 'recovery-code',
+        location: challenge.location,
+        auth_session: challenge.auth_session,
+      });
+    })
+  )
+  .subscribe({ next: (method) => console.log('Recovery code enrolled:', method) });
+```
+
+#### Enroll Password
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .enrollmentChallenge({ type: 'password' })
+  .pipe(
+    switchMap((challenge) => {
+      const newPassword = await promptUserForPassword();
+
+      return this.auth.myAccount.enrollmentVerify({
+        type: 'password',
+        location: challenge.location,
+        auth_session: challenge.auth_session,
+        new_password: newPassword,
+      });
+    })
+  )
+  .subscribe({ next: (method) => console.log('Password enrolled:', method) });
+```
+
+### MyAccount Error Handling
+
+All MyAccount API errors are thrown as `MyAccountApiError` with [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) fields: `status`, `title`, `detail`, and an optional `validation_errors` array.
+
+```ts
+import { MyAccountApiError } from '@auth0/auth0-angular';
+import { catchError, EMPTY } from 'rxjs';
+
+this.auth.myAccount
+  .enrollmentChallenge({ type: 'totp' })
+  .pipe(
+    catchError((err) => {
+      if (err instanceof MyAccountApiError) {
+        console.error(err.status, err.title, err.detail);
+
+        if (err.validation_errors) {
+          err.validation_errors.forEach((e) =>
+            console.error(`${e.field}: ${e.detail}`)
+          );
+        }
+      }
+      return EMPTY;
+    })
+  )
+  .subscribe();
+
+// Insufficient scope (403) is the most common error — ensure your token has the
+// required scope for the operation:
+//   read:me:authentication_methods    — getAuthenticationMethods, getAuthenticationMethod
+//   create:me:authentication_methods  — enrollmentChallenge, enrollmentVerify
+//   update:me:authentication_methods  — updateAuthenticationMethod
+//   delete:me:authentication_methods  — deleteAuthenticationMethod
+//   read:me:factors                   — getFactors
 ```
