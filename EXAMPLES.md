@@ -1466,7 +1466,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-You must also enable **Refresh Token Rotation** in your Auth0 Dashboard under **Applications** > your app > **Settings** > **Refresh Token Rotation**.
+It is also recommended to enable **Refresh Token Rotation** in your Auth0 Dashboard under **Applications** > your app > **Settings** > **Refresh Token Rotation**.
 
 ### Signup with Passkey
 
@@ -1654,6 +1654,33 @@ this.auth.passkey
 > [!TIP]
 > Both `signup()` and `login()` throw an error if the user cancels the biometric prompt. Always handle errors to avoid unhandled Observable errors crashing your application.
 
+If your tenant requires MFA after a passkey login, `passkey.login()` will throw an `MfaRequiredError`. Handle it using the `mfa` client on `AuthService`:
+
+```ts
+import { AuthService, PasskeyError, MfaRequiredError } from '@auth0/auth0-angular';
+import { catchError, EMPTY } from 'rxjs';
+
+// In a component or service
+this.auth.passkey
+  .login()
+  .pipe(
+    catchError((err) => {
+      if (err instanceof MfaRequiredError) {
+        // MFA step-up required — proceed with the MFA API
+        const mfaToken = err.mfa_token;
+        this.auth.mfa.getAuthenticators(mfaToken).subscribe((authenticators) => {
+          // present authenticator picker and continue with challenge/verify
+          // see the Multi-Factor Authentication section for full examples
+        });
+      } else if (err instanceof PasskeyError) {
+        console.error('Passkey login failed:', err.message);
+      }
+      return EMPTY;
+    })
+  )
+  .subscribe();
+```
+
 ---
 
 ## MyAccount API
@@ -1770,10 +1797,10 @@ this.auth.myAccount.deleteAuthenticationMethod('am_abc123').subscribe({
 
 #### Update
 
-Rename any authentication method, or change the preferred delivery channel for a phone method:
+Rename a `totp` or `push-notification` method, or change the preferred delivery channel for a `phone` method. Note that renaming is **not supported** for `passkey` methods.
 
 ```ts
-// Rename a passkey or TOTP authenticator
+// Rename a totp or push-notification method
 this.auth.myAccount
   .updateAuthenticationMethod('am_abc123', { name: 'My Work Laptop' })
   .subscribe({ next: (updated) => console.log(updated) });
