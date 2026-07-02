@@ -21,6 +21,15 @@ import type {
   EnrollParams,
   ChallengeAuthenticatorParams,
   VerifyParams,
+  PasskeySignupOptions,
+  PasskeyLoginOptions,
+  AuthenticationMethod,
+  AuthenticationMethodType,
+  Factor,
+  UpdateAuthenticationMethodRequest,
+  EnrollmentChallengeOptions,
+  EnrollmentChallengeResponse,
+  EnrollmentVerifyOptions,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -51,6 +60,8 @@ import { AuthState } from './auth.state';
 import {
   LogoutOptions,
   ObservableMfaApiClient,
+  ObservablePasskeyApiClient,
+  ObservableMyAccountApiClient,
   RedirectLoginOptions,
 } from './interfaces';
 
@@ -508,6 +519,57 @@ export class AuthService<TAppState extends AppState = AppState>
     getEnrollmentFactors: (mfaToken: string) =>
       from(this.auth0Client.mfa.getEnrollmentFactors(mfaToken)),
     verify: (params: VerifyParams) => from(this.auth0Client.mfa.verify(params)),
+  };
+
+  /**
+   * Provides Passkey (WebAuthn) authentication as Observables.
+   *
+   * Both methods handle the full WebAuthn challenge-response flow internally.
+   * `isAuthenticated$` and `user$` are refreshed after a successful call.
+   */
+  readonly passkey: ObservablePasskeyApiClient = {
+    signup: (options: PasskeySignupOptions) =>
+      from(
+        this.auth0Client.passkey.signup(options).then((tokenResponse) => {
+          this.authState.refresh();
+          return tokenResponse;
+        })
+      ),
+    login: (options?: PasskeyLoginOptions) =>
+      from(
+        this.auth0Client.passkey.login(options).then((tokenResponse) => {
+          this.authState.refresh();
+          return tokenResponse;
+        })
+      ),
+  };
+
+  /**
+   * Provides MyAccount API operations as Observables.
+   *
+   * Allows the authenticated user to list, enroll, update, and delete their
+   * authentication methods. Requires an access token with the appropriate
+   * `read/create/update/delete:me:authentication-methods` scopes.
+   */
+  readonly myAccount: ObservableMyAccountApiClient = {
+    getFactors: () => from(this.auth0Client.myAccount.getFactors()),
+    getAuthenticationMethods: (type?: AuthenticationMethodType) =>
+      from(this.auth0Client.myAccount.getAuthenticationMethods(type)),
+    getAuthenticationMethod: (id: string) =>
+      from(this.auth0Client.myAccount.getAuthenticationMethod(id)),
+    deleteAuthenticationMethod: (id: string) =>
+      from(this.auth0Client.myAccount.deleteAuthenticationMethod(id)),
+    updateAuthenticationMethod: (
+      id: string,
+      data: UpdateAuthenticationMethodRequest
+    ) =>
+      from(
+        this.auth0Client.myAccount.updateAuthenticationMethod(id, data)
+      ),
+    enrollmentChallenge: (options: EnrollmentChallengeOptions) =>
+      from(this.auth0Client.myAccount.enrollmentChallenge(options)),
+    enrollmentVerify: (options: EnrollmentVerifyOptions) =>
+      from(this.auth0Client.myAccount.enrollmentVerify(options)),
   };
 
   private shouldHandleCallback(): Observable<boolean> {
