@@ -529,17 +529,23 @@ export class AuthService<TAppState extends AppState = AppState>
    */
   readonly passkey: ObservablePasskeyApiClient = {
     signup: (options: PasskeySignupOptions) =>
-      from(
-        this.auth0Client.passkey.signup(options).then((tokenResponse) => {
+      of(this.auth0Client).pipe(
+        concatMap((client) => client.passkey.signup(options)),
+        tap(() => this.authState.refresh()),
+        catchError((error) => {
+          this.authState.setError(error);
           this.authState.refresh();
-          return tokenResponse;
+          return throwError(error);
         })
       ),
     login: (options?: PasskeyLoginOptions) =>
-      from(
-        this.auth0Client.passkey.login(options).then((tokenResponse) => {
+      of(this.auth0Client).pipe(
+        concatMap((client) => client.passkey.login(options)),
+        tap(() => this.authState.refresh()),
+        catchError((error) => {
+          this.authState.setError(error);
           this.authState.refresh();
-          return tokenResponse;
+          return throwError(error);
         })
       ),
   };

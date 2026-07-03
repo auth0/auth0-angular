@@ -1670,6 +1670,23 @@ describe('AuthService', () => {
         });
       });
 
+      it('should record errors in the error$ observable', (done) => {
+        const errorObj = new Error('WebAuthn not supported');
+        (
+          auth0Client.passkey.signup as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.passkey.signup({ email: 'user@example.com' }).subscribe({
+          error: () => {},
+        });
+
+        service.error$.subscribe((err: Error) => {
+          expect(err).toBe(errorObj);
+          done();
+        });
+      });
+
       it('should bubble errors', (done) => {
         const errorObj = new Error('WebAuthn not supported');
         (
@@ -1730,6 +1747,23 @@ describe('AuthService', () => {
 
         service.passkey.login().subscribe(() => {
           expect(authState.refresh).toHaveBeenCalled();
+          done();
+        });
+      });
+
+      it('should record errors in the error$ observable', (done) => {
+        const errorObj = new Error('User cancelled');
+        (
+          auth0Client.passkey.login as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.passkey.login().subscribe({
+          error: () => {},
+        });
+
+        service.error$.subscribe((err: Error) => {
+          expect(err).toBe(errorObj);
           done();
         });
       });

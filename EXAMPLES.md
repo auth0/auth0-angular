@@ -1823,7 +1823,7 @@ import { switchMap } from 'rxjs';
 this.auth.myAccount
   .enrollmentChallenge({ type: 'passkey' })
   .pipe(
-    switchMap((challenge) => {
+    switchMap(async (challenge) => {
       // Trigger the browser's WebAuthn credential creation ceremony
       const credential = await navigator.credentials.create({
         publicKey: {
@@ -1858,7 +1858,7 @@ import { switchMap } from 'rxjs';
 this.auth.myAccount
   .enrollmentChallenge({ type: 'totp' })
   .pipe(
-    switchMap((challenge) => {
+    switchMap(async (challenge) => {
       // challenge.barcode_uri   — render as a QR code for the user to scan
       // challenge.manual_input_code — fallback code for manual entry
       showQrCode(challenge.barcode_uri);
@@ -1888,7 +1888,7 @@ this.auth.myAccount
     preferred_authentication_method: 'sms', // or 'voice'
   })
   .pipe(
-    switchMap((challenge) => {
+    switchMap(async (challenge) => {
       const otpCode = await promptUserForOtp();
 
       return this.auth.myAccount.enrollmentVerify({
@@ -1910,7 +1910,7 @@ import { switchMap } from 'rxjs';
 this.auth.myAccount
   .enrollmentChallenge({ type: 'email', email: 'user@example.com' })
   .pipe(
-    switchMap((challenge) => {
+    switchMap(async (challenge) => {
       const otpCode = await promptUserForOtp();
 
       return this.auth.myAccount.enrollmentVerify({
@@ -1977,7 +1977,7 @@ import { switchMap } from 'rxjs';
 this.auth.myAccount
   .enrollmentChallenge({ type: 'password' })
   .pipe(
-    switchMap((challenge) => {
+    switchMap(async (challenge) => {
       const newPassword = await promptUserForPassword();
 
       return this.auth.myAccount.enrollmentVerify({
