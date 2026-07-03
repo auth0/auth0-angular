@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.10.0](https://github.com/auth0/auth0-angular/tree/v2.10.0) (2026-07-03)
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.9.0...v2.10.0)
+
+**Added**
+- feat: add Passkey and MyAccount API support [\#927](https://github.com/auth0/auth0-angular/pull/927) ([cschetan77](https://github.com/cschetan77))
+
 ## [v2.9.0](https://github.com/auth0/auth0-angular/tree/v2.9.0) (2026-04-28)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.8.1...v2.9.0)
