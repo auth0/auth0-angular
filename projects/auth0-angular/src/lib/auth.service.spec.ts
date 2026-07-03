@@ -124,6 +124,44 @@ describe('AuthService', () => {
       expires_in: 86400,
     });
 
+    jest.spyOn(auth0Client.passkey, 'signup').mockResolvedValue({
+      access_token: '__passkey_access_token__',
+      id_token: '__passkey_id_token__',
+      token_type: 'Bearer',
+      expires_in: 86400,
+    });
+    jest.spyOn(auth0Client.passkey, 'login').mockResolvedValue({
+      access_token: '__passkey_access_token__',
+      id_token: '__passkey_id_token__',
+      token_type: 'Bearer',
+      expires_in: 86400,
+    });
+
+    jest.spyOn(auth0Client.myAccount, 'getFactors').mockResolvedValue([]);
+    jest
+      .spyOn(auth0Client.myAccount, 'getAuthenticationMethods')
+      .mockResolvedValue([]);
+    jest
+      .spyOn(auth0Client.myAccount, 'getAuthenticationMethod')
+      .mockResolvedValue({ id: '__method_id__' } as any);
+    jest
+      .spyOn(auth0Client.myAccount, 'deleteAuthenticationMethod')
+      .mockResolvedValue();
+    jest
+      .spyOn(auth0Client.myAccount, 'updateAuthenticationMethod')
+      .mockResolvedValue({ id: '__method_id__' } as any);
+    jest
+      .spyOn(auth0Client.myAccount, 'enrollmentChallenge')
+      .mockResolvedValue({
+        id: '__challenge_id__',
+        location: 'https://example.auth0.com/enroll',
+        auth_session: '__auth_session__',
+        type: 'totp',
+      } as any);
+    jest
+      .spyOn(auth0Client.myAccount, 'enrollmentVerify')
+      .mockResolvedValue({ id: '__method_id__' } as any);
+
     window.history.replaceState(null, '', '');
 
     moduleSetup = {
@@ -1588,6 +1626,480 @@ describe('AuthService', () => {
             expect(isAuthEmissions).toBe(1);
             expect(userEmissions).toBe(1);
             done();
+          });
+      });
+    });
+  });
+
+  describe('passkey', () => {
+    describe('signup', () => {
+      it('should call the underlying SDK', (done) => {
+        const service = createService();
+        const options = { email: 'user@example.com' };
+
+        service.passkey.signup(options).subscribe(() => {
+          expect(auth0Client.passkey.signup).toHaveBeenCalledWith(options);
+          done();
+        });
+      });
+
+      it('should return the token response', (done) => {
+        const service = createService();
+
+        service.passkey
+          .signup({ email: 'user@example.com' })
+          .subscribe((result) => {
+            expect(result).toEqual({
+              access_token: '__passkey_access_token__',
+              id_token: '__passkey_id_token__',
+              token_type: 'Bearer',
+              expires_in: 86400,
+            });
+            done();
+          });
+      });
+
+      it('should set the access token after successful signup', (done) => {
+        const service = createService();
+
+        jest.spyOn(authState, 'setAccessToken');
+
+        service.passkey.signup({ email: 'user@example.com' }).subscribe(() => {
+          expect(authState.setAccessToken).toHaveBeenCalledWith(
+            '__passkey_access_token__'
+          );
+          done();
+        });
+      });
+
+      it('should record errors in the error$ observable', (done) => {
+        const errorObj = new Error('WebAuthn not supported');
+        (
+          auth0Client.passkey.signup as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.passkey.signup({ email: 'user@example.com' }).subscribe({
+          error: () => {},
+        });
+
+        service.error$.subscribe((err: Error) => {
+          expect(err).toBe(errorObj);
+          done();
+        });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('WebAuthn not supported');
+        (
+          auth0Client.passkey.signup as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.passkey.signup({ email: 'user@example.com' }).subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('login', () => {
+      it('should call the underlying SDK', (done) => {
+        const service = createService();
+
+        service.passkey.login().subscribe(() => {
+          expect(auth0Client.passkey.login).toHaveBeenCalledWith(undefined);
+          done();
+        });
+      });
+
+      it('should forward options to the underlying SDK', (done) => {
+        const service = createService();
+        const options = {
+          realm: 'Username-Password-Authentication',
+          scope: 'openid profile email',
+        };
+
+        service.passkey.login(options).subscribe(() => {
+          expect(auth0Client.passkey.login).toHaveBeenCalledWith(options);
+          done();
+        });
+      });
+
+      it('should return the token response', (done) => {
+        const service = createService();
+
+        service.passkey.login().subscribe((result) => {
+          expect(result).toEqual({
+            access_token: '__passkey_access_token__',
+            id_token: '__passkey_id_token__',
+            token_type: 'Bearer',
+            expires_in: 86400,
+          });
+          done();
+        });
+      });
+
+      it('should set the access token after successful login', (done) => {
+        const service = createService();
+
+        jest.spyOn(authState, 'setAccessToken');
+
+        service.passkey.login().subscribe(() => {
+          expect(authState.setAccessToken).toHaveBeenCalledWith(
+            '__passkey_access_token__'
+          );
+          done();
+        });
+      });
+
+      it('should record errors in the error$ observable', (done) => {
+        const errorObj = new Error('User cancelled');
+        (
+          auth0Client.passkey.login as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.passkey.login().subscribe({
+          error: () => {},
+        });
+
+        service.error$.subscribe((err: Error) => {
+          expect(err).toBe(errorObj);
+          done();
+        });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('User cancelled');
+        (
+          auth0Client.passkey.login as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.passkey.login().subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('myAccount', () => {
+    describe('getFactors', () => {
+      it('should call the underlying SDK', (done) => {
+        const service = createService();
+
+        service.myAccount.getFactors().subscribe(() => {
+          expect(auth0Client.myAccount.getFactors).toHaveBeenCalled();
+          done();
+        });
+      });
+
+      it('should return the factors list', (done) => {
+        const service = createService();
+
+        service.myAccount.getFactors().subscribe((result) => {
+          expect(Array.isArray(result)).toBe(true);
+          done();
+        });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('getFactors failed');
+        (
+          auth0Client.myAccount.getFactors as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.myAccount.getFactors().subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('getAuthenticationMethods', () => {
+      it('should call the underlying SDK without a filter', (done) => {
+        const service = createService();
+
+        service.myAccount.getAuthenticationMethods().subscribe(() => {
+          expect(
+            auth0Client.myAccount.getAuthenticationMethods
+          ).toHaveBeenCalledWith(undefined);
+          done();
+        });
+      });
+
+      it('should forward the type filter to the underlying SDK', (done) => {
+        const service = createService();
+
+        service.myAccount
+          .getAuthenticationMethods('passkey')
+          .subscribe(() => {
+            expect(
+              auth0Client.myAccount.getAuthenticationMethods
+            ).toHaveBeenCalledWith('passkey');
+            done();
+          });
+      });
+
+      it('should return the list of authentication methods', (done) => {
+        const service = createService();
+
+        service.myAccount.getAuthenticationMethods().subscribe((result) => {
+          expect(Array.isArray(result)).toBe(true);
+          done();
+        });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('getAuthenticationMethods failed');
+        (
+          auth0Client.myAccount
+            .getAuthenticationMethods as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.myAccount.getAuthenticationMethods().subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('getAuthenticationMethod', () => {
+      it('should call the underlying SDK with the id', (done) => {
+        const service = createService();
+
+        service.myAccount.getAuthenticationMethod('__method_id__').subscribe(() => {
+          expect(
+            auth0Client.myAccount.getAuthenticationMethod
+          ).toHaveBeenCalledWith('__method_id__');
+          done();
+        });
+      });
+
+      it('should return the authentication method', (done) => {
+        const service = createService();
+
+        service.myAccount
+          .getAuthenticationMethod('__method_id__')
+          .subscribe((result) => {
+            expect(result.id).toBe('__method_id__');
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('getAuthenticationMethod failed');
+        (
+          auth0Client.myAccount
+            .getAuthenticationMethod as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.myAccount.getAuthenticationMethod('__method_id__').subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('deleteAuthenticationMethod', () => {
+      it('should call the underlying SDK with the id', (done) => {
+        const service = createService();
+
+        service.myAccount
+          .deleteAuthenticationMethod('__method_id__')
+          .subscribe(() => {
+            expect(
+              auth0Client.myAccount.deleteAuthenticationMethod
+            ).toHaveBeenCalledWith('__method_id__');
+            done();
+          });
+      });
+
+      it('should complete without a value', (done) => {
+        const service = createService();
+
+        service.myAccount
+          .deleteAuthenticationMethod('__method_id__')
+          .subscribe((result) => {
+            expect(result).toBeUndefined();
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('deleteAuthenticationMethod failed');
+        (
+          auth0Client.myAccount
+            .deleteAuthenticationMethod as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.myAccount
+          .deleteAuthenticationMethod('__method_id__')
+          .subscribe({
+            error: (err: Error) => {
+              expect(err).toBe(errorObj);
+              done();
+            },
+          });
+      });
+    });
+
+    describe('updateAuthenticationMethod', () => {
+      it('should call the underlying SDK with id and data', (done) => {
+        const service = createService();
+        const data = { name: 'My Passkey' };
+
+        service.myAccount
+          .updateAuthenticationMethod('__method_id__', data)
+          .subscribe(() => {
+            expect(
+              auth0Client.myAccount.updateAuthenticationMethod
+            ).toHaveBeenCalledWith('__method_id__', data);
+            done();
+          });
+      });
+
+      it('should return the updated authentication method', (done) => {
+        const service = createService();
+
+        service.myAccount
+          .updateAuthenticationMethod('__method_id__', { name: 'My Passkey' })
+          .subscribe((result) => {
+            expect(result.id).toBe('__method_id__');
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('updateAuthenticationMethod failed');
+        (
+          auth0Client.myAccount
+            .updateAuthenticationMethod as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.myAccount
+          .updateAuthenticationMethod('__method_id__', { name: 'My Passkey' })
+          .subscribe({
+            error: (err: Error) => {
+              expect(err).toBe(errorObj);
+              done();
+            },
+          });
+      });
+    });
+
+    describe('enrollmentChallenge', () => {
+      it('should call the underlying SDK with options', (done) => {
+        const service = createService();
+        const options = { type: 'totp' as const };
+
+        service.myAccount.enrollmentChallenge(options).subscribe(() => {
+          expect(
+            auth0Client.myAccount.enrollmentChallenge
+          ).toHaveBeenCalledWith(options);
+          done();
+        });
+      });
+
+      it('should return the challenge response', (done) => {
+        const service = createService();
+
+        service.myAccount
+          .enrollmentChallenge({ type: 'totp' })
+          .subscribe((result) => {
+            expect(result.id).toBe('__challenge_id__');
+            expect(result.auth_session).toBe('__auth_session__');
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('enrollmentChallenge failed');
+        (
+          auth0Client.myAccount
+            .enrollmentChallenge as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.myAccount.enrollmentChallenge({ type: 'totp' }).subscribe({
+          error: (err: Error) => {
+            expect(err).toBe(errorObj);
+            done();
+          },
+        });
+      });
+    });
+
+    describe('enrollmentVerify', () => {
+      it('should call the underlying SDK with options', (done) => {
+        const service = createService();
+        const options = {
+          type: 'totp' as const,
+          location: 'https://example.auth0.com/enroll',
+          auth_session: '__auth_session__',
+          otp_code: '123456',
+        };
+
+        service.myAccount.enrollmentVerify(options).subscribe(() => {
+          expect(
+            auth0Client.myAccount.enrollmentVerify
+          ).toHaveBeenCalledWith(options);
+          done();
+        });
+      });
+
+      it('should return the created authentication method', (done) => {
+        const service = createService();
+
+        service.myAccount
+          .enrollmentVerify({
+            type: 'totp',
+            location: 'https://example.auth0.com/enroll',
+            auth_session: '__auth_session__',
+            otp_code: '123456',
+          })
+          .subscribe((result) => {
+            expect(result.id).toBe('__method_id__');
+            done();
+          });
+      });
+
+      it('should bubble errors', (done) => {
+        const errorObj = new Error('enrollmentVerify failed');
+        (
+          auth0Client.myAccount.enrollmentVerify as unknown as jest.SpyInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+
+        service.myAccount
+          .enrollmentVerify({
+            type: 'totp',
+            location: 'https://example.auth0.com/enroll',
+            auth_session: '__auth_session__',
+            otp_code: '123456',
+          })
+          .subscribe({
+            error: (err: Error) => {
+              expect(err).toBe(errorObj);
+              done();
+            },
           });
       });
     });
