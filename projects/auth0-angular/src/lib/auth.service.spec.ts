@@ -1659,13 +1659,15 @@ describe('AuthService', () => {
           });
       });
 
-      it('should refresh auth state after successful signup', (done) => {
+      it('should set the access token after successful signup', (done) => {
         const service = createService();
 
-        jest.spyOn(authState, 'refresh');
+        jest.spyOn(authState, 'setAccessToken');
 
         service.passkey.signup({ email: 'user@example.com' }).subscribe(() => {
-          expect(authState.refresh).toHaveBeenCalled();
+          expect(authState.setAccessToken).toHaveBeenCalledWith(
+            '__passkey_access_token__'
+          );
           done();
         });
       });
@@ -1740,13 +1742,15 @@ describe('AuthService', () => {
         });
       });
 
-      it('should refresh auth state after successful login', (done) => {
+      it('should set the access token after successful login', (done) => {
         const service = createService();
 
-        jest.spyOn(authState, 'refresh');
+        jest.spyOn(authState, 'setAccessToken');
 
         service.passkey.login().subscribe(() => {
-          expect(authState.refresh).toHaveBeenCalled();
+          expect(authState.setAccessToken).toHaveBeenCalledWith(
+            '__passkey_access_token__'
+          );
           done();
         });
       });

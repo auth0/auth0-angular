@@ -525,13 +525,18 @@ export class AuthService<TAppState extends AppState = AppState>
    * Provides Passkey (WebAuthn) authentication as Observables.
    *
    * Both methods handle the full WebAuthn challenge-response flow internally.
-   * `isAuthenticated$` and `user$` are refreshed after a successful call.
+   * After a successful call, this updates the authentication state to ensure
+   * consistency with the standard authentication flows.
    */
   readonly passkey: ObservablePasskeyApiClient = {
     signup: (options: PasskeySignupOptions) =>
       of(this.auth0Client).pipe(
         concatMap((client) => client.passkey.signup(options)),
-        tap(() => this.authState.refresh()),
+        tap((tokenResponse) => {
+          if (tokenResponse.access_token) {
+            this.authState.setAccessToken(tokenResponse.access_token);
+          }
+        }),
         catchError((error) => {
           this.authState.setError(error);
           this.authState.refresh();
@@ -541,7 +546,11 @@ export class AuthService<TAppState extends AppState = AppState>
     login: (options?: PasskeyLoginOptions) =>
       of(this.auth0Client).pipe(
         concatMap((client) => client.passkey.login(options)),
-        tap(() => this.authState.refresh()),
+        tap((tokenResponse) => {
+          if (tokenResponse.access_token) {
+            this.authState.setAccessToken(tokenResponse.access_token);
+          }
+        }),
         catchError((error) => {
           this.authState.setError(error);
           this.authState.refresh();
