@@ -18,6 +18,7 @@ import {
   ResponseType,
 } from '@auth0/auth0-spa-js';
 import type {
+  RevokeRefreshTokenOptions,
   EnrollParams,
   ChallengeAuthenticatorParams,
   VerifyParams,
@@ -241,6 +242,37 @@ export class AuthService<TAppState extends AppState = AppState>
         if (options?.openUrl === false || options?.openUrl) {
           this.authState.refresh();
         }
+      })
+    );
+  }
+
+  /**
+   * ```js
+   * revokeRefreshToken().subscribe();
+   * ```
+   *
+   * Revokes the refresh token via the `/oauth/revoke` endpoint. This invalidates the
+   * refresh token so it can no longer be used to obtain new access tokens.
+   *
+   * If `useRefreshTokens` is disabled, this method does nothing.
+   *
+   * **Online mode** (`refreshTokenMode: RefreshTokenMode.Online`): revoking the Online
+   * Refresh Token also terminates the Auth0 session server-side and clears the entire
+   * local cache. `isAuthenticated$`, `user$`, and `idTokenClaims$` update immediately
+   * to reflect the terminated session — no redirect required. Use `logout()` instead
+   * if you want a redirect-based sign-out.
+   *
+   * **Offline mode**: only the refresh token is invalidated; the cached access token
+   * and user profile remain valid until the access token expires. `isAuthenticated$`
+   * and `user$` are unaffected until then.
+   *
+   * @param options The options to identify which refresh token to revoke.
+   *   Defaults to the audience configured in `authorizationParams`.
+   */
+  revokeRefreshToken(options?: RevokeRefreshTokenOptions): Observable<void> {
+    return from(
+      this.auth0Client.revokeRefreshToken(options).then(() => {
+        this.authState.refresh();
       })
     );
   }

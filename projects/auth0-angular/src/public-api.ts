@@ -36,6 +36,8 @@ export {
   AuthenticationError,
   PopupCancelledError,
   MissingRefreshTokenError,
+  MissingScopesError,
+  InvalidConfigurationError,
   ConnectError,
   Fetcher,
   FetcherConfig,
@@ -44,6 +46,7 @@ export {
   CustomTokenExchangeOptions,
   TokenEndpointResponse,
   ResponseType,
+  RefreshTokenMode,
   MfaError,
   MfaListAuthenticatorsError,
   MfaEnrollmentError,
@@ -61,6 +64,7 @@ export {
 
 export type {
   InteractiveErrorHandler,
+  RevokeRefreshTokenOptions,
   Authenticator,
   AuthenticatorType,
   OobChannel,
