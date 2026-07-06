@@ -119,6 +119,11 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     return of(this.auth0Client).pipe(
       concatMap((client) => client.getTokenSilently(options)),
       map((tokenOrResponse: string | GetTokenSilentlyVerboseResponse) => {
+        // spa-js returns undefined when cacheMode is 'cache-only' with no
+        // cached entry, or when an IPSIE session_expiry ceiling is reached.
+        if (!tokenOrResponse) {
+          throw { error: 'missing_token' };
+        }
         // Extract access_token from detailed response when detailedResponse: true
         if (typeof tokenOrResponse === 'string') return tokenOrResponse;
         return tokenOrResponse.access_token;
@@ -223,6 +228,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
         'consent_required',
         'missing_refresh_token',
         'interaction_required',
+        'missing_token',
       ].includes(err.error)
     );
   }
