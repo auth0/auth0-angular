@@ -1,9 +1,20 @@
 # Change Log
 
+## [v2.10.1](https://github.com/auth0/auth0-angular/tree/v2.10.1) (2026-07-08)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.10.0...v2.10.1)
+
+**Fixed**
+
+- fix: handle undefined token response in allowAnonymous interceptor [\#935](https://github.com/auth0/auth0-angular/pull/935) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+- fix: handle interaction_required in allowAnonymous interceptor [\#933](https://github.com/auth0/auth0-angular/pull/933) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.10.0](https://github.com/auth0/auth0-angular/tree/v2.10.0) (2026-07-03)
+
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.9.0...v2.10.0)
 
 **Added**
+
 - feat: add Passkey and MyAccount API support [\#927](https://github.com/auth0/auth0-angular/pull/927) ([cschetan77](https://github.com/cschetan77))
 
 ## [v2.9.0](https://github.com/auth0/auth0-angular/tree/v2.9.0) (2026-04-28)
