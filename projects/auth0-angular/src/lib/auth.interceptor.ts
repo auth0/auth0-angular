@@ -218,9 +218,12 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       !!route &&
       isHttpInterceptorRouteConfig(route) &&
       !!route.allowAnonymous &&
-      ['login_required', 'consent_required', 'missing_refresh_token'].includes(
-        err.error
-      )
+      [
+        'login_required',
+        'consent_required',
+        'missing_refresh_token',
+        'interaction_required',
+      ].includes(err.error)
     );
   }
 }
