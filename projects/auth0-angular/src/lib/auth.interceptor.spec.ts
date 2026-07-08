@@ -403,10 +403,30 @@ describe('The Auth HTTP Interceptor', () => {
       await assertPassThruApiCallTo('https://my-api.com/api/orders', done);
     }));
 
+    it('does execute HTTP call when getTokenSilently returns undefined but allowAnonymous is set to true', fakeAsync(async (
+      done: () => void
+    ) => {
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockResolvedValue(undefined);
+
+      await assertPassThruApiCallTo('https://my-api.com/api/orders', done);
+    }));
+
     it('does not emit error when interaction_required but allowAnonymous is set to true', fakeAsync(async () => {
       (
         auth0Client.getTokenSilently as unknown as jest.SpyInstance
       ).mockRejectedValue({ error: 'interaction_required' });
+
+      await assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
+        expect(authState.setError).not.toHaveBeenCalled();
+      });
+    }));
+
+    it('does not emit error when getTokenSilently returns undefined but allowAnonymous is set to true', fakeAsync(async () => {
+      (
+        auth0Client.getTokenSilently as unknown as jest.SpyInstance
+      ).mockResolvedValue(undefined);
 
       await assertPassThruApiCallTo('https://my-api.com/api/orders', () => {
         expect(authState.setError).not.toHaveBeenCalled();
