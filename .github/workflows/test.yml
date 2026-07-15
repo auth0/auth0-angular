@@ -50,9 +50,10 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ matrix.NODE_VERSION }}
+          cache: npm
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Run tests
         run: npm run test:ci
@@ -72,9 +73,10 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Run tests
         run: npm run lint
