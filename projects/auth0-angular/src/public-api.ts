@@ -64,7 +64,6 @@ export {
 
 export type {
   InteractiveErrorHandler,
-  RevokeRefreshTokenOptions,
   Authenticator,
   AuthenticatorType,
   OobChannel,

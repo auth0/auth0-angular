@@ -908,42 +908,6 @@ try {
 }
 ```
 
-### Revoking the Online Refresh Token
-
-Call `revokeRefreshToken()` on `AuthService` to explicitly revoke the refresh token via the `/oauth/revoke` endpoint:
-
-```ts
-import { Component } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-})
-export class AppComponent {
-  constructor(public auth: AuthService) {}
-
-  revoke() {
-    this.auth.revokeRefreshToken().subscribe();
-  }
-
-  revokeForAudience() {
-    this.auth
-      .revokeRefreshToken({ audience: 'https://api.example.com' })
-      .subscribe();
-  }
-}
-```
-
-> [!WARNING]
-> In online mode, `revokeRefreshToken()` behaves differently from offline mode:
-> - The ORT **is** revoked at the authorization server, and because it is session-bound, the Auth0 **session is terminated server-side** as part of revocation.
-> - The entire local cache is cleared immediately — `isAuthenticated$` emits `false`, and `user$`/`idTokenClaims$` emit `null` right away, without waiting for the access token to expire.
->
-> In **offline mode**, only the refresh token is invalidated — the cached access token and user profile remain valid until the access token expires.
->
-> After calling `revokeRefreshToken()` in online mode, redirect the user to login. For a redirect-based sign-out in either mode, use `logout()` instead.
-
 ### Using Online Access with MRRT
 
 Online access is compatible with Multi-Resource Refresh Tokens (MRRT): a single ORT can be exchanged for access tokens across the audiences allowed by your refresh-token policies. The ORT remains non-rotating throughout.

@@ -75,7 +75,6 @@ describe('AuthService', () => {
     jest.spyOn(auth0Client, 'getUser').mockResolvedValue(undefined);
     jest.spyOn(auth0Client, 'getIdTokenClaims').mockResolvedValue(undefined);
     jest.spyOn(auth0Client, 'logout');
-    jest.spyOn(auth0Client, 'revokeRefreshToken').mockResolvedValue();
     jest
       .spyOn(auth0Client, 'getTokenSilently')
       .mockResolvedValue('__access_token__');
@@ -863,49 +862,6 @@ describe('AuthService', () => {
       });
 
       service.logout(options);
-    });
-  });
-
-  it('should call `revokeRefreshToken`', () => {
-    const service = createService();
-    service.revokeRefreshToken().subscribe();
-    expect(auth0Client.revokeRefreshToken).toHaveBeenCalledWith(undefined);
-  });
-
-  it('should call `revokeRefreshToken` with options', () => {
-    const options = { audience: 'https://api.example.com' };
-    const service = createService();
-    service.revokeRefreshToken(options).subscribe();
-    expect(auth0Client.revokeRefreshToken).toHaveBeenCalledWith(options);
-  });
-
-  it('should refresh the authentication state after revokeRefreshToken', (done) => {
-    // In online mode, revoking terminates the session server-side; in offline
-    // mode the cached session is untouched. Either way the SDK must re-derive
-    // isAuthenticated$/user$/idTokenClaims$ from auth0Client after the call —
-    // asserted here via the same AuthState.refresh() trigger `logout` uses.
-    jest.spyOn(authState, 'refresh');
-
-    const service = createService();
-
-    service.revokeRefreshToken().subscribe(() => {
-      expect(authState.refresh).toHaveBeenCalled();
-      done();
-    });
-  });
-
-  it('should propagate errors from `revokeRefreshToken`', (done) => {
-    (
-      auth0Client.revokeRefreshToken as unknown as jest.SpyInstance
-    ).mockRejectedValue(new Error('The token has been revoked'));
-
-    const service = createService();
-
-    service.revokeRefreshToken().subscribe({
-      error: (e) => {
-        expect(e.message).toBe('The token has been revoked');
-        done();
-      },
     });
   });
 
