@@ -15,7 +15,8 @@
       "rules": {
         "@typescript-eslint/member-ordering": 0,
         "@typescript-eslint/naming-convention": 0,
-        "prefer-arrow/prefer-arrow-functions": 0
+        "prefer-arrow/prefer-arrow-functions": 0,
+        "@angular-eslint/prefer-inject": "off"
       }
     },
     {
