@@ -1,8 +1,9 @@
-import { default as load } from '@commitlint/load';
-import { default as lint } from '@commitlint/lint';
-import { default as format } from '@commitlint/format';
+import load from '@commitlint/load';
+import lint from '@commitlint/lint';
+import format from '@commitlint/format';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import { resolve } from 'path';
 
 async function run() {
   try {
@@ -21,12 +22,12 @@ async function run() {
     // 2. Load the commitlint configuration from the repository
     const config = await load(
       {},
-      { file: 'commitlint.config.mjs', cwd: process.cwd() }
+      { file: 'commitlint.config.mjs', cwd: resolve(import.meta.dirname, '..') }
     );
 
     if (!config.rules || Object.keys(config.rules).length === 0) {
       core.setFailed(
-        '⛔️ No commitlint rules loaded. Is commitlint.config.mjs present at the repo root?'
+        '⛔️ No commitlint rules loaded. Is commitlint.config.mjs present in the action directory?'
       );
       return;
     }
@@ -37,6 +38,7 @@ async function run() {
     const result = await lint(prTitle, config.rules, {
       defaultIgnores: config.defaultIgnores,
       helpUrl: config.helpUrl,
+      parserOpts: config.parserPreset?.parserOpts,
     });
 
     // 4. Report the results
