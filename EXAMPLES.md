@@ -11,6 +11,7 @@
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
 - [Device-bound tokens with DPoP](#device-bound-tokens-with-dpop)
+- [Online Access (Online Refresh Tokens)](#online-access-online-refresh-tokens)
 - [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 - [Connect Accounts for using Token Vault](#connect-accounts-for-using-token-vault)
 - [Native to Web SSO](#native-to-web-sso)
@@ -835,7 +836,10 @@ Read more about [Online Refresh Tokens](https://auth0.com/docs/secure/tokens/ref
 > [!IMPORTANT]
 > Online access requires DPoP. Sender-constraining the token via [DPoP](#device-bound-tokens-with-dpop) is mandatory because the ORT is non-rotating — binding it to the browser's key pair is what mitigates token replay if it is exfiltrated. You must set `useDpop: true` explicitly; the SDK does not enable it for you.
 >
-> This also requires the `online_refresh_tokens` flag to be enabled for your Auth0 tenant, and `allow_online_access` to be enabled on the resource server you log in with (on by default).
+> This also requires `allow_online_access` to be enabled on the resource server you log in with.
+
+> [!WARNING]
+> Online Refresh Tokens do not currently support resource servers with **Ephemeral Sessions** enabled. If a resource server has both `allow_online_access` and "Allow for Ephemeral Sessions" enabled, the authorization server issues an Online Refresh Token at login that is then rejected with `invalid_grant` (`"Unknown or invalid refresh token"`) on the very next refresh — this is a known backend limitation, not a client-side defect. Until Ephemeral Sessions support is added for Online Refresh Tokens, disable "Allow for Ephemeral Sessions" on any resource server used with `refreshTokenMode: RefreshTokenMode.Online`.
 
 ### Enabling Online Access
 
@@ -893,19 +897,50 @@ bootstrapApplication(AppComponent, {
 
 ### Configuration validation
 
-If `refreshTokenMode: RefreshTokenMode.Online` is set without `useRefreshTokens: true` and `useDpop: true`, the underlying `Auth0Client` constructor throws an `InvalidConfigurationError`:
+If `refreshTokenMode: RefreshTokenMode.Online` is set without `useRefreshTokens: true` and `useDpop: true`, the underlying `Auth0Client` constructor throws an `InvalidConfigurationError`. `Auth0Client` is constructed lazily by Angular's DI system, so the error surfaces during app bootstrap rather than at the `AuthModule.forRoot` / `provideAuth0` call site — a synchronous `try/catch` around that call won't catch it.
+
+Catch it on the bootstrap promise:
 
 ```ts
 import { InvalidConfigurationError } from '@auth0/auth0-angular';
 
-try {
-  // AuthModule.forRoot / provideAuth0 constructs the client during app bootstrap.
-  // Wrap it, or validate your configuration up front, to catch misconfiguration.
-} catch (e) {
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      useRefreshTokens: true,
+      refreshTokenMode: RefreshTokenMode.Online,
+      useDpop: true,
+      authorizationParams: { redirect_uri: window.location.origin },
+    }),
+  ],
+}).catch((e) => {
   if (e instanceof InvalidConfigurationError) {
-    console.error(e.error_description); // includes the suggested fix
+    console.error('Auth0 misconfiguration:', e.error_description); // includes the suggested fix
+  }
+});
+```
+
+Or handle it globally with Angular's `ErrorHandler`, which also receives errors from the running app:
+
+```ts
+import { ErrorHandler, Injectable } from '@angular/core';
+import { InvalidConfigurationError } from '@auth0/auth0-angular';
+
+@Injectable()
+export class AppErrorHandler implements ErrorHandler {
+  handleError(error: unknown): void {
+    if (error instanceof InvalidConfigurationError) {
+      console.error('Auth0 misconfiguration:', error.error_description);
+      return;
+    }
+    console.error(error);
   }
 }
+
+// in app.config.ts:
+{ provide: ErrorHandler, useClass: AppErrorHandler }
 ```
 
 ### Using Online Access with MRRT
