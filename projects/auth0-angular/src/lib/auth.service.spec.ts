@@ -6,6 +6,7 @@ import {
   IdToken,
   ResponseType,
   ConnectAccountRedirectResult,
+  RefreshTokenMode,
 } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import {
@@ -862,6 +863,53 @@ describe('AuthService', () => {
       });
 
       service.logout(options);
+    });
+  });
+
+  describe('Online Access (Online Refresh Tokens)', () => {
+    it('clears isAuthenticated$ and user$ after logout with an Online Refresh Token', (done) => {
+      authConfig.useRefreshTokens = true;
+      authConfig.refreshTokenMode = RefreshTokenMode.Online;
+      authConfig.useDpop = true;
+
+      const user = {
+        name: 'Test User',
+      };
+
+      (
+        auth0Client.isAuthenticated as unknown as jest.SpyInstance
+      ).mockResolvedValue(true);
+      (auth0Client.getUser as unknown as jest.SpyInstance).mockResolvedValue(
+        user
+      );
+
+      const service = createService();
+
+      service.user$.pipe(bufferCount(2)).subscribe((values) => {
+        expect(values[0]).toBe(user);
+        expect(values[1]).toBe(null);
+      });
+
+      service.isAuthenticated$.pipe(bufferCount(2)).subscribe((values) => {
+        expect(values[0]).toBe(true);
+        expect(values[1]).toBe(false);
+        done();
+      });
+
+      service.isAuthenticated$.pipe(filter(Boolean)).subscribe(() => {
+        // Revoking the Online Refresh Token terminates the Auth0 session
+        // server-side, so the underlying SDK reflects no user going forward.
+        (
+          auth0Client.isAuthenticated as unknown as jest.SpyInstance
+        ).mockResolvedValue(false);
+        (auth0Client.getUser as unknown as jest.SpyInstance).mockResolvedValue(
+          undefined
+        );
+
+        service.logout({
+          openUrl: false,
+        });
+      });
     });
   });
 
