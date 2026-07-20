@@ -11,6 +11,7 @@
 - [Handling errors](#handling-errors)
 - [Organizations](#organizations)
 - [Device-bound tokens with DPoP](#device-bound-tokens-with-dpop)
+- [Online Access (Online Refresh Tokens)](#online-access-online-refresh-tokens)
 - [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 - [Connect Accounts for using Token Vault](#connect-accounts-for-using-token-vault)
 - [Native to Web SSO](#native-to-web-sso)
@@ -819,6 +820,151 @@ bootstrapApplication(AppComponent, {
   ],
 });
 ```
+
+## Online Access (Online Refresh Tokens)
+
+> [!NOTE]
+> Online Access (Online Refresh Tokens) support via SDKs is currently in Early Access. To request access to this feature, contact your Auth0 representative.
+
+**Online Refresh Tokens (ORTs)** are a refresh token type bound to the lifetime of the user's Auth0 session, unlike rotating offline refresh tokens. An ORT is:
+
+- **Session-bound** — valid only while the underlying Auth0 session is active. When the session ends (logout, idle/absolute session expiry, or an admin revoking the session), the ORT stops working.
+- **Non-rotating** — refreshing an access token with an ORT does **not** issue a new refresh token; the same ORT is reused for the life of the session.
+
+Read more about [Online Refresh Tokens](https://auth0.com/docs/secure/tokens/refresh-tokens/online-refresh-tokens/online-refresh-tokens) to decide whether this fits your application.
+
+> [!IMPORTANT]
+> Online access requires DPoP. Sender-constraining the token via [DPoP](#device-bound-tokens-with-dpop) is mandatory because the ORT is non-rotating — binding it to the browser's key pair is what mitigates token replay if it is exfiltrated. You must set `useDpop: true` explicitly; the SDK does not enable it for you.
+>
+> This also requires `allow_online_access` to be enabled on the resource server you log in with.
+
+> [!WARNING]
+> Online Refresh Tokens do not currently support resource servers with **Ephemeral Sessions** enabled. If a resource server has both `allow_online_access` and "Allow for Ephemeral Sessions" enabled, the authorization server issues an Online Refresh Token at login that is then rejected with `invalid_grant` (`"Unknown or invalid refresh token"`) on the very next refresh — this is a known backend limitation, not a client-side defect. Until Ephemeral Sessions support is added for Online Refresh Tokens, disable "Allow for Ephemeral Sessions" on any resource server used with `refreshTokenMode: RefreshTokenMode.Online`.
+
+### Enabling Online Access
+
+Set `refreshTokenMode` to `RefreshTokenMode.Online` together with `useRefreshTokens: true` and `useDpop: true`:
+
+```ts
+import { NgModule } from '@angular/core';
+import { AuthModule, RefreshTokenMode } from '@auth0/auth0-angular';
+
+@NgModule({
+  imports: [
+    AuthModule.forRoot({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      useRefreshTokens: true, // required — online access is a refresh-token grant
+      refreshTokenMode: RefreshTokenMode.Online, // 👈
+      useDpop: true, // required — DPoP is mandatory for online access
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+      },
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+Or with standalone components via `provideAuth0`:
+
+```ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAuth0, RefreshTokenMode } from '@auth0/auth0-angular';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      useRefreshTokens: true,
+      refreshTokenMode: RefreshTokenMode.Online,
+      useDpop: true,
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+      },
+    }),
+  ],
+});
+```
+
+`refreshTokenMode` defaults to `RefreshTokenMode.Offline` (rotating refresh tokens). Enabling online mode causes the underlying SDK to:
+
+- Send the `online_access` scope to the authorization server (instead of `offline_access`) — you do **not** need to add it to `authorizationParams.scope` yourself.
+- Route token renewal through the `refresh_token` grant against `/oauth/token` rather than a hidden iframe.
+- Store the non-rotating ORT in the existing cache and reuse it on every refresh, never replacing it.
+
+### Configuration validation
+
+If `refreshTokenMode: RefreshTokenMode.Online` is set without `useRefreshTokens: true` and `useDpop: true`, the underlying `Auth0Client` constructor throws an `InvalidConfigurationError`. `Auth0Client` is constructed lazily by Angular's DI system, so the error surfaces during app bootstrap rather than at the `AuthModule.forRoot` / `provideAuth0` call site — a synchronous `try/catch` around that call won't catch it.
+
+Catch it on the bootstrap promise:
+
+```ts
+import { InvalidConfigurationError } from '@auth0/auth0-angular';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideAuth0({
+      domain: 'YOUR_AUTH0_DOMAIN',
+      clientId: 'YOUR_AUTH0_CLIENT_ID',
+      useRefreshTokens: true,
+      refreshTokenMode: RefreshTokenMode.Online,
+      useDpop: true,
+      authorizationParams: { redirect_uri: window.location.origin },
+    }),
+  ],
+}).catch((e) => {
+  if (e instanceof InvalidConfigurationError) {
+    console.error('Auth0 misconfiguration:', e.error_description); // includes the suggested fix
+  }
+});
+```
+
+Or handle it globally with Angular's `ErrorHandler`, which also receives errors from the running app:
+
+```ts
+import { ErrorHandler, Injectable } from '@angular/core';
+import { InvalidConfigurationError } from '@auth0/auth0-angular';
+
+@Injectable()
+export class AppErrorHandler implements ErrorHandler {
+  handleError(error: unknown): void {
+    if (error instanceof InvalidConfigurationError) {
+      console.error('Auth0 misconfiguration:', error.error_description);
+      return;
+    }
+    console.error(error);
+  }
+}
+
+// in app.config.ts:
+{ provide: ErrorHandler, useClass: AppErrorHandler }
+```
+
+### Using Online Access with MRRT
+
+Online access is compatible with Multi-Resource Refresh Tokens (MRRT): a single ORT can be exchanged for access tokens across the audiences allowed by your refresh-token policies. The ORT remains non-rotating throughout.
+
+```ts
+AuthModule.forRoot({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  useRefreshTokens: true,
+  refreshTokenMode: RefreshTokenMode.Online,
+  useDpop: true,
+  useMrrt: true, // 👈
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+    audience: 'https://api.example.com',
+  },
+});
+```
+
+> [!IMPORTANT]
+> In order for MRRT to work, it needs a previous configuration setting the refresh token policies.
+> Visit [configure and implement MRRT](https://auth0.com/docs/secure/tokens/refresh-tokens/multi-resource-refresh-token/configure-and-implement-multi-resource-refresh-token).
 
 ## Standalone components and a more functional approach
 
