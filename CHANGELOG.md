@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.11.0](https://github.com/auth0/auth0-angular/tree/v2.11.0) (2026-07-20)
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.10.1...v2.11.0)
+
+**Added**
+- feat: add support for Online Access (Online Refresh Tokens) [\#934](https://github.com/auth0/auth0-angular/pull/934) ([NandanPrabhu](https://github.com/NandanPrabhu))
+
 ## [v2.10.1](https://github.com/auth0/auth0-angular/tree/v2.10.1) (2026-07-08)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.10.0...v2.10.1)
