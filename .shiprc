@@ -1,5 +1,6 @@
 {
     "packagePath": "projects/auth0-angular",
+    "conventionalCommits": true,
     "files": {
         ".version": []
     },
