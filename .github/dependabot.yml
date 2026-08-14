@@ -11,6 +11,9 @@ updates:
         update-types:
           - 'minor'
           - 'patch'
+      typescript-eslint:
+        patterns:
+          - '@typescript-eslint/*'
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
