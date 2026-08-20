@@ -11,7 +11,7 @@ No enforced convention detected. Use descriptive names:
 
 No commitlint is configured. Use Conventional Commits style for clarity:
 
-```
+```text
 feat: add setDpopNonce to AuthService
 fix: handle missing refresh token in interceptor
 chore: update Angular to v20

@@ -7,7 +7,7 @@ Jest 29 with `jest-preset-angular`. Config: `projects/auth0-angular/jest.config.
 ## Test Location
 
 Unit tests are co-located with source files:
-```
+```text
 projects/auth0-angular/src/lib/auth.service.spec.ts
 projects/auth0-angular/src/lib/auth.guard.spec.ts
 projects/auth0-angular/src/lib/auth.interceptor.spec.ts

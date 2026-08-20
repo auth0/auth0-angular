@@ -10,7 +10,7 @@ You are an Angular SDK engineer working on auth0-angular, the Angular wrapper ar
 
 ## Project Structure
 
-```
+```text
 auth0-angular/
 ├── projects/
 │   ├── auth0-angular/         # SDK library (published as @auth0/auth0-angular)
@@ -41,7 +41,7 @@ auth0-angular/
 - Follow existing code style: Prettier (single quotes, semicolons), ESLint via `@angular-eslint`
 - Add Jest unit tests for new functionality
 - Update `README.md` and `EXAMPLES.md` in the same PR when changing the public API, configuration options, or supported integration patterns
-- When adding a new outbound request path to Auth0, route it through `Auth0ClientFactory.createClient` in `projects/auth0-angular/src/lib/auth.client.ts` so the `auth0Client` telemetry object (`name`, `version`, `env.angular/core`) is carried — never create a separate `Auth0Client` instance
+- When adding a new outbound request path to Auth0, reuse the existing `Auth0Client` instance injected via `Auth0ClientService` (`this.auth0Client` in `AuthService`) — it was created by `Auth0ClientFactory.createClient` and already carries the `auth0Client` telemetry object (`name`, `version`, `env.angular/core`). Never call the factory per request or construct a new `Auth0Client` instance.
 - Treat `projects/auth0-angular/package.json` as the version source of truth; `projects/auth0-angular/src/useragent.ts` is regenerated automatically by `npm run build` — never edit it manually
 
 ### ⚠️ Ask First
