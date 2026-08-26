@@ -25,7 +25,7 @@ export const routes: Routes = [
   },
   {
     path: 'lazy',
-    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import('./components/lazy-module.component').then(
         (m) => m.LazyModuleComponent
