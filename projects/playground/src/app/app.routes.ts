@@ -1,13 +1,12 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ProtectedComponent } from './components/protected.component';
+import { Routes } from '@angular/router';
 import { AuthGuard } from 'projects/auth0-angular/src/lib/auth.guard';
+import { ProtectedComponent } from './components/protected.component';
 import { UnprotectedComponent } from './components/unprotected.component';
 import { ChildRouteComponent } from './components/child-route.component';
 import { NestedChildRouteComponent } from './components/nested-child-route.component';
 import { ErrorComponent } from './components/error.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: UnprotectedComponent,
@@ -27,17 +26,13 @@ const routes: Routes = [
   {
     path: 'lazy',
     canLoad: [AuthGuard],
-    loadChildren: () =>
-      import('./lazy-module.module').then((m) => m.LazyModuleModule),
+    loadComponent: () =>
+      import('./components/lazy-module.component').then(
+        (m) => m.LazyModuleComponent
+      ),
   },
   {
     path: 'error',
     component: ErrorComponent,
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}

@@ -4,6 +4,6 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-error',
   template: '<p data-cy="error">Error!</p>',
   styles: [],
-  standalone: false,
+  standalone: true,
 })
 export class ErrorComponent {}
