@@ -1,8 +1,4 @@
-import {
-  ApplicationConfig,
-  APP_INITIALIZER,
-  importProvidersFrom,
-} from '@angular/core';
+import { ApplicationConfig, APP_INITIALIZER } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {
   HTTP_INTERCEPTORS,
@@ -11,7 +7,7 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { AuthModule } from 'projects/auth0-angular/src/lib/auth.module';
+import { provideAuth0 } from 'projects/auth0-angular/src/public-api';
 import { AuthHttpInterceptor } from 'projects/auth0-angular/src/lib/auth.interceptor';
 import { AuthClientConfig } from 'projects/auth0-angular/src/lib/auth.config';
 import { routes } from './app.routes';
@@ -27,7 +23,7 @@ const configInitializer =
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    importProvidersFrom(AuthModule.forRoot()),
+    provideAuth0(),
     {
       provide: APP_INITIALIZER,
       useFactory: configInitializer,
