@@ -31,8 +31,7 @@ describe('AppComponent', () => {
     } as any;
 
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      imports: [RouterTestingModule, ReactiveFormsModule],
+      imports: [AppComponent, RouterTestingModule, ReactiveFormsModule],
       providers: [
         {
           provide: AuthService,
