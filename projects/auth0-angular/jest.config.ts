@@ -1,4 +1,4 @@
-import { createCjsPreset } from 'jest-preset-angular/presets';
+import { createCjsPreset } from 'jest-preset-angular/presets/index.js';
 /* eslint-disable */
 export default {
   displayName: 'auth0-angular',
