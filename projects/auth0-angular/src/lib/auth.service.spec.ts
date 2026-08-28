@@ -151,12 +151,14 @@ describe('AuthService', () => {
     jest
       .spyOn(auth0Client.myAccount, 'updateAuthenticationMethod')
       .mockResolvedValue({ id: '__method_id__' } as any);
-    jest.spyOn(auth0Client.myAccount, 'enrollmentChallenge').mockResolvedValue({
-      id: '__challenge_id__',
-      location: 'https://example.auth0.com/enroll',
-      auth_session: '__auth_session__',
-      type: 'totp',
-    } as any);
+    jest
+      .spyOn(auth0Client.myAccount, 'enrollmentChallenge')
+      .mockResolvedValue({
+        id: '__challenge_id__',
+        location: 'https://example.auth0.com/enroll',
+        auth_session: '__auth_session__',
+        type: 'totp',
+      } as any);
     jest
       .spyOn(auth0Client.myAccount, 'enrollmentVerify')
       .mockResolvedValue({ id: '__method_id__' } as any);
@@ -1886,12 +1888,14 @@ describe('AuthService', () => {
       it('should forward the type filter to the underlying SDK', (done) => {
         const service = createService();
 
-        service.myAccount.getAuthenticationMethods('passkey').subscribe(() => {
-          expect(
-            auth0Client.myAccount.getAuthenticationMethods
-          ).toHaveBeenCalledWith('passkey');
-          done();
-        });
+        service.myAccount
+          .getAuthenticationMethods('passkey')
+          .subscribe(() => {
+            expect(
+              auth0Client.myAccount.getAuthenticationMethods
+            ).toHaveBeenCalledWith('passkey');
+            done();
+          });
       });
 
       it('should return the list of authentication methods', (done) => {
@@ -1924,14 +1928,12 @@ describe('AuthService', () => {
       it('should call the underlying SDK with the id', (done) => {
         const service = createService();
 
-        service.myAccount
-          .getAuthenticationMethod('__method_id__')
-          .subscribe(() => {
-            expect(
-              auth0Client.myAccount.getAuthenticationMethod
-            ).toHaveBeenCalledWith('__method_id__');
-            done();
-          });
+        service.myAccount.getAuthenticationMethod('__method_id__').subscribe(() => {
+          expect(
+            auth0Client.myAccount.getAuthenticationMethod
+          ).toHaveBeenCalledWith('__method_id__');
+          done();
+        });
       });
 
       it('should return the authentication method', (done) => {
@@ -2104,9 +2106,9 @@ describe('AuthService', () => {
         };
 
         service.myAccount.enrollmentVerify(options).subscribe(() => {
-          expect(auth0Client.myAccount.enrollmentVerify).toHaveBeenCalledWith(
-            options
-          );
+          expect(
+            auth0Client.myAccount.enrollmentVerify
+          ).toHaveBeenCalledWith(options);
           done();
         });
       });
