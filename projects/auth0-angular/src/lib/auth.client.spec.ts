@@ -33,7 +33,7 @@ describe('Auth0ClientFactory', () => {
     it('throws an error when no config was supplied', () => {
       const configClient = new AuthClientConfig();
 
-      expect(() => Auth0ClientFactory.createClient(configClient)).toThrowError(
+      expect(() => Auth0ClientFactory.createClient(configClient)).toThrow(
         /^Configuration must be specified/
       );
     });

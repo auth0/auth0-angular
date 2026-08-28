@@ -728,7 +728,7 @@ describe('AuthService', () => {
     });
 
     it('should not process the callback when query string is a sub string', (done) => {
-      window.location.search = '?abccode=123&xyzstate=456';
+      window.history.replaceState(null, '', '?abccode=123&xyzstate=456');
 
       const localService = createService();
 
