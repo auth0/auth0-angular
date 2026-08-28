@@ -1,6 +1,9 @@
 import { AuthConfig, AuthClientConfig } from './auth.config';
 import { Auth0ClientFactory } from './auth.client';
-import { RefreshTokenMode, InvalidConfigurationError } from '@auth0/auth0-spa-js';
+import {
+  RefreshTokenMode,
+  InvalidConfigurationError,
+} from '@auth0/auth0-spa-js';
 
 const mockWindow = window as any;
 
@@ -33,7 +36,7 @@ describe('Auth0ClientFactory', () => {
     it('throws an error when no config was supplied', () => {
       const configClient = new AuthClientConfig();
 
-      expect(() => Auth0ClientFactory.createClient(configClient)).toThrowError(
+      expect(() => Auth0ClientFactory.createClient(configClient)).toThrow(
         /^Configuration must be specified/
       );
     });
@@ -116,9 +119,9 @@ describe('Auth0ClientFactory', () => {
 
         const configClient = new AuthClientConfig(config);
 
-        expect(() =>
-          Auth0ClientFactory.createClient(configClient)
-        ).toThrow(InvalidConfigurationError);
+        expect(() => Auth0ClientFactory.createClient(configClient)).toThrow(
+          InvalidConfigurationError
+        );
       });
 
       it('throws InvalidConfigurationError when refreshTokenMode is Online without useDpop', () => {
@@ -131,9 +134,9 @@ describe('Auth0ClientFactory', () => {
 
         const configClient = new AuthClientConfig(config);
 
-        expect(() =>
-          Auth0ClientFactory.createClient(configClient)
-        ).toThrow(InvalidConfigurationError);
+        expect(() => Auth0ClientFactory.createClient(configClient)).toThrow(
+          InvalidConfigurationError
+        );
       });
 
       it('does not throw when refreshTokenMode is Offline even without useDpop', () => {
