@@ -33,7 +33,7 @@ export default defineConfig({
   plugins: [
     fixRxjsEsm,
     angular({
-      tsconfig: resolve(__dirname, 'projects/auth0-angular/tsconfig.spec.json'),
+      tsconfig: resolve(__dirname, 'tsconfig.spec.json'),
       jit: true,
     }),
   ],
@@ -42,7 +42,13 @@ export default defineConfig({
     pool: 'forks',
     setupFiles: ['projects/auth0-angular/src/test-setup.ts'],
     environment: 'jsdom',
-    include: ['projects/auth0-angular/src/**/*.spec.ts'],
+    environmentOptions: {
+      jsdom: { url: 'http://localhost/' },
+    },
+    include: [
+      'projects/auth0-angular/src/**/*.spec.ts',
+      'projects/playground/src/**/*.spec.ts',
+    ],
     server: {
       deps: {
         inline: [/zone\.js/, /@angular\//, /@auth0\//, /rxjs/],
@@ -51,6 +57,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reportsDirectory: 'coverage/auth0-angular',
+      include: ['projects/auth0-angular/src/lib/**'],
     },
   },
 });
