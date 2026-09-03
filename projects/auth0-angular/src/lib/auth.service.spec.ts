@@ -284,7 +284,7 @@ describe('AuthService', () => {
       expect(values[1]).toBe(true);
     });
 
-    it('should still return true when the token is expired', () => {
+    it('should still return true when the token is expired', async () => {
       authState.setIsLoading(false);
       (
         auth0Client.isAuthenticated as unknown as MockInstance
@@ -292,9 +292,8 @@ describe('AuthService', () => {
 
       const service = createService();
 
-      service.isAuthenticated$.pipe(take(1)).subscribe((value) => {
-        expect(value).toBe(true);
-      });
+      const value1 = await firstValueFrom(service.isAuthenticated$);
+      expect(value1).toBe(true);
 
       // When the token is expired, auth0Client.isAuthenticated is resolving to false.
       // This is unexpected but known behavior in Auth0-SPA-JS, so we shouldnt rely on it apart from initially.
@@ -303,9 +302,9 @@ describe('AuthService', () => {
         auth0Client.isAuthenticated as unknown as MockInstance
       ).mockResolvedValue(false);
 
-      service.isAuthenticated$.pipe(take(1)).subscribe((value) => {
-        expect(value).toBe(true);
-      });
+      // shareReplay(1) returns the cached value; the service does not re-query isAuthenticated
+      const value2 = await firstValueFrom(service.isAuthenticated$);
+      expect(value2).toBe(true);
     });
   });
 
