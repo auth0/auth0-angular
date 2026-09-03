@@ -22,6 +22,7 @@ export {
   GetTokenSilentlyOptions,
   RedirectConnectAccountOptions,
   ConnectAccountRedirectResult,
+  isFederatedDomain,
   ICache,
   Cacheable,
   LocalStorageCache,
@@ -64,6 +65,7 @@ export {
 
 export type {
   InteractiveErrorHandler,
+  IsFederatedDomainOptions,
   Authenticator,
   AuthenticatorType,
   OobChannel,
