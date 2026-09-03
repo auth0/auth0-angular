@@ -25,9 +25,28 @@ import {
   tap,
 } from 'rxjs/operators';
 
-// RxJS 6 polyfill for firstValueFrom (added in RxJS 7)
+// RxJS 6 polyfill for firstValueFrom (added in RxJS 7).
+// Rejects with EmptyError on empty completion to match RxJS 7 semantics.
 const firstValueFrom = <T>(obs: Observable<T>): Promise<T> =>
-  obs.pipe(take(1)).toPromise() as Promise<T>;
+  new Promise<T>((resolve, reject) => {
+    let hasValue = false;
+    obs.pipe(take(1)).subscribe({
+      next: (value) => {
+        hasValue = true;
+        resolve(value);
+      },
+      error: reject,
+      complete: () => {
+        if (!hasValue) {
+          reject(
+            Object.assign(new Error('No elements in sequence'), {
+              name: 'EmptyError',
+            })
+          );
+        }
+      },
+    });
+  });
 import { AuthConfig, AuthConfigService } from './auth.config';
 import { AuthState } from './auth.state';
 import type { MockInstance, Mock } from 'vitest';
