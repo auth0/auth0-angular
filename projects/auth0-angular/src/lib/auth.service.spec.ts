@@ -24,6 +24,13 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
+import { AuthConfig, AuthConfigService } from './auth.config';
+import { AuthState } from './auth.state';
+import type { MockInstance, Mock } from 'vitest';
+import {
+  BrowserTestingModule,
+  platformBrowserTesting,
+} from '@angular/platform-browser/testing';
 
 // RxJS 6 polyfill for firstValueFrom (added in RxJS 7).
 // Rejects with EmptyError on empty completion to match RxJS 7 semantics.
@@ -47,13 +54,6 @@ const firstValueFrom = <T>(obs: Observable<T>): Promise<T> =>
       },
     });
   });
-import { AuthConfig, AuthConfigService } from './auth.config';
-import { AuthState } from './auth.state';
-import type { MockInstance, Mock } from 'vitest';
-import {
-  BrowserTestingModule,
-  platformBrowserTesting,
-} from '@angular/platform-browser/testing';
 
 // The forks pool loads setupFiles in a separate module-cache context from spec
 // files, so initTestEnvironment called in test-setup.ts targets a different

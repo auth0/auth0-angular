@@ -56,7 +56,7 @@ The `test-setup.ts` still handles `reflect-metadata` and `cross-fetch/polyfill` 
   const loaded = (service: AuthService) => service.isLoading$.pipe(filter((loading) => !loading));
   ```
 - Use plain `async`/`await` for async assertions — `fakeAsync`/`tick` are not available under Vitest
-- Use `observable.pipe(take(1)).toPromise()` to await a single emission (RxJS 6 — `firstValueFrom` is not available)
+- Use the local `firstValueFrom` polyfill (defined at the top of `auth.service.spec.ts`) to await a single emission — it rejects with `EmptyError` on empty completion, matching RxJS 7 semantics (RxJS 6 `toPromise()` would silently resolve `undefined`)
 - Use `bufferCount(n)` or `bufferTime(ms)` to collect multiple emissions before asserting
 
 ## Mocking
