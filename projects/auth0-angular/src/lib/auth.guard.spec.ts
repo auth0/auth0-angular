@@ -1,6 +1,5 @@
 import { of } from 'rxjs';
 import { AuthGuard } from './auth.guard';
-import { expect } from '@jest/globals';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -11,10 +10,10 @@ describe('AuthGuard', () => {
     it('should return true for a logged in user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(true),
-        loginWithRedirect: jest.fn(),
+        loginWithRedirect: vi.fn(),
       };
       guard = new AuthGuard(authServiceMock);
-      const listener = jest.fn();
+      const listener = vi.fn();
       guard.canActivate(routeMock, routeStateMock).subscribe(listener);
       expect(authServiceMock.loginWithRedirect).not.toHaveBeenCalled();
       expect(listener).toHaveBeenCalledWith(true);
@@ -23,7 +22,7 @@ describe('AuthGuard', () => {
     it('should redirect a logged out user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(false),
-        loginWithRedirect: jest.fn(),
+        loginWithRedirect: vi.fn().mockReturnValue(of(undefined)),
       };
       guard = new AuthGuard(authServiceMock);
       guard.canActivate(routeMock, routeStateMock).subscribe();
@@ -37,10 +36,10 @@ describe('AuthGuard', () => {
     it('should return true for a logged in user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(true),
-        loginWithRedirect: jest.fn(),
+        loginWithRedirect: vi.fn().mockReturnValue(of(undefined)),
       };
       guard = new AuthGuard(authServiceMock);
-      const listener = jest.fn();
+      const listener = vi.fn();
       guard.canActivateChild(routeMock, routeStateMock).subscribe(listener);
       expect(authServiceMock.loginWithRedirect).not.toHaveBeenCalled();
       expect(listener).toHaveBeenCalledWith(true);
@@ -49,7 +48,7 @@ describe('AuthGuard', () => {
     it('should redirect a logged out user', () => {
       const authServiceMock: any = {
         isAuthenticated$: of(false),
-        loginWithRedirect: jest.fn(),
+        loginWithRedirect: vi.fn().mockReturnValue(of(undefined)),
       };
       guard = new AuthGuard(authServiceMock);
       guard.canActivateChild(routeMock, routeStateMock).subscribe();
@@ -65,7 +64,7 @@ describe('AuthGuard', () => {
         isAuthenticated$: of(true),
       };
       guard = new AuthGuard(authServiceMock);
-      const listener = jest.fn();
+      const listener = vi.fn();
       guard.canLoad(routeMock, []).subscribe(listener);
       expect(listener).toHaveBeenCalledWith(true);
     });
@@ -75,7 +74,7 @@ describe('AuthGuard', () => {
         isAuthenticated$: of(false),
       };
       guard = new AuthGuard(authServiceMock);
-      const listener = jest.fn();
+      const listener = vi.fn();
       guard.canLoad(routeMock, []).subscribe(listener);
       expect(listener).toHaveBeenCalledWith(false);
     });
