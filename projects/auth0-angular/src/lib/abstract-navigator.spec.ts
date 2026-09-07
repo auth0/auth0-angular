@@ -1,9 +1,25 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+// Each spec file runs in its own jsdom window; zone.js from test-setup.ts
+// patched a different window, so it must be imported here too.
+import 'zone.js';
+import 'zone.js/testing';
+import '@angular/compiler';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
 import { AbstractNavigator } from './abstract-navigator';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+  BrowserTestingModule,
+  platformBrowserTesting,
+} from '@angular/platform-browser/testing';
+
+// The forks pool loads setupFiles in a separate module-cache context from spec
+// files, so initTestEnvironment called in test-setup.ts targets a different
+// TestBed instance. Initialize the environment here in the spec's own context.
+beforeAll(() => {
+  TestBed.initTestEnvironment(BrowserTestingModule, platformBrowserTesting());
+});
 
 describe('RouteNavigator', () => {
   let navigator: AbstractNavigator;
@@ -22,7 +38,7 @@ describe('RouteNavigator', () => {
       navigator = TestBed.inject(AbstractNavigator);
 
       const location = TestBed.inject(Location);
-      replaceStateSpy = jest.spyOn(location, 'replaceState');
+      replaceStateSpy = vi.spyOn(location, 'replaceState');
     });
 
     it('should be created', () => {
@@ -52,15 +68,14 @@ describe('RouteNavigator', () => {
       navigator = TestBed.inject(AbstractNavigator);
 
       const location = TestBed.inject(Location);
-      replaceStateSpy = jest.spyOn(location, 'replaceState');
+      replaceStateSpy = vi.spyOn(location, 'replaceState');
     });
 
-    it('should use the router if available', fakeAsync(() => {
+    it('should use the router if available', async () => {
       const location = TestBed.inject(Location);
-      navigator.navigateByUrl('/test-route');
-      tick();
+      await navigator.navigateByUrl('/test-route');
       expect(location.path()).toBe('/test-route');
-    }));
+    });
 
     it('should not use the window object to navigate', async () => {
       expect(replaceStateSpy).not.toHaveBeenCalled();

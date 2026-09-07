@@ -1,6 +1,17 @@
-import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
+import 'reflect-metadata';
+import 'zone.js';
+import 'zone.js/testing';
+import '@angular/compiler';
+import {
+  BrowserTestingModule,
+  platformBrowserTesting,
+} from '@angular/platform-browser/testing';
+import { getTestBed } from '@angular/core/testing';
 
-setupZoneTestEnv();
+getTestBed().initTestEnvironment(
+  BrowserTestingModule,
+  platformBrowserTesting()
+);
 
 // Provides fetch, Headers, Response, Request — works in Node + JSDOM
 import 'cross-fetch/polyfill';
