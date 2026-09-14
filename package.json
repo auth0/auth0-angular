@@ -50,7 +50,7 @@
     "@types/jasminewd2": "~2.0.13",
     "@analogjs/vite-plugin-angular": "^1.0.0",
     "@analogjs/vitest-angular": "^1.0.0",
-    "@vitest/coverage-v8": "^3.0.0",
+    "@vitest/coverage-v8": "^4.1.11",
     "@types/node": "^22.19.17",
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.59.0",

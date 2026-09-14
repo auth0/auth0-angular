@@ -14,6 +14,10 @@ updates:
       typescript-eslint:
         patterns:
           - '@typescript-eslint/*'
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
