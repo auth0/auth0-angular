@@ -30,7 +30,7 @@
     "@angular/core": "^20.3.31",
     "@angular/platform-browser": "^20.3.31",
     "@angular/router": "^20.3.31",
-    "@auth0/auth0-spa-js": "^2.24.1",
+    "@auth0/auth0-spa-js": "^2.26.0",
     "rxjs": "^6.6.7",
     "tslib": "^2.8.1",
     "zone.js": "~0.15.1"
