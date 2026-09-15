@@ -1,13 +1,16 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../out-tsc/spec",
     "types": ["vitest/globals", "node"],
     "esModuleInterop": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "include": [
+    "projects/auth0-angular/src/**/*.spec.ts",
+    "projects/auth0-angular/src/**/*.d.ts",
+    "projects/playground/src/**/*.spec.ts",
+    "projects/playground/src/**/*.d.ts"
+  ]
 }
