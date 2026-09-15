@@ -290,7 +290,7 @@ export class AuthService<TAppState extends AppState = AppState>
    */
   getAccessTokenSilently(
     options: GetTokenSilentlyOptions = {}
-  ): Observable<string | GetTokenSilentlyVerboseResponse> {
+  ): Observable<string | GetTokenSilentlyVerboseResponse | undefined> {
     return of(this.auth0Client).pipe(
       concatMap((client) =>
         options.detailedResponse === true
@@ -577,10 +577,7 @@ export class AuthService<TAppState extends AppState = AppState>
     updateAuthenticationMethod: (
       id: string,
       data: UpdateAuthenticationMethodRequest
-    ) =>
-      from(
-        this.auth0Client.myAccount.updateAuthenticationMethod(id, data)
-      ),
+    ) => from(this.auth0Client.myAccount.updateAuthenticationMethod(id, data)),
     enrollmentChallenge: (options: EnrollmentChallengeOptions) =>
       from(this.auth0Client.myAccount.enrollmentChallenge(options)),
     enrollmentVerify: (options: EnrollmentVerifyOptions) =>
