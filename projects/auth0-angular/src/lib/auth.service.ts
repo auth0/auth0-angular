@@ -252,14 +252,16 @@ export class AuthService<TAppState extends AppState = AppState>
    */
   getAccessTokenSilently(
     options: GetTokenSilentlyOptions & { detailedResponse: true }
-  ): Observable<GetTokenSilentlyVerboseResponse>;
+  ): Observable<GetTokenSilentlyVerboseResponse | undefined>;
 
   /**
    * Fetches a new access token and returns it.
    *
    * @param options The options for configuring the token fetch.
    */
-  getAccessTokenSilently(options?: GetTokenSilentlyOptions): Observable<string>;
+  getAccessTokenSilently(
+    options?: GetTokenSilentlyOptions
+  ): Observable<string | undefined>;
 
   /**
    * ```js
