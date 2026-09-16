@@ -2280,15 +2280,19 @@ export class CallbackComponent {
 Validating `org_id` is an application-level authorization decision, not something the SDK enforces. WebFinger discovery and `login_hint` only route the user to the right login; they don't prove the user belongs to one of your customers. If your app serves specific organizations, we recommend reading `org_id` from the ID token claims and checking it against your own list before treating the user as signed in for that customer.
 
 ```ts
-import { switchMap, throwError } from 'rxjs';
+import { filter, switchMap, take, throwError } from 'rxjs';
 
-// Replace with your real organization IDs; these are dummy placeholders.
+// `allowedOrgs` is a placeholder for illustration -- replace it with your
+// own list of org_id values that this app is allowed to serve.
 const allowedOrgs = ['org_123', 'org_456'];
 
 this.auth.idTokenClaims$
   .pipe(
+    // Ignore the null from an unauthenticated state; only validate a real claim set.
+    filter((claims) => !!claims),
+    take(1),
     switchMap((claims) => {
-      if (!claims || !allowedOrgs.includes(claims.org_id)) {
+      if (!allowedOrgs.includes(claims.org_id)) {
         // The user authenticated via the enterprise IdP, so use a federated
         // logout here too, otherwise the IdP session survives the rejection.
         return this.auth
