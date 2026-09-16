@@ -1,3 +1,8 @@
+// Each spec file runs in its own jsdom window; zone.js from test-setup.ts
+// patched a different window, so it must be imported here too.
+import 'zone.js';
+import 'zone.js/testing';
+import '@angular/compiler';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
@@ -8,7 +13,18 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { expect } from '@jest/globals';
+import type { MockInstance } from 'vitest';
+import {
+  BrowserTestingModule,
+  platformBrowserTesting,
+} from '@angular/platform-browser/testing';
+
+// The forks pool loads setupFiles in a separate module-cache context from spec
+// files, so initTestEnvironment called in test-setup.ts targets a different
+// TestBed instance. Initialize the environment here in the spec's own context.
+beforeAll(() => {
+  TestBed.initTestEnvironment(BrowserTestingModule, platformBrowserTesting());
+});
 
 describe('AppComponent', () => {
   let authMock: AuthService;
@@ -18,11 +34,11 @@ describe('AppComponent', () => {
 
   beforeEach(() => {
     authMock = {
-      loginWithRedirect: jest.fn().mockReturnValue(null),
-      loginWithPopup: jest.fn().mockReturnValue(null),
-      logout: jest.fn().mockReturnValue(null),
-      getAccessTokenSilently: jest.fn().mockReturnValue(null),
-      getAccessTokenWithPopup: jest.fn().mockReturnValue(null),
+      loginWithRedirect: vi.fn().mockReturnValue(null),
+      loginWithPopup: vi.fn().mockReturnValue(null),
+      logout: vi.fn().mockReturnValue(null),
+      getAccessTokenSilently: vi.fn().mockReturnValue(null),
+      getAccessTokenWithPopup: vi.fn().mockReturnValue(null),
 
       user$: new BehaviorSubject(null),
       isLoading$: new BehaviorSubject(true),
@@ -193,7 +209,7 @@ describe('AppComponent', () => {
       const form = component.accessTokenOptionsForm.controls;
       form['usePopup'].setValue(false);
       (
-        authMock.getAccessTokenSilently as unknown as jest.SpyInstance
+        authMock.getAccessTokenSilently as unknown as MockInstance
       ).mockReturnValue(of('access token silently'));
 
       const btnRefresh = divToken.querySelector('button');
@@ -216,7 +232,7 @@ describe('AppComponent', () => {
       form['usePopup'].setValue(false);
       form['ignoreCache'].setValue(false);
       (
-        authMock.getAccessTokenSilently as unknown as jest.SpyInstance
+        authMock.getAccessTokenSilently as unknown as MockInstance
       ).mockReturnValue(of('access token silently'));
 
       const btnRefresh = divToken.querySelector('button');
@@ -239,7 +255,7 @@ describe('AppComponent', () => {
       form['usePopup'].setValue(false);
       form['ignoreCache'].setValue(true);
       (
-        authMock.getAccessTokenSilently as unknown as jest.SpyInstance
+        authMock.getAccessTokenSilently as unknown as MockInstance
       ).mockReturnValue(of('access token silently'));
 
       const btnRefresh = divToken.querySelector('button');
@@ -261,7 +277,7 @@ describe('AppComponent', () => {
       const form = component.accessTokenOptionsForm.controls;
       form['usePopup'].setValue(true);
       (
-        authMock.getAccessTokenWithPopup as unknown as jest.SpyInstance
+        authMock.getAccessTokenWithPopup as unknown as MockInstance
       ).mockReturnValue(of('access token popup'));
 
       const btnRefresh = divToken.querySelector('button');
