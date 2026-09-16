@@ -1986,7 +1986,8 @@ this.auth.myAccount
   .subscribe({ next: (method) => console.log('Passkey enrolled:', method) });
 ```
 
-> [!NOTE] > `base64urlToBuffer` and `serializeCredential` are platform-specific helpers you provide. The SDK does not handle the WebAuthn browser API directly — it handles the Auth0 challenge and token exchange on both sides.
+> [!NOTE]
+> `base64urlToBuffer` and `serializeCredential` are platform-specific helpers you provide. The SDK does not handle the WebAuthn browser API directly — it handles the Auth0 challenge and token exchange on both sides.
 
 #### Enroll TOTP
 
@@ -2176,7 +2177,8 @@ Enterprise Connect lets a B2B SaaS layer enterprise SSO (SAML, OIDC federation) 
 3. The user authenticates at their identity provider and is redirected back to your callback.
 4. Your app handles the redirect exactly as in a normal login. The ID token is verified and cached; read the claims from `idTokenClaims$` / `user$`.
 
-> [!IMPORTANT] > `isFederatedDomain` is a routing hint, not a security control. It returns `false` on any failure (a 429, a network error, or a genuinely unmanaged domain all look the same), so a discovery failure routes the user to your fallback login rather than granting access. It never, on its own, signs anyone in: the callback must still complete, and you must still validate the resulting claims (see [Validate the organization](#validate-the-organization)).
+> [!IMPORTANT]
+> `isFederatedDomain` is a routing hint, not a security control. It returns `false` on any failure (a 429, a network error, or a genuinely unmanaged domain all look the same), so a discovery failure routes the user to your fallback login rather than granting access. It never, on its own, signs anyone in: the callback must still complete, and you must still validate the resulting claims (see [Validate the organization](#validate-the-organization)).
 
 ### Configure the SDK
 
@@ -2184,6 +2186,7 @@ Enterprise Connect lets a B2B SaaS layer enterprise SSO (SAML, OIDC federation) 
 AuthModule.forRoot({
   domain: 'YOUR_AUTH0_DOMAIN',
   clientId: 'YOUR_AUTH0_CLIENT_ID',
+  enterpriseConnect: true, // lets the SDK warn at init if the config contradicts EC's constraints
   authorizationParams: {
     redirect_uri: window.location.origin,
     scope: 'openid profile email', // no offline_access -- EC issues no refresh token
@@ -2191,6 +2194,11 @@ AuthModule.forRoot({
   },
 }),
 ```
+
+Set `enterpriseConnect: true` to enable Enterprise Connect mode. The SDK then warns you at startup if your config contradicts EC's constraints.
+
+> [!IMPORTANT]
+> Enterprise Connect issues no refresh token, so the access token expires (24 hours by default) with no way to renew it silently. Treat EC as identity only: read the claims from the ID token (`idTokenClaims$` / `user$`) and mint your own application session or API tokens from them. Do not forward the Auth0 access token to your own APIs for long-lived authorization, and check `exp` / `expires_at` if you cache it.
 
 ### Log in
 
@@ -2228,6 +2236,10 @@ export class LoginComponent {
       })
       .subscribe();
   }
+
+  // Your own login UI for domains that are not federated (e.g. show a
+  // password field). Replace with your implementation.
+  private showPasswordForm(email: string): void {}
 }
 ```
 
@@ -2255,8 +2267,7 @@ export class CallbackComponent {
 
 ### Validate the organization
 
-> [!WARNING]
-> Check `org_id` after every callback. WebFinger discovery and `login_hint` only help route the user to the right login. They don't prove the user belongs to one of your customers. So read `org_id` from the ID token claims and make sure it's in your list of known organizations before you treat the user as signed in. Skip this, and anyone who logs in through a managed connection could end up with a session you never meant to give them.
+Validating `org_id` is an application-level authorization decision, not something the SDK enforces. WebFinger discovery and `login_hint` only route the user to the right login; they don't prove the user belongs to one of your customers. If your app serves specific organizations, we recommend reading `org_id` from the ID token claims and checking it against your own list before treating the user as signed in for that customer.
 
 ```ts
 import { switchMap, throwError } from 'rxjs';
@@ -2268,7 +2279,13 @@ this.auth.idTokenClaims$
   .pipe(
     switchMap((claims) => {
       if (!claims || !allowedOrgs.includes(claims.org_id)) {
-        return this.auth.logout().pipe(switchMap(() => throwError(() => new Error('User does not belong to this organization'))));
+        // The user authenticated via the enterprise IdP, so use a federated
+        // logout here too, otherwise the IdP session survives the rejection.
+        return this.auth
+          .logout({
+            logoutParams: { federated: true, returnTo: window.location.origin },
+          })
+          .pipe(switchMap(() => throwError(() => new Error('User does not belong to this organization'))));
       }
       return [claims];
     })
@@ -2276,7 +2293,7 @@ this.auth.idTokenClaims$
   .subscribe();
 ```
 
-Remember, this check runs in the browser, so anyone can bypass it. It's only there to keep the UI tidy. The real check has to happen on your server, on every request that uses the token. Still, keep the check here even if you only have one org today. It's what stops other tenants' users from getting in once you add a second customer.
+This check runs in the browser, so a user can bypass it. Use it only to decide what the UI shows. Your backend must re-check `org_id` on every API request before trusting the token. Even if you serve a single organization today, keeping the check stops other tenants' users from getting in the day you add a second customer.
 
 ### Log out
 
@@ -2292,3 +2309,5 @@ this.auth
   })
   .subscribe();
 ```
+
+Ensure the `returnTo` URL is listed in your application's **Allowed Logout URLs** in the Auth0 Dashboard, otherwise Auth0 rejects the post-logout redirect.
