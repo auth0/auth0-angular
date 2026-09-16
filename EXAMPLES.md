@@ -1628,10 +1628,12 @@ export class SignupComponent {
   private auth = inject(AuthService);
 
   signup() {
-    this.auth.passkey.signup({ email: 'user@example.com', name: 'Jane Doe' }).subscribe({
-      next: (tokens) => console.log('Signed up, access token:', tokens.access_token),
-      error: (err) => console.error('Signup failed', err),
-    });
+    this.auth.passkey
+      .signup({ email: 'user@example.com', name: 'Jane Doe' })
+      .subscribe({
+        next: (tokens) => console.log('Signed up, access token:', tokens.access_token),
+        error: (err) => console.error('Signup failed', err),
+      });
   }
 }
 ```
@@ -1656,7 +1658,7 @@ this.auth.passkey
     // At least one identifier is typically required
     email: 'user@example.com',
     phoneNumber: '+1234567890', // optional, E.164 format
-    username: 'janedoe', // optional
+    username: 'janedoe',        // optional
 
     // Profile fields (all optional)
     name: 'Jane Doe',
@@ -1733,15 +1735,17 @@ export class PasskeyAuthComponent {
   auth = inject(AuthService);
 
   signup() {
-    this.auth.passkey.signup({ email: 'user@example.com' }).subscribe({
-      error: (err) => {
-        if (err instanceof PasskeyRegisterError) {
-          console.error('Registration failed:', err.message);
-        } else if (err instanceof PasskeyError) {
-          console.error('Passkey error:', err.message);
-        }
-      },
-    });
+    this.auth.passkey
+      .signup({ email: 'user@example.com' })
+      .subscribe({
+        error: (err) => {
+          if (err instanceof PasskeyRegisterError) {
+            console.error('Registration failed:', err.message);
+          } else if (err instanceof PasskeyError) {
+            console.error('Passkey error:', err.message);
+          }
+        },
+      });
   }
 
   login() {
@@ -1944,10 +1948,14 @@ Rename a `totp` or `push-notification` method, or change the preferred delivery 
 
 ```ts
 // Rename a totp or push-notification method
-this.auth.myAccount.updateAuthenticationMethod('am_abc123', { name: 'My Work Laptop' }).subscribe({ next: (updated) => console.log(updated) });
+this.auth.myAccount
+  .updateAuthenticationMethod('am_abc123', { name: 'My Work Laptop' })
+  .subscribe({ next: (updated) => console.log(updated) });
 
 // Switch a phone method between SMS and voice
-this.auth.myAccount.updateAuthenticationMethod('am_abc123', { preferred_authentication_method: 'voice' }).subscribe({ next: (updated) => console.log(updated) });
+this.auth.myAccount
+  .updateAuthenticationMethod('am_abc123', { preferred_authentication_method: 'voice' })
+  .subscribe({ next: (updated) => console.log(updated) });
 ```
 
 ### Enrollment
@@ -2146,7 +2154,9 @@ this.auth.myAccount
         console.error(err.status, err.title, err.detail);
 
         if (err.validation_errors) {
-          err.validation_errors.forEach((e) => console.error(`${e.field}: ${e.detail}`));
+          err.validation_errors.forEach((e) =>
+            console.error(`${e.field}: ${e.detail}`)
+          );
         }
       }
       return EMPTY;

@@ -45,15 +45,5 @@ describe('public-api', () => {
       ).resolves.toBe(false);
     });
 
-    // spa-js fails closed: a network error, 429, or any non-ok status resolves
-    // to false rather than throwing, so discovery failures route to the fallback
-    // login instead of surfacing an error the caller must catch.
-    it('resolves false rather than rejecting when discovery fails', async () => {
-      isFederatedDomainMock.mockResolvedValue(false);
-
-      await expect(
-        isFederatedDomain('tenant.auth0.com', 'acme.com')
-      ).resolves.toBe(false);
-    });
   });
 });
