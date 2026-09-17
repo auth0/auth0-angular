@@ -1,5 +1,3 @@
-/* Docs-only config. Same as tsconfig.lib.json, but scoped to src/ so typedoc's
-   program excludes schematics/, which needs Node types the library build omits. */
 {
   "extends": "./tsconfig.lib.json",
   "include": ["src/**/*.ts"],
