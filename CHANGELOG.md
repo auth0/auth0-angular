@@ -1,9 +1,27 @@
 # Change Log
 
+## [v2.12.0](https://github.com/auth0/auth0-angular/tree/v2.12.0) (2026-09-17)
+
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.11.0...v2.12.0)
+
+**⚠️ BREAKING CHANGES**
+
+- fix: align getAccessTokenSilently return type with auth0-spa-js [\#1043](https://github.com/auth0/auth0-angular/pull/1043) ([gyaneshgouraw](https://github.com/gyaneshgouraw))
+
+**Added**
+
+- feat: add Enterprise Connect support [\#1017](https://github.com/auth0/auth0-angular/pull/1017) ([gyaneshgouraw](https://github.com/gyaneshgouraw))
+
+**Fixed**
+
+- fix: remove @angular/animations and @angular/platform-browser-dynamic [\#1007](https://github.com/auth0/auth0-angular/pull/1007) ([yogeshchoudhary147](https://github.com/yogeshchoudhary147))
+
 ## [v2.11.0](https://github.com/auth0/auth0-angular/tree/v2.11.0) (2026-07-20)
+
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.10.1...v2.11.0)
 
 **Added**
+
 - feat: add support for Online Access (Online Refresh Tokens) [\#934](https://github.com/auth0/auth0-angular/pull/934) ([NandanPrabhu](https://github.com/NandanPrabhu))
 
 ## [v2.10.1](https://github.com/auth0/auth0-angular/tree/v2.10.1) (2026-07-08)
