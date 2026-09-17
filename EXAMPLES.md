@@ -19,6 +19,7 @@
 - [Step-Up Authentication](#step-up-authentication)
 - [Passkeys](#passkeys)
 - [MyAccount API](#myaccount-api)
+- [Enterprise Connect](#enterprise-connect)
 
 ## Add login to your application
 
@@ -2171,3 +2172,156 @@ this.auth.myAccount
 //   delete:me:authentication_methods  — deleteAuthenticationMethod
 //   read:me:factors                   — getFactors
 ```
+
+## Enterprise Connect
+
+Enterprise Connect lets a B2B SaaS layer enterprise SSO (SAML, OIDC federation) on top of its own auth server without replacing it. Auth0 acts as a relay: it authenticates the enterprise user against their IdP and returns an enriched ID token, which the SDK caches like any other login.
+
+> [!IMPORTANT]
+> Enterprise Connect is an Early Access feature. The tenant setup (entitlements, connection type, and the claims a token carries) depends on your Auth0 configuration and may change. Confirm the tenant-side requirements with your Auth0 contact. The SDK surface described here is stable.
+
+### How the flow works
+
+1. The user enters their email. Your app calls `isFederatedDomain` with the email domain to run [WebFinger](https://datatracker.ietf.org/doc/html/rfc7033) discovery.
+2. If the domain is managed by Auth0 for enterprise SSO, call `loginWithRedirect` with the email as `login_hint` so Auth0 can resolve the connection and organization. If it is not managed, fall back to your own login.
+3. The user authenticates at their identity provider and is redirected back to your callback.
+4. Your app handles the redirect exactly as in a normal login. The ID token is verified and cached; read the claims from `idTokenClaims$` / `user$`.
+
+> [!IMPORTANT]
+> `isFederatedDomain` is a routing hint, not a security control. It returns `false` on any failure (a 429, a network error, or a genuinely unmanaged domain all look the same), so a discovery failure routes the user to your fallback login rather than granting access. It never, on its own, signs anyone in: the callback must still complete, and you must still validate the resulting claims (see [Validate the organization](#validate-the-organization)).
+
+### Configure the SDK
+
+```ts
+AuthModule.forRoot({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  clientId: 'YOUR_AUTH0_CLIENT_ID',
+  enterpriseConnect: true, // lets the SDK warn at init if the config contradicts EC's constraints
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+    scope: 'openid profile email', // no offline_access -- EC issues no refresh token
+    // Do not set organization -- HRD resolves it from login_hint
+  },
+}),
+```
+
+Set `enterpriseConnect: true` to enable Enterprise Connect mode. The SDK then warns you at startup if your config contradicts EC's constraints.
+
+> [!IMPORTANT]
+> Enterprise Connect issues no refresh token, so the access token expires (24 hours by default) with no way to renew it silently. Treat EC as identity only: read the claims from the ID token (`idTokenClaims$` / `user$`) and mint your own application session or API tokens from them. Do not forward the Auth0 access token to your own APIs for long-lived authorization, and check `exp` / `expires_at` if you cache it.
+
+### Log in
+
+`isFederatedDomain` is a standalone function re-exported from `@auth0/auth0-angular` (it is not a method on `AuthService`). Pass your Auth0 domain and the email domain. If the domain is managed, start the redirect with the email as `login_hint`:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService, isFederatedDomain } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+})
+export class LoginComponent {
+  constructor(public auth: AuthService) {}
+
+  async login(email: string): Promise<void> {
+    const emailDomain = email.split('@')[1];
+
+    // 1. Discover whether the domain is managed for enterprise SSO.
+    const federated = await isFederatedDomain('YOUR_AUTH0_DOMAIN', emailDomain);
+
+    if (!federated) {
+      // Domain is not managed by Auth0; fall back to your own login.
+      this.showPasswordForm(email);
+      return;
+    }
+
+    // 2. Redirect to Auth0 with the email as login_hint. Home Realm Discovery
+    //    resolves the connection and organization from the domain -- do not
+    //    pass organization yourself, or you break multi-customer setups.
+    this.auth
+      .loginWithRedirect({
+        authorizationParams: { login_hint: email },
+      })
+      .subscribe();
+  }
+
+  // Your own login UI for domains that are not federated (e.g. show a
+  // password field). Replace with your implementation.
+  private showPasswordForm(email: string): void {}
+}
+```
+
+`isFederatedDomain` accepts an optional third argument (`IsFederatedDomainOptions`) with `customFetch` and `telemetry` fields, mirroring auth0-spa-js.
+
+### Handle the callback
+
+No changes to your existing callback handling. The SDK processes the redirect automatically; read the claims once authenticated:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-callback',
+  template: '',
+})
+export class CallbackComponent {
+  constructor(public auth: AuthService) {}
+
+  // claims.org_id is the resolved organization.
+  claims$ = this.auth.idTokenClaims$;
+}
+```
+
+### Validate the organization
+
+Validating `org_id` is an application-level authorization decision, not something the SDK enforces. WebFinger discovery and `login_hint` only route the user to the right login; they don't prove the user belongs to one of your customers. If your app serves specific organizations, we recommend reading `org_id` from the ID token claims and checking it against your own list before treating the user as signed in for that customer.
+
+```ts
+import { filter, switchMap, take, throwError } from 'rxjs';
+
+// `allowedOrgs` is a placeholder for illustration -- replace it with your
+// own list of org_id values that this app is allowed to serve.
+const allowedOrgs = ['org_123', 'org_456'];
+
+this.auth.idTokenClaims$
+  .pipe(
+    // Ignore the null from an unauthenticated state; only validate a real claim set.
+    filter((claims) => !!claims),
+    take(1),
+    switchMap((claims) => {
+      if (!allowedOrgs.includes(claims.org_id)) {
+        // The user authenticated via the enterprise IdP, so use a federated
+        // logout here too, otherwise the IdP session survives the rejection.
+        return this.auth
+          .logout({
+            logoutParams: { federated: true, returnTo: window.location.origin },
+          })
+          .pipe(switchMap(() => throwError(() => new Error('User does not belong to this organization'))));
+      }
+      return [claims];
+    })
+  )
+  .subscribe();
+```
+
+This check runs in the browser, so a user can bypass it. Use it only to decide what the UI shows. Your backend must re-check `org_id` on every API request before trusting the token. Even if you serve a single organization today, keeping the check stops other tenants' users from getting in the day you add a second customer.
+
+### Log out
+
+EC logout must use `federated: true` to terminate the enterprise IdP session (SAML SLO). Without it the IdP session stays alive and the next login silently reuses the previous user:
+
+```ts
+this.auth
+  .logout({
+    logoutParams: {
+      federated: true,
+      returnTo: window.location.origin,
+    },
+  })
+  .subscribe();
+```
+
+Ensure the `returnTo` URL is listed in your application's **Allowed Logout URLs** in the Auth0 Dashboard, otherwise Auth0 rejects the post-logout redirect.

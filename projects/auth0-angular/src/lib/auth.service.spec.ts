@@ -757,6 +757,28 @@ describe('AuthService', () => {
     expect(auth0Client.logout).toHaveBeenCalledWith(options);
   });
 
+  // Enterprise Connect: login_hint drives Home Realm Discovery so Auth0 can
+  // resolve the connection and organization from the user's email domain.
+  it('should forward `login_hint` to `loginWithRedirect` for the enterprise flow', async () => {
+    const options = {
+      authorizationParams: { login_hint: 'user@acme.com' },
+    };
+    const service = createService();
+    await service.loginWithRedirect(options).toPromise();
+    expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
+  });
+
+  // Enterprise Connect: federated logout terminates the enterprise IdP session
+  // (SAML SLO); without it the next login silently reuses the previous user.
+  it('should forward `federated: true` to `logout` for the enterprise flow', () => {
+    const options = {
+      logoutParams: { federated: true, returnTo: 'http://localhost' },
+    };
+    const service = createService();
+    service.logout(options);
+    expect(auth0Client.logout).toHaveBeenCalledWith(options);
+  });
+
   it('should reset the authentication state when passing `localOnly` to logout', async () => {
     const options = {
       openUrl: async () => {
