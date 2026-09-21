@@ -1061,6 +1061,9 @@ describe('AuthService', () => {
     });
 
     it('should call the underlying SDK', async () => {
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
       const localService = createService();
       await firstValueFrom(localService.handleRedirectCallback());
       expect(auth0Client.handleRedirectCallback).toHaveBeenCalled();
@@ -1068,6 +1071,9 @@ describe('AuthService', () => {
 
     it('should call the underlying SDK and pass options', async () => {
       const url = 'http://localhost';
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
       const localService = createService();
       await firstValueFrom(localService.handleRedirectCallback(url));
       expect(auth0Client.handleRedirectCallback).toHaveBeenCalledWith(url);
@@ -1099,6 +1105,9 @@ describe('AuthService', () => {
     it('should record the appState in the appState$ observable if it is present', async () => {
       const appState = { myValue: 'State to Preserve' };
       (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
+      (
         auth0Client.handleRedirectCallback as unknown as MockInstance
       ).mockResolvedValue({ appState });
       const localService = createService();
@@ -1109,6 +1118,9 @@ describe('AuthService', () => {
 
     it('should preserve appState as-is for regular login', async () => {
       const appState = { myValue: 'State to Preserve' };
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
       (
         auth0Client.handleRedirectCallback as unknown as MockInstance
       ).mockResolvedValue({ appState, response_type: ResponseType.Code });
@@ -1127,6 +1139,9 @@ describe('AuthService', () => {
         created_at: '2024-01-01T00:00:00.000Z',
         expires_at: '2024-01-02T00:00:00.000Z',
       };
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
       (
         auth0Client.handleRedirectCallback as unknown as MockInstance
       ).mockResolvedValue({
@@ -1152,6 +1167,9 @@ describe('AuthService', () => {
         created_at: '2024-02-01T00:00:00.000Z',
         expires_at: '2024-02-02T00:00:00.000Z',
       };
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
       (
         auth0Client.handleRedirectCallback as unknown as MockInstance
       ).mockResolvedValue({

@@ -47,6 +47,8 @@ import {
   concatMap,
   tap,
   map,
+  filter,
+  take,
   takeUntil,
   catchError,
   switchMap,
@@ -409,10 +411,7 @@ export class AuthService<TAppState extends AppState = AppState>
       this.auth0Client.handleRedirectCallback<TAppState>(url)
     ).pipe(
       withLatestFrom(this.authState.isLoading$),
-      tap(([result, isLoading]) => {
-        if (!isLoading) {
-          this.authState.refresh();
-        }
+      switchMap(([result, isLoading]) => {
         const { appState, response_type, ...rest } = result;
         const target = appState?.target ?? '/';
 
@@ -426,9 +425,22 @@ export class AuthService<TAppState extends AppState = AppState>
           this.appStateSubject$.next(appState);
         }
 
+        if (!isLoading) {
+          this.authState.refresh();
+          // Capacitor flow: app was already running so isLoading is false.
+          // refresh() is async — wait for isAuthenticated$ to become true
+          // before navigating so AuthGuard does not read the stale cached false.
+          return this.authState.isAuthenticated$.pipe(
+            filter((authenticated) => authenticated),
+            take(1),
+            tap(() => this.navigator.navigateByUrl(target)),
+            map(() => result)
+          );
+        }
+
         this.navigator.navigateByUrl(target);
-      }),
-      map(([result]) => result)
+        return of(result);
+      })
     );
   }
 
