@@ -20,6 +20,7 @@
 - [Passkeys](#passkeys)
 - [MyAccount API](#myaccount-api)
 - [Enterprise Connect](#enterprise-connect)
+- [Experiment Center](#experiment-center)
 
 ## Add login to your application
 
@@ -2325,3 +2326,38 @@ this.auth
 ```
 
 Ensure the `returnTo` URL is listed in your application's **Allowed Logout URLs** in the Auth0 Dashboard, otherwise Auth0 rejects the post-logout redirect.
+
+## Experiment Center
+
+[Experiment Center](https://auth0.com/docs/customize/experiment-center) lets Auth0 run experiments on the Universal Login experience. By default Auth0 assigns each `/authorize` request a variant. To force a specific variant, pass `experiment_id`, `variation_id`, and the optional `segment_id` in `authorizationParams` when calling `loginWithRedirect`:
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {}
+
+  loginWithVariant() {
+    this.auth
+      .loginWithRedirect({
+        authorizationParams: {
+          experiment_id: '<EXPERIMENT_ID>',
+          variation_id: '<VARIATION_ID>',
+          // segment_id is optional
+          segment_id: '<SEGMENT_ID>',
+        },
+      })
+      .subscribe();
+  }
+}
+```
+
+- Pass these **per call** on `loginWithRedirect` (or `loginWithPopup`) rather than in `AuthModule.forRoot()`'s `authorizationParams`, so the override does not affect silent `prompt=none` token-renewal calls, where Experiment Center does not run.
+
+- Do not hard-code these IDs in shipped application code. Drive them from test automation (e.g. Cypress/Playwright) against a staging tenant, or from a feature-flag tool (e.g. LaunchDarkly) that has already decided which variant the user should see for this request.
