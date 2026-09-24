@@ -776,6 +776,43 @@ describe('AuthService', () => {
     expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, config);
   });
 
+  it('should forward Experiment Center params through `loginWithPopup`', async () => {
+    const options = {
+      authorizationParams: {
+        experiment_id: '__experiment_id__',
+        variation_id: '__variation_id__',
+        segment_id: '__segment_id__',
+      },
+    };
+    const service = createService();
+    await firstValueFrom(loaded(service));
+    (auth0Client.isAuthenticated as unknown as MockInstance).mockReset();
+    (auth0Client.isAuthenticated as unknown as MockInstance).mockResolvedValue(
+      true
+    );
+    service.loginWithPopup(options);
+    await firstValueFrom(service.isAuthenticated$.pipe(filter(Boolean)));
+    expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, undefined);
+  });
+
+  it('should forward Experiment Center params through `loginWithPopup` when `segment_id` is omitted', async () => {
+    const options = {
+      authorizationParams: {
+        experiment_id: '__experiment_id__',
+        variation_id: '__variation_id__',
+      },
+    };
+    const service = createService();
+    await firstValueFrom(loaded(service));
+    (auth0Client.isAuthenticated as unknown as MockInstance).mockReset();
+    (auth0Client.isAuthenticated as unknown as MockInstance).mockResolvedValue(
+      true
+    );
+    service.loginWithPopup(options);
+    await firstValueFrom(service.isAuthenticated$.pipe(filter(Boolean)));
+    expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, undefined);
+  });
+
   it('should call `logout`', () => {
     const service = createService();
     service.logout();
