@@ -199,7 +199,7 @@ export class AppComponent {
 
 By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the [redirectUri](https://auth0.github.io/auth0-angular/interfaces/AuthorizationParams.html#redirect_uri) option.
 
-To force a specific [Experiment Center](https://auth0.com/docs/customize/experiment-center) variant for a login, pass `experiment_id`, `variation_id`, and the optional `segment_id` per call in `authorizationParams` (not in `AuthModule.forRoot()`, so the override does not bleed into silent token renewals):
+To force a specific [Experiment Center](https://auth0.com/docs/customize/experiment-center) variant for a login, pass `experiment_id`, `variation_id`, and the optional `segment_id` per call in `authorizationParams` (not in `provideAuth0()` or `AuthModule.forRoot()`, so the override does not bleed into silent token renewals):
 
 ```ts
 this.auth.loginWithRedirect({

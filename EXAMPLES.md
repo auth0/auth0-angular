@@ -2363,7 +2363,7 @@ export class AppComponent {
 ```
 
 > [!IMPORTANT]
-> Pass these parameters per call on `loginWithRedirect` (or `loginWithPopup`), not in `AuthModule.forRoot()`. Setting them on the global config pins every login - including silent `prompt=none` token-renewal calls - to the same variation, which cancels the A/B test. Experiment Center does not run on silent checks.
+> Pass these parameters per call on `loginWithRedirect` (or `loginWithPopup`), not in `provideAuth0()` or `AuthModule.forRoot()`. Setting them on the global config pins every login - including silent `prompt=none` token-renewal calls - to the same variation, which cancels the A/B test. Experiment Center does not run on silent checks.
 
 - **Testing:** drive the IDs from test automation (e.g. Cypress/Playwright)
   using values from a CI environment variable against a staging tenant. Do not
