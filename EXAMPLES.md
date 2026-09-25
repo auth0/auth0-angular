@@ -20,6 +20,7 @@
 - [Passkeys](#passkeys)
 - [MyAccount API](#myaccount-api)
 - [Enterprise Connect](#enterprise-connect)
+- [Experiment Center](#experiment-center)
 
 ## Add login to your application
 
@@ -2325,3 +2326,66 @@ this.auth
 ```
 
 Ensure the `returnTo` URL is listed in your application's **Allowed Logout URLs** in the Auth0 Dashboard, otherwise Auth0 rejects the post-logout redirect.
+
+## Experiment Center
+
+> [!NOTE]
+> [Experiment Center](https://auth0.com/docs/customize/experiment-center/overview) support via SDKs is currently in Early Access. To request access to this feature, contact your Auth0 representative.
+
+Experiment Center lets you A/B test your login flow. To force a specific variant - for testing or to apply a decision from a feature-flag service - pass `experiment_id` and `variation_id` via `authorizationParams`. Auth0 will use them instead of its server-side deterministic assignment. Both IDs are obtained from your Auth0 Dashboard or the Management API. You can also pass the optional `segment_id` when the experiment uses segment targeting.
+
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  constructor(public auth: AuthService) {}
+
+  loginWithVariant() {
+    this.auth
+      .loginWithRedirect({
+        authorizationParams: {
+          experiment_id: '<EXPERIMENT_ID>',
+          variation_id: '<VARIATION_ID>',
+          // segment_id is optional
+          segment_id: '<SEGMENT_ID>',
+        },
+      })
+      .subscribe();
+  }
+}
+```
+
+The same parameters work with `loginWithPopup`:
+
+```ts
+loginWithPopup() {
+  this.auth
+    .loginWithPopup({
+      authorizationParams: {
+        experiment_id: '<EXPERIMENT_ID>',
+        variation_id: '<VARIATION_ID>',
+        // segment_id is optional
+        segment_id: '<SEGMENT_ID>',
+      },
+    })
+    .subscribe();
+}
+```
+
+> [!NOTE]
+> Call `loginWithPopup` from a direct user gesture (e.g. a button click). Most browsers block popups that are triggered programmatically.
+
+> [!IMPORTANT]
+> Pass these parameters per call on `loginWithRedirect` (or `loginWithPopup`), not in `provideAuth0()` or `AuthModule.forRoot()`. Setting them on the global config pins every login - including silent `prompt=none` token-renewal calls - to the same variation, which cancels the A/B test. Experiment Center does not run on silent checks.
+
+- **Testing:** drive the IDs from test automation (e.g. Cypress/Playwright) using values from a CI environment variable against a staging tenant. Do not hard-code them in shipped app code.
+- **Production:** pass the variant decision from a feature-flag tool (e.g. LaunchDarkly) that has already decided which variant the user should see for this request.
+
+The override applies only to this request; the next login without these params reverts to normal server-side assignment.
