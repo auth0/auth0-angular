@@ -2362,6 +2362,26 @@ export class AppComponent {
 }
 ```
 
+The same parameters work with `loginWithPopup`:
+
+```ts
+loginWithPopup() {
+  this.auth
+    .loginWithPopup({
+      authorizationParams: {
+        experiment_id: '<EXPERIMENT_ID>',
+        variation_id: '<VARIATION_ID>',
+        // segment_id is optional
+        segment_id: '<SEGMENT_ID>',
+      },
+    })
+    .subscribe();
+}
+```
+
+> [!NOTE]
+> Call `loginWithPopup` from a direct user gesture (e.g. a button click). Most browsers block popups that are triggered programmatically.
+
 > [!IMPORTANT]
 > Pass these parameters per call on `loginWithRedirect` (or `loginWithPopup`), not in `provideAuth0()` or `AuthModule.forRoot()`. Setting them on the global config pins every login - including silent `prompt=none` token-renewal calls - to the same variation, which cancels the A/B test. Experiment Center does not run on silent checks.
 
