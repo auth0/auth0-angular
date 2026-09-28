@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.13.0](https://github.com/auth0/auth0-angular/tree/v2.13.0) (2026-09-28)
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.12.0...v2.13.0)
+
+**Added**
+- feat: add Experiment Center variant override support [\#1055](https://github.com/auth0/auth0-angular/pull/1055) ([siddhikotak](https://github.com/siddhikotak))
+
 ## [v2.12.0](https://github.com/auth0/auth0-angular/tree/v2.12.0) (2026-09-17)
 
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.11.0...v2.12.0)
