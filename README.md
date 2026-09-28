@@ -204,7 +204,7 @@ By default the application will ask Auth0 to redirect back to the root URL of yo
 > [!NOTE]
 > [Experiment Center](https://auth0.com/docs/customize/experiment-center) support via SDKs is currently in Early Access. To request access to this feature, contact your Auth0 representative.
 
-You can also force a specific Experiment Center variant per login by passing `experiment_id`, `variation_id`, and the optional `segment_id` in `authorizationParams` - see the [Experiment Center example](https://github.com/auth0/auth0-angular/tree/main/EXAMPLES.md#experiment-center).
+You can also force a specific Experiment Center variant per login by passing `experiment_id`, `variation_id`, and the optional `segment_id` in `authorizationParams` - see the [Experiment Center example](https://github.com/auth0/auth0-angular/blob/main/EXAMPLES.md#experiment-center).
 
 For more code samples on how to integrate the **auth0-angular** SDK in your **Angular** application, including how to use our standalone and function APIs, have a look at the [examples](https://github.com/auth0/auth0-angular/tree/main/EXAMPLES.md).
 
