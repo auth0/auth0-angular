@@ -95,6 +95,11 @@
 </code><button type="button">Copy</button></pre>
 
 <p>By default the application will ask Auth0 to redirect back to the root URL of your application after authentication. This can be configured by setting the <a href="https://auth0.github.io/auth0-angular/interfaces/AuthorizationParams.html#redirect_uri">redirectUri</a> option.</p>
+<h3 id="experiment-center" class="tsd-anchor-link">Experiment Center<a href="#experiment-center" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-alert tsd-alert-note"><div class="tsd-alert-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><use href="assets/icons.svg#icon-alertNote"></use></svg><span>Note</span></div><p>
+<a href="https://auth0.com/docs/customize/experiment-center">Experiment Center</a> support via SDKs is currently in Early Access. To request access to this feature, contact your Auth0 representative.</p>
+</div>
+<p>You can also force a specific Experiment Center variant per login by passing <code>experiment_id</code>, <code>variation_id</code>, and the optional <code>segment_id</code> in <code>authorizationParams</code> - see the <a href="https://github.com/auth0/auth0-angular/blob/main/EXAMPLES.md#experiment-center">Experiment Center example</a>.</p>
 <p>For more code samples on how to integrate the <strong>auth0-angular</strong> SDK in your <strong>Angular</strong> application, including how to use our standalone and function APIs, have a look at the <a href="https://github.com/auth0/auth0-angular/tree/main/EXAMPLES.md">examples</a>.</p>
 <h2 id="api-reference" class="tsd-anchor-link">API reference<a href="#api-reference" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p>Explore public API's available in auth0-angular.</p>
@@ -148,7 +153,8 @@ This project is licensed under the MIT license. See the <a href="https://github.
 <ul>
 <li><a href="#static-configuration"><span>Static configuration</span></a></li>
 <li><a href="#dynamic-configuration"><span>Dynamic configuration</span></a></li></ul></li>
-<li><a href="#add-login-to-your-application"><span>Add login to your application</span></a></li></ul><a href="#api-reference"><span>API reference</span></a><a href="#feedback"><span>Feedback</span></a>
+<li><a href="#add-login-to-your-application"><span>Add login to your application</span></a></li>
+<li><a href="#experiment-center"><span>Experiment <wbr/>Center</span></a></li></ul><a href="#api-reference"><span>API reference</span></a><a href="#feedback"><span>Feedback</span></a>
 <ul>
 <li><a href="#contributing"><span>Contributing</span></a></li>
 <li><a href="#raise-an-issue"><span>Raise an issue</span></a></li>
