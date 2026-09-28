@@ -1080,6 +1080,65 @@ describe('AuthService', () => {
       expect(auth0Client.isAuthenticated).toHaveBeenCalled();
     });
 
+    it('should not navigate before isAuthenticated$ is true in Capacitor flow', async () => {
+      // Regression test for https://github.com/auth0/auth0-angular/issues/668
+      // In Capacitor, isLoading is already false when handleRedirectCallback runs.
+      // Bug: refresh() is async but navigateByUrl fired immediately, so AuthGuard
+      // read the stale cached false and triggered a second loginWithRedirect.
+      let authValueAtNavigation: boolean | undefined;
+
+      // Make the isAuthenticated call triggered by refresh() slow to resolve
+      let resolveRefreshAuth!: (val: boolean) => void;
+      const slowAuthPromise = new Promise<boolean>(
+        (resolve) => (resolveRefreshAuth = resolve)
+      );
+      let callCount = 0;
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockImplementation(() => {
+        callCount++;
+        return callCount === 1
+          ? Promise.resolve(false) // initial check on load
+          : slowAuthPromise; // refresh call — deliberately slow
+      });
+
+      const localService = createService();
+
+      // Subscribe early to prime the shareReplay cache — mirrors AuthGuard being active
+      const authSub = localService.isAuthenticated$.subscribe();
+
+      // Capture the cached value of isAuthenticated$ at the moment navigateByUrl fires
+      (navigator.navigateByUrl as MockInstance).mockImplementation(() => {
+        let cached: boolean | undefined;
+        const sub = localService.isAuthenticated$.subscribe(
+          (v) => (cached = v)
+        );
+        sub.unsubscribe();
+        authValueAtNavigation = cached;
+        return Promise.resolve(true);
+      });
+
+      // Wait for initial load to complete (isLoading = false = Capacitor scenario)
+      await firstValueFrom(localService.isLoading$.pipe(filter((l) => !l)));
+
+      // Trigger handleRedirectCallback while isLoading is already false
+      const callbackPromise = firstValueFrom(
+        localService.handleRedirectCallback()
+      );
+
+      // Let the microtask queue drain so the callback pipeline runs, then resolve auth
+      await Promise.resolve();
+      resolveRefreshAuth(true);
+
+      await callbackPromise;
+      authSub.unsubscribe();
+
+      // navigateByUrl must only fire after isAuthenticated$ is true.
+      // On buggy code: authValueAtNavigation === false → this expectation FAILS
+      // With the fix: authValueAtNavigation === true → this expectation PASSES
+      expect(authValueAtNavigation).toBe(true);
+    });
+
     it('should record the appState in the appState$ observable if it is present', async () => {
       const appState = { myValue: 'State to Preserve' };
       (
