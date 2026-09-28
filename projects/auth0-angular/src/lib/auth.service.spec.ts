@@ -690,6 +690,38 @@ describe('AuthService', () => {
     expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
   });
 
+  // Experiment Center: forcing a variant is a per-call override on
+  // `loginWithRedirect` so `experiment_id`/`variation_id`/`segment_id` reach
+  // `/authorize` for the interactive login only — not silent `prompt=none`
+  // renewals, where Experiment Center does not run.
+  it('should forward Experiment Center params through `loginWithRedirect`', async () => {
+    const options = {
+      authorizationParams: {
+        redirect_uri: 'http://localhost:3001',
+        experiment_id: '__experiment_id__',
+        variation_id: '__variation_id__',
+        segment_id: '__segment_id__',
+      },
+    };
+
+    const service = createService();
+    await service.loginWithRedirect(options).toPromise();
+    expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
+  });
+
+  it('should forward Experiment Center params through `loginWithRedirect` when `segment_id` is omitted', async () => {
+    const options = {
+      authorizationParams: {
+        experiment_id: '__experiment_id__',
+        variation_id: '__variation_id__',
+      },
+    };
+
+    const service = createService();
+    await service.loginWithRedirect(options).toPromise();
+    expect(auth0Client.loginWithRedirect).toHaveBeenCalledWith(options);
+  });
+
   it('should call `connectAccountWithRedirect`', async () => {
     const service = createService();
     const options = { connection: 'google-oauth2' };
@@ -742,6 +774,43 @@ describe('AuthService', () => {
     service.loginWithPopup(options, config);
     await firstValueFrom(service.isAuthenticated$.pipe(filter(Boolean)));
     expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, config);
+  });
+
+  it('should forward Experiment Center params through `loginWithPopup`', async () => {
+    const options = {
+      authorizationParams: {
+        experiment_id: '__experiment_id__',
+        variation_id: '__variation_id__',
+        segment_id: '__segment_id__',
+      },
+    };
+    const service = createService();
+    await firstValueFrom(loaded(service));
+    (auth0Client.isAuthenticated as unknown as MockInstance).mockReset();
+    (auth0Client.isAuthenticated as unknown as MockInstance).mockResolvedValue(
+      true
+    );
+    service.loginWithPopup(options);
+    await firstValueFrom(service.isAuthenticated$.pipe(filter(Boolean)));
+    expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, undefined);
+  });
+
+  it('should forward Experiment Center params through `loginWithPopup` when `segment_id` is omitted', async () => {
+    const options = {
+      authorizationParams: {
+        experiment_id: '__experiment_id__',
+        variation_id: '__variation_id__',
+      },
+    };
+    const service = createService();
+    await firstValueFrom(loaded(service));
+    (auth0Client.isAuthenticated as unknown as MockInstance).mockReset();
+    (auth0Client.isAuthenticated as unknown as MockInstance).mockResolvedValue(
+      true
+    );
+    service.loginWithPopup(options);
+    await firstValueFrom(service.isAuthenticated$.pipe(filter(Boolean)));
+    expect(auth0Client.loginWithPopup).toHaveBeenCalledWith(options, undefined);
   });
 
   it('should call `logout`', () => {
