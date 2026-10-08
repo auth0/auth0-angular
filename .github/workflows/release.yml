@@ -3,6 +3,7 @@ name: Create npm and GitHub Release
 on:
   pull_request:
     types:
+      - opened
       - closed
   workflow_dispatch:
 
@@ -17,7 +18,7 @@ permissions:
 jobs:
   rl-scanner:
     name: Run Reversing Labs Scanner
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release/'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action == 'opened' && github.event.pull_request.head.ref == 'chore/rl-scanner-update')
     runs-on: ubuntu-latest
 
     steps:
