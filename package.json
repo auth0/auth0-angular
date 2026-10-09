@@ -43,7 +43,7 @@
     "@angular-eslint/schematics": "^20.7.0",
     "@angular-eslint/template-parser": "^20.7.0",
     "@angular/build": "^20.3.37",
-    "@angular/cli": "^20.3.38",
+    "@angular/cli": "^20.3.39",
     "@angular/compiler-cli": "^20.3.33",
     "@angular/forms": "^20.3.33",
     "@cypress/schematic": "^2.5.2",
