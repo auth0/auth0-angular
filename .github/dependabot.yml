@@ -25,10 +25,17 @@ updates:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
   - package-ecosystem: 'github-actions'
-    directory: '/'
+    directories:
+      - '/'
+      - '/.github/actions/*'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
+    cooldown:
+      default-days: 7
     groups:
-      codeql:
+      github-actions:
         patterns:
-          - 'github/codeql-action*'
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
