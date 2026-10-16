@@ -307,6 +307,25 @@ describe('The Auth HTTP Interceptor', () => {
       httpTestingController.expectNone('https://my-api.com/api/calendar');
     });
 
+    it('does not execute HTTP call and refreshes the auth state when getTokenSilently returns undefined (session_expiry ceiling reached)', async () => {
+      (
+        auth0Client.getTokenSilently as unknown as MockInstance
+      ).mockResolvedValue(undefined);
+      vi.spyOn(authState, 'refresh');
+
+      httpClient.request('get', 'https://my-api.com/api/calendar').subscribe({
+        error: (err) => expect(err).toEqual({ error: 'missing_token' }),
+      });
+
+      await new Promise(process.nextTick);
+
+      httpTestingController.expectNone('https://my-api.com/api/calendar');
+      expect(authState.refresh).toHaveBeenCalled();
+      expect(authState.setError).toHaveBeenCalledWith({
+        error: 'missing_token',
+      });
+    });
+
     it('does execute HTTP call when not able to retrieve a token but allowAnonymous is set to true', async () => {
       (auth0Client.getTokenSilently as unknown as MockInstance).mockReturnValue(
         throwError({ error: 'login_required' })
