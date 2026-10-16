@@ -304,6 +304,10 @@ export class AuthService<TAppState extends AppState = AppState>
           this.authState.setAccessToken(
             typeof token === 'string' ? token : token.access_token
           );
+        } else {
+          // spa-js returns undefined when cacheMode is 'cache-only' with no
+          // cached entry, or when an IPSIE session_expiry ceiling is reached.
+          this.authState.refresh();
         }
       }),
       catchError((error) => {
