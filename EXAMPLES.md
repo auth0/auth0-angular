@@ -2430,7 +2430,7 @@ const routes: Routes = [
 ];
 ```
 
-If the ID token returned at login has a `session_expiry` that is not later than its `iat` claim, the login is rejected with an `invalid_token` error, which is emitted on `error$`, and the session is not persisted.
+If the ID token returned at login has a `session_expiry` that is not later than its `iat` claim, the login is rejected with an `invalid_token` error and the session is not persisted. For redirect login, the error is emitted on `error$`. For `loginWithPopup`, the error is not emitted on `error$`; it is delivered to the `error` callback of your `subscribe` call instead.
 
 ### Reading the claim
 
