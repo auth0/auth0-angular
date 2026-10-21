@@ -978,6 +978,71 @@ describe('AuthService', () => {
         firstValueFrom(service.getAccessTokenSilently())
       ).rejects.toBe(errorObj);
     });
+
+    describe('when the session_expiry ceiling (IPSIE) is reached', () => {
+      beforeEach(() => {
+        (
+          auth0Client.isAuthenticated as unknown as MockInstance
+        ).mockResolvedValue(true);
+        (auth0Client.getUser as unknown as MockInstance).mockResolvedValue({
+          sub: '__test_user__',
+          name: 'Test User',
+        });
+      });
+
+      const breachCeiling = () => {
+        (
+          auth0Client.getTokenSilently as unknown as MockInstance
+        ).mockResolvedValue(undefined);
+        (
+          auth0Client.isAuthenticated as unknown as MockInstance
+        ).mockResolvedValue(false);
+        (auth0Client.getUser as unknown as MockInstance).mockResolvedValue(
+          undefined
+        );
+      };
+
+      it('should return undefined without throwing or recording an error', async () => {
+        const service = createService();
+        await firstValueFrom(loaded(service));
+        const errorSpy = vi.spyOn(authState, 'setError');
+
+        breachCeiling();
+
+        const token = await firstValueFrom(service.getAccessTokenSilently());
+        expect(auth0Client.getTokenSilently).toHaveBeenCalled();
+        expect(token).toBeUndefined();
+        expect(errorSpy).not.toHaveBeenCalled();
+      });
+
+      it('should update isAuthenticated$ to false', async () => {
+        const service = createService();
+        const pending = firstValueFrom(
+          service.isAuthenticated$.pipe(bufferCount(2))
+        );
+        expect(await firstValueFrom(service.isAuthenticated$)).toBe(true);
+
+        breachCeiling();
+        service.getAccessTokenSilently().subscribe();
+
+        expect(await pending).toEqual([true, false]);
+      });
+
+      it('should update user$ to null', async () => {
+        const service = createService();
+        const pending = firstValueFrom(service.user$.pipe(bufferCount(2)));
+        expect(await firstValueFrom(service.user$)).toEqual({
+          sub: '__test_user__',
+          name: 'Test User',
+        });
+
+        breachCeiling();
+        service.getAccessTokenSilently().subscribe();
+
+        const values = await pending;
+        expect(values[1]).toBeNull();
+      });
+    });
   });
 
   describe('getAccessTokenWithPopup', () => {

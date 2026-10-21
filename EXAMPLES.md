@@ -21,6 +21,7 @@
 - [MyAccount API](#myaccount-api)
 - [Enterprise Connect](#enterprise-connect)
 - [Experiment Center](#experiment-center)
+- [Session Expiry from Upstream IdP (IPSIE)](#session-expiry-from-upstream-idp-ipsie)
 
 ## Add login to your application
 
@@ -2389,3 +2390,106 @@ loginWithPopup() {
 - **Production:** pass the variant decision from a feature-flag tool (e.g. LaunchDarkly) that has already decided which variant the user should see for this request.
 
 The override applies only to this request; the next login without these params reverts to normal server-side assignment.
+
+## Session Expiry from Upstream IdP (IPSIE)
+
+When using an Okta or OIDC enterprise connection configured with `id_token_session_expiry_supported: true`, Auth0 includes a `session_expiry` claim in the ID token. This is an absolute Unix timestamp (seconds) that acts as a hard ceiling on the local session: once this point in time is reached, the SDK will not return tokens or a user, and no refresh is attempted.
+
+You can also emit the claim from a Post-Login Action:
+
+```js
+exports.onExecutePostLogin = async (event, api) => {
+  // IMPORTANT: value must be Unix seconds, not milliseconds.
+  // Wrong:   Date.now() + 7200000                 — milliseconds, rejected with invalid_token at login
+  // Correct: Math.floor(Date.now() / 1000) + 7200 — 2-hour ceiling
+  api.idToken.setCustomClaim('session_expiry', Math.floor(Date.now() / 1000) + 7200);
+};
+```
+
+No SDK configuration is required. Enforcement is handled by `@auth0/auth0-spa-js` and only applies when the claim is present in the ID token.
+
+### Behavior
+
+The ceiling is checked with a 30-second clock-skew tolerance and is pinned to the value set at login, so silent token refreshes cannot extend it. When the ceiling is reached, the local session is torn down on the next call to `getAccessTokenSilently()` (directly, or via `AuthHttpInterceptor`). There is no background timer:
+
+- `getAccessTokenSilently()` emits `undefined` (no error is thrown) and no network call is made
+- `isAuthenticated$` emits `false`
+- `user$` and `idTokenClaims$` emit `null`
+- Requests to routes in `httpInterceptor.allowedList` fail with `{ error: 'missing_token' }`, which is also emitted on `error$`. Routes configured with `allowAnonymous: true` are sent without an `Authorization` header instead.
+
+If your routes are protected with `AuthGuard` or `authGuardFn`, no code changes are required. Once `isAuthenticated$` emits `false`, the next navigation to a protected route redirects the user to log in. A user who stays on a page that makes no token or API calls remains authenticated in the SDK state until the next such call.
+
+```ts
+const routes: Routes = [
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    // Redirects to login once the session_expiry ceiling has been reached
+    canActivate: [authGuardFn],
+  },
+];
+```
+
+If the ID token returned at login has a `session_expiry` that is not later than its `iat` claim, the login is rejected with an `invalid_token` error and the session is not persisted. For redirect login, the error is emitted on `error$`. For `loginWithPopup`, the error is not emitted on `error$`; it is delivered to the `error` callback of your `subscribe` call instead.
+
+### Reading the claim
+
+`session_expiry` is available on the ID token claims via `idTokenClaims$`. Use it to display the time remaining before the session ends, not to detect expiry: once the ceiling is reached, `idTokenClaims$` emits `null`.
+
+```ts
+import { Component, inject } from '@angular/core';
+import { AsyncPipe, DatePipe } from '@angular/common';
+import { AuthService } from '@auth0/auth0-angular';
+import { map } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-session-info',
+  standalone: true,
+  imports: [AsyncPipe, DatePipe],
+  template: `
+    @if (sessionCeiling$ | async; as ceiling) {
+      <p>Your session ends at {{ ceiling | date: 'medium' }}</p>
+    }
+  `,
+})
+export class SessionInfoComponent {
+  private auth = inject(AuthService);
+
+  sessionCeiling$ = this.auth.idTokenClaims$.pipe(
+    map((claims) =>
+      claims?.session_expiry ? new Date(claims.session_expiry * 1000) : null
+    )
+  );
+}
+```
+
+### Upgrading existing apps
+
+Once the claim is present, `getAccessTokenSilently()` and `user$` can return `undefined`/`null` for a previously authenticated user. Apps that assume a token or user is always available after login should add null checks:
+
+```ts
+this.auth.getAccessTokenSilently().subscribe((token) => {
+  if (!token) {
+    // The ceiling was reached and isAuthenticated$ has already been updated to false.
+    // Let AuthGuard / authGuardFn handle the redirect on the next navigation, or
+    // call loginWithRedirect() here if this page is not behind a guard.
+    return;
+  }
+
+  this.http
+    .get('/api/data', { headers: { Authorization: `Bearer ${token}` } })
+    .subscribe();
+});
+```
+
+```ts
+this.auth.user$.subscribe((user) => {
+  if (!user) {
+    return;
+  }
+
+  console.log(`Hello, ${user.name}`);
+});
+```
+
+Using `AuthHttpInterceptor` to attach tokens and `AuthGuard` / `authGuardFn` to protect routes is the simpler alternative, since neither requires a null check.
