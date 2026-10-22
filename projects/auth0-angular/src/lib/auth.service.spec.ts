@@ -12,6 +12,11 @@ import {
   ResponseType,
   ConnectAccountRedirectResult,
   RefreshTokenMode,
+  GenericError,
+  MfaRequiredError,
+  PasskeyError,
+  PasskeyGetTokenError,
+  PasskeyVerificationRequiredError,
 } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import { Observable } from 'rxjs';
@@ -158,6 +163,12 @@ describe('AuthService', () => {
     });
 
     vi.spyOn(auth0Client.passkey, 'signup').mockResolvedValue({
+      access_token: '__passkey_access_token__',
+      id_token: '__passkey_id_token__',
+      token_type: 'Bearer',
+      expires_in: 86400,
+    });
+    vi.spyOn(auth0Client.passkey, 'continueSignup').mockResolvedValue({
       access_token: '__passkey_access_token__',
       id_token: '__passkey_id_token__',
       token_type: 'Bearer',
@@ -1642,6 +1653,334 @@ describe('AuthService', () => {
         await expect(
           firstValueFrom(service.passkey.signup({ email: 'user@example.com' }))
         ).rejects.toBe(errorObj);
+      });
+
+      it('should forward deliveryMethod to the underlying SDK', async () => {
+        const service = createService();
+        const options = {
+          phoneNumber: '+14155550100',
+          deliveryMethod: 'voice' as const,
+        };
+        await firstValueFrom(service.passkey.signup(options));
+        expect(auth0Client.passkey.signup).toHaveBeenCalledWith(options);
+      });
+
+      it('should bubble PasskeyVerificationRequiredError with the identifiers to verify', async () => {
+        const errorObj = new PasskeyVerificationRequiredError(['email']);
+        (
+          auth0Client.passkey.signup as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.signup({ email: 'user@example.com' })
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err).toBeInstanceOf(PasskeyVerificationRequiredError);
+        expect(err).toBeInstanceOf(GenericError);
+        expect(err.error).toBe('verification_required');
+        expect(err.verificationRequired).toEqual(['email']);
+      });
+
+      it('should bubble PasskeyVerificationRequiredError with multiple identifiers', async () => {
+        (
+          auth0Client.passkey.signup as unknown as MockInstance
+        ).mockRejectedValue(
+          new PasskeyVerificationRequiredError(['email', 'phone'])
+        );
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.signup({
+            email: 'user@example.com',
+            phoneNumber: '+14155550100',
+          })
+        ).catch((e) => e);
+        expect(err.verificationRequired).toEqual(['email', 'phone']);
+      });
+
+      it('should not set the access token when verification is required', async () => {
+        (
+          auth0Client.passkey.signup as unknown as MockInstance
+        ).mockRejectedValue(new PasskeyVerificationRequiredError(['email']));
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+        await firstValueFrom(
+          service.passkey.signup({ email: 'user@example.com' })
+        ).catch(() => undefined);
+        expect(authState.setAccessToken).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('continueSignup', () => {
+      const retryableError = (verificationRequired: Array<'email' | 'phone'>) =>
+        new PasskeyGetTokenError('Invalid or expired session', {
+          error: 'invalid_grant',
+          error_description: 'Invalid or expired session',
+          auth_session: '__auth_session__',
+          verification_required: verificationRequired,
+        });
+
+      it('should call the underlying SDK with the verification codes', async () => {
+        const service = createService();
+        const verification = { email: '123456' };
+        await firstValueFrom(service.passkey.continueSignup(verification));
+        expect(auth0Client.passkey.continueSignup).toHaveBeenCalledWith(
+          verification
+        );
+      });
+
+      it('should forward codes for multiple identifiers', async () => {
+        const service = createService();
+        const verification = { email: '123456', phone: '654321' };
+        await firstValueFrom(service.passkey.continueSignup(verification));
+        expect(auth0Client.passkey.continueSignup).toHaveBeenCalledWith(
+          verification
+        );
+      });
+
+      it('should return the token response', async () => {
+        const service = createService();
+        const result = await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        );
+        expect(result).toEqual({
+          access_token: '__passkey_access_token__',
+          id_token: '__passkey_id_token__',
+          token_type: 'Bearer',
+          expires_in: 86400,
+        });
+      });
+
+      it('should set the access token after a successful continueSignup', async () => {
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+        await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        );
+        expect(authState.setAccessToken).toHaveBeenCalledWith(
+          '__passkey_access_token__'
+        );
+      });
+
+      it('should not set the access token when the response has none', async () => {
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockResolvedValue({
+          id_token: '__passkey_id_token__',
+          token_type: 'Bearer',
+          expires_in: 86400,
+        });
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+        await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        );
+        expect(authState.setAccessToken).not.toHaveBeenCalled();
+      });
+
+      it('should bubble a retryable PasskeyGetTokenError for a wrong code', async () => {
+        const errorObj = retryableError(['email']);
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.continueSignup({ email: '000000' })
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err).toBeInstanceOf(PasskeyGetTokenError);
+        expect(err.isRetryable).toBe(true);
+        expect(err.authSession).toBe('__auth_session__');
+        expect(err.verificationRequired).toEqual(['email']);
+      });
+
+      it('should bubble a retryable PasskeyGetTokenError listing several identifiers', async () => {
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(retryableError(['email', 'phone']));
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.continueSignup({ email: '000000', phone: '000000' })
+        ).catch((e) => e);
+        expect(err.isRetryable).toBe(true);
+        expect(err.verificationRequired).toEqual(['email', 'phone']);
+      });
+
+      it('should bubble a non-retryable token exchange GenericError unchanged', async () => {
+        const errorObj = new GenericError(
+          'invalid_grant',
+          'Invalid or expired session',
+          {
+            error: 'invalid_grant',
+            error_description: 'Invalid or expired session',
+          }
+        );
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err).not.toBeInstanceOf(PasskeyGetTokenError);
+        expect(err.data).toEqual({
+          error: 'invalid_grant',
+          error_description: 'Invalid or expired session',
+        });
+      });
+
+      it('should bubble PasskeyError when the user cancels the passkey prompt', async () => {
+        const errorObj = new PasskeyError(
+          'passkey_cancelled',
+          'Passkey creation was cancelled or no credential was returned.'
+        );
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err.code).toBe('passkey_cancelled');
+      });
+
+      it('should bubble MfaRequiredError so the MFA flow can continue', async () => {
+        const errorObj = new MfaRequiredError(
+          'mfa_required',
+          'Multifactor authentication required',
+          '__mfa_token__',
+          { challenge: [{ type: 'otp' }] }
+        );
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        ).catch((e) => e);
+        expect(err).toBeInstanceOf(MfaRequiredError);
+        expect(err.mfa_token).toBe('__mfa_token__');
+      });
+
+      it('should bubble PasskeyError when there is no pending signup', async () => {
+        const errorObj = new PasskeyError(
+          'no_pending_signup',
+          'No pending signup found.'
+        );
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err.code).toBe('no_pending_signup');
+      });
+
+      it('should bubble PasskeyError when a verification code is missing', async () => {
+        const errorObj = new PasskeyError(
+          'missing_verification_code',
+          'Missing OTP code for: email.'
+        );
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.continueSignup({})
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err.code).toBe('missing_verification_code');
+      });
+
+      it('should record errors in the error$ observable', async () => {
+        const errorObj = retryableError(['email']);
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        service.passkey
+          .continueSignup({ email: '000000' })
+          .subscribe({ error: () => {} });
+        const err = await firstValueFrom(service.error$);
+        expect(err).toBe(errorObj);
+      });
+
+      it('should refresh the auth state on error', async () => {
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(retryableError(['email']));
+        const service = createService();
+        vi.spyOn(authState, 'refresh');
+        await firstValueFrom(
+          service.passkey.continueSignup({ email: '000000' })
+        ).catch(() => undefined);
+        expect(authState.refresh).toHaveBeenCalled();
+      });
+
+      it('should not set the access token on error', async () => {
+        (
+          auth0Client.passkey.continueSignup as unknown as MockInstance
+        ).mockRejectedValue(retryableError(['email']));
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+        await firstValueFrom(
+          service.passkey.continueSignup({ email: '000000' })
+        ).catch(() => undefined);
+        expect(authState.setAccessToken).not.toHaveBeenCalled();
+      });
+
+      it('should succeed on a retry after a wrong code', async () => {
+        (auth0Client.passkey.continueSignup as unknown as MockInstance)
+          .mockRejectedValueOnce(retryableError(['email']))
+          .mockResolvedValueOnce({
+            access_token: '__passkey_access_token__',
+            id_token: '__passkey_id_token__',
+            token_type: 'Bearer',
+            expires_in: 86400,
+          });
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+
+        const err = await firstValueFrom(
+          service.passkey.continueSignup({ email: '000000' })
+        ).catch((e) => e);
+        expect(err.isRetryable).toBe(true);
+
+        const result = await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        );
+        expect(result.access_token).toBe('__passkey_access_token__');
+        expect(auth0Client.passkey.continueSignup).toHaveBeenNthCalledWith(1, {
+          email: '000000',
+        });
+        expect(auth0Client.passkey.continueSignup).toHaveBeenNthCalledWith(2, {
+          email: '123456',
+        });
+        expect(authState.setAccessToken).toHaveBeenCalledTimes(1);
+      });
+
+      it('should complete the full signup flow after verification is required', async () => {
+        (
+          auth0Client.passkey.signup as unknown as MockInstance
+        ).mockRejectedValue(new PasskeyVerificationRequiredError(['email']));
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+
+        const err = await firstValueFrom(
+          service.passkey.signup({ email: 'user@example.com' })
+        ).catch((e) => e);
+        expect(err).toBeInstanceOf(PasskeyVerificationRequiredError);
+
+        const result = await firstValueFrom(
+          service.passkey.continueSignup({ email: '123456' })
+        );
+        expect(result.access_token).toBe('__passkey_access_token__');
+        expect(authState.setAccessToken).toHaveBeenCalledWith(
+          '__passkey_access_token__'
+        );
       });
     });
 

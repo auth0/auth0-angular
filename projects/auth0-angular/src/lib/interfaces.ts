@@ -78,7 +78,7 @@ export interface ObservableMfaApiClient {
 /**
  * Observable-based Passkey API client exposed by `AuthService.passkey`.
  *
- * Wraps `PasskeyApiClient` from `@auth0/auth0-spa-js`. Both methods handle the
+ * Wraps `PasskeyApiClient` from `@auth0/auth0-spa-js`. These methods handle the
  * full WebAuthn flow internally and update Angular auth state on success.
  * All methods return `Observable` instead of `Promise`.
  */
@@ -86,11 +86,35 @@ export interface ObservablePasskeyApiClient {
   /**
    * Registers a new user with a passkey credential.
    * Updates `isAuthenticated$` and `user$` on success.
+   *
+   * If the connection requires identifier verification, this errors with
+   * `PasskeyVerificationRequiredError` before the passkey prompt is shown.
+   * Collect the OTP codes and call `continueSignup()` to finish.
    * @throws {PasskeyRegisterError}
+   * @throws {PasskeyVerificationRequiredError}
    * @throws {PasskeyGetTokenError}
    * @throws {PasskeyError}
    */
   signup(options: PasskeySignupOptions): Observable<TokenEndpointResponse>;
+
+  /**
+   * Continues a signup that was interrupted by identifier verification.
+   * Call this after `signup()` errors with `PasskeyVerificationRequiredError`,
+   * passing an OTP code for each identifier in `verificationRequired`.
+   * Updates `isAuthenticated$` and `user$` on success.
+   *
+   * If a code is wrong and the session is still active, this errors with a
+   * `PasskeyGetTokenError` where `isRetryable` is `true`. Collect new codes for
+   * `error.verificationRequired` and call `continueSignup()` again; the same
+   * passkey is reused, so the user is not prompted again.
+   * @throws {PasskeyError} With code `no_pending_signup`, `missing_verification_code` or `passkey_cancelled`
+   * @throws {PasskeyGetTokenError} If an OTP code is wrong and the session is still active (`isRetryable: true`)
+   * @throws {GenericError} If the token exchange fails
+   */
+  continueSignup(verification: {
+    email?: string;
+    phone?: string;
+  }): Observable<TokenEndpointResponse>;
 
   /**
    * Authenticates an existing user via passkey assertion.

@@ -1579,6 +1579,7 @@ After a successful call, `isAuthenticated$` and `user$` update automatically.
 - [Important: Use Refresh Tokens with Passkeys](#important-use-refresh-tokens-with-passkeys)
 - [Signup with Passkey](#signup-with-passkey)
 - [Login with Passkey](#login-with-passkey)
+- [Identifier Verification](#identifier-verification)
 - [Complete Passkey Component Example](#complete-passkey-component-example)
 - [Passkey Error Handling](#passkey-error-handling)
 
@@ -1674,6 +1675,9 @@ this.auth.passkey
     realm: 'my-db-connection',
     organization: 'org_abc123',
 
+    // Phone OTP channel for identifier verification: 'text' (SMS) or 'voice'
+    deliveryMethod: 'text',
+
     // Token options
     scope: 'openid profile email',
     audience: 'https://api.example.com',
@@ -1710,6 +1714,126 @@ this.auth.passkey.login({ realm: 'Username-Password-Authentication' }).subscribe
 
 // Log in within an organization context
 this.auth.passkey.login({ organization: 'org_abc123' }).subscribe();
+```
+
+### Identifier Verification
+
+Your database connection can ask new users to verify their email or phone number with a one-time code (OTP) during passkey signup. This is off by default and is turned on from the server side. When it's on, the server sends the codes and gives tokens only after they are correct.
+
+When verification is required, `passkey.signup()` stops **before** the passkey prompt and errors with `PasskeyVerificationRequiredError`. Its `verificationRequired` property lists the identifiers to verify (for example `['email']`). Ask the user for the codes, then call `passkey.continueSignup()` with them. The first `continueSignup()` call shows the passkey prompt. On success, `isAuthenticated$` and `user$` update automatically.
+
+If a code is wrong but the session is still active, `continueSignup()` errors with a `PasskeyGetTokenError` where `isRetryable` is `true`. Ask again for the identifiers in `error.verificationRequired` and call `continueSignup()` again. The same passkey is reused, so the user sees the passkey prompt only once.
+
+```ts
+import { Component, inject } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  AuthService,
+  PasskeyError,
+  PasskeyGetTokenError,
+  PasskeyVerificationRequiredError,
+} from '@auth0/auth0-angular';
+
+const MAX_ATTEMPTS = 3;
+
+@Component({
+  selector: 'app-passkey-signup',
+  standalone: true,
+  imports: [NgIf, NgFor, FormsModule],
+  template: `
+    <button *ngIf="!required.length" (click)="signup()">Sign up with Passkey</button>
+
+    <form *ngIf="required.length" (ngSubmit)="verify()">
+      <label *ngFor="let id of required">
+        Code sent to your {{ id }}
+        <input [name]="id" [(ngModel)]="codes[id]" autocomplete="one-time-code" />
+      </label>
+      <button type="submit">Verify</button>
+    </form>
+  `,
+})
+export class PasskeySignupComponent {
+  private auth = inject(AuthService);
+
+  required: Array<'email' | 'phone'> = [];
+  codes: { email?: string; phone?: string } = {};
+  private attempts = 0;
+
+  signup() {
+    this.auth.passkey.signup({ email: 'user@example.com' }).subscribe({
+      error: (err) => {
+        if (err instanceof PasskeyVerificationRequiredError) {
+          // Collect the codes first. The passkey prompt has not been shown yet.
+          this.required = err.verificationRequired;
+          this.codes = {};
+          this.attempts = 0;
+        } else {
+          console.error('Signup failed', err);
+        }
+      },
+    });
+  }
+
+  verify() {
+    this.auth.passkey.continueSignup(this.codes).subscribe({
+      next: () => (this.required = []),
+      error: (err) => {
+        if (err instanceof PasskeyError && err.code === 'missing_verification_code') {
+          // A code is empty. Nothing was sent, so keep the form and ask again.
+          return;
+        }
+        if (
+          err instanceof PasskeyGetTokenError &&
+          err.isRetryable &&
+          ++this.attempts < MAX_ATTEMPTS
+        ) {
+          // Wrong code, session still active. Ask only for the identifiers still listed.
+          this.required = err.verificationRequired ?? [];
+          this.codes = {};
+        } else {
+          // For example an expired code or session, or too many attempts. Start the signup again.
+          this.required = [];
+          console.error('Verification failed', err);
+        }
+      },
+    });
+  }
+}
+```
+
+Always cap retries in your app, like `MAX_ATTEMPTS` above.
+
+> [!NOTE]
+> The pending signup is kept in memory only. If the page reloads, `continueSignup()` errors with a `PasskeyError` with code `no_pending_signup`. Call `signup()` again to start over.
+
+> [!NOTE]
+> Like other `AuthService` errors, `PasskeyVerificationRequiredError` and retryable `PasskeyGetTokenError`s are also emitted on `error$`. If you show a global error message from `error$`, skip these two, because they are expected steps of the flow.
+
+#### Which errors can be retried
+
+| Error | Retry? | What to do |
+|---|---|---|
+| `PasskeyVerificationRequiredError` from `signup()` | Yes | Ask for a code for each identifier in `error.verificationRequired`, then call `continueSignup()` |
+| `PasskeyGetTokenError` with `isRetryable: true` (wrong code, session still active) | Yes | Ask for new codes for `error.verificationRequired` and call `continueSignup()` again |
+| `PasskeyError` with code `missing_verification_code` (a code is missing or empty) | Yes | Call `continueSignup()` again with a code for each identifier. Nothing was sent, so the session is still active |
+| `MfaRequiredError` | No | Finish with MFA using `error.mfa_token`. See [Multi-Factor Authentication](#multi-factor-authentication-mfa) |
+| Any other error, for example an expired code or session | No | Call `signup()` again |
+
+#### Phone delivery method
+
+For phone verification, pass `deliveryMethod: 'text'` (SMS) or `'voice'` to `signup()` to choose how the code is sent.
+
+```ts
+this.auth.passkey
+  .signup({ phoneNumber: '+14155550100', deliveryMethod: 'voice' })
+  .subscribe({
+    error: (err) => {
+      if (err instanceof PasskeyVerificationRequiredError) {
+        // err.verificationRequired, for example ['phone']
+      }
+    },
+  });
 ```
 
 ### Complete Passkey Component Example
@@ -1802,6 +1926,27 @@ this.auth.passkey
 
 > [!TIP]
 > Both `signup()` and `login()` throw an error if the user cancels the biometric prompt. Always handle errors to avoid unhandled Observable errors crashing your application.
+
+When identifier verification is required, `signup()` errors with `PasskeyVerificationRequiredError`, and a wrong OTP code makes `continueSignup()` error with a `PasskeyGetTokenError` where `isRetryable` is `true`. Other token exchange failures error with a `GenericError` as before (or an `MfaRequiredError` for `mfa_required`). See [Identifier Verification](#identifier-verification).
+
+```ts
+import { PasskeyGetTokenError } from '@auth0/auth0-angular';
+import { catchError, EMPTY } from 'rxjs';
+
+this.auth.passkey
+  .continueSignup({ email: '123456' })
+  .pipe(
+    catchError((err) => {
+      if (err instanceof PasskeyGetTokenError && err.isRetryable) {
+        // Wrong code, session still active. Ask again for err.verificationRequired
+      } else {
+        console.error('Verification failed:', err.message);
+      }
+      return EMPTY;
+    })
+  )
+  .subscribe();
+```
 
 If your tenant requires MFA after a passkey login, `passkey.login()` will throw an `MfaRequiredError`. Handle it using the `mfa` client on `AuthService`:
 
