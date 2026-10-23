@@ -1722,7 +1722,9 @@ Your database connection can ask new users to verify their email or phone number
 
 When verification is required, `passkey.signup()` stops **before** the passkey prompt and errors with `PasskeyVerificationRequiredError`. Its `verificationRequired` property lists the identifiers to verify (for example `['email']`). Ask the user for the codes, then call `passkey.continueSignup()` with them. The first `continueSignup()` call shows the passkey prompt. On success, `isAuthenticated$` and `user$` update automatically.
 
-If a code is wrong but the session is still active, `continueSignup()` errors with a `PasskeyGetTokenError` where `isRetryable` is `true`. Ask again for the identifiers in `error.verificationRequired` and call `continueSignup()` again. The same passkey is reused, so the user sees the passkey prompt only once.
+If a code is wrong, `continueSignup()` errors with a `PasskeyGetTokenError` where `isRetryable` is `true`. A retryable error always has `error.verificationRequired`, which lists the identifiers that need a new code. Ask the user for those codes and call `continueSignup()` again. The same passkey is reused, so the user sees the passkey prompt only once.
+
+The server decides how many attempts are allowed. After the last attempt, or when the session expires, the error is no longer retryable and you must call `signup()` again.
 
 ```ts
 import { Component, inject } from '@angular/core';
@@ -1734,8 +1736,6 @@ import {
   PasskeyGetTokenError,
   PasskeyVerificationRequiredError,
 } from '@auth0/auth0-angular';
-
-const MAX_ATTEMPTS = 3;
 
 @Component({
   selector: 'app-passkey-signup',
@@ -1758,7 +1758,6 @@ export class PasskeySignupComponent {
 
   required: Array<'email' | 'phone'> = [];
   codes: { email?: string; phone?: string } = {};
-  private attempts = 0;
 
   signup() {
     this.auth.passkey.signup({ email: 'user@example.com' }).subscribe({
@@ -1767,7 +1766,6 @@ export class PasskeySignupComponent {
           // Collect the codes first. The passkey prompt has not been shown yet.
           this.required = err.verificationRequired;
           this.codes = {};
-          this.attempts = 0;
         } else {
           console.error('Signup failed', err);
         }
@@ -1783,16 +1781,12 @@ export class PasskeySignupComponent {
           // A code is empty. Nothing was sent, so keep the form and ask again.
           return;
         }
-        if (
-          err instanceof PasskeyGetTokenError &&
-          err.isRetryable &&
-          ++this.attempts < MAX_ATTEMPTS
-        ) {
-          // Wrong code, session still active. Ask only for the identifiers still listed.
-          this.required = err.verificationRequired ?? [];
+        if (err instanceof PasskeyGetTokenError && err.isRetryable) {
+          // Wrong code. A retryable error always lists the identifiers that need a new code.
+          this.required = err.verificationRequired!;
           this.codes = {};
         } else {
-          // For example an expired code or session, or too many attempts. Start the signup again.
+          // For example an expired code or session, or no attempts left. Start the signup again.
           this.required = [];
           console.error('Verification failed', err);
         }
@@ -1801,8 +1795,6 @@ export class PasskeySignupComponent {
   }
 }
 ```
-
-Always cap retries in your app, like `MAX_ATTEMPTS` above.
 
 > [!NOTE]
 > The pending signup is kept in memory only. If the page reloads, `continueSignup()` errors with a `PasskeyError` with code `no_pending_signup`. Call `signup()` again to start over.
@@ -1815,10 +1807,10 @@ Always cap retries in your app, like `MAX_ATTEMPTS` above.
 | Error | Retry? | What to do |
 |---|---|---|
 | `PasskeyVerificationRequiredError` from `signup()` | Yes | Ask for a code for each identifier in `error.verificationRequired`, then call `continueSignup()` |
-| `PasskeyGetTokenError` with `isRetryable: true` (wrong code, session still active) | Yes | Ask for new codes for `error.verificationRequired` and call `continueSignup()` again |
+| `PasskeyGetTokenError` with `isRetryable: true` (wrong code, session still active) | Yes | The error has `code`, `authSession` and `verificationRequired`. Ask for new codes for `error.verificationRequired` and call `continueSignup()` again. The SDK keeps the `authSession` and the passkey for you, so you don't need to pass them |
 | `PasskeyError` with code `missing_verification_code` (a code is missing or empty) | Yes | Call `continueSignup()` again with a code for each identifier. Nothing was sent, so the session is still active |
 | `MfaRequiredError` | No | Finish with MFA using `error.mfa_token`. See [Multi-Factor Authentication](#multi-factor-authentication-mfa) |
-| Any other error, for example an expired code or session | No | Call `signup()` again |
+| Any other error, for example an expired code or session, or no attempts left | No | Call `signup()` again |
 
 #### Phone delivery method
 
@@ -1938,7 +1930,7 @@ this.auth.passkey
   .pipe(
     catchError((err) => {
       if (err instanceof PasskeyGetTokenError && err.isRetryable) {
-        // Wrong code, session still active. Ask again for err.verificationRequired
+        // Wrong code. err.verificationRequired lists the identifiers that need a new code
       } else {
         console.error('Verification failed:', err.message);
       }
