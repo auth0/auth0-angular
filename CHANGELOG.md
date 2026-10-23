@@ -1,5 +1,12 @@
 # Change Log
 
+## [v2.14.0](https://github.com/auth0/auth0-angular/tree/v2.14.0) (2026-10-23)
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.13.0...v2.14.0)
+
+**Added**
+- feat: add identifier verification support for passkey signup [\#1106](https://github.com/auth0/auth0-angular/pull/1106) ([siddhikotak](https://github.com/siddhikotak))
+- feat: enforce IPSIE session_expiry ceiling on local session lifetime [\#1098](https://github.com/auth0/auth0-angular/pull/1098) ([siddhikotak](https://github.com/siddhikotak))
+
 ## [v2.13.0](https://github.com/auth0/auth0-angular/tree/v2.13.0) (2026-09-28)
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.12.0...v2.13.0)
 
