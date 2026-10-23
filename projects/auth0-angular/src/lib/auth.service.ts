@@ -530,7 +530,7 @@ export class AuthService<TAppState extends AppState = AppState>
   /**
    * Provides Passkey (WebAuthn) authentication as Observables.
    *
-   * Both methods handle the full WebAuthn challenge-response flow internally.
+   * These methods handle the full WebAuthn challenge-response flow internally.
    * After a successful call, this updates the authentication state to ensure
    * consistency with the standard authentication flows.
    */
@@ -538,6 +538,20 @@ export class AuthService<TAppState extends AppState = AppState>
     signup: (options: PasskeySignupOptions) =>
       of(this.auth0Client).pipe(
         concatMap((client) => client.passkey.signup(options)),
+        tap((tokenResponse) => {
+          if (tokenResponse.access_token) {
+            this.authState.setAccessToken(tokenResponse.access_token);
+          }
+        }),
+        catchError((error) => {
+          this.authState.setError(error);
+          this.authState.refresh();
+          return throwError(error);
+        })
+      ),
+    continueSignup: (verification: { email?: string; phone?: string }) =>
+      of(this.auth0Client).pipe(
+        concatMap((client) => client.passkey.continueSignup(verification)),
         tap((tokenResponse) => {
           if (tokenResponse.access_token) {
             this.authState.setAccessToken(tokenResponse.access_token);

@@ -59,6 +59,7 @@ export {
   PasskeyRegisterError,
   PasskeyChallengeError,
   PasskeyGetTokenError,
+  PasskeyVerificationRequiredError,
   // MyAccount error
   MyAccountApiError,
 } from '@auth0/auth0-spa-js';
