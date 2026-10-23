@@ -13,7 +13,11 @@ vi.mock('@auth0/auth0-spa-js', async (importOriginal) => {
   };
 });
 
-import { isFederatedDomain } from './public-api';
+import {
+  GenericError,
+  isFederatedDomain,
+  PasskeyVerificationRequiredError,
+} from './public-api';
 
 describe('public-api', () => {
   describe('Enterprise Connect', () => {
@@ -44,6 +48,19 @@ describe('public-api', () => {
         isFederatedDomain('tenant.auth0.com', 'gmail.com')
       ).resolves.toBe(false);
     });
+  });
 
+  describe('Passkey identifier verification', () => {
+    it('re-exports PasskeyVerificationRequiredError from spa-js, so instanceof checks match', async () => {
+      const spa = await import('@auth0/auth0-spa-js');
+      const error = new spa.PasskeyVerificationRequiredError(['email']);
+
+      expect(PasskeyVerificationRequiredError).toBe(
+        spa.PasskeyVerificationRequiredError
+      );
+      expect(error).toBeInstanceOf(PasskeyVerificationRequiredError);
+      expect(error).toBeInstanceOf(GenericError);
+      expect(error.verificationRequired).toEqual(['email']);
+    });
   });
 });
