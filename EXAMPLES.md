@@ -1721,6 +1721,8 @@ this.auth.passkey.login({ organization: 'org_abc123' }).subscribe();
 
 If you need control over the WebAuthn ceremony (for example, to show your own UI between steps), use the granular APIs. Get a challenge with `getSignupChallenge()` or `getLoginChallenge()`, run `navigator.credentials.create()` or `navigator.credentials.get()` yourself, then exchange the credential for tokens with `getTokenWithPasskey()`.
 
+The signup example below assumes [identifier verification](#identifier-verification) is off for the connection. If it's on, `getSignupChallenge()` returns `verificationRequired`, and you must collect the OTP codes before the passkey prompt. See [With the granular APIs](#with-the-granular-apis).
+
 ```ts
 import { Component, inject } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
@@ -1738,6 +1740,7 @@ export class GranularPasskeyComponent {
   private auth = inject(AuthService);
 
   signup() {
+    // Assumes identifier verification is off (no challenge.verificationRequired)
     this.auth.passkey
       .getSignupChallenge({ email: 'user@example.com' })
       .pipe(
@@ -1895,7 +1898,7 @@ export class PasskeySignupComponent {
 Check `verificationRequired` on the challenge and collect the codes **before** calling `navigator.credentials.create()`. Pass them as `verification` to `getTokenWithPasskey()`. If a code is wrong, `getTokenWithPasskey()` errors with a retryable `PasskeyGetTokenError`. Call it again with `error.authSession`, the **same** `credential`, and new codes for `error.verificationRequired`. Do not call `navigator.credentials.create()` again.
 
 ```ts
-import { AuthService, PasskeyGetTokenError } from '@auth0/auth0-angular';
+import { AuthService, PasskeyError, PasskeyGetTokenError } from '@auth0/auth0-angular';
 import { firstValueFrom } from 'rxjs';
 
 async function granularSignupWithVerification(
@@ -1907,9 +1910,8 @@ async function granularSignupWithVerification(
   const challenge = await firstValueFrom(auth.passkey.getSignupChallenge({ email }));
 
   // Collect codes first, so the passkey prompt shows only once
-  let verification = challenge.verificationRequired
-    ? await askUserForCodes(challenge.verificationRequired)
-    : undefined;
+  let required = challenge.verificationRequired;
+  let verification = required ? await askUserForCodes(required) : undefined;
 
   const credential = (await navigator.credentials.create({
     publicKey: challenge.publicKey,
@@ -1930,11 +1932,20 @@ async function granularSignupWithVerification(
         })
       );
     } catch (err) {
-      if (!(err instanceof PasskeyGetTokenError && err.isRetryable)) {
+      if (err instanceof PasskeyGetTokenError && err.isRetryable) {
+        // Wrong code. Retry with the new auth session and new codes
+        authSession = err.authSession!;
+        required = err.verificationRequired!;
+      } else if (
+        required &&
+        err instanceof PasskeyError &&
+        err.code === 'missing_verification_code'
+      ) {
+        // A code was empty. Nothing was sent, so the same auth session is still valid
+      } else {
         throw err;
       }
-      authSession = err.authSession!;
-      verification = await askUserForCodes(err.verificationRequired!);
+      verification = await askUserForCodes(required);
     }
   }
 }
