@@ -2150,8 +2150,8 @@ describe('AuthService', () => {
 
       it('should bubble errors', async () => {
         const errorObj = new PasskeyError(
-          'not_supported',
-          'WebAuthn is not supported'
+          'passkey_not_supported',
+          'WebAuthn is not supported in this browser.'
         );
         (
           auth0Client.passkey.getSignupChallenge as unknown as MockInstance
@@ -2413,7 +2413,7 @@ describe('AuthService', () => {
       it('should bubble PasskeyError when a verification code is empty', async () => {
         const errorObj = new PasskeyError(
           'missing_verification_code',
-          'Missing OTP code for: email.'
+          'OTP codes in verification must not be empty.'
         );
         (
           auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance

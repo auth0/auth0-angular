@@ -1943,7 +1943,7 @@ async function granularSignupWithVerification(
 | Error from `getTokenWithPasskey()` | Retry? | What to do |
 |---|---|---|
 | `PasskeyGetTokenError` with `isRetryable: true` (wrong code, session still active) | Yes | Call `getTokenWithPasskey()` again with `error.authSession`, the same `credential`, and new codes for `error.verificationRequired` |
-| `PasskeyError` with code `missing_verification_code` (a code is missing or empty) | Yes | Call `getTokenWithPasskey()` again with a code for each identifier. Nothing was sent, so the session is still active |
+| `PasskeyError` with code `missing_verification_code` (a code is empty) | Yes | Call `getTokenWithPasskey()` again with a non-empty code for each identifier. Nothing was sent, so the session is still active |
 | `MfaRequiredError` | No | Finish with MFA using `error.mfa_token`. See [Multi-Factor Authentication](#multi-factor-authentication-mfa) |
 | Any other error, for example an expired code or session, or no attempts left | No | Start again with `getSignupChallenge()` |
 
