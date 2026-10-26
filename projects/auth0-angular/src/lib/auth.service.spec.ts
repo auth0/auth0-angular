@@ -180,6 +180,20 @@ describe('AuthService', () => {
       token_type: 'Bearer',
       expires_in: 86400,
     });
+    vi.spyOn(auth0Client.passkey, 'getSignupChallenge').mockResolvedValue({
+      authSession: '__signup_auth_session__',
+      publicKey: {} as PublicKeyCredentialCreationOptions,
+    });
+    vi.spyOn(auth0Client.passkey, 'getLoginChallenge').mockResolvedValue({
+      authSession: '__login_auth_session__',
+      publicKey: {} as PublicKeyCredentialRequestOptions,
+    });
+    vi.spyOn(auth0Client.passkey, 'getTokenWithPasskey').mockResolvedValue({
+      access_token: '__passkey_access_token__',
+      id_token: '__passkey_id_token__',
+      token_type: 'Bearer',
+      expires_in: 86400,
+    });
 
     vi.spyOn(auth0Client.myAccount, 'getFactors').mockResolvedValue([]);
     vi.spyOn(
@@ -2040,6 +2054,487 @@ describe('AuthService', () => {
         const service = createService();
         await expect(firstValueFrom(service.passkey.login())).rejects.toBe(
           errorObj
+        );
+      });
+    });
+
+    it('should wrap every method of the spa-js PasskeyApiClient', () => {
+      const service = createService();
+      const methods = Object.getOwnPropertyNames(
+        Object.getPrototypeOf(auth0Client.passkey)
+      ).filter((name) => name !== 'constructor');
+
+      expect(methods.length).toBeGreaterThan(0);
+      methods.forEach((name) => {
+        expect(typeof (service.passkey as any)[name]).toBe('function');
+      });
+    });
+
+    describe('getSignupChallenge', () => {
+      it('should call the underlying SDK', async () => {
+        const service = createService();
+        const options = { email: 'user@example.com' };
+        await firstValueFrom(service.passkey.getSignupChallenge(options));
+        expect(auth0Client.passkey.getSignupChallenge).toHaveBeenCalledWith(
+          options
+        );
+      });
+
+      it('should forward all options, including deliveryMethod', async () => {
+        const service = createService();
+        const options = {
+          phoneNumber: '+14155550100',
+          deliveryMethod: 'voice' as const,
+          realm: 'Username-Password-Authentication',
+          organization: 'org_abc123',
+        };
+        await firstValueFrom(service.passkey.getSignupChallenge(options));
+        expect(auth0Client.passkey.getSignupChallenge).toHaveBeenCalledWith(
+          options
+        );
+      });
+
+      it('should return the challenge without verificationRequired when none is needed', async () => {
+        const service = createService();
+        const result = await firstValueFrom(
+          service.passkey.getSignupChallenge({ email: 'user@example.com' })
+        );
+        expect(result).toEqual({
+          authSession: '__signup_auth_session__',
+          publicKey: {},
+        });
+        expect(result.verificationRequired).toBeUndefined();
+      });
+
+      it('should return verificationRequired when verification is needed', async () => {
+        (
+          auth0Client.passkey.getSignupChallenge as unknown as MockInstance
+        ).mockResolvedValue({
+          authSession: '__signup_auth_session__',
+          publicKey: {},
+          verificationRequired: ['email', 'phone'],
+        });
+        const service = createService();
+        const result = await firstValueFrom(
+          service.passkey.getSignupChallenge({
+            email: 'user@example.com',
+            phoneNumber: '+14155550100',
+          })
+        );
+        expect(result.verificationRequired).toEqual(['email', 'phone']);
+      });
+
+      it('should not change the auth state', async () => {
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+        vi.spyOn(authState, 'refresh');
+        await firstValueFrom(
+          service.passkey.getSignupChallenge({ email: 'user@example.com' })
+        );
+        expect(authState.setAccessToken).not.toHaveBeenCalled();
+        expect(authState.refresh).not.toHaveBeenCalled();
+      });
+
+      it('should record errors in the error$ observable', async () => {
+        const errorObj = new Error('Challenge failed');
+        (
+          auth0Client.passkey.getSignupChallenge as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        service.passkey
+          .getSignupChallenge({ email: 'user@example.com' })
+          .subscribe({ error: () => {} });
+        const err = await firstValueFrom(service.error$);
+        expect(err).toBe(errorObj);
+      });
+
+      it('should bubble errors', async () => {
+        const errorObj = new PasskeyError(
+          'not_supported',
+          'WebAuthn is not supported'
+        );
+        (
+          auth0Client.passkey.getSignupChallenge as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        await expect(
+          firstValueFrom(
+            service.passkey.getSignupChallenge({ email: 'user@example.com' })
+          )
+        ).rejects.toBe(errorObj);
+      });
+    });
+
+    describe('getLoginChallenge', () => {
+      it('should call the underlying SDK without options', async () => {
+        const service = createService();
+        await firstValueFrom(service.passkey.getLoginChallenge());
+        expect(auth0Client.passkey.getLoginChallenge).toHaveBeenCalledWith(
+          undefined
+        );
+      });
+
+      it('should forward options to the underlying SDK', async () => {
+        const service = createService();
+        const options = {
+          realm: 'Username-Password-Authentication',
+          organization: 'org_abc123',
+        };
+        await firstValueFrom(service.passkey.getLoginChallenge(options));
+        expect(auth0Client.passkey.getLoginChallenge).toHaveBeenCalledWith(
+          options
+        );
+      });
+
+      it('should return the challenge', async () => {
+        const service = createService();
+        const result = await firstValueFrom(
+          service.passkey.getLoginChallenge()
+        );
+        expect(result).toEqual({
+          authSession: '__login_auth_session__',
+          publicKey: {},
+        });
+      });
+
+      it('should not change the auth state', async () => {
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+        vi.spyOn(authState, 'refresh');
+        await firstValueFrom(service.passkey.getLoginChallenge());
+        expect(authState.setAccessToken).not.toHaveBeenCalled();
+        expect(authState.refresh).not.toHaveBeenCalled();
+      });
+
+      it('should record errors in the error$ observable', async () => {
+        const errorObj = new Error('Challenge failed');
+        (
+          auth0Client.passkey.getLoginChallenge as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        service.passkey.getLoginChallenge().subscribe({ error: () => {} });
+        const err = await firstValueFrom(service.error$);
+        expect(err).toBe(errorObj);
+      });
+
+      it('should bubble errors', async () => {
+        const errorObj = new Error('Challenge failed');
+        (
+          auth0Client.passkey.getLoginChallenge as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        await expect(
+          firstValueFrom(service.passkey.getLoginChallenge())
+        ).rejects.toBe(errorObj);
+      });
+    });
+
+    describe('getTokenWithPasskey', () => {
+      const credential = {} as PublicKeyCredential;
+      const retryableError = (verificationRequired: Array<'email' | 'phone'>) =>
+        new PasskeyGetTokenError('Invalid or expired session', {
+          error: 'invalid_grant',
+          error_description: 'Invalid or expired session',
+          auth_session: '__retry_auth_session__',
+          verification_required: verificationRequired,
+        });
+
+      it('should call the underlying SDK', async () => {
+        const service = createService();
+        const options = { authSession: '__login_auth_session__', credential };
+        await firstValueFrom(service.passkey.getTokenWithPasskey(options));
+        expect(auth0Client.passkey.getTokenWithPasskey).toHaveBeenCalledWith(
+          options
+        );
+      });
+
+      it('should forward the verification codes and token options', async () => {
+        const service = createService();
+        const options = {
+          authSession: '__signup_auth_session__',
+          credential,
+          verification: { email: '123456', phone: '654321' },
+          realm: 'Username-Password-Authentication',
+          scope: 'openid profile email',
+          audience: 'https://api.example.com',
+        };
+        await firstValueFrom(service.passkey.getTokenWithPasskey(options));
+        expect(auth0Client.passkey.getTokenWithPasskey).toHaveBeenCalledWith(
+          options
+        );
+      });
+
+      it('should not add a verification key when none is passed', async () => {
+        const service = createService();
+        await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__login_auth_session__',
+            credential,
+          })
+        );
+        const [args] = (
+          auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance
+        ).mock.calls[0];
+        expect(args).not.toHaveProperty('verification');
+      });
+
+      it('should return the token response', async () => {
+        const service = createService();
+        const result = await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__login_auth_session__',
+            credential,
+          })
+        );
+        expect(result).toEqual({
+          access_token: '__passkey_access_token__',
+          id_token: '__passkey_id_token__',
+          token_type: 'Bearer',
+          expires_in: 86400,
+        });
+      });
+
+      it('should set the access token after a successful token exchange', async () => {
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+        await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__login_auth_session__',
+            credential,
+          })
+        );
+        expect(authState.setAccessToken).toHaveBeenCalledWith(
+          '__passkey_access_token__'
+        );
+      });
+
+      it('should not set the access token when the response has none', async () => {
+        (
+          auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance
+        ).mockResolvedValue({
+          id_token: '__passkey_id_token__',
+          token_type: 'Bearer',
+          expires_in: 86400,
+        });
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+        await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__login_auth_session__',
+            credential,
+          })
+        );
+        expect(authState.setAccessToken).not.toHaveBeenCalled();
+      });
+
+      it('should bubble a retryable PasskeyGetTokenError with the auth session to retry with', async () => {
+        const errorObj = retryableError(['email']);
+        (
+          auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__signup_auth_session__',
+            credential,
+            verification: { email: '000000' },
+          })
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err).toBeInstanceOf(PasskeyGetTokenError);
+        expect(err.isRetryable).toBe(true);
+        expect(err.authSession).toBe('__retry_auth_session__');
+        expect(err.verificationRequired).toEqual(['email']);
+      });
+
+      it('should succeed on a retry with the auth session from the error', async () => {
+        (auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance)
+          .mockRejectedValueOnce(retryableError(['email']))
+          .mockResolvedValueOnce({
+            access_token: '__passkey_access_token__',
+            id_token: '__passkey_id_token__',
+            token_type: 'Bearer',
+            expires_in: 86400,
+          });
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+
+        const err = await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__signup_auth_session__',
+            credential,
+            verification: { email: '000000' },
+          })
+        ).catch((e) => e);
+        expect(err.isRetryable).toBe(true);
+
+        const result = await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: err.authSession,
+            credential,
+            verification: { email: '123456' },
+          })
+        );
+        expect(result.access_token).toBe('__passkey_access_token__');
+        expect(auth0Client.passkey.getTokenWithPasskey).toHaveBeenNthCalledWith(
+          2,
+          {
+            authSession: '__retry_auth_session__',
+            credential,
+            verification: { email: '123456' },
+          }
+        );
+        expect(authState.setAccessToken).toHaveBeenCalledTimes(1);
+      });
+
+      it('should bubble a non-retryable token exchange GenericError unchanged', async () => {
+        const errorObj = new GenericError(
+          'invalid_grant',
+          'Invalid or expired session',
+          {
+            error: 'invalid_grant',
+            error_description: 'Invalid or expired session',
+          }
+        );
+        (
+          auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__login_auth_session__',
+            credential,
+          })
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err).not.toBeInstanceOf(PasskeyGetTokenError);
+      });
+
+      it('should bubble PasskeyError when a verification code is empty', async () => {
+        const errorObj = new PasskeyError(
+          'missing_verification_code',
+          'Missing OTP code for: email.'
+        );
+        (
+          auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__signup_auth_session__',
+            credential,
+            verification: { email: '' },
+          })
+        ).catch((e) => e);
+        expect(err).toBe(errorObj);
+        expect(err.code).toBe('missing_verification_code');
+      });
+
+      it('should bubble MfaRequiredError so the MFA flow can continue', async () => {
+        const errorObj = new MfaRequiredError(
+          'mfa_required',
+          'Multifactor authentication required',
+          '__mfa_token__',
+          { challenge: [{ type: 'otp' }] }
+        );
+        (
+          auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        const err = await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__login_auth_session__',
+            credential,
+          })
+        ).catch((e) => e);
+        expect(err).toBeInstanceOf(MfaRequiredError);
+        expect(err.mfa_token).toBe('__mfa_token__');
+      });
+
+      it('should record errors in the error$ observable', async () => {
+        const errorObj = retryableError(['email']);
+        (
+          auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        service.passkey
+          .getTokenWithPasskey({
+            authSession: '__signup_auth_session__',
+            credential,
+          })
+          .subscribe({ error: () => {} });
+        const err = await firstValueFrom(service.error$);
+        expect(err).toBe(errorObj);
+      });
+
+      it('should refresh the auth state on error', async () => {
+        (
+          auth0Client.passkey.getTokenWithPasskey as unknown as MockInstance
+        ).mockRejectedValue(retryableError(['email']));
+        const service = createService();
+        vi.spyOn(authState, 'refresh');
+        await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: '__signup_auth_session__',
+            credential,
+          })
+        ).catch(() => undefined);
+        expect(authState.refresh).toHaveBeenCalled();
+      });
+
+      it('should complete the granular signup flow with verification', async () => {
+        (
+          auth0Client.passkey.getSignupChallenge as unknown as MockInstance
+        ).mockResolvedValue({
+          authSession: '__signup_auth_session__',
+          publicKey: {},
+          verificationRequired: ['email'],
+        });
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+
+        const challenge = await firstValueFrom(
+          service.passkey.getSignupChallenge({ email: 'user@example.com' })
+        );
+        expect(challenge.verificationRequired).toEqual(['email']);
+
+        const result = await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: challenge.authSession,
+            credential,
+            verification: { email: '123456' },
+          })
+        );
+        expect(result.access_token).toBe('__passkey_access_token__');
+        expect(auth0Client.passkey.getTokenWithPasskey).toHaveBeenCalledWith({
+          authSession: '__signup_auth_session__',
+          credential,
+          verification: { email: '123456' },
+        });
+        expect(authState.setAccessToken).toHaveBeenCalledWith(
+          '__passkey_access_token__'
+        );
+      });
+
+      it('should complete the granular login flow', async () => {
+        const service = createService();
+        vi.spyOn(authState, 'setAccessToken');
+
+        const challenge = await firstValueFrom(
+          service.passkey.getLoginChallenge()
+        );
+        await firstValueFrom(
+          service.passkey.getTokenWithPasskey({
+            authSession: challenge.authSession,
+            credential,
+          })
+        );
+        expect(auth0Client.passkey.getTokenWithPasskey).toHaveBeenCalledWith({
+          authSession: '__login_auth_session__',
+          credential,
+        });
+        expect(authState.setAccessToken).toHaveBeenCalledWith(
+          '__passkey_access_token__'
         );
       });
     });

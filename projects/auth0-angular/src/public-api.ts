@@ -97,6 +97,9 @@ export type {
   PasskeyCredentialResponse,
   PasskeyCreationOptions,
   PasskeyRequestOptions,
+  PasskeySignupChallenge,
+  PasskeyLoginChallenge,
+  PasskeyGetTokenOptions,
   // MyAccount types
   MyAccountApiClient,
   Factor,
