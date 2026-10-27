@@ -1954,7 +1954,7 @@ async function granularSignupWithVerification(
 | Error from `getTokenWithPasskey()` | Retry? | What to do |
 |---|---|---|
 | `PasskeyGetTokenError` with `isRetryable: true` (wrong code, session still active) | Yes | Call `getTokenWithPasskey()` again with `error.authSession`, the same `credential`, and new codes for `error.verificationRequired` |
-| `PasskeyError` with code `missing_verification_code` (a code is empty) | Yes | Call `getTokenWithPasskey()` again with a non-empty code for each identifier. Nothing was sent, so the session is still active |
+| `PasskeyError` with code `missing_verification_code` (a code is empty) | Yes | Call `getTokenWithPasskey()` again with a non-empty code for each identifier. Nothing was sent, so the session is still active. Always send a code for every identifier in `verificationRequired`: `continueSignup()` checks for missing and empty codes, but `getTokenWithPasskey()` only checks for empty ones. If you leave out an identifier, the call goes to the server and the user may have to start over |
 | `MfaRequiredError` | No | Finish with MFA using `error.mfa_token`. See [Multi-Factor Authentication](#multi-factor-authentication-mfa) |
 | Any other error, for example an expired code or session, or no attempts left | No | Start again with `getSignupChallenge()` |
 
@@ -2063,7 +2063,7 @@ this.auth.passkey
 ```
 
 > [!TIP]
-> `signup()`, `continueSignup()` and `login()` throw an error if the user cancels the biometric prompt. Always handle errors to avoid unhandled Observable errors crashing your application.
+> `signup()`, `continueSignup()` and `login()` throw an error if the user cancels the biometric prompt. Always handle errors to avoid unhandled Observable errors crashing your application. With the granular APIs, the browser's `navigator.credentials` call throws on cancellation instead (usually a `NotAllowedError` `DOMException`).
 
 When identifier verification is required, `signup()` errors with `PasskeyVerificationRequiredError`, and a wrong OTP code makes `continueSignup()` or `getTokenWithPasskey()` error with a `PasskeyGetTokenError` where `isRetryable` is `true`. Other token exchange failures error with a `GenericError` as before (or an `MfaRequiredError` for `mfa_required`). See [Identifier Verification](#identifier-verification).
 

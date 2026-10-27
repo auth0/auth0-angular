@@ -182,6 +182,7 @@ export interface ObservablePasskeyApiClient {
    * this errors with a `PasskeyGetTokenError` where `isRetryable` is `true`.
    * Call `getTokenWithPasskey()` again with `error.authSession`, the same
    * `credential`, and new codes for `error.verificationRequired`.
+   * @throws {PasskeyError} If WebAuthn is not supported in the browser
    * @throws {PasskeyError} If the credential is invalid or a code in `verification` is empty
    * @throws {PasskeyGetTokenError} If an OTP code is wrong and the session is still active (`isRetryable: true`)
    * @throws {GenericError} If the token exchange fails
