@@ -1571,7 +1571,7 @@ this.auth
 
 ## Passkeys
 
-Passkeys provide passwordless authentication using platform biometrics (Face ID, Touch ID, Windows Hello) or security keys via the WebAuthn standard. `AuthService` exposes a `passkey` client that handles the full WebAuthn flow internally — requesting a challenge, triggering the browser credential ceremony, and exchanging the result for tokens.
+Passkeys provide passwordless authentication using platform biometrics (Face ID, Touch ID, Windows Hello) or security keys via the WebAuthn standard. `AuthService` exposes a `passkey` client that handles the full WebAuthn flow internally — requesting a challenge, triggering the browser credential ceremony, and exchanging the result for tokens. If you need to run the WebAuthn ceremony yourself, use the [Granular Passkey APIs](#granular-passkey-apis).
 
 After a successful call, `isAuthenticated$` and `user$` update automatically.
 
@@ -1579,6 +1579,7 @@ After a successful call, `isAuthenticated$` and `user$` update automatically.
 - [Important: Use Refresh Tokens with Passkeys](#important-use-refresh-tokens-with-passkeys)
 - [Signup with Passkey](#signup-with-passkey)
 - [Login with Passkey](#login-with-passkey)
+- [Granular Passkey APIs](#granular-passkey-apis)
 - [Identifier Verification](#identifier-verification)
 - [Complete Passkey Component Example](#complete-passkey-component-example)
 - [Passkey Error Handling](#passkey-error-handling)
@@ -1716,9 +1717,89 @@ this.auth.passkey.login({ realm: 'Username-Password-Authentication' }).subscribe
 this.auth.passkey.login({ organization: 'org_abc123' }).subscribe();
 ```
 
+### Granular Passkey APIs
+
+If you need control over the WebAuthn ceremony (for example, to show your own UI between steps), use the granular APIs. Get a challenge with `getSignupChallenge()` or `getLoginChallenge()`, run `navigator.credentials.create()` or `navigator.credentials.get()` yourself, then exchange the credential for tokens with `getTokenWithPasskey()`.
+
+The signup example below assumes [identifier verification](#identifier-verification) is off for the connection. If it's on, `getSignupChallenge()` returns `verificationRequired`, and you must collect the OTP codes before the passkey prompt. See [With the granular APIs](#with-the-granular-apis).
+
+```ts
+import { Component, inject } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { from, throwError } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-granular-passkey',
+  template: `
+    <button (click)="signup()">Sign up with Passkey</button>
+    <button (click)="login()">Sign in with Passkey</button>
+  `,
+})
+export class GranularPasskeyComponent {
+  private auth = inject(AuthService);
+
+  signup() {
+    // Assumes identifier verification is off (no challenge.verificationRequired)
+    this.auth.passkey
+      .getSignupChallenge({ email: 'user@example.com' })
+      .pipe(
+        switchMap((challenge) =>
+          from(navigator.credentials.create({ publicKey: challenge.publicKey })).pipe(
+            switchMap((credential) =>
+              credential
+                ? this.auth.passkey.getTokenWithPasskey({
+                    authSession: challenge.authSession,
+                    credential: credential as PublicKeyCredential,
+                  })
+                : throwError(() => new Error('Credential creation cancelled'))
+            )
+          )
+        )
+      )
+      .subscribe({
+        next: () => console.log('Signed up'),
+        error: (err) => console.error('Signup failed', err),
+      });
+  }
+
+  login() {
+    this.auth.passkey
+      .getLoginChallenge()
+      .pipe(
+        switchMap((challenge) =>
+          from(navigator.credentials.get({ publicKey: challenge.publicKey })).pipe(
+            switchMap((credential) =>
+              credential
+                ? this.auth.passkey.getTokenWithPasskey({
+                    authSession: challenge.authSession,
+                    credential: credential as PublicKeyCredential,
+                  })
+                : throwError(() => new Error('Credential request cancelled'))
+            )
+          )
+        )
+      )
+      .subscribe({
+        next: () => console.log('Logged in'),
+        error: (err) => console.error('Login failed', err),
+      });
+  }
+}
+```
+
+`getSignupChallenge()` accepts the same identifier, profile, `realm`, `organization` and `deliveryMethod` options as `signup()`. `getLoginChallenge()` accepts optional `realm` and `organization`. `getTokenWithPasskey()` accepts `authSession`, `credential`, and optional `realm`, `organization`, `scope`, `audience` and `verification`.
+
+> [!NOTE]
+> `getTokenWithPasskey()` updates `isAuthenticated$` and `user$` just like `signup()` and `login()`. `getSignupChallenge()` and `getLoginChallenge()` do not change the auth state.
+
 ### Identifier Verification
 
 Your database connection can ask new users to verify their email or phone number with a one-time code (OTP) during passkey signup. This is off by default and is turned on from the server side. When it's on, the server sends the codes and gives tokens only after they are correct.
+
+The SDK supports this in both signup flows. The codes are collected **before** the passkey prompt, and the user sees the passkey prompt only once, even if they type a wrong code.
+
+#### With `signup()`
 
 When verification is required, `passkey.signup()` stops **before** the passkey prompt and errors with `PasskeyVerificationRequiredError`. Its `verificationRequired` property lists the identifiers to verify (for example `['email']`). Ask the user for the codes, then call `passkey.continueSignup()` with them. The first `continueSignup()` call shows the passkey prompt. On success, `isAuthenticated$` and `user$` update automatically.
 
@@ -1812,9 +1893,74 @@ export class PasskeySignupComponent {
 | `MfaRequiredError` | No | Finish with MFA using `error.mfa_token`. See [Multi-Factor Authentication](#multi-factor-authentication-mfa) |
 | Any other error, for example an expired code or session, or no attempts left | No | Call `signup()` again |
 
+#### With the granular APIs
+
+Check `verificationRequired` on the challenge and collect the codes **before** calling `navigator.credentials.create()`. Pass them as `verification` to `getTokenWithPasskey()`. If a code is wrong, `getTokenWithPasskey()` errors with a retryable `PasskeyGetTokenError`. Call it again with `error.authSession`, the **same** `credential`, and new codes for `error.verificationRequired`. Do not call `navigator.credentials.create()` again.
+
+```ts
+import { AuthService, PasskeyError, PasskeyGetTokenError } from '@auth0/auth0-angular';
+import { firstValueFrom } from 'rxjs';
+
+async function granularSignupWithVerification(
+  auth: AuthService,
+  email: string,
+  // Your UI, for example resolves to { email: '123456' }
+  askUserForCodes: (ids: Array<'email' | 'phone'>) => Promise<{ email?: string; phone?: string }>
+) {
+  const challenge = await firstValueFrom(auth.passkey.getSignupChallenge({ email }));
+
+  // Collect codes first, so the passkey prompt shows only once
+  let required = challenge.verificationRequired;
+  let verification = required ? await askUserForCodes(required) : undefined;
+
+  const credential = (await navigator.credentials.create({
+    publicKey: challenge.publicKey,
+  })) as PublicKeyCredential | null;
+  if (!credential) {
+    throw new Error('Credential creation cancelled');
+  }
+
+  let authSession = challenge.authSession;
+  // The server limits the attempts. Retry only while the error is retryable
+  for (;;) {
+    try {
+      return await firstValueFrom(
+        auth.passkey.getTokenWithPasskey({
+          authSession,
+          credential, // same credential on every retry
+          verification,
+        })
+      );
+    } catch (err) {
+      if (err instanceof PasskeyGetTokenError && err.isRetryable) {
+        // Wrong code. Retry with the new auth session and new codes
+        authSession = err.authSession!;
+        required = err.verificationRequired!;
+      } else if (
+        required &&
+        err instanceof PasskeyError &&
+        err.code === 'missing_verification_code'
+      ) {
+        // A code was empty. Nothing was sent, so the same auth session is still valid
+      } else {
+        throw err;
+      }
+      verification = await askUserForCodes(required);
+    }
+  }
+}
+```
+
+| Error from `getTokenWithPasskey()` | Retry? | What to do |
+|---|---|---|
+| `PasskeyGetTokenError` with `isRetryable: true` (wrong code, session still active) | Yes | Call `getTokenWithPasskey()` again with `error.authSession`, the same `credential`, and new codes for `error.verificationRequired` |
+| `PasskeyError` with code `missing_verification_code` (a code is empty) | Yes | Call `getTokenWithPasskey()` again with a non-empty code for each identifier. Nothing was sent, so the session is still active. Always send a code for every identifier in `verificationRequired`: `continueSignup()` checks for missing and empty codes, but `getTokenWithPasskey()` only checks for empty ones. If you leave out an identifier, the call goes to the server and the user may have to start over |
+| `MfaRequiredError` | No | Finish with MFA using `error.mfa_token`. See [Multi-Factor Authentication](#multi-factor-authentication-mfa) |
+| Any other error, for example an expired code or session, or no attempts left | No | Start again with `getSignupChallenge()` |
+
 #### Phone delivery method
 
-For phone verification, pass `deliveryMethod: 'text'` (SMS) or `'voice'` to `signup()` to choose how the code is sent.
+For phone verification, pass `deliveryMethod: 'text'` (SMS) or `'voice'` to `signup()` or `getSignupChallenge()` to choose how the code is sent.
 
 ```ts
 this.auth.passkey
@@ -1917,9 +2063,9 @@ this.auth.passkey
 ```
 
 > [!TIP]
-> Both `signup()` and `login()` throw an error if the user cancels the biometric prompt. Always handle errors to avoid unhandled Observable errors crashing your application.
+> `signup()`, `continueSignup()` and `login()` throw an error if the user cancels the biometric prompt. Always handle errors to avoid unhandled Observable errors crashing your application. With the granular APIs, the browser's `navigator.credentials` call throws on cancellation instead (usually a `NotAllowedError` `DOMException`).
 
-When identifier verification is required, `signup()` errors with `PasskeyVerificationRequiredError`, and a wrong OTP code makes `continueSignup()` error with a `PasskeyGetTokenError` where `isRetryable` is `true`. Other token exchange failures error with a `GenericError` as before (or an `MfaRequiredError` for `mfa_required`). See [Identifier Verification](#identifier-verification).
+When identifier verification is required, `signup()` errors with `PasskeyVerificationRequiredError`, and a wrong OTP code makes `continueSignup()` or `getTokenWithPasskey()` error with a `PasskeyGetTokenError` where `isRetryable` is `true`. Other token exchange failures error with a `GenericError` as before (or an `MfaRequiredError` for `mfa_required`). See [Identifier Verification](#identifier-verification).
 
 ```ts
 import { PasskeyGetTokenError } from '@auth0/auth0-angular';

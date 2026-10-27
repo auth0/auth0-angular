@@ -23,6 +23,9 @@ import type {
   VerifyParams,
   PasskeySignupOptions,
   PasskeyLoginOptions,
+  PasskeySignupChallengeOptions,
+  PasskeyLoginChallengeOptions,
+  PasskeyGetTokenOptions,
   AuthenticationMethod,
   AuthenticationMethodType,
   Factor,
@@ -530,9 +533,14 @@ export class AuthService<TAppState extends AppState = AppState>
   /**
    * Provides Passkey (WebAuthn) authentication as Observables.
    *
-   * These methods handle the full WebAuthn challenge-response flow internally.
-   * After a successful call, this updates the authentication state to ensure
-   * consistency with the standard authentication flows.
+   * `signup`, `continueSignup` and `login` handle the full WebAuthn
+   * challenge-response flow internally. `getSignupChallenge`,
+   * `getLoginChallenge` and `getTokenWithPasskey` are granular APIs that let
+   * the app run the WebAuthn ceremony itself.
+   *
+   * Methods that return tokens update the authentication state on success to
+   * ensure consistency with the standard authentication flows. The challenge
+   * methods do not change the authentication state.
    */
   readonly passkey: ObservablePasskeyApiClient = {
     signup: (options: PasskeySignupOptions) =>
@@ -566,6 +574,36 @@ export class AuthService<TAppState extends AppState = AppState>
     login: (options?: PasskeyLoginOptions) =>
       of(this.auth0Client).pipe(
         concatMap((client) => client.passkey.login(options)),
+        tap((tokenResponse) => {
+          if (tokenResponse.access_token) {
+            this.authState.setAccessToken(tokenResponse.access_token);
+          }
+        }),
+        catchError((error) => {
+          this.authState.setError(error);
+          this.authState.refresh();
+          return throwError(error);
+        })
+      ),
+    getSignupChallenge: (options: PasskeySignupChallengeOptions) =>
+      of(this.auth0Client).pipe(
+        concatMap((client) => client.passkey.getSignupChallenge(options)),
+        catchError((error) => {
+          this.authState.setError(error);
+          return throwError(error);
+        })
+      ),
+    getLoginChallenge: (options?: PasskeyLoginChallengeOptions) =>
+      of(this.auth0Client).pipe(
+        concatMap((client) => client.passkey.getLoginChallenge(options)),
+        catchError((error) => {
+          this.authState.setError(error);
+          return throwError(error);
+        })
+      ),
+    getTokenWithPasskey: (options: PasskeyGetTokenOptions) =>
+      of(this.auth0Client).pipe(
+        concatMap((client) => client.passkey.getTokenWithPasskey(options)),
         tap((tokenResponse) => {
           if (tokenResponse.access_token) {
             this.authState.setAccessToken(tokenResponse.access_token);

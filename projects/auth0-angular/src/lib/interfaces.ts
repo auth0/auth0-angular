@@ -13,6 +13,11 @@ import type {
   TokenEndpointResponse,
   PasskeySignupOptions,
   PasskeyLoginOptions,
+  PasskeySignupChallengeOptions,
+  PasskeyLoginChallengeOptions,
+  PasskeySignupChallenge,
+  PasskeyLoginChallenge,
+  PasskeyGetTokenOptions,
   AuthenticationMethod,
   AuthenticationMethodType,
   Factor,
@@ -78,8 +83,11 @@ export interface ObservableMfaApiClient {
 /**
  * Observable-based Passkey API client exposed by `AuthService.passkey`.
  *
- * Wraps `PasskeyApiClient` from `@auth0/auth0-spa-js`. These methods handle the
- * full WebAuthn flow internally and update Angular auth state on success.
+ * Wraps `PasskeyApiClient` from `@auth0/auth0-spa-js`. `signup`,
+ * `continueSignup` and `login` handle the full WebAuthn flow internally and
+ * update Angular auth state on success. `getSignupChallenge`,
+ * `getLoginChallenge` and `getTokenWithPasskey` are granular APIs for running
+ * the WebAuthn ceremony yourself.
  * All methods return `Observable` instead of `Promise`.
  */
 export interface ObservablePasskeyApiClient {
@@ -124,6 +132,64 @@ export interface ObservablePasskeyApiClient {
    * @throws {PasskeyError}
    */
   login(options?: PasskeyLoginOptions): Observable<TokenEndpointResponse>;
+
+  /**
+   * Requests a passkey signup challenge.
+   *
+   * Step 1 of the granular signup flow. Emits the `authSession` and a decoded
+   * `publicKey` (`PublicKeyCredentialCreationOptions`). Pass `publicKey` to
+   * `navigator.credentials.create()`, then hand the credential and
+   * `authSession` to `getTokenWithPasskey()`.
+   *
+   * If the connection requires identifier verification, `verificationRequired`
+   * lists the identifiers to verify. Collect the OTP codes before calling
+   * `navigator.credentials.create()` and pass them as `verification` to
+   * `getTokenWithPasskey()`.
+   *
+   * Does not change the auth state.
+   * @throws {PasskeyError} If WebAuthn is not supported in the browser
+   * @throws {PasskeyRegisterError} If the challenge request fails
+   */
+  getSignupChallenge(
+    options: PasskeySignupChallengeOptions
+  ): Observable<PasskeySignupChallenge>;
+
+  /**
+   * Requests a passkey login challenge.
+   *
+   * Step 1 of the granular login flow. Emits the `authSession` and a decoded
+   * `publicKey` (`PublicKeyCredentialRequestOptions`). Pass `publicKey` to
+   * `navigator.credentials.get()`, then hand the credential and `authSession`
+   * to `getTokenWithPasskey()`.
+   *
+   * Does not change the auth state.
+   * @throws {PasskeyError} If WebAuthn is not supported in the browser
+   * @throws {PasskeyChallengeError} If the challenge request fails
+   */
+  getLoginChallenge(
+    options?: PasskeyLoginChallengeOptions
+  ): Observable<PasskeyLoginChallenge>;
+
+  /**
+   * Exchanges a signed passkey credential for tokens.
+   *
+   * Step 2 of the granular flow. Accepts the raw `PublicKeyCredential` from
+   * either `navigator.credentials.create()` (signup) or
+   * `navigator.credentials.get()` (login).
+   * Updates `isAuthenticated$` and `user$` on success.
+   *
+   * If an OTP code in `verification` is wrong and the session is still active,
+   * this errors with a `PasskeyGetTokenError` where `isRetryable` is `true`.
+   * Call `getTokenWithPasskey()` again with `error.authSession`, the same
+   * `credential`, and new codes for `error.verificationRequired`.
+   * @throws {PasskeyError} If WebAuthn is not supported in the browser
+   * @throws {PasskeyError} If the credential is invalid or a code in `verification` is empty
+   * @throws {PasskeyGetTokenError} If an OTP code is wrong and the session is still active (`isRetryable: true`)
+   * @throws {GenericError} If the token exchange fails
+   */
+  getTokenWithPasskey(
+    options: PasskeyGetTokenOptions
+  ): Observable<TokenEndpointResponse>;
 }
 
 /**
