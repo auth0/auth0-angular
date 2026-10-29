@@ -25,6 +25,9 @@ import type {
   EnrollmentChallengeOptions,
   EnrollmentChallengeResponse,
   EnrollmentVerifyOptions,
+  UserProfile,
+  GetUserProfileOptions,
+  UpdateUserProfileRequest,
 } from '@auth0/auth0-spa-js';
 import { Observable } from 'rxjs';
 
@@ -252,4 +255,21 @@ export interface ObservableMyAccountApiClient {
   enrollmentVerify(
     options: EnrollmentVerifyOptions
   ): Observable<AuthenticationMethod>;
+
+  /**
+   * Returns the current user's profile, including `profile_policy` with
+   * per-field edit permissions. Requires the `read:me:profile` scope.
+   *
+   * Pass `fields` to return only those fields, or set `includeFields: false`
+   * to exclude them instead.
+   * @throws {MyAccountApiError}
+   */
+  getUserProfile(options?: GetUserProfileOptions): Observable<UserProfile>;
+
+  /**
+   * Updates the current user's profile. Only the fields you send are changed.
+   * Returns the full updated profile. Requires the `update:me:profile` scope.
+   * @throws {MyAccountApiError}
+   */
+  updateUserProfile(data: UpdateUserProfileRequest): Observable<UserProfile>;
 }

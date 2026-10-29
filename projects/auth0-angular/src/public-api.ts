@@ -139,4 +139,8 @@ export type {
   PushNotificationEnrollmentVerifyOptions,
   RecoveryCodeEnrollmentVerifyOptions,
   PasswordEnrollmentVerifyOptions,
+  UserProfile,
+  ProfileFieldPolicy,
+  GetUserProfileOptions,
+  UpdateUserProfileRequest,
 } from '@auth0/auth0-spa-js';

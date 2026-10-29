@@ -17,6 +17,7 @@ import {
   PasskeyError,
   PasskeyGetTokenError,
   PasskeyVerificationRequiredError,
+  MyAccountApiError,
 } from '@auth0/auth0-spa-js';
 import { AbstractNavigator } from './abstract-navigator';
 import { Observable } from 'rxjs';
@@ -221,6 +222,22 @@ describe('AuthService', () => {
     vi.spyOn(auth0Client.myAccount, 'enrollmentVerify').mockResolvedValue({
       id: '__method_id__',
     } as any);
+    vi.spyOn(auth0Client.myAccount, 'getUserProfile').mockResolvedValue({
+      user_id: 'auth0|123',
+      given_name: 'Alice',
+      email: 'alice@example.com',
+      email_verified: true,
+      profile_policy: {
+        '/given_name': { access: 'read_write', source: 'user' },
+      },
+    });
+    vi.spyOn(auth0Client.myAccount, 'updateUserProfile').mockResolvedValue({
+      given_name: 'Alice',
+      nickname: 'wonderland_alice',
+      profile_policy: {
+        '/given_name': { access: 'read_write', source: 'user' },
+      },
+    });
 
     window.history.replaceState(null, '', '');
 
@@ -2790,6 +2807,118 @@ describe('AuthService', () => {
             })
           )
         ).rejects.toBe(errorObj);
+      });
+    });
+
+    describe('getUserProfile', () => {
+      it('should call the underlying SDK with no options', async () => {
+        const service = createService();
+        await firstValueFrom(service.myAccount.getUserProfile());
+        expect(auth0Client.myAccount.getUserProfile).toHaveBeenCalledWith(
+          undefined
+        );
+      });
+
+      it('should call the underlying SDK with fields', async () => {
+        const service = createService();
+        const options = { fields: ['given_name', 'family_name'] };
+        await firstValueFrom(service.myAccount.getUserProfile(options));
+        expect(auth0Client.myAccount.getUserProfile).toHaveBeenCalledWith(
+          options
+        );
+      });
+
+      it('should call the underlying SDK with includeFields false', async () => {
+        const service = createService();
+        const options = { fields: ['profile_policy'], includeFields: false };
+        await firstValueFrom(service.myAccount.getUserProfile(options));
+        expect(auth0Client.myAccount.getUserProfile).toHaveBeenCalledWith(
+          options
+        );
+      });
+
+      it('should return the profile', async () => {
+        const service = createService();
+        const result = await firstValueFrom(service.myAccount.getUserProfile());
+        expect(result.user_id).toBe('auth0|123');
+        expect(result.given_name).toBe('Alice');
+        expect(result.email_verified).toBe(true);
+        expect(result.profile_policy).toEqual({
+          '/given_name': { access: 'read_write', source: 'user' },
+        });
+      });
+
+      it('should bubble MyAccountApiError when the feature is not enabled', async () => {
+        const errorObj = new MyAccountApiError({
+          type: 'https://auth0.com/api-errors/A0E-403-0003',
+          status: 403,
+          title: 'Not Entitled',
+          detail: 'This feature is currently not enabled',
+        });
+        (
+          auth0Client.myAccount.getUserProfile as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        await expect(
+          firstValueFrom(service.myAccount.getUserProfile())
+        ).rejects.toBe(errorObj);
+      });
+    });
+
+    describe('updateUserProfile', () => {
+      it('should call the underlying SDK with data', async () => {
+        const service = createService();
+        const data = { given_name: 'Alice', nickname: 'wonderland_alice' };
+        await firstValueFrom(service.myAccount.updateUserProfile(data));
+        expect(auth0Client.myAccount.updateUserProfile).toHaveBeenCalledWith(
+          data
+        );
+      });
+
+      it('should pass an empty object through unchanged', async () => {
+        const service = createService();
+        await firstValueFrom(service.myAccount.updateUserProfile({}));
+        expect(auth0Client.myAccount.updateUserProfile).toHaveBeenCalledWith(
+          {}
+        );
+      });
+
+      it('should return the updated profile', async () => {
+        const service = createService();
+        const result = await firstValueFrom(
+          service.myAccount.updateUserProfile({ nickname: 'wonderland_alice' })
+        );
+        expect(result.nickname).toBe('wonderland_alice');
+      });
+
+      it('should bubble MyAccountApiError with validation_errors', async () => {
+        const errorObj = new MyAccountApiError({
+          type: 'A0E-400-0008',
+          status: 400,
+          title: 'read_only_field',
+          detail: 'Field is read-only',
+          validation_errors: [
+            {
+              pointer: '/given_name',
+              detail: 'Field is managed by the identity provider',
+              source: 'managed_by_identity_provider',
+            },
+          ],
+        });
+        (
+          auth0Client.myAccount.updateUserProfile as unknown as MockInstance
+        ).mockRejectedValue(errorObj);
+        const service = createService();
+        await expect(
+          firstValueFrom(
+            service.myAccount.updateUserProfile({ given_name: 'Alice' })
+          )
+        ).rejects.toMatchObject({
+          status: 400,
+          validation_errors: [
+            { pointer: '/given_name', source: 'managed_by_identity_provider' },
+          ],
+        });
       });
     });
   });
