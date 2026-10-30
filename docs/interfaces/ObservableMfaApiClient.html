@@ -17,7 +17,7 @@ All methods return <code>Observable</code> instead of <code>Promise</code>.</p>
 </div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">ObservableMfaApiClient</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-call-signature" href="#challenge-1">challenge</a><span class="tsd-signature-symbol">(</span><br/>        <span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <a href="ChallengeAuthenticatorParams.html" class="tsd-signature-type tsd-kind-interface">ChallengeAuthenticatorParams</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="ChallengeResponse.html" class="tsd-signature-type tsd-kind-interface">ChallengeResponse</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#enroll-1">enroll</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <a href="../types/EnrollParams.html" class="tsd-signature-type tsd-kind-type-alias">EnrollParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/EnrollmentResponse.html" class="tsd-signature-type tsd-kind-type-alias">EnrollmentResponse</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#getauthenticators-1">getAuthenticators</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">mfaToken</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="Authenticator.html" class="tsd-signature-type tsd-kind-interface">Authenticator</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#getenrollmentfactors-1">getEnrollmentFactors</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">mfaToken</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="EnrollmentFactor.html" class="tsd-signature-type tsd-kind-interface">EnrollmentFactor</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#verify-1">verify</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <a href="VerifyParams.html" class="tsd-signature-type tsd-kind-interface">VerifyParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/TokenEndpointResponse.html" class="tsd-signature-type tsd-kind-type-alias">TokenEndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/79420849275f40cda2d0e0c902e9be41be8d9c7b/projects/auth0-angular/src/lib/interfaces.ts#L42">projects/auth0-angular/src/lib/interfaces.ts:42</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/af06f16b7fbd7142c52fd95c3ddc580a3018ea7a/projects/auth0-angular/src/lib/interfaces.ts#L45">projects/auth0-angular/src/lib/interfaces.ts:45</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -53,7 +53,7 @@ where it is optional.</p>
 <div class="tsd-tag-throws">
 <h4 class="tsd-anchor-link" id="throws">Throws<a href="#throws" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4></div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/79420849275f40cda2d0e0c902e9be41be8d9c7b/projects/auth0-angular/src/lib/interfaces.ts#L62">projects/auth0-angular/src/lib/interfaces.ts:62</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/af06f16b7fbd7142c52fd95c3ddc580a3018ea7a/projects/auth0-angular/src/lib/interfaces.ts#L65">projects/auth0-angular/src/lib/interfaces.ts:65</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="enroll"><span>enroll</span><a href="#enroll" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -71,7 +71,7 @@ where it is optional.</p>
 <div class="tsd-tag-throws">
 <h4 class="tsd-anchor-link" id="throws-1">Throws<a href="#throws-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4></div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/79420849275f40cda2d0e0c902e9be41be8d9c7b/projects/auth0-angular/src/lib/interfaces.ts#L54">projects/auth0-angular/src/lib/interfaces.ts:54</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/af06f16b7fbd7142c52fd95c3ddc580a3018ea7a/projects/auth0-angular/src/lib/interfaces.ts#L57">projects/auth0-angular/src/lib/interfaces.ts:57</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="getauthenticators"><span>get<wbr/>Authenticators</span><a href="#getauthenticators" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -90,7 +90,7 @@ filtered by the challenge types stored in the MFA context.</p>
 <div class="tsd-tag-throws">
 <h4 class="tsd-anchor-link" id="throws-2">Throws<a href="#throws-2" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4></div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/79420849275f40cda2d0e0c902e9be41be8d9c7b/projects/auth0-angular/src/lib/interfaces.ts#L48">projects/auth0-angular/src/lib/interfaces.ts:48</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/af06f16b7fbd7142c52fd95c3ddc580a3018ea7a/projects/auth0-angular/src/lib/interfaces.ts#L51">projects/auth0-angular/src/lib/interfaces.ts:51</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="getenrollmentfactors"><span>get<wbr/>Enrollment<wbr/>Factors</span><a href="#getenrollmentfactors" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -109,7 +109,7 @@ A non-empty result means the user must enroll before they can authenticate.</p>
 <div class="tsd-tag-throws">
 <h4 class="tsd-anchor-link" id="throws-3">Throws<a href="#throws-3" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4></div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/79420849275f40cda2d0e0c902e9be41be8d9c7b/projects/auth0-angular/src/lib/interfaces.ts#L71">projects/auth0-angular/src/lib/interfaces.ts:71</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/af06f16b7fbd7142c52fd95c3ddc580a3018ea7a/projects/auth0-angular/src/lib/interfaces.ts#L74">projects/auth0-angular/src/lib/interfaces.ts:74</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="verify"><span>verify</span><a href="#verify" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -130,7 +130,7 @@ call <code>getAccessTokenSilently()</code> afterwards to reflect the new session
 <div class="tsd-tag-throws">
 <h4 class="tsd-anchor-link" id="throws-4">Throws<a href="#throws-4" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4></div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/79420849275f40cda2d0e0c902e9be41be8d9c7b/projects/auth0-angular/src/lib/interfaces.ts#L80">projects/auth0-angular/src/lib/interfaces.ts:80</a></li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in <a href="https://github.com/auth0/auth0-angular/blob/af06f16b7fbd7142c52fd95c3ddc580a3018ea7a/projects/auth0-angular/src/lib/interfaces.ts#L83">projects/auth0-angular/src/lib/interfaces.ts:83</a></li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
