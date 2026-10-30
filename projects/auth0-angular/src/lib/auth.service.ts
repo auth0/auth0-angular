@@ -33,6 +33,8 @@ import type {
   EnrollmentChallengeOptions,
   EnrollmentChallengeResponse,
   EnrollmentVerifyOptions,
+  GetUserProfileOptions,
+  UpdateUserProfileRequest,
 } from '@auth0/auth0-spa-js';
 
 import {
@@ -621,8 +623,10 @@ export class AuthService<TAppState extends AppState = AppState>
    * Provides MyAccount API operations as Observables.
    *
    * Allows the authenticated user to list, enroll, update, and delete their
-   * authentication methods. Requires an access token with the appropriate
-   * `read/create/update/delete:me:authentication-methods` scopes.
+   * authentication methods, and to read and update their profile. Requires an
+   * access token with the appropriate
+   * `read/create/update/delete:me:authentication_methods` scopes, and
+   * `read:me:profile` / `update:me:profile` for the profile methods.
    */
   readonly myAccount: ObservableMyAccountApiClient = {
     getFactors: () => from(this.auth0Client.myAccount.getFactors()),
@@ -640,6 +644,10 @@ export class AuthService<TAppState extends AppState = AppState>
       from(this.auth0Client.myAccount.enrollmentChallenge(options)),
     enrollmentVerify: (options: EnrollmentVerifyOptions) =>
       from(this.auth0Client.myAccount.enrollmentVerify(options)),
+    getUserProfile: (options?: GetUserProfileOptions) =>
+      from(this.auth0Client.myAccount.getUserProfile(options)),
+    updateUserProfile: (data: UpdateUserProfileRequest) =>
+      from(this.auth0Client.myAccount.updateUserProfile(data)),
   };
 
   private shouldHandleCallback(): Observable<boolean> {

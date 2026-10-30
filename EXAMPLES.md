@@ -2117,7 +2117,7 @@ this.auth.passkey
 
 ## MyAccount API
 
-The MyAccount API lets authenticated users manage their own authentication methods (passkeys, TOTP, phone, email, push, recovery codes, passwords) and list available factors — all without requiring an admin token.
+The MyAccount API lets authenticated users manage their own profile and authentication methods (passkeys, TOTP, phone, email, push, recovery codes, passwords) and list available factors — all without requiring an admin token.
 
 `AuthService` exposes a `myAccount` client. All methods return Observables and require an access token with the appropriate scope for each operation. Use MRRT to obtain tokens for the MyAccount API alongside your own API audience.
 
@@ -2137,6 +2137,10 @@ The MyAccount API lets authenticated users manage their own authentication metho
   - [Push Notification](#enroll-push-notification)
   - [Recovery Code](#enroll-recovery-code)
   - [Password](#enroll-password)
+- [Profile](#profile)
+  - [Get Profile](#get-profile)
+  - [Select Fields](#select-fields)
+  - [Update Profile](#update-profile)
 - [MyAccount Error Handling](#myaccount-error-handling)
 
 ### MyAccount Setup
@@ -2423,6 +2427,103 @@ this.auth.myAccount
   .subscribe({ next: (method) => console.log('Password enrolled:', method) });
 ```
 
+### Profile
+
+> [!NOTE]
+> My Account Profile API support via SDKs is currently in Early Access. To request access to this feature, contact your Auth0 representative.
+
+Read and update the current user's profile. `getUserProfile()` needs the `read:me:profile` scope, and `updateUserProfile()` needs `update:me:profile`.
+
+> [!NOTE]
+> The profile endpoints must be enabled for your tenant. If they aren't, or the scopes weren't granted, both methods fail: with a `MyAccountApiError` with `status` `403`, or with a `MissingScopesError` if you use refresh tokens with MRRT.
+
+#### Get Profile
+
+```ts
+this.auth.myAccount.getUserProfile().subscribe({
+  next: (profile) => console.log(profile.given_name, profile.email),
+  error: (err) => console.error(err),
+});
+```
+
+The response includes `profile_policy`, which describes each field. Use it to decide which fields the user can edit:
+
+```ts
+this.auth.myAccount.getUserProfile().subscribe((profile) => {
+  for (const [pointer, policy] of Object.entries(profile.profile_policy ?? {})) {
+    const field = pointer.slice(1); // '/given_name' -> 'given_name'
+    const editable = policy.access === 'read_write';
+    // policy.reason — why the field is read-only, e.g. 'managed_by_identity_provider'
+  }
+});
+```
+
+#### Select Fields
+
+When you pass `fields`, `profile_policy` is only returned if you include it, and then only for the selected fields. Call `getUserProfile()` without `fields` to get the full policy.
+
+```ts
+// Only these fields, without profile_policy
+this.auth.myAccount
+  .getUserProfile({ fields: ['given_name', 'family_name', 'picture'] })
+  .subscribe((basic) => console.log(basic));
+
+// These fields, with profile_policy for just these fields (for an edit form)
+this.auth.myAccount
+  .getUserProfile({ fields: ['given_name', 'family_name', 'profile_policy'] })
+  .subscribe((editable) => console.log(editable));
+
+// Everything except profile_policy
+this.auth.myAccount
+  .getUserProfile({ fields: ['profile_policy'], includeFields: false })
+  .subscribe((withoutPolicy) => console.log(withoutPolicy));
+```
+
+#### Update Profile
+
+Only the fields you send are changed. The response is the full updated profile. You can update `given_name`, `family_name`, `name`, `nickname` and `picture`. `email`, `phone_number` and `username` can't be changed here, and `null` isn't accepted for any field.
+
+```ts
+this.auth.myAccount
+  .updateUserProfile({ given_name: 'Alice', nickname: 'wonderland_alice' })
+  .subscribe({
+    next: (updated) => console.log(updated),
+    error: (err) => console.error(err),
+  });
+```
+
+`updateUserProfile()` doesn't update `user$` or `idTokenClaims$`, which come from the ID token and still have the old values. To show the new values, use the profile that `updateUserProfile()` returns, or call `getAccessTokenSilently({ cacheMode: 'off' })` afterwards to get a new ID token. With refresh tokens enabled, as in [MyAccount Setup](#myaccount-setup), this uses the refresh token, not an iframe:
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .updateUserProfile({ given_name: 'Alice' })
+  .pipe(
+    switchMap(() => this.auth.getAccessTokenSilently({ cacheMode: 'off' }))
+  )
+  .subscribe({
+    next: () => {
+      // user$ and idTokenClaims$ now emit the updated profile
+    },
+    error: (err) => console.error(err),
+  });
+```
+
+If a field is read-only for this user (for example, `given_name` for a social login user), the request fails with a `MyAccountApiError` and nothing is saved. `err.validation_errors` says which field was rejected:
+
+```ts
+import { MyAccountApiError } from '@auth0/auth0-angular';
+
+this.auth.myAccount.updateUserProfile({ given_name: 'Alice' }).subscribe({
+  error: (err) => {
+    if (err instanceof MyAccountApiError) {
+      err.validation_errors?.forEach((e) => console.error(e.pointer, e.detail));
+    }
+  },
+});
+```
+
 ### MyAccount Error Handling
 
 All MyAccount API errors are thrown as `MyAccountApiError` with [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) fields: `status`, `title`, `detail`, and an optional `validation_errors` array.
@@ -2456,6 +2557,8 @@ this.auth.myAccount
 //   update:me:authentication_methods  — updateAuthenticationMethod
 //   delete:me:authentication_methods  — deleteAuthenticationMethod
 //   read:me:factors                   — getFactors
+//   read:me:profile                   — getUserProfile
+//   update:me:profile                 — updateUserProfile
 ```
 
 ## Enterprise Connect
