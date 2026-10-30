@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.15.0](https://github.com/auth0/auth0-angular/tree/v2.15.0) (2026-10-30)
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.14.0...v2.15.0)
+
+**Added**
+- feat(myaccount): add getUserProfile and updateUserProfile methods [\#1119](https://github.com/auth0/auth0-angular/pull/1119) ([siddhikotak](https://github.com/siddhikotak))
+
 ## [v2.14.0](https://github.com/auth0/auth0-angular/tree/v2.14.0) (2026-10-27)
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.13.0...v2.14.0)
 
