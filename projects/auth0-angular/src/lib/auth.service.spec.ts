@@ -2913,12 +2913,51 @@ describe('AuthService', () => {
           firstValueFrom(
             service.myAccount.updateUserProfile({ given_name: 'Alice' })
           )
-        ).rejects.toMatchObject({
-          status: 400,
-          validation_errors: [
-            { pointer: '/given_name', source: 'managed_by_identity_provider' },
-          ],
+        ).rejects.toBe(errorObj);
+      });
+
+      it('should not update user$ until a new ID token is fetched', async () => {
+        // user$ comes from the cached ID token, which updateUserProfile() does not
+        // change. Callers follow up with getAccessTokenSilently({ cacheMode: 'off' }).
+        const user = { sub: 'auth0|123', given_name: 'Old' };
+        const updatedUser = { sub: 'auth0|123', given_name: 'Alice' };
+        (
+          auth0Client.isAuthenticated as unknown as MockInstance
+        ).mockResolvedValue(true);
+        (auth0Client.getUser as unknown as MockInstance).mockResolvedValue(
+          user
+        );
+
+        const service = createService();
+        const users: unknown[] = [];
+        await new Promise<void>((resolve) =>
+          service.user$.subscribe((value) => {
+            users.push(value);
+            resolve();
+          })
+        );
+
+        // Any re-read of user$ from here on would emit updatedUser
+        (auth0Client.getUser as unknown as MockInstance).mockResolvedValue(
+          updatedUser
+        );
+        await firstValueFrom(
+          service.myAccount
+            .updateUserProfile({ given_name: 'Alice' })
+            .pipe(delay(0))
+        );
+        expect(users).toEqual([user]);
+
+        (
+          auth0Client.getTokenSilently as unknown as MockInstance
+        ).mockResolvedValue('__new_access_token__');
+        await firstValueFrom(
+          service.getAccessTokenSilently({ cacheMode: 'off' }).pipe(delay(0))
+        );
+        expect(auth0Client.getTokenSilently).toHaveBeenCalledWith({
+          cacheMode: 'off',
         });
+        expect(users).toEqual([user, updatedUser]);
       });
     });
   });

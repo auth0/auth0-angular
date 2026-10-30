@@ -269,6 +269,9 @@ export interface ObservableMyAccountApiClient {
   /**
    * Updates the current user's profile. Only the fields you send are changed.
    * Returns the full updated profile. Requires the `update:me:profile` scope.
+   * Angular auth state (`user$`, `idTokenClaims$`) is not updated automatically —
+   * call `getAccessTokenSilently({ cacheMode: 'off' })` afterwards to get a new
+   * ID token with the updated profile.
    * @throws {MyAccountApiError}
    */
   updateUserProfile(data: UpdateUserProfileRequest): Observable<UserProfile>;

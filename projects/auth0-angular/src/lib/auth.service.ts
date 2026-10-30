@@ -625,7 +625,7 @@ export class AuthService<TAppState extends AppState = AppState>
    * Allows the authenticated user to list, enroll, update, and delete their
    * authentication methods, and to read and update their profile. Requires an
    * access token with the appropriate
-   * `read/create/update/delete:me:authentication-methods` scopes, and
+   * `read/create/update/delete:me:authentication_methods` scopes, and
    * `read:me:profile` / `update:me:profile` for the profile methods.
    */
   readonly myAccount: ObservableMyAccountApiClient = {

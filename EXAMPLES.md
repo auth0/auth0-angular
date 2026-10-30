@@ -2429,6 +2429,9 @@ this.auth.myAccount
 
 ### Profile
 
+> [!NOTE]
+> My Account Profile API support via SDKs is currently in Early Access. To request access to this feature, contact your Auth0 representative.
+
 Read and update the current user's profile. `getUserProfile()` needs the `read:me:profile` scope, and `updateUserProfile()` needs `update:me:profile`.
 
 > [!NOTE]
@@ -2485,6 +2488,24 @@ this.auth.myAccount
   .updateUserProfile({ given_name: 'Alice', nickname: 'wonderland_alice' })
   .subscribe({
     next: (updated) => console.log(updated),
+    error: (err) => console.error(err),
+  });
+```
+
+`updateUserProfile()` doesn't update `user$` or `idTokenClaims$`, which come from the ID token and still have the old values. To show the new values, use the profile that `updateUserProfile()` returns, or call `getAccessTokenSilently({ cacheMode: 'off' })` afterwards to get a new ID token. With refresh tokens enabled, as in [MyAccount Setup](#myaccount-setup), this uses the refresh token, not an iframe:
+
+```ts
+import { switchMap } from 'rxjs';
+
+this.auth.myAccount
+  .updateUserProfile({ given_name: 'Alice' })
+  .pipe(
+    switchMap(() => this.auth.getAccessTokenSilently({ cacheMode: 'off' }))
+  )
+  .subscribe({
+    next: () => {
+      // user$ and idTokenClaims$ now emit the updated profile
+    },
     error: (err) => console.error(err),
   });
 ```
