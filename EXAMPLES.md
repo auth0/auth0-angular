@@ -12,6 +12,7 @@
 - [Organizations](#organizations)
 - [Device-bound tokens with DPoP](#device-bound-tokens-with-dpop)
 - [Online Access (Online Refresh Tokens)](#online-access-online-refresh-tokens)
+- [Revoke refresh tokens](#revoke-refresh-tokens)
 - [Standalone Components and a more functional approach](#standalone-components-and-a-more-functional-approach)
 - [Connect Accounts for using Token Vault](#connect-accounts-for-using-token-vault)
 - [Native to Web SSO](#native-to-web-sso)
@@ -968,6 +969,61 @@ AuthModule.forRoot({
 > [!IMPORTANT]
 > In order for MRRT to work, it needs a previous configuration setting the refresh token policies.
 > Visit [configure and implement MRRT](https://auth0.com/docs/secure/tokens/refresh-tokens/multi-resource-refresh-token/configure-and-implement-multi-resource-refresh-token).
+
+## Revoke refresh tokens
+
+Use `revokeRefreshToken` to invalidate the refresh token through the `/oauth/revoke` endpoint without performing a full logout. Once revoked, the refresh token can no longer be used to obtain new access tokens. This is useful when you want to force re-authentication on the next token request, for example after a password change or when suspicious activity is detected.
+
+> [!NOTE]
+> This is a no-op if `useRefreshTokens` is not enabled.
+
+```ts
+import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
+@Component({
+  selector: 'app-revoke-refresh-token',
+  template: `<button (click)="revoke()">Revoke refresh token</button>`,
+  standalone: true,
+})
+export class RevokeRefreshTokenComponent {
+  constructor(private auth: AuthService) {}
+
+  revoke() {
+    this.auth.revokeRefreshToken().subscribe({
+      error: (err) => console.error(err),
+    });
+  }
+}
+```
+
+The revocation request is only sent once you subscribe to the returned Observable. If the request fails, the Observable errors and the error is also emitted on `error$`.
+
+By default, the refresh token for the audience configured in `authorizationParams` is revoked. To target a specific audience, pass it as an option:
+
+```ts
+this.auth.revokeRefreshToken({ audience: 'https://api.example.com' }).subscribe();
+```
+
+Each call revokes the refresh tokens for a single audience. If your application requests tokens for multiple audiences, call `revokeRefreshToken` once per audience.
+
+> [!IMPORTANT]
+> With Multi-Resource Refresh Tokens (`useMrrt: true`), audiences share the same underlying refresh token, so revoking it for one audience invalidates it for all of them.
+
+### What happens after revoking
+
+With the default (offline) refresh tokens, the cached access token is kept and stays valid until it expires, so `isAuthenticated$` remains `true`. The next time a new access token is needed, `getAccessTokenSilently` fails with a `MissingRefreshTokenError` (or falls back to the iframe flow if `useRefreshTokensFallback` is enabled). If you want to end the local session straight away, call `logout` after revoking:
+
+```ts
+import { concatMap } from 'rxjs/operators';
+
+this.auth
+  .revokeRefreshToken()
+  .pipe(concatMap(() => this.auth.logout({ openUrl: false })))
+  .subscribe();
+```
+
+With [Online Refresh Tokens](#online-access-online-refresh-tokens) (`refreshTokenMode: RefreshTokenMode.Online`), the refresh token is bound to the Auth0 session, so revoking it also terminates that session. The SDK clears the local cache, and `isAuthenticated$` emits `false` and `user$` emits `null` right away.
 
 ## Standalone components and a more functional approach
 
