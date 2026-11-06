@@ -262,6 +262,10 @@ export interface ObservableMyAccountApiClient {
    *
    * Pass `fields` to return only those fields, or set `includeFields: false`
    * to exclude them instead.
+   *
+   * This feature is currently in [Beta](https://auth0.com/docs/troubleshoot/product-lifecycle/product-release-stages#beta).
+   * It might change before General Availability, and Auth0 does not support beta functionality for
+   * production use. The feature must be enabled for your tenant.
    * @throws {MyAccountApiError}
    */
   getUserProfile(options?: GetUserProfileOptions): Observable<UserProfile>;
@@ -272,6 +276,10 @@ export interface ObservableMyAccountApiClient {
    * Angular auth state (`user$`, `idTokenClaims$`) is not updated automatically —
    * call `getAccessTokenSilently({ cacheMode: 'off' })` afterwards to get a new
    * ID token with the updated profile.
+   *
+   * This feature is currently in [Beta](https://auth0.com/docs/troubleshoot/product-lifecycle/product-release-stages#beta).
+   * It might change before General Availability, and Auth0 does not support beta functionality for
+   * production use. The feature must be enabled for your tenant.
    * @throws {MyAccountApiError}
    */
   updateUserProfile(data: UpdateUserProfileRequest): Observable<UserProfile>;
