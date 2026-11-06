@@ -118,6 +118,7 @@ describe('AuthService', () => {
     vi.spyOn(auth0Client, 'getUser').mockResolvedValue(undefined);
     vi.spyOn(auth0Client, 'getIdTokenClaims').mockResolvedValue(undefined);
     vi.spyOn(auth0Client, 'logout');
+    vi.spyOn(auth0Client, 'revokeRefreshToken').mockResolvedValue();
     vi.spyOn(auth0Client, 'getTokenSilently').mockResolvedValue(
       '__access_token__'
     );
@@ -954,6 +955,135 @@ describe('AuthService', () => {
       const authValues = await authPending;
       expect(authValues[0]).toBe(true);
       expect(authValues[1]).toBe(false);
+    });
+  });
+
+  describe('revokeRefreshToken', () => {
+    it('should call the underlying SDK', async () => {
+      const service = createService();
+      await firstValueFrom(service.revokeRefreshToken());
+      expect(auth0Client.revokeRefreshToken).toHaveBeenCalled();
+    });
+
+    it('should call the underlying SDK and pass along the options', async () => {
+      const options = { audience: 'https://api.example.com' };
+      const service = createService();
+      await firstValueFrom(service.revokeRefreshToken(options));
+      expect(auth0Client.revokeRefreshToken).toHaveBeenCalledWith(options);
+    });
+
+    it('should not call the underlying SDK until subscribed', () => {
+      const service = createService();
+      service.revokeRefreshToken();
+      expect(auth0Client.revokeRefreshToken).not.toHaveBeenCalled();
+    });
+
+    it('should emit once and complete', async () => {
+      const service = createService();
+      const values: unknown[] = [];
+      await new Promise<void>((resolve, reject) =>
+        service.revokeRefreshToken().subscribe({
+          next: (value) => values.push(value),
+          error: reject,
+          complete: resolve,
+        })
+      );
+      expect(values).toEqual([undefined]);
+    });
+
+    it('should call the underlying SDK again for each subscription', async () => {
+      const service = createService();
+      const revoke$ = service.revokeRefreshToken();
+      await firstValueFrom(revoke$);
+      await firstValueFrom(revoke$);
+      expect(auth0Client.revokeRefreshToken).toHaveBeenCalledTimes(2);
+    });
+
+    it('should keep the user authenticated when only the refresh token is revoked', async () => {
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
+      const service = createService();
+      await firstValueFrom(loaded(service));
+      const refreshSpy = vi.spyOn(authState, 'refresh');
+
+      await firstValueFrom(service.revokeRefreshToken());
+
+      expect(refreshSpy).toHaveBeenCalled();
+      expect(await firstValueFrom(service.isAuthenticated$)).toBe(true);
+    });
+
+    it('should clear isAuthenticated$ and user$ when the SDK clears the local session (Online Refresh Tokens)', async () => {
+      const user = { name: 'Test User' };
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
+      (auth0Client.getUser as unknown as MockInstance).mockResolvedValue(user);
+      // In online mode, revoking the Online Refresh Token terminates the Auth0
+      // session, so the underlying SDK clears its local cache.
+      (
+        auth0Client.revokeRefreshToken as unknown as MockInstance
+      ).mockImplementation(async () => {
+        (
+          auth0Client.isAuthenticated as unknown as MockInstance
+        ).mockResolvedValue(false);
+        (auth0Client.getUser as unknown as MockInstance).mockResolvedValue(
+          undefined
+        );
+      });
+
+      const service = createService();
+      const authPending = firstValueFrom(
+        service.isAuthenticated$.pipe(bufferCount(2))
+      );
+      const userPending = firstValueFrom(service.user$.pipe(bufferCount(2)));
+      expect(await firstValueFrom(service.isAuthenticated$)).toBe(true);
+
+      service.revokeRefreshToken().subscribe();
+
+      expect(await authPending).toEqual([true, false]);
+      const userValues = await userPending;
+      expect(userValues[0]).toBe(user);
+      expect(userValues[1]).toBeNull();
+    });
+
+    it('should record errors in the error$ observable', async () => {
+      const errorObj = new Error('An error has occured');
+      (
+        auth0Client.revokeRefreshToken as unknown as MockInstance
+      ).mockRejectedValue(errorObj);
+      const service = createService();
+      service.revokeRefreshToken().subscribe({ error: () => {} });
+      const err = await firstValueFrom(service.error$);
+      expect(err).toBe(errorObj);
+    });
+
+    it('should bubble errors', async () => {
+      const errorObj = new Error('An error has occured');
+      (
+        auth0Client.revokeRefreshToken as unknown as MockInstance
+      ).mockRejectedValue(errorObj);
+      const service = createService();
+      await expect(firstValueFrom(service.revokeRefreshToken())).rejects.toBe(
+        errorObj
+      );
+    });
+
+    it('should refresh the authentication state and keep the user authenticated when revoking fails', async () => {
+      (
+        auth0Client.isAuthenticated as unknown as MockInstance
+      ).mockResolvedValue(true);
+      (
+        auth0Client.revokeRefreshToken as unknown as MockInstance
+      ).mockRejectedValue(new Error('An error has occured'));
+      const service = createService();
+      await firstValueFrom(loaded(service));
+      const refreshSpy = vi.spyOn(authState, 'refresh');
+      await expect(
+        firstValueFrom(service.revokeRefreshToken())
+      ).rejects.toThrow('An error has occured');
+      expect(refreshSpy).toHaveBeenCalled();
+      expect(await firstValueFrom(service.isAuthenticated$)).toBe(true);
     });
   });
 
