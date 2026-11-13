@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.16.0](https://github.com/auth0/auth0-angular/tree/v2.16.0) (2026-11-13)
+[Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.15.0...v2.16.0)
+
+**Added**
+- feat(auth): add revokeRefreshToken method and update examples [\#1126](https://github.com/auth0/auth0-angular/pull/1126) ([siddhikotak](https://github.com/siddhikotak))
+
 ## [v2.15.0](https://github.com/auth0/auth0-angular/tree/v2.15.0) (2026-10-30)
 [Full Changelog](https://github.com/auth0/auth0-angular/compare/v2.14.0...v2.15.0)
 
