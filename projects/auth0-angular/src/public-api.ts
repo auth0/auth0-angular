@@ -67,6 +67,7 @@ export {
 export type {
   InteractiveErrorHandler,
   IsFederatedDomainOptions,
+  RevokeRefreshTokenOptions,
   Authenticator,
   AuthenticatorType,
   OobChannel,
